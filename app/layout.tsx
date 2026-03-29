@@ -1,5 +1,5 @@
 import type React from "react"
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
@@ -8,6 +8,11 @@ import Footer from "@/components/footer"
 import BackgroundAnimation from "@/components/background-animation"
 
 const inter = Inter({ subsets: ["latin"] })
+
+export const viewport: Viewport = {
+  themeColor: "#6d28d9",
+  colorScheme: "light dark",
+}
 
 export const metadata: Metadata = {
   title: "Apna Counsellor - India's Trusted Counselling Platform for Admissions",
