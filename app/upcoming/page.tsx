@@ -22,7 +22,7 @@ export default function UpcomingPage() {
       expectedLaunch: "May 2025",
       icon: "🏛️",
       logo: "/images/comedk-logo.png",
-      link: "https://comedkcounselling.vercel.app/",
+      link: "https://comedk.apnacounsellor.in/",
       isLaunched: true,
     },
     {

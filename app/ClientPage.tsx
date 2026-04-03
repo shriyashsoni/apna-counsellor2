@@ -87,7 +87,7 @@ export default function Home() {
         className="py-12 bg-gray-50 dark:bg-gray-900 rounded-xl p-8"
       >
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">Our Counselling Services in 2025</h2>
+          <h2 className="text-3xl font-bold mb-4">Our Counselling Services in 2026</h2>
           <p className="text-gray-700 dark:text-gray-300 max-w-3xl mx-auto">
             Apna Counsellor proudly provides guidance and live support for the following admission processes
           </p>

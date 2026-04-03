@@ -13,7 +13,7 @@ export default function CounsellingClientPage() {
       id: "mhtcet",
       title: "MHT CET Counselling",
       description: "Complete guidance for Maharashtra's engineering and pharmacy admissions through CAP rounds.",
-      link: "https://mht-apnacounsellor.vercel.app/",
+      link: "https://mht-cet.apnacounsellor.in/",
       logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/mht%20cet%20counselling%20logo-iAo3Zgvl5SBFGL1Y26jz5NMPynroZa.webp",
       features: [
         "College predictor based on your CET score",
@@ -27,7 +27,7 @@ export default function CounsellingClientPage() {
       id: "jossa",
       title: "JEE & JoSAA Counselling",
       description: "Expert guidance for JEE Main/Advanced students seeking admission to IITs, NITs, and GFTIs.",
-      link: "https://apnacounsellorjossa.vercel.app/",
+      link: "https://jossa.apnacounsellor.in/",
       logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/josssa%20counsellingn%20logo-atNsaGWHl9WWt67tNukFEAUWJVu4cC.png",
       features: [
         "JoSAA round-wise updates",
@@ -41,7 +41,7 @@ export default function CounsellingClientPage() {
       id: "mpdte",
       title: "MP DTE Counselling",
       description: "Complete support for engineering and pharmacy admissions in Madhya Pradesh.",
-      link: "https://apnacounsellormpdte.vercel.app/",
+      link: "https://mpdte.apnacounsellor.in/",
       logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/mp%20dte%20counselling.jpg-Rc3eTqdZl7fpCmhiejovrdEF6EIa7a.jpeg",
       features: [
         "MP college predictor tool",
@@ -55,7 +55,7 @@ export default function CounsellingClientPage() {
       id: "comedk",
       title: "COMEDK Counselling",
       description: "For engineering aspirants in Karnataka seeking admission through COMEDK UGET.",
-      link: "https://comedkcounselling.vercel.app/",
+      link: "https://comedk.apnacounsellor.in/",
       logo: "/images/comedk-logo.png",
       features: [
         "Karnataka engineering college guide",

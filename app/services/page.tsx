@@ -19,7 +19,7 @@ export default function ServicesPage() {
       id: "mhtcet",
       title: "MHT CET Counselling",
       description: "Explore Maharashtra's top engineering, pharmacy, and BTech colleges based on your CET rank.",
-      link: "https://mht-apnacounsellor.vercel.app/",
+      link: "https://mht-cet.apnacounsellor.in/",
       logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/mht%20cet%20counselling%20logo-iAo3Zgvl5SBFGL1Y26jz5NMPynroZa.webp",
       features: [
         "College Predictor Tool",
@@ -34,7 +34,7 @@ export default function ServicesPage() {
       id: "jossa",
       title: "JEE Mains & Advanced – JoSAA Counselling",
       description: "Get help with NITs, IIITs, GFTIs, and IIT admissions via JoSAA & CSAB.",
-      link: "https://apnacounsellorjossa.vercel.app/",
+      link: "https://jossa.apnacounsellor.in/",
       logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/josssa%20counsellingn%20logo-atNsaGWHl9WWt67tNukFEAUWJVu4cC.png",
       features: [
         "AI-Based College Predictor",
@@ -49,7 +49,7 @@ export default function ServicesPage() {
       id: "mpdte",
       title: "MP DTE Counselling",
       description: "Your complete guide for engineering and pharmacy colleges in Madhya Pradesh through DTE MP.",
-      link: "https://apnacounsellormpdte.vercel.app/",
+      link: "https://mpdte.apnacounsellor.in/",
       logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/mp%20dte%20counselling.jpg-Rc3eTqdZl7fpCmhiejovrdEF6EIa7a.jpeg",
       features: [
         "MP College Predictor",
@@ -63,7 +63,7 @@ export default function ServicesPage() {
       id: "comedk",
       title: "COMEDK Counselling",
       description: "Complete guidance for engineering aspirants in Karnataka seeking admission through COMEDK UGET.",
-      link: "https://comedkcounselling.vercel.app/",
+      link: "https://comedk.apnacounsellor.in/",
       logo: "/images/comedk-logo.png",
       features: [
         "Karnataka Engineering College Guide",

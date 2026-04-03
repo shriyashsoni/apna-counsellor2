@@ -19,7 +19,7 @@ export default function PredictorsPage() {
       title: "MHT CET College Predictor",
       description: "Predict engineering and pharmacy colleges in Maharashtra based on your CET score and category.",
       platform: "MHT CET Counselling",
-      url: "https://mht-apnacounsellor.vercel.app/predictor",
+      url: "https://mht-cet.apnacounsellor.in/predictor",
       logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/mht%20cet%20counselling%20logo-iAo3Zgvl5SBFGL1Y26jz5NMPynroZa.webp",
       features: [
         "Branch-wise predictions",
@@ -33,7 +33,7 @@ export default function PredictorsPage() {
       title: "JoSAA College Predictor",
       description: "Predict IITs, NITs, IIITs, and GFTIs based on your JEE Main/Advanced rank and category.",
       platform: "JEE/JoSAA Counselling",
-      url: "https://apnacounsellorjossa.vercel.app/predictor",
+      url: "https://jossa.apnacounsellor.in/predictor",
       logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/josssa%20counsellingn%20logo-atNsaGWHl9WWt67tNukFEAUWJVu4cC.png",
       features: [
         "IIT, NIT, IIIT, and GFTI predictions",
@@ -47,7 +47,7 @@ export default function PredictorsPage() {
       title: "MP DTE College Predictor",
       description: "Predict engineering and pharmacy colleges in Madhya Pradesh based on your rank and category.",
       platform: "MP DTE Counselling",
-      url: "https://apnacounsellormpdte.vercel.app/predictor",
+      url: "https://mpdte.apnacounsellor.in/predictor",
       logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/mp%20dte%20counselling.jpg-Rc3eTqdZl7fpCmhiejovrdEF6EIa7a.jpeg",
       features: [
         "College-wise predictions",
@@ -61,7 +61,7 @@ export default function PredictorsPage() {
       title: "COMEDK College Predictor",
       description: "Predict engineering colleges in Karnataka based on your COMEDK UGET rank and category.",
       platform: "COMEDK Counselling",
-      url: "https://comedkcounselling.vercel.app/predictor",
+      url: "https://comedk.apnacounsellor.in/predictor",
       logo: "/images/comedk-logo.png",
       features: [
         "College-wise predictions for Karnataka",
