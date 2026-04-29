@@ -88,7 +88,7 @@ export default function LoginPage() {
 
       {/* Right Side: Login Form */}
       <div className="flex flex-col justify-center items-center p-8 md:p-20 relative">
-        <div className="absolute top-0 right-0 p-12 opacity-5 lg:hidden">
+        <div className="absolute top-0 right-0 p-12 opacity-5 lg:hidden pointer-events-none">
            <Sparkles className="h-64 w-64 text-primary" />
         </div>
 
@@ -100,17 +100,16 @@ export default function LoginPage() {
           </div>
 
           <div className="space-y-4">
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+            <button
+              type="button"
               onClick={handleGoogleLogin}
-              className="w-full h-16 rounded-[1.5rem] bg-white dark:bg-slate-900 border-2 border-slate-100 dark:border-slate-800 flex items-center justify-center gap-4 hover:border-primary dark:hover:border-primary hover:shadow-xl hover:shadow-primary/5 transition-all group"
+              className="w-full h-16 rounded-[1.5rem] bg-white dark:bg-slate-900 border-2 border-slate-100 dark:border-slate-800 flex items-center justify-center gap-4 hover:border-primary dark:hover:border-primary hover:shadow-xl hover:shadow-primary/5 transition-all group cursor-pointer active:scale-95"
             >
-              <div className="h-8 w-8 relative">
+              <div className="h-8 w-8 relative pointer-events-none">
                 <Image src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" fill className="object-contain" />
               </div>
-              <span className="text-lg font-black text-slate-700 dark:text-slate-200 group-hover:text-primary transition-colors">Continue with Google</span>
-            </motion.button>
+              <span className="text-lg font-black text-slate-700 dark:text-slate-200 group-hover:text-primary transition-colors pointer-events-none">Continue with Google</span>
+            </button>
             
             <p className="text-center text-xs text-slate-400 font-bold uppercase tracking-widest py-4 relative">
               <span className="px-4 bg-white dark:bg-slate-950 relative z-10">Secure Google Authentication</span>
