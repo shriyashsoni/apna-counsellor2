@@ -15,9 +15,9 @@ import Image from "next/image"
 export default function CollegeProfilePage() {
   const params = useParams()
   const router = useRouter()
-  const collegeId = params.id as Id<"colleges">
+  const collegeIdString = params.id as string
   
-  const college = useQuery(api.colleges.getById, { id: collegeId })
+  const college = useQuery(api.colleges.getById, { id: collegeIdString })
   const extractData = useAction(api.scraper.extractCollegeData)
   
   const [isExtracting, setIsExtracting] = useState(false)
@@ -27,10 +27,10 @@ export default function CollegeProfilePage() {
   // Trigger on-demand extraction if missing
   useEffect(() => {
     async function performExtraction() {
-      if (college && college.website && !college.imageUrl && !isExtracting && !localImageUrl) {
+      if (college && college._id && college.website && !college.imageUrl && !isExtracting && !localImageUrl) {
         setIsExtracting(true)
         try {
-          const result = await extractData({ collegeId, url: college.website })
+          const result = await extractData({ collegeId: college._id, url: college.website })
           if (result.success) {
             if (result.imageUrl) setLocalImageUrl(result.imageUrl)
             if (result.description) setLocalDesc(result.description)
@@ -43,7 +43,7 @@ export default function CollegeProfilePage() {
       }
     }
     performExtraction()
-  }, [college, collegeId, extractData, isExtracting, localImageUrl])
+  }, [college, extractData, isExtracting, localImageUrl])
 
   if (college === undefined) {
     return (
