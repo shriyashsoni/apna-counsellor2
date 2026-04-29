@@ -1,5 +1,5 @@
 import { useAuthActions } from "@convex-dev/auth/react";
-import { useQuery } from "convex/react";
+import { useQuery, useConvexAuth } from "convex/react";
 import { api } from "@/convex/_generated/api";
 
 interface User {
@@ -20,7 +20,8 @@ interface AuthContextType {
 
 export function useAuth(): AuthContextType & { login: (provider?: string) => Promise<void>, logout: () => Promise<void> } {
   const { signIn, signOut } = useAuthActions();
-  const user = useQuery(api.users.currentUser);
+  const { isAuthenticated, isLoading: isAuthLoading } = useConvexAuth();
+  const user = useQuery(api.users.currentUser, isAuthenticated ? {} : "skip");
   
   const login = async (provider: string = "google") => {
     await signIn(provider);
@@ -36,8 +37,8 @@ export function useAuth(): AuthContextType & { login: (provider?: string) => Pro
     signOut: logout,
     login,
     logout,
-    isLoading: user === undefined,
-    isAuthenticated: !!user
+    isLoading: isAuthLoading || (isAuthenticated && user === undefined),
+    isAuthenticated: isAuthenticated
   };
 }
 

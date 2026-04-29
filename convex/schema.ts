@@ -226,6 +226,4 @@ export default defineSchema({
     sender: v.string(), // "user" or "admin"
     text: v.string(),
   }).index("by_ticketId", ["ticketId"]),
-
-  ...authTables,
 });

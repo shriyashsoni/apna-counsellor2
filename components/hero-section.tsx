@@ -6,7 +6,10 @@ import Image from "next/image"
 import { ArrowRight, BookOpen, CheckCircle, School, Users, Sparkles, GraduationCap, Shield } from "lucide-react"
 import { motion } from "framer-motion"
 
+import { useAuth } from "@/hooks/use-auth"
+
 const HeroSection = () => {
+  const { isAuthenticated } = useAuth()
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -38,9 +41,9 @@ const HeroSection = () => {
             AI-powered guidance system. We bridge the gap between your rank and your dream institute.
           </motion.p>
           <motion.div variants={item} className="flex flex-col sm:flex-row gap-3 md:gap-4">
-            <Link href="/book-call" className="w-full sm:w-auto">
+            <Link href={isAuthenticated ? "/dashboard" : "/book-call"} className="w-full sm:w-auto">
               <Button size="lg" className="w-full sm:w-auto rounded-xl md:rounded-2xl px-6 h-12 md:h-14 font-black text-sm md:text-base shadow-lg shadow-primary/20">
-                Book a Counselling Call
+                {isAuthenticated ? "Go to Dashboard" : "Book a Counselling Call"}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>

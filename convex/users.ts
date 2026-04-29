@@ -20,10 +20,25 @@ export const storeUser = mutation({
 export const currentUser = query({
   args: {},
   handler: async (ctx) => {
+    // Try getting user ID from convex-auth first
     const userId = await auth.getUserId(ctx);
-    if (!userId) return null;
+    if (userId) {
+      const user = await ctx.db.get(userId);
+      if (user) return user;
+    }
 
-    return await ctx.db.get(userId);
+    // Fallback: Check identity directly
+    const identity = await ctx.auth.getUserIdentity();
+    if (identity) {
+      // Look up user by subject if ID lookup failed
+      const user = await ctx.db
+        .query("users")
+        .withIndex("by_email", (q) => q.eq("email", identity.email!))
+        .unique();
+      if (user) return user;
+    }
+
+    return null;
   },
 });
 
