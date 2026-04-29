@@ -1,178 +1,240 @@
 "use client"
 
-import { useQuery } from "convex/react"
+import { useEffect, useState } from "react"
+import { useParams, useRouter } from "next/navigation"
+import { useQuery, useAction } from "convex/react"
 import { api } from "@/convex/_generated/api"
-import { useParams } from "next/navigation"
-import { motion } from "framer-motion"
-import { 
-  MapPin, 
-  Building2, 
-  Globe, 
-  ExternalLink, 
-  GraduationCap, 
-  Trophy, 
-  DollarSign, 
-  Calendar,
-  CheckCircle2,
-  Share2,
-  ArrowLeft,
-  Info
-} from "lucide-react"
+import { Id } from "@/convex/_generated/dataModel"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { motion } from "framer-motion"
+import { ArrowLeft, MapPin, Building2, Globe, GraduationCap, Trophy, DollarSign, Calendar, Target, Loader2, Sparkles, ExternalLink } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 
-export default function CollegeDetailsPage() {
+export default function CollegeProfilePage() {
   const params = useParams()
-  const collegeId = params.id as any
+  const router = useRouter()
+  const collegeId = params.id as Id<"colleges">
+  
   const college = useQuery(api.colleges.getById, { id: collegeId })
+  const extractData = useAction(api.scraper.extractCollegeData)
+  
+  const [isExtracting, setIsExtracting] = useState(false)
+  const [localImageUrl, setLocalImageUrl] = useState<string | null>(null)
+  const [localDesc, setLocalDesc] = useState<string | null>(null)
 
-  if (college === undefined) return (
-    <div className="h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">
-      <div className="h-12 w-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-    </div>
-  )
+  // Trigger on-demand extraction if missing
+  useEffect(() => {
+    async function performExtraction() {
+      if (college && college.website && !college.imageUrl && !isExtracting && !localImageUrl) {
+        setIsExtracting(true)
+        try {
+          const result = await extractData({ collegeId, url: college.website })
+          if (result.success) {
+            if (result.imageUrl) setLocalImageUrl(result.imageUrl)
+            if (result.description) setLocalDesc(result.description)
+          }
+        } catch (e) {
+          console.error("Extraction failed", e)
+        } finally {
+          setIsExtracting(false)
+        }
+      }
+    }
+    performExtraction()
+  }, [college, collegeId, extractData, isExtracting, localImageUrl])
 
-  if (college === null) return (
-    <div className="min-h-screen flex items-center justify-center">
-      <h2 className="text-2xl font-bold">College not found</h2>
-    </div>
-  )
+  if (college === undefined) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    )
+  }
+
+  if (college === null) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-950">
+        <h1 className="text-3xl font-black mb-4">College Not Found</h1>
+        <Button onClick={() => router.push("/colleges")}>Back to Directory</Button>
+      </div>
+    )
+  }
+
+  const displayImage = localImageUrl || college.imageUrl || "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+  const displayDesc = localDesc || college.description || "A premier institution offering comprehensive degree programs."
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pb-20">
-      {/* Hero Section */}
-      <div className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
-        <div className="container mx-auto px-4 py-12">
-          <Link href="/colleges">
-            <Button variant="ghost" className="mb-8 rounded-xl font-bold text-slate-500 hover:text-primary">
-              <ArrowLeft className="mr-2 h-4 w-4" /> Back to Search
-            </Button>
-          </Link>
+      {/* Hero Section with Image */}
+      <div className="relative h-[40vh] md:h-[55vh] w-full bg-slate-900 overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <Image
+            src={displayImage}
+            alt={college.name}
+            fill
+            className="object-cover opacity-50 mix-blend-overlay"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/60 to-transparent" />
+        </div>
+
+        {/* Hero Content */}
+        <div className="absolute inset-0 flex flex-col justify-end container mx-auto px-4 pb-12">
+          <Button 
+            variant="ghost" 
+            className="w-fit text-white/70 hover:text-white hover:bg-white/10 mb-6 group transition-all"
+            onClick={() => router.back()}
+          >
+            <ArrowLeft className="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform" />
+            Back to Search
+          </Button>
           
-          <div className="flex flex-col lg:flex-row justify-between items-start gap-8">
-            <div className="flex-grow space-y-6">
-              <div className="flex items-center gap-3">
-                <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-black uppercase tracking-wider">
-                  {college.type || "Institution"}
+          <div className="flex flex-col md:flex-row gap-6 md:items-end justify-between">
+            <div className="space-y-4 max-w-4xl">
+              <div className="flex flex-wrap gap-2">
+                <span className="px-3 py-1 rounded-full bg-primary text-[10px] md:text-xs font-black uppercase tracking-widest text-white shadow-lg shadow-primary/30">
+                  {college.type || "Private"}
                 </span>
                 {college.nirfRank && (
-                  <span className="px-3 py-1 rounded-full bg-orange-500/10 text-orange-500 text-xs font-black uppercase tracking-wider border border-orange-500/10">
-                    NIRF #{college.nirfRank}
+                  <span className="px-3 py-1 rounded-full bg-orange-500 text-[10px] md:text-xs font-black uppercase tracking-widest text-white shadow-lg shadow-orange-500/30 flex items-center gap-1">
+                    <Trophy className="h-3 w-3" /> NIRF #{college.nirfRank}
+                  </span>
+                )}
+                {isExtracting && (
+                  <span className="px-3 py-1 rounded-full bg-blue-500/20 text-[10px] md:text-xs font-black uppercase tracking-widest text-blue-200 border border-blue-500/30 flex items-center gap-2">
+                    <Loader2 className="h-3 w-3 animate-spin" /> Live Extracting Data...
                   </span>
                 )}
               </div>
-              <h1 className="text-4xl md:text-5xl font-black tracking-tight text-slate-900 dark:text-white leading-tight">
+              <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight leading-tight">
                 {college.name}
               </h1>
-              <div className="flex flex-wrap items-center gap-6 text-slate-500 font-medium">
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-5 w-5 text-primary" />
-                  {college.city}, {college.state}
+              <div className="flex flex-wrap items-center gap-4 text-slate-300 font-medium text-sm md:text-base">
+                <div className="flex items-center gap-1.5">
+                  <MapPin className="h-4 w-4 text-primary" />
+                  {college.city ? `${college.city}, ${college.state}` : (college.location || "Location Unknown")}
                 </div>
-                <div className="flex items-center gap-2">
-                  <Building2 className="h-5 w-5 text-primary" />
-                  Established: {college.established || "1960"}
-                </div>
-                {college.website && (
-                  <Link href={college.website} target="_blank" className="flex items-center gap-2 text-primary hover:underline">
-                    <Globe className="h-5 w-5" />
-                    Official Website
-                    <ExternalLink className="h-3 w-3" />
-                  </Link>
+                {college.established && (
+                  <div className="flex items-center gap-1.5">
+                    <Calendar className="h-4 w-4 text-primary" />
+                    Est. {college.established}
+                  </div>
                 )}
               </div>
             </div>
             
-            <div className="w-full lg:w-auto shrink-0 flex gap-4">
-               <Button className="h-14 px-8 rounded-2xl bg-primary hover:bg-primary/90 font-black text-lg shadow-xl shadow-primary/20 flex-grow lg:flex-none">
-                 Add to Shortlist
-               </Button>
-               <Button variant="outline" size="icon" className="h-14 w-14 rounded-2xl border-slate-200 dark:border-slate-800">
-                 <Share2 className="h-6 w-6" />
-               </Button>
+            <div className="flex gap-3">
+              <Button size="lg" className="h-14 px-8 rounded-2xl bg-white text-slate-900 hover:bg-slate-100 font-black shadow-xl">
+                Add to Shortlist
+              </Button>
+              {college.website && (
+                <Link href={college.website} target="_blank">
+                  <Button size="lg" variant="outline" className="h-14 px-6 rounded-2xl border-white/20 text-white hover:bg-white/10 font-bold backdrop-blur-sm">
+                    <Globe className="h-5 w-5 mr-2" /> Visit Site
+                  </Button>
+                </Link>
+              )}
             </div>
           </div>
         </div>
       </div>
 
+      {/* Main Content Area */}
       <div className="container mx-auto px-4 py-12">
-        <div className="grid lg:grid-cols-12 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           
-          {/* Main Stats */}
+          {/* Left Column: Details */}
           <div className="lg:col-span-8 space-y-8">
-            <div className="grid sm:grid-cols-3 gap-4">
-              {[
-                { label: "Annual Fee", value: college.annualFee || "₹3.5 Lakhs", icon: DollarSign, color: "text-blue-500" },
-                { label: "Avg Package", value: college.avgPackage || "₹12.5 LPA", icon: Trophy, color: "text-emerald-500" },
-                { label: "High Package", value: "₹52 LPA", icon: TrendingUp, color: "text-orange-500" },
-              ].map((stat, i) => (
-                <Card key={i} className="border-none rounded-[2rem] shadow-sm bg-white dark:bg-slate-900">
-                  <CardContent className="p-6 text-center">
-                    <div className={`h-12 w-12 rounded-2xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center mx-auto mb-4 ${stat.color}`}>
-                      <stat.icon className="h-6 w-6" />
-                    </div>
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{stat.label}</p>
-                    <p className="text-xl font-black text-slate-900 dark:text-white">{stat.value}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-
             <Card className="border-none rounded-[2.5rem] shadow-sm bg-white dark:bg-slate-900 p-8 md:p-10">
               <h2 className="text-2xl font-black mb-6 flex items-center gap-3">
-                <Info className="h-6 w-6 text-primary" />
+                <Building2 className="h-6 w-6 text-primary" />
                 About Institution
               </h2>
-              <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg font-medium">
-                {college.description || `Established in ${college.established || "the early 1960s"}, ${college.name} has grown to become one of the premier institutions for technical education in ${college.state}. With a focus on research, innovation, and industry-readiness, the college offers a range of undergraduate and postgraduate programs. The campus provides state-of-the-art facilities, including modern labs, a central library, and extensive sports infrastructure.`}
+              <p className="text-slate-600 dark:text-slate-300 text-lg leading-relaxed font-medium">
+                {displayDesc}
               </p>
             </Card>
 
             <Card className="border-none rounded-[2.5rem] shadow-sm bg-white dark:bg-slate-900 p-8 md:p-10">
-              <h2 className="text-2xl font-black mb-8 flex items-center gap-3">
+              <h2 className="text-2xl font-black mb-6 flex items-center gap-3">
                 <GraduationCap className="h-6 w-6 text-primary" />
-                Available Branches
+                Key Statistics
               </h2>
-              <div className="grid sm:grid-cols-2 gap-4">
-                {(college.branches || ["Computer Science", "Information Technology", "Electronics", "Mechanical", "Civil"]).map((branch: string) => (
-                  <div key={branch} className="flex items-center gap-4 p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
-                    <div className="h-10 w-10 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-500">
-                      <CheckCircle2 className="h-5 w-5" />
-                    </div>
-                    <span className="font-bold text-slate-700 dark:text-slate-300">{branch}</span>
-                  </div>
-                ))}
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700">
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-1">
+                    <DollarSign className="h-3 w-3" /> Annual Fee
+                  </p>
+                  <p className="text-xl md:text-2xl font-black text-slate-900 dark:text-white">
+                    {college.annualFee || "Contact for Info"}
+                  </p>
+                </div>
+                <div className="p-6 rounded-3xl bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-900/20">
+                  <p className="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest mb-2 flex items-center gap-1">
+                    <Trophy className="h-3 w-3" /> Average Package
+                  </p>
+                  <p className="text-xl md:text-2xl font-black text-emerald-600 dark:text-emerald-400">
+                    {college.avgPackage || "Data Unavailable"}
+                  </p>
+                </div>
+                <div className="col-span-2 md:col-span-1 p-6 rounded-3xl bg-blue-50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/20">
+                  <p className="text-[10px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest mb-2 flex items-center gap-1">
+                    <Target className="h-3 w-3" /> AI Prediction
+                  </p>
+                  <p className="text-xl md:text-2xl font-black text-blue-600 dark:text-blue-400">
+                    High Chance
+                  </p>
+                </div>
               </div>
             </Card>
+
+            {college.branches && college.branches.length > 0 && (
+              <Card className="border-none rounded-[2.5rem] shadow-sm bg-white dark:bg-slate-900 p-8 md:p-10">
+                <h2 className="text-2xl font-black mb-6">Available Branches</h2>
+                <div className="flex flex-wrap gap-3">
+                  {college.branches.map((branch: string, i: number) => (
+                    <span key={i} className="px-4 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 text-sm font-bold text-slate-700 dark:text-slate-300 border border-slate-100 dark:border-slate-700">
+                      {branch}
+                    </span>
+                  ))}
+                </div>
+              </Card>
+            )}
           </div>
 
-          {/* Sidebar */}
+          {/* Right Column: Quick Actions */}
           <div className="lg:col-span-4 space-y-8">
-            <Card className="bg-gradient-to-br from-indigo-600 to-primary text-white border-none rounded-[3rem] p-10 relative overflow-hidden shadow-2xl shadow-primary/20 group">
+            <Card className="border-none rounded-[2.5rem] shadow-xl shadow-primary/5 bg-primary p-8 md:p-10 text-white relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-8 opacity-10">
+                <Sparkles className="h-32 w-32" />
+              </div>
               <div className="relative z-10">
-                <h3 className="text-2xl font-black mb-4">Predict Admission</h3>
-                <p className="text-white/80 font-medium mb-8 leading-relaxed">
-                  Calculate your chances of getting into {college.shortName || "this college"} based on your rank and category.
+                <h3 className="text-2xl font-black mb-4">Want to Predict Admission?</h3>
+                <p className="text-white/80 font-medium mb-8">
+                  Check your exact chances of getting into {college.shortName || college.name} based on your rank and category using our AI.
                 </p>
                 <Link href="/predictor">
-                  <Button className="w-full h-14 bg-white text-primary hover:bg-slate-50 rounded-2xl font-black text-lg">
-                    Check Chances
+                  <Button className="w-full h-14 rounded-2xl bg-white text-primary hover:bg-slate-100 font-black text-lg shadow-lg">
+                    Run Predictor <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
               </div>
-              <TrendingUp className="absolute -bottom-6 -right-6 h-32 w-32 text-white/10 rotate-12" />
             </Card>
 
             <Card className="border-none rounded-[2.5rem] shadow-sm bg-white dark:bg-slate-900 p-8">
-              <h3 className="text-xl font-black mb-6">Cutoff History</h3>
-              <div className="space-y-4">
-                {[2024, 2023, 2022].map(year => (
-                  <div key={year} className="flex justify-between items-center p-4 rounded-2xl bg-slate-50 dark:bg-slate-800">
-                    <span className="font-bold text-slate-500">{year} Cutoff</span>
-                    <span className="font-black text-primary">View Details</span>
-                  </div>
-                ))}
+              <h3 className="font-black mb-4 uppercase tracking-widest text-xs text-slate-400">Official Links</h3>
+              <div className="space-y-3">
+                {college.website ? (
+                  <Link href={college.website} target="_blank" className="flex items-center justify-between p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors group">
+                    <span className="font-bold text-sm">Official Website</span>
+                    <ExternalLink className="h-4 w-4 text-slate-400 group-hover:text-primary transition-colors" />
+                  </Link>
+                ) : (
+                  <p className="text-sm font-medium text-slate-500">No official links listed.</p>
+                )}
               </div>
             </Card>
           </div>

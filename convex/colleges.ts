@@ -162,3 +162,20 @@ export const predict = query({
       .slice(0, 15);
   },
 });
+
+export const updateCollegeMetadata = mutation({
+  args: {
+    collegeId: v.id("colleges"),
+    imageUrl: v.optional(v.string()),
+    description: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const updateData: any = {};
+    if (args.imageUrl !== undefined) updateData.imageUrl = args.imageUrl;
+    if (args.description !== undefined) updateData.description = args.description;
+    
+    if (Object.keys(updateData).length > 0) {
+      await ctx.db.patch(args.collegeId, updateData);
+    }
+  },
+});

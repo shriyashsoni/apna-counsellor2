@@ -19,6 +19,7 @@ import type * as http from "../http.js";
 import type * as mentors from "../mentors.js";
 import type * as profiles from "../profiles.js";
 import type * as ranks from "../ranks.js";
+import type * as scraper from "../scraper.js";
 import type * as seed from "../seed.js";
 import type * as seed_aishe from "../seed_aishe.js";
 import type * as seed_bulk_colleges from "../seed_bulk_colleges.js";
@@ -52,6 +53,7 @@ declare const fullApi: ApiFromModules<{
   mentors: typeof mentors;
   profiles: typeof profiles;
   ranks: typeof ranks;
+  scraper: typeof scraper;
   seed: typeof seed;
   seed_aishe: typeof seed_aishe;
   seed_bulk_colleges: typeof seed_bulk_colleges;
