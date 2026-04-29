@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { useQuery } from "convex/react"
+import { useQuery, useAction } from "convex/react"
 import { api } from "@/convex/_generated/api"
 import { motion, AnimatePresence } from "framer-motion"
 import { 
@@ -32,22 +32,42 @@ export default function PredictorPage() {
   const [category, setCategory] = useState('General');
   const [isPredicting, setIsPredicting] = useState(false);
   const [showResults, setShowResults] = useState(false);
+  const [aiResults, setAiResults] = useState<any[] | null>(null);
 
-  // Convex Query for prediction
-  const results = useQuery(api.colleges.predict, showResults ? {
+  const predictAI = useAction(api.ai.predictAI);
+
+  // Convex Query for prediction (data-based)
+  const dbResults = useQuery(api.colleges.predict, showResults ? {
     exam,
     rank: rank ? parseInt(rank) : undefined,
     percentile: percentile ? parseFloat(percentile) : undefined,
     category,
   } : "skip");
 
-  const handlePredict = () => {
+  const results = aiResults || dbResults;
+
+  const handlePredict = async () => {
     if (!rank && !percentile) return;
     setIsPredicting(true);
-    setTimeout(() => {
+    setAiResults(null);
+    
+    try {
+      const aiResponse = await predictAI({
+        exam,
+        rank: rank ? parseInt(rank) : 0,
+        category,
+      });
+      
+      if (aiResponse && aiResponse.length > 0) {
+        setAiResults(aiResponse);
+      }
       setShowResults(true);
+    } catch (error) {
+      console.error("AI Prediction failed:", error);
+      setShowResults(true); // Fallback to DB
+    } finally {
       setIsPredicting(false);
-    }, 1500); // Simulate AI analysis
+    }
   };
 
   return (
@@ -182,7 +202,9 @@ export default function PredictorPage() {
               >
                 {/* Result Header */}
                 <div className="flex justify-between items-center px-4">
-                  <h2 className="text-2xl font-black">{results?.length || 0} Predicted Matches</h2>
+                  <h2 className="text-2xl font-black">
+                    {results?.length || 0} {aiResults ? "AI-Powered Matches" : "Matches Found"}
+                  </h2>
                   <Button variant="ghost" onClick={() => setShowResults(false)} className="font-bold text-primary hover:bg-primary/5">
                     Change Rank
                   </Button>

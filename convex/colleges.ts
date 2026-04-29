@@ -30,11 +30,9 @@ export const list = query({
     let q = ctx.db.query("colleges");
 
     if (args.type && args.type !== "All") {
-      // Note: We don't have an index for 'type' yet, but we can filter
-      // For large datasets, we should add an index.
       const type = args.type;
       const all = await q.collect();
-      let filtered = all.filter(c => c.type?.includes(type));
+      let filtered = all.filter(c => c.type?.toLowerCase().includes(type.toLowerCase()));
       
       if (args.search) {
         const search = args.search.toLowerCase();
@@ -59,6 +57,7 @@ export const list = query({
       ).slice(0, 50);
     }
 
+    // Default return if no filters applied
     return await q.order("desc").take(50);
   },
 });
