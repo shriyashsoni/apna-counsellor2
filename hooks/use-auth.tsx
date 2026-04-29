@@ -18,18 +18,24 @@ interface AuthContextType {
   isAuthenticated: boolean;
 }
 
-export function useAuth(): AuthContextType {
+export function useAuth(): AuthContextType & { login: (provider?: string) => Promise<void>, logout: () => Promise<void> } {
   const { signIn, signOut } = useAuthActions();
   const user = useQuery(api.users.currentUser);
   
+  const login = async (provider: string = "google") => {
+    await signIn(provider);
+  };
+
+  const logout = async () => {
+    await signOut();
+  };
+
   return {
     user: user as any,
-    signIn: async (provider: string) => {
-      await signIn(provider);
-    },
-    signOut: async () => {
-      await signOut();
-    },
+    signIn: login,
+    signOut: logout,
+    login,
+    logout,
     isLoading: user === undefined,
     isAuthenticated: !!user
   };

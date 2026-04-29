@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -15,13 +16,21 @@ import { useAuth } from "@/hooks/use-auth"
 import { LogOut, User, Settings, CreditCard, Sparkles } from "lucide-react"
 
 export function UserNav() {
-  const { user, logout, login } = useAuth()
+  const { user, logout, login, isLoading } = useAuth()
+
+  if (isLoading) {
+    return (
+      <div className="h-10 w-10 rounded-full border-2 border-slate-100 animate-pulse bg-slate-50" />
+    )
+  }
 
   if (!user) {
     return (
-      <Button variant="default" size="sm" onClick={login} className="rounded-xl font-bold">
-        Login
-      </Button>
+      <Link href="/login">
+        <Button variant="default" size="sm" className="rounded-xl font-bold shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all">
+          Login
+        </Button>
+      </Link>
     )
   }
 

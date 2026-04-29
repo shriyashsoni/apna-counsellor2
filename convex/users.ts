@@ -1,54 +1,32 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { getAuthUserId } from "@convex-dev/auth/server";
 
 export const storeUser = mutation({
   args: {},
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) {
-      throw new Error("Called storeUser without authentication identity");
+    const userId = await getAuthUserId(ctx);
+    if (!userId) {
+      throw new Error("Called storeUser without authentication");
     }
 
-    const user = await ctx.db
-      .query("users")
-      .withIndex("by_token", (q) =>
-        q.eq("tokenIdentifier", identity.tokenIdentifier)
-      )
-      .unique();
+    const user = await ctx.db.get(userId);
+    if (!user) return null;
 
-    if (user !== null) {
-      if (user.name !== identity.name || user.image !== identity.pictureUrl) {
-        await ctx.db.patch(user._id, {
-          name: identity.name,
-          image: identity.pictureUrl,
-        });
-      }
-      return user._id;
-    }
-
-    return await ctx.db.insert("users", {
-      name: identity.name || "Anonymous",
-      email: identity.email,
-      tokenIdentifier: identity.tokenIdentifier,
-      image: identity.pictureUrl,
-      role: "student", // Default role
-      createdAt: new Date().toISOString(),
-    });
+    // Optional: update user profile from identity if needed
+    // But @convex-dev/auth usually handles this via accounts
+    
+    return userId;
   },
 });
 
 export const currentUser = query({
   args: {},
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) return null;
+    const userId = await getAuthUserId(ctx);
+    if (!userId) return null;
 
-    return await ctx.db
-      .query("users")
-      .withIndex("by_token", (q) =>
-        q.eq("tokenIdentifier", identity.tokenIdentifier)
-      )
-      .unique();
+    return await ctx.db.get(userId);
   },
 });
 

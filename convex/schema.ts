@@ -3,20 +3,23 @@ import { authTables } from "@convex-dev/auth/server";
 import { v } from "convex/values";
 
 export default defineSchema({
-  // --- CORE SYSTEM TABLES ---
+  ...authTables,
   
   users: defineTable({
-    tokenIdentifier: v.string(), // Clerk token identifier (e.g. https://clerk.apnacounsellor.com|user_...)
     name: v.optional(v.string()),
     email: v.optional(v.string()),
     image: v.optional(v.string()),
-    role: v.string(), // "student", "mentor", "admin"
+    role: v.optional(v.string()), // "student", "mentor", "admin"
     phone: v.optional(v.string()),
     bio: v.optional(v.string()),
     blocked: v.optional(v.boolean()),
     verified: v.optional(v.boolean()),
     createdAt: v.optional(v.string()),
     
+    // Auth fields (making them optional to avoid conflict with authTables)
+    emailVerificationTime: v.optional(v.number()),
+    phoneVerificationTime: v.optional(v.number()),
+
     // Unified Profile Fields (Student)
     academicClass: v.optional(v.string()),
     exam: v.optional(v.string()),
@@ -42,7 +45,7 @@ export default defineSchema({
     earnings: v.optional(v.number()),
     headline: v.optional(v.string()),
     about: v.optional(v.string()),
-  }).index("by_token", ["tokenIdentifier"]).index("by_email", ["email"]).index("by_role", ["role"]),
+  }).index("by_email", ["email"]).index("by_role", ["role"]),
 
   // Legacy/Compatibility table (keeping for now to avoid breaking existing code)
   profiles: defineTable({
