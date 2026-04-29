@@ -16,6 +16,20 @@ export const metadata: Metadata = {
 export default function PredictorsPage() {
   const predictors = [
     {
+      title: "AI Admission Predictor 2026",
+      description: "Our most advanced predictor using neural analysis for 70,000+ college records.",
+      platform: "Unified Admissions",
+      url: "/predictor",
+      logo: "/images/apna-counsellor-logo.png",
+      features: [
+        "Real-time Probability %",
+        "Neural Data Analysis",
+        "Cross-platform Sync",
+        "Mobile App Integrated",
+        "Verified Institutional Data",
+      ],
+    },
+    {
       title: "MHT CET College Predictor",
       description: "Predict engineering and pharmacy colleges in Maharashtra based on your CET score and category.",
       platform: "MHT CET Counselling",

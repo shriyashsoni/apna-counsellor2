@@ -7,10 +7,17 @@ export default function ContactPage() {
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold mb-6">Contact Us</h1>
-        <p className="text-lg mb-12">
-          Have questions or need assistance? Reach out to us through any of the following channels.
-        </p>
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest mb-6">
+            <Phone className="h-4 w-4" /> 24/7 Priority Access
+          </div>
+          <h1 className="text-4xl sm:text-6xl font-black tracking-tight mb-6">
+            Connect with India&apos;s Top <br/><span className="text-primary">Admission Experts</span>
+          </h1>
+          <p className="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
+            Have questions about your rank or college choices? Our team of certified mentors is ready to help you navigate the 2026 admissions cycle.
+          </p>
+        </div>
 
         <div className="grid md:grid-cols-2 gap-8 mb-12">
           <Card className="border-primary/20">

@@ -2,98 +2,79 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import Image from "next/image"
 import Link from "next/link"
-import { ExternalLink } from "lucide-react"
+import { ArrowRight, Sparkles, GraduationCap } from "lucide-react"
 import { motion } from "framer-motion"
 
 const CounsellingPlatforms = () => {
+  // Detailed preview for homepage
   const platforms = [
     {
-      id: "mhtcet",
-      title: "MHT CET Counselling",
-      description: "Explore Maharashtra's top engineering, pharmacy, and BTech colleges based on your CET rank.",
-      link: "https://mht-cet.apnacounsellor.in/",
-      logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/mht%20cet%20counselling%20logo-iAo3Zgvl5SBFGL1Y26jz5NMPynroZa.webp",
-      features: ["College Predictor Tool", "Institute-Wise Cutoffs", "Seat Matrix & Fee Structures"],
+      id: "JoSAA",
+      title: "JEE Mains & Advanced – JoSAA",
+      description: "Expert guidance for IITs, NITs, and IIITs admissions via JoSAA & CSAB.",
+      tag: "Top Choice",
+      features: ["AI-Based College Predictor", "Branch-Wise Cutoff Data", "Institute Comparison Tool"]
     },
     {
-      id: "jossa",
-      title: "JEE Mains & Advanced – JoSAA Counselling",
-      description: "Get help with NITs, IIITs, GFTIs, and IIT admissions via JoSAA & CSAB.",
-      link: "https://jossa.apnacounsellor.in/",
-      logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/josssa%20counsellingn%20logo-atNsaGWHl9WWt67tNukFEAUWJVu4cC.png",
-      features: ["AI-Based College Predictor", "Branch-Wise Cutoff Data", "Institute Comparison Tool"],
+      id: "NEET_UG",
+      title: "NEET UG Admission Portal",
+      description: "Complete medical admission support for MBBS, BDS, and AYUSH courses.",
+      tag: "Medical",
+      features: ["Round-Wise Strategy", "Category Seat Matrix", "Bond & Fee Analysis"]
     },
     {
-      id: "mpdte",
-      title: "MP DTE Counselling",
-      description: "Your complete guide for engineering and pharmacy colleges in Madhya Pradesh through DTE MP.",
-      link: "https://mpdte.apnacounsellor.in/",
-      logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/mp%20dte%20counselling.jpg-Rc3eTqdZl7fpCmhiejovrdEF6EIa7a.jpeg",
-      features: ["MP College Predictor", "Round-Wise Cutoffs", "Fee Structures and Admission Criteria"],
-    },
-    {
-      id: "comedk",
-      title: "COMEDK Counselling",
-      description: "Complete guidance for engineering aspirants in Karnataka seeking admission through COMEDK UGET.",
-      link: "https://comedk.apnacounsellor.in/",
-      logo: "/images/comedk-logo.png",
-      features: ["College Predictor Tool", "COMEDK vs CET Comparison", "Fee Structure Analysis"],
-    },
+      id: "Maharashtra",
+      title: "MHT CET Admission Portal",
+      description: "Maharashtra engineering and pharmacy admissions guidance.",
+      tag: "State Level",
+      features: ["CAP Round Assistance", "Institute Cutoffs", "Document Checklist"]
+    }
   ]
 
-  // We'll show only the first 3 platforms on the homepage to maintain the layout
-  const displayedPlatforms = platforms.slice(0, 3)
-
   return (
-    <div className="grid md:grid-cols-3 gap-6">
-      {displayedPlatforms.map((platform, index) => (
+    <div className="grid md:grid-cols-3 gap-8">
+      {platforms.map((platform, index) => (
         <motion.div
           key={platform.id}
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: index * 0.1 }}
+          viewport={{ once: true }}
           whileHover={{ y: -10 }}
         >
-          <Card className="flex flex-col h-full border-primary/20 card-hover">
-            <CardHeader className="pb-4">
-              <motion.div
-                className="relative h-16 w-16 mb-4 rounded-lg overflow-hidden bg-white p-2"
-                whileHover={{ scale: 1.1 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              >
-                <Image
-                  src={platform.logo || "/placeholder.svg"}
-                  alt={`${platform.title} Logo`}
-                  fill
-                  className="object-contain"
-                />
-              </motion.div>
-              <CardTitle>{platform.title}</CardTitle>
-              <CardDescription className="text-base">{platform.description}</CardDescription>
+          <Card className="flex flex-col h-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300">
+            <CardHeader className="p-8 pb-4">
+              <div className="flex justify-between items-start mb-6">
+                <div className="p-3 rounded-2xl bg-primary/10 text-primary">
+                  <GraduationCap className="h-8 w-8" />
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500">
+                  {platform.tag}
+                </span>
+              </div>
+              <CardTitle className="text-2xl font-bold leading-tight">{platform.title}</CardTitle>
+              <CardDescription className="text-base mt-2">{platform.description}</CardDescription>
             </CardHeader>
-            <CardContent className="flex-grow">
-              <ul className="space-y-2">
+            <CardContent className="px-8 flex-grow">
+              <div className="flex items-center gap-2 text-primary text-sm font-bold mb-4">
+                <Sparkles className="h-4 w-4" />
+                <span>AI-Optimized Strategy</span>
+              </div>
+              <ul className="space-y-2 mb-6">
                 {platform.features.map((feature, idx) => (
-                  <motion.li
-                    key={idx}
-                    className="flex items-start"
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3, delay: 0.3 + idx * 0.1 }}
-                  >
-                    <div className="h-1.5 w-1.5 rounded-full bg-primary mt-1.5 mr-2"></div>
-                    <span>{feature}</span>
-                  </motion.li>
+                  <li key={idx} className="flex items-center text-xs text-slate-500">
+                    <div className="h-1 w-1 rounded-full bg-primary mr-2" />
+                    {feature}
+                  </li>
                 ))}
               </ul>
             </CardContent>
-            <CardFooter>
-              <Link href={platform.link} target="_blank" rel="noopener noreferrer" className="w-full">
-                <Button className="w-full">
-                  Visit Platform
-                  <ExternalLink className="ml-2 h-4 w-4" />
+            <CardFooter className="p-8 pt-0 mt-auto">
+              <Link href={`/counselling/${platform.id}`} className="w-full">
+                <Button className="w-full rounded-xl font-bold h-12 shadow-lg shadow-primary/20">
+                  Explore Portal
+                  <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
             </CardFooter>

@@ -3,9 +3,12 @@ import type { Metadata, Viewport } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
+import { getCategorizedCounselling } from "@/lib/counselling"
+import { ConvexClientProvider } from "@/components/convex-client-provider"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import BackgroundAnimation from "@/components/background-animation"
+import { AIChatbot } from "@/components/ai/chatbot"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -43,11 +46,17 @@ export const metadata: Metadata = {
     generator: 'v0.app'
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  let categorizedCounselling = { national: [], state: [], international: [] };
+  try {
+    categorizedCounselling = await getCategorizedCounselling()
+  } catch (error) {
+    console.error("Failed to fetch counselling data:", error);
+  }
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -60,14 +69,17 @@ export default function RootLayout({
         ></script>
       </head>
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <div className="flex min-h-screen flex-col">
-            <BackgroundAnimation />
-            <Navbar />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
-        </ThemeProvider>
+        <ConvexClientProvider>
+          <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+            <div className="flex min-h-screen flex-col">
+              <BackgroundAnimation />
+              <Navbar categorizedCounselling={categorizedCounselling} />
+              <main className="flex-1">{children}</main>
+              <Footer />
+              <AIChatbot />
+            </div>
+          </ThemeProvider>
+        </ConvexClientProvider>
       </body>
     </html>
   )

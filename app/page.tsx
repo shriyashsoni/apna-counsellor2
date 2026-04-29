@@ -3,220 +3,253 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
-import { ArrowRight, BookOpen, CheckCircle, MessageCircle, Phone, Calendar } from "lucide-react"
+import { ArrowRight, BookOpen, CheckCircle, MessageCircle, Phone, Calendar, Sparkles, Globe, Shield, GraduationCap } from "lucide-react"
 import HeroSection from "@/components/hero-section"
 import CounsellingPlatforms from "@/components/counselling-platforms"
 import TestimonialSection from "@/components/testimonial-section"
+import { PartnershipCarousel } from "@/components/partnership-carousel"
+import { AIToolsSection } from "@/components/ai-tools-section"
+import { HowItWorks } from "@/components/how-it-works"
 import { motion } from "framer-motion"
 
 export default function Home() {
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
       <HeroSection />
 
+      {/* Partnership Carousel */}
+      <PartnershipCarousel />
+
+      {/* Trust Bar */}
+      <div className="bg-white dark:bg-slate-900 border-y border-slate-200 dark:border-slate-800 py-6">
+        <div className="container mx-auto px-4 flex flex-wrap justify-center gap-8 md:gap-16 items-center opacity-60">
+          <div className="flex items-center gap-2 font-bold text-slate-400"><Shield className="h-5 w-5" /> Verified Data</div>
+          <div className="flex items-center gap-2 font-bold text-slate-400"><Sparkles className="h-5 w-5" /> AI Optimized</div>
+          <div className="flex items-center gap-2 font-bold text-slate-400"><Globe className="h-5 w-5" /> Global Access</div>
+          <div className="flex items-center gap-2 font-bold text-slate-400"><CheckCircle className="h-5 w-5" /> Expert Verified</div>
+        </div>
+      </div>
+
+      {/* AI Tools Section */}
+      <AIToolsSection />
+
+      {/* How It Works Section */}
+      <HowItWorks />
+
       {/* About Section */}
-      <section className="py-12">
-        <div className="grid md:grid-cols-2 gap-8 items-center">
+      <section className="py-24 container mx-auto px-4">
+        <div className="grid md:grid-cols-2 gap-16 items-center">
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl font-bold mb-4">About Apna Counsellor</h2>
-            <p className="text-gray-700 dark:text-gray-300 mb-4">
-              Apna Counsellor was launched with a mission to make career counselling accessible, affordable, and
-              effective for every student in India. Whether you&apos;re preparing for MHT CET, JEE Mains & Advanced (JoSAA
-              Counselling), or MP DTE, our platform provides personalized counselling to help you secure admission to
-              the best possible college.
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-black uppercase tracking-widest mb-6">
+              <Sparkles className="h-4 w-4" />
+              Empowering 100,000+ Students
+            </div>
+            <h2 className="text-4xl sm:text-5xl font-black text-slate-900 dark:text-white mb-8 tracking-tight leading-tight">
+              India&apos;s #1 AI-Driven <br/><span className="text-primary">Admissions Platform</span>
+            </h2>
+            <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
+              Apna Counsellor isn&apos;t just a platform; it&apos;s your AI-powered companion for career success. 
+              We track 70,000+ institution records across 200+ national and international admission portals to ensure 
+              you never miss your dream college.
             </p>
-            <div className="space-y-2">
-              <div className="flex items-start">
-                <CheckCircle className="h-5 w-5 text-primary mr-2 mt-1" />
-                <p>Expert guidance for all major entrance exams</p>
-              </div>
-              <div className="flex items-start">
-                <CheckCircle className="h-5 w-5 text-primary mr-2 mt-1" />
-                <p>Verified data and college predictors</p>
-              </div>
-              <div className="flex items-start">
-                <CheckCircle className="h-5 w-5 text-primary mr-2 mt-1" />
-                <p>Personalized counselling sessions</p>
-              </div>
-              <div className="flex items-start">
-                <CheckCircle className="h-5 w-5 text-primary mr-2 mt-1" />
-                <p>Affordable pricing starting at just ₹250</p>
-              </div>
+            <div className="grid sm:grid-cols-2 gap-4 mb-10">
+              {[
+                "AI-Driven Predictors",
+                "Real-time Cutoff Alerts",
+                "1-on-1 Expert Support",
+                "Global Admission Hub"
+              ].map((item, i) => (
+                <div key={i} className="flex items-center gap-3">
+                  <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
+                    <CheckCircle className="h-4 w-4 text-primary" />
+                  </div>
+                  <span className="font-bold text-slate-700 dark:text-slate-300">{item}</span>
+                </div>
+              ))}
             </div>
             <Link href="/about">
-              <Button className="mt-6 animated-gradient text-white hover:text-white">
-                Learn More About Us
-                <ArrowRight className="ml-2 h-4 w-4" />
+              <Button className="rounded-2xl px-8 h-14 font-black text-lg shadow-xl shadow-primary/20">
+                Explore Our Story
+                <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
           </motion.div>
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="bg-gray-100 dark:bg-gray-800 p-6 rounded-lg"
+            className="relative"
           >
-            <h3 className="text-2xl font-bold mb-4">Our Founder – Shriyash Soni</h3>
-            <p className="text-gray-700 dark:text-gray-300 mb-4">
-              Meet Shriyash Soni, the visionary behind Apna Counsellor. A first-year Data Science student at RGPV
-              University, Shriyash has already helped 1200+ students with personalized counselling sessions and
-              successfully completed 12+ direct admissions.
-            </p>
-            <Link href="/founder">
-              <Button variant="outline">
-                Read Founder&apos;s Story
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
+            <div className="absolute -inset-4 bg-gradient-to-r from-primary to-purple-600 rounded-[3rem] blur-2xl opacity-20" />
+            <div className="relative bg-white dark:bg-slate-900 p-8 sm:p-12 rounded-[2.5rem] border border-slate-200 dark:border-slate-800 shadow-2xl">
+              <div className="flex items-center gap-4 mb-8">
+                <div className="h-16 w-16 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                  <User className="h-8 w-8 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-black">Shriyash Soni</h3>
+                  <p className="text-primary font-bold">Founder & Lead Mentor</p>
+                </div>
+              </div>
+              <p className="text-slate-600 dark:text-slate-400 mb-8 leading-relaxed italic text-lg">
+                &quot;Our mission is to make premium career guidance accessible to every student. 
+                With 1200+ students already placed, we are just getting started.&quot;
+              </p>
+              <Link href="/founder">
+                <Button variant="outline" className="rounded-xl font-bold border-slate-200 dark:border-slate-800">
+                  Read Founder&apos;s Mission
+                </Button>
+              </Link>
+            </div>
           </motion.div>
         </div>
       </section>
 
       {/* Services Section */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        viewport={{ once: true }}
-        className="py-12 bg-gray-50 dark:bg-gray-900 rounded-xl p-8"
-      >
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">Our Counselling Services in 2026</h2>
-          <p className="text-gray-700 dark:text-gray-300 max-w-3xl mx-auto">
-            Apna Counsellor proudly provides guidance and live support for the following admission processes
-          </p>
-        </div>
+      <section className="py-24 bg-white dark:bg-slate-900 border-y border-slate-200 dark:border-slate-800 relative overflow-hidden">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 h-96 w-full max-w-4xl bg-primary/5 blur-3xl rounded-full" />
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center mb-16">
+            <Badge className="bg-primary/10 text-primary border-none mb-4">PLATFORMS 2026</Badge>
+            <h2 className="text-4xl sm:text-5xl font-black mb-6 tracking-tight">Active Admission Hubs</h2>
+            <p className="text-lg text-slate-500 max-w-2xl mx-auto">
+              Real-time portals and predictors for the most competitive exams in the country.
+            </p>
+          </div>
 
-        <CounsellingPlatforms />
+          <CounsellingPlatforms />
 
-        <div className="text-center mt-8">
-          <Link href="/services">
-            <Button size="lg" className="animated-gradient text-white hover:text-white">
-              View All Services
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </Link>
+          <div className="text-center mt-16">
+            <Link href="/counselling">
+              <Button size="lg" className="rounded-2xl px-10 h-16 font-black text-xl shadow-2xl shadow-primary/20">
+                View All 200+ Portals
+                <ArrowRight className="ml-2 h-6 w-6" />
+              </Button>
+            </Link>
+          </div>
         </div>
-      </motion.section>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-24 container mx-auto px-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          {[
+            { label: "Successful Placements", value: "1200+" },
+            { label: "College Records", value: "70k+" },
+            { label: "Counselling Platforms", value: "200+" },
+            { label: "Mentorship Hours", value: "5000+" }
+          ].map((stat, i) => (
+            <motion.div 
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+              viewport={{ once: true }}
+              className="text-center"
+            >
+              <div className="text-4xl sm:text-6xl font-black text-primary mb-2">{stat.value}</div>
+              <div className="text-sm font-bold text-slate-500 uppercase tracking-widest">{stat.label}</div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
 
       {/* Call to Action Section */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        viewport={{ once: true }}
-        className="py-12"
-      >
+      <section className="py-24 container mx-auto px-4">
         <div className="grid md:grid-cols-2 gap-8">
-          <motion.div whileHover={{ y: -10 }} transition={{ type: "spring", stiffness: 300, damping: 10 }}>
-            <Card className="border-primary/20 h-full card-hover">
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <MessageCircle className="h-6 w-6 mr-2 text-primary" />
-                  Join Our WhatsApp Channel
-                </CardTitle>
-                <CardDescription>
-                  Stay updated with all counselling-related announcements, live sessions, cutoffs, expert tips, and
-                  college predictors
+          <motion.div whileHover={{ y: -10 }}>
+            <Card className="bg-gradient-to-br from-primary to-purple-600 text-white border-none h-full rounded-[2.5rem] shadow-2xl overflow-hidden group">
+              <CardHeader className="p-10 pb-6">
+                <MessageCircle className="h-12 w-12 mb-6 group-hover:scale-110 transition-transform" />
+                <CardTitle className="text-3xl font-black">WhatsApp Alpha Hub</CardTitle>
+                <CardDescription className="text-primary-foreground/80 text-lg mt-4">
+                  Join 50,000+ students getting real-time alerts and exclusive resources.
                 </CardDescription>
               </CardHeader>
-              <CardContent>
-                <p className="mb-4">Benefits of joining:</p>
-                <ul className="space-y-2 list-disc pl-5 mb-4">
-                  <li>Real-time updates on counselling rounds</li>
-                  <li>Free resources and guides</li>
-                  <li>Connect with other students</li>
-                  <li>Get your questions answered</li>
-                </ul>
-              </CardContent>
-              <CardFooter>
+              <CardFooter className="p-10 pt-0 mt-auto">
                 <Link
                   href="https://whatsapp.com/channel/0029VabjCVD5PO11jeEupQ44"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full"
                 >
-                  <Button className="w-full">Join WhatsApp Channel</Button>
+                  <Button className="w-full h-14 rounded-2xl bg-white text-primary hover:bg-slate-100 font-black text-lg">
+                    Join Channel Now
+                  </Button>
                 </Link>
               </CardFooter>
             </Card>
           </motion.div>
 
-          <motion.div whileHover={{ y: -10 }} transition={{ type: "spring", stiffness: 300, damping: 10 }}>
-            <Card className="border-primary/20 h-full card-hover">
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Phone className="h-6 w-6 mr-2 text-primary" />
-                  Book Your Counselling Call
-                </CardTitle>
-                <CardDescription>Want personalized help? Book a direct call with our expert now</CardDescription>
+          <motion.div whileHover={{ y: -10 }}>
+            <Card className="bg-slate-900 text-white border-none h-full rounded-[2.5rem] shadow-2xl overflow-hidden group">
+              <CardHeader className="p-10 pb-6">
+                <Phone className="h-12 w-12 mb-6 group-hover:scale-110 transition-transform text-primary" />
+                <CardTitle className="text-3xl font-black">VIP Counselling Call</CardTitle>
+                <CardDescription className="text-slate-400 text-lg mt-4">
+                  Book a direct 1-on-1 strategy session with our top mentors.
+                </CardDescription>
               </CardHeader>
-              <CardContent>
-                <p className="mb-4">What you&apos;ll get:</p>
-                <ul className="space-y-2 list-disc pl-5 mb-4">
-                  <li>One-on-one personalized guidance</li>
-                  <li>College selection based on your rank</li>
-                  <li>Document verification assistance</li>
-                  <li>Step-by-step counselling process help</li>
-                </ul>
-              </CardContent>
-              <CardFooter>
+              <CardFooter className="p-10 pt-0 mt-auto">
                 <Link href="https://wa.link/cld3hu" target="_blank" rel="noopener noreferrer" className="w-full">
-                  <Button className="w-full animated-gradient text-white hover:text-white">Book a Call Now</Button>
+                  <Button className="w-full h-14 rounded-2xl bg-primary hover:bg-primary/90 text-white font-black text-lg">
+                    Book Call Now
+                  </Button>
                 </Link>
               </CardFooter>
             </Card>
           </motion.div>
         </div>
-      </motion.section>
+      </section>
 
-      {/* Testimonials */}
       <TestimonialSection />
 
-      {/* Upcoming Features */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        viewport={{ once: true }}
-        className="py-12 bg-gray-50 dark:bg-gray-900 rounded-xl p-8"
-      >
-        <h2 className="text-3xl font-bold mb-8 text-center">Upcoming Features</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {[
-            { icon: <BookOpen className="h-8 w-8 mb-2 text-primary" />, title: "College Prediction Bots" },
-            { icon: <Calendar className="h-8 w-8 mb-2 text-primary" />, title: "Real-time Counselling Alerts" },
-            { icon: <CheckCircle className="h-8 w-8 mb-2 text-primary" />, title: "Scholarship Alerts" },
-            { icon: <BookOpen className="h-8 w-8 mb-2 text-primary" />, title: "Top Colleges List 2025" },
-            { icon: <BookOpen className="h-8 w-8 mb-2 text-primary" />, title: "NEET UG/PG Websites" },
-            { icon: <MessageCircle className="h-8 w-8 mb-2 text-primary" />, title: "Student Success Stories" },
-            { icon: <BookOpen className="h-8 w-8 mb-2 text-primary" />, title: "Downloadable PDFs & Checklists" },
-            { icon: <Phone className="h-8 w-8 mb-2 text-primary" />, title: "Video Counselling" },
-          ].map((feature, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.3, delay: index * 0.05 }}
-              viewport={{ once: true }}
-              whileHover={{ y: -5, scale: 1.05 }}
-            >
-              <Card className="text-center p-4 border-primary/10 card-hover">
-                <CardContent className="p-4">
-                  <div className="flex justify-center">{feature.icon}</div>
-                  <h3 className="font-medium">{feature.title}</h3>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
+      {/* Premium Features Grid */}
+      <section className="py-24 bg-slate-50 dark:bg-slate-900/50">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-black mb-16 text-center tracking-tight">AI-Powered Ecosystem</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {[
+              { icon: <Sparkles className="h-8 w-8 mb-4 text-primary" />, title: "Predictor Bots" },
+              { icon: <Calendar className="h-8 w-8 mb-4 text-primary" />, title: "Smart Alerts" },
+              { icon: <Shield className="h-8 w-8 mb-4 text-primary" />, title: "Secure Docs" },
+              { icon: <Globe className="h-8 w-8 mb-4 text-primary" />, title: "Global Hub" },
+              { icon: <GraduationCap className="h-8 w-8 mb-4 text-primary" />, title: "College List" },
+              { icon: <MessageCircle className="h-8 w-8 mb-4 text-primary" />, title: "Live Support" },
+              { icon: <BookOpen className="h-8 w-8 mb-4 text-primary" />, title: "PDF Guides" },
+              { icon: <Phone className="h-8 w-8 mb-4 text-primary" />, title: "Video Calls" },
+            ].map((feature, index) => (
+              <motion.div
+                key={index}
+                whileHover={{ y: -8, scale: 1.02 }}
+              >
+                <Card className="text-center p-8 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm hover:shadow-xl transition-all h-full flex flex-col items-center justify-center">
+                  <div className="mb-2">{feature.icon}</div>
+                  <h3 className="font-bold text-slate-800 dark:text-slate-200">{feature.title}</h3>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
         </div>
-      </motion.section>
+      </section>
     </div>
   )
+}
+
+function Badge({ children, className }: { children: React.ReactNode, className?: string }) {
+  return (
+    <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest ${className}`}>
+      {children}
+    </span>
+  )
+}
+
+function User({ className }: { className?: string }) {
+  return <div className={className}><GraduationCap /></div>
 }

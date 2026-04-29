@@ -1,14 +1,14 @@
 import type { Metadata } from "next"
 import CounsellingClientPage from "./CounsellingClientPage"
+import { getAllCounsellingData } from "@/lib/counselling"
 
 export const metadata: Metadata = {
-  title: "Counselling Platforms – MHT CET, JEE, MP DTE, COMEDK",
+  title: "All Counselling Platforms 2026 – Apna Counsellor",
   description:
-    "Get complete counselling support for top exams like MHT CET, JEE, MP DTE & COMEDK. Join WhatsApp groups, get updates, documents list & top college advice.",
-  keywords:
-    "MHT CET counselling 2025, JoSAA counselling 2025, MP DTE admission 2025, COMEDK guidance, entrance exam counselling, college list, counselling help",
+    "Explore 200+ national and international counselling platforms for engineering, medical, and global admissions. AI-optimized guidance for students.",
 }
 
-export default function CounsellingPage() {
-  return <CounsellingClientPage />
+export default async function CounsellingPage() {
+  const counsellingData = await getAllCounsellingData()
+  return <CounsellingClientPage platforms={counsellingData} />
 }
