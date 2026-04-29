@@ -37,22 +37,130 @@ export default function DashboardPage() {
   const profile = useQuery(api.profiles.getProfile)
   const user = useQuery(api.users.currentUser)
 
-  if (profile === undefined) return (
+  if (user === undefined || profile === undefined) return (
     <div className="h-screen flex flex-col items-center justify-center gap-4 bg-slate-50 dark:bg-slate-950">
       <div className="h-16 w-16 border-4 border-primary border-t-transparent rounded-full animate-spin" />
       <p className="text-slate-500 font-bold animate-pulse">Initializing Your Dashboard...</p>
     </div>
   )
   
+  if (!user) redirect("/login")
+
+  // Admin Dashboard View
+  if (user.role === "admin") {
+    return <AdminDashboard user={user} />
+  }
+
+  // Student Dashboard View
   if (profile === null) redirect("/onboarding")
+  return <StudentDashboard profile={profile} user={user} />
+}
 
-  const nextSteps = [
-    { id: 1, task: "Complete Profile Verification", completed: true },
-    { id: 2, task: "Upload Rank Card", completed: false },
-    { id: 3, task: "Shortlist 10 Colleges", completed: false },
-    { id: 4, task: "Check JoSAA Cutoffs", completed: false },
-  ]
+function AdminDashboard({ user }: { user: any }) {
+  return (
+    <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950 p-4 md:p-8">
+      <div className="max-w-7xl mx-auto space-y-8">
+        {/* Admin Header */}
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-center bg-slate-900 text-white p-8 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-12 opacity-10 rotate-12">
+            <ShieldCheck className="h-40 w-40" />
+          </div>
+          <div className="flex items-center gap-6 relative z-10">
+            <div className="h-16 w-16 rounded-[1.5rem] bg-white/10 flex items-center justify-center text-emerald-400 shadow-inner">
+              <ShieldCheck className="h-8 w-8" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <h1 className="text-3xl font-black tracking-tight">Admin Console</h1>
+                <div className="px-2 py-0.5 rounded-full bg-emerald-500 text-[10px] font-black uppercase tracking-wider">System Root</div>
+              </div>
+              <p className="text-slate-400 text-lg font-medium">System Administrator: {user.name}</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-4 relative z-10 self-end md:self-auto">
+             <UserNav />
+          </div>
+        </header>
 
+        {/* Admin Stats */}
+        <section className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          {[
+            { label: "Total Students", value: "1,284", icon: Users, color: "text-blue-500", trend: "+12%" },
+            { label: "Revenue (MTD)", value: "₹4.2L", icon: CreditCard, color: "text-emerald-500", trend: "+8%" },
+            { label: "Pending Tasks", value: "24", icon: ListChecks, color: "text-orange-500", trend: "-2" },
+            { label: "Active Mentors", value: "48", icon: GraduationCap, color: "text-purple-500", trend: "+5" },
+          ].map((stat, i) => (
+            <Card key={i} className="border-none rounded-[2rem] shadow-sm bg-white dark:bg-slate-900 overflow-hidden group hover:shadow-xl transition-all">
+              <CardContent className="p-8">
+                <div className="flex justify-between items-start mb-6">
+                  <div className={`h-12 w-12 rounded-2xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center ${stat.color}`}>
+                    <stat.icon className="h-6 w-6" />
+                  </div>
+                  <span className={`text-xs font-bold ${stat.trend.startsWith('+') ? 'text-emerald-500' : 'text-slate-400'}`}>{stat.trend}</span>
+                </div>
+                <p className="text-[11px] uppercase font-black text-slate-400 tracking-widest mb-1">{stat.label}</p>
+                <p className="text-3xl font-black text-slate-900 dark:text-white">{stat.value}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </section>
+
+        <div className="grid lg:grid-cols-12 gap-8">
+          <div className="lg:col-span-8 space-y-8">
+            <Card className="border-none rounded-[2.5rem] shadow-sm bg-white dark:bg-slate-900 p-8">
+               <div className="flex justify-between items-center mb-8">
+                 <h2 className="text-2xl font-black tracking-tight">Recent Registrations</h2>
+                 <Button variant="ghost" className="text-primary font-bold">View All</Button>
+               </div>
+               <div className="space-y-4">
+                 {[1,2,3,4,5].map(i => (
+                   <div key={i} className="flex items-center justify-between p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-800 hover:border-primary/20 transition-all cursor-pointer group">
+                      <div className="flex items-center gap-4">
+                        <div className="h-10 w-10 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center font-bold text-slate-500 text-xs">U{i}</div>
+                        <div>
+                          <p className="text-sm font-bold group-hover:text-primary transition-colors">Student {i}</p>
+                          <p className="text-[10px] font-bold text-slate-400 uppercase">Joined 2 hours ago • JEE aspirant</p>
+                        </div>
+                      </div>
+                      <ChevronRight className="h-4 w-4 text-slate-300 group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                   </div>
+                 ))}
+               </div>
+            </Card>
+          </div>
+
+          <div className="lg:col-span-4 space-y-8">
+             <section className="space-y-4">
+               <h3 className="text-xs font-black uppercase tracking-widest text-slate-400 px-2">Management Tools</h3>
+               <div className="grid grid-cols-1 gap-3">
+                 {[
+                   { icon: BookOpen, label: "Manage Colleges", path: "/colleges", color: "bg-blue-500" },
+                   { icon: Globe, label: "Portals Config", path: "/counselling", color: "bg-emerald-500" },
+                   { icon: MessageSquare, label: "Batch Support", path: "/batches", color: "bg-purple-500" },
+                   { icon: Settings, label: "System Settings", path: "/settings", color: "bg-slate-500" },
+                 ].map((item, i) => (
+                   <Link key={i} href={item.path}>
+                     <Button className="w-full justify-between rounded-2xl h-16 bg-white dark:bg-slate-900 text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-800 border-none shadow-sm hover:shadow-md group transition-all">
+                       <div className="flex items-center gap-4">
+                         <div className={`h-10 w-10 rounded-xl ${item.color}/10 ${item.color.replace('bg-', 'text-')} flex items-center justify-center`}>
+                           <item.icon className="h-5 w-5" />
+                         </div>
+                         <span className="font-bold">{item.label}</span>
+                       </div>
+                       <ArrowRight className="h-4 w-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                     </Button>
+                   </Link>
+                 ))}
+               </div>
+             </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function StudentDashboard({ profile, user }: { profile: any, user: any }) {
   const getRecommendedPortals = () => {
     const portals = []
     if (profile.examType === "JEE") {

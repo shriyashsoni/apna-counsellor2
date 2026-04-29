@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { Sparkles, GraduationCap, ShieldCheck, Globe, CheckCircle2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -9,8 +10,15 @@ import Link from "next/link"
 import { useAuth } from "@/hooks/use-auth"
 
 export default function LoginPage() {
-  const { signIn } = useAuth()
+  const { signIn, isAuthenticated, isLoading } = useAuth()
+  const router = useRouter()
   const [isConnecting, setIsConnecting] = useState(false)
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push("/dashboard")
+    }
+  }, [isAuthenticated, router])
 
   const handleGoogleLogin = async () => {
     setIsConnecting(true)
