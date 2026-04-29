@@ -14,6 +14,15 @@ interface Message {
   content: string
 }
 
+export function AIChatbot() {
+  const [isOpen, setIsOpen] = useState(false)
+  const [messages, setMessages] = useState<Message[]>([
+    { role: "bot", content: "Hello! I'm your **Apna Counsellor AI**, powered by advanced models. How can I help you with your admissions, college lists, or cutoffs today?" }
+  ])
+  const [input, setInput] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+  const [isSignedIn, setIsSignedIn] = useState(false)
+  const scrollRef = useRef<HTMLDivElement>(null)
   const puterRef = useRef<any>(null)
 
   useEffect(() => {
