@@ -83,7 +83,12 @@ export default defineSchema({
     imageUrl: v.optional(v.string()),
     description: v.optional(v.string()),
     createdAt: v.optional(v.string()),
-  }).index("by_college_id", ["collegeId"]).index("by_state", ["state"]).index("by_counseling", ["counselingId"]),
+  }).index("by_college_id", ["collegeId"])
+    .index("by_state", ["state"])
+    .index("by_counseling", ["counselingId"])
+    .searchIndex("by_name", {
+      searchField: "name",
+    }),
 
   counselings: defineTable({
     name: v.string(),

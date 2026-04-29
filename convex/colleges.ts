@@ -29,61 +29,50 @@ export const list = query({
   handler: async (ctx, args) => {
     let q = ctx.db.query("colleges");
 
+    if (args.search) {
+      const search = args.search;
+      let results = await ctx.db
+        .query("colleges")
+        .withSearchIndex("by_name", (q) => q.search("name", search))
+        .take(200);
+
+      if (args.type && args.type !== "All") {
+        const filterType = args.type.toLowerCase();
+        results = results.filter(c => {
+          const name = c.name.toLowerCase();
+          const type = (c.type || "").toLowerCase();
+          if (filterType === "iit") return name.includes("indian institute of technology") || name.includes(" iit ");
+          if (filterType === "nit") return name.includes("national institute of technology") || name.includes(" nit ");
+          if (filterType === "iiit") return name.includes("indian institute of information technology") || name.includes(" iiit ");
+          return type.includes(filterType) || name.includes(filterType);
+        });
+      }
+      return results;
+    }
+
     if (args.type && args.type !== "All") {
       const filterType = args.type.toLowerCase();
-      const all = await q.collect();
+      // For types, we still use the smart filter on a large batch
+      const all = await ctx.db.query("colleges").order("desc").take(5000);
       
       const filtered = all.filter(c => {
         const name = c.name.toLowerCase();
         const type = (c.type || "").toLowerCase();
         
-        if (filterType === "iit") {
-          return name.includes("indian institute of technology") || name.includes(" iit ");
-        }
-        if (filterType === "nit") {
-          return name.includes("national institute of technology") || name.includes(" nit ");
-        }
-        if (filterType === "iiit") {
-          return name.includes("indian institute of information technology") || name.includes(" iiit ");
-        }
-        if (filterType === "government") {
-          return type.includes("government") || type.includes("govt") || name.includes("govt");
-        }
-        if (filterType === "private") {
-          return type.includes("private") || type.includes("self-financing");
-        }
+        if (filterType === "iit") return name.includes("indian institute of technology") || name.includes(" iit ");
+        if (filterType === "nit") return name.includes("national institute of technology") || name.includes(" nit ");
+        if (filterType === "iiit") return name.includes("indian institute of information technology") || name.includes(" iiit ");
+        if (filterType === "government") return type.includes("government") || type.includes("govt") || name.includes("govt");
+        if (filterType === "private") return type.includes("private") || type.includes("self-financing");
         
         return type.includes(filterType) || name.includes(filterType);
       });
       
-      let finalResults = filtered;
-      if (args.search) {
-        const search = args.search.toLowerCase();
-        finalResults = filtered.filter(c => 
-          c.name.toLowerCase().includes(search) || 
-          c.shortName?.toLowerCase().includes(search) ||
-          c.city?.toLowerCase().includes(search) ||
-          c.aisheCode?.toLowerCase().includes(search)
-        );
-      }
-      return finalResults.slice(0, 1000);
-    }
-
-    if (args.search) {
-      const search = args.search.toLowerCase();
-      const all = await q.collect();
-      return all.filter(c => 
-        c.name.toLowerCase().includes(search) || 
-        c.shortName?.toLowerCase().includes(search) ||
-        c.city?.toLowerCase().includes(search) ||
-        c.aisheCode?.toLowerCase().includes(search)
-      ).slice(0, 1000);
+      return filtered.slice(0, 1000);
     }
 
     // Default return if no filters applied
-    // Note: We are taking 2000 to show a large dataset as requested.
-    // For 50,000+, we recommend using pagination to avoid browser lag.
-    return await q.order("desc").take(2000);
+    return await ctx.db.query("colleges").order("desc").take(2000);
   },
 });
 export const getCollegesByCounseling = query({
