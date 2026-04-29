@@ -30,20 +30,43 @@ export const list = query({
     let q = ctx.db.query("colleges");
 
     if (args.type && args.type !== "All") {
-      const type = args.type;
+      const filterType = args.type.toLowerCase();
       const all = await q.collect();
-      let filtered = all.filter(c => c.type?.toLowerCase().includes(type.toLowerCase()));
       
+      const filtered = all.filter(c => {
+        const name = c.name.toLowerCase();
+        const type = (c.type || "").toLowerCase();
+        
+        if (filterType === "iit") {
+          return name.includes("indian institute of technology") || name.includes(" iit ");
+        }
+        if (filterType === "nit") {
+          return name.includes("national institute of technology") || name.includes(" nit ");
+        }
+        if (filterType === "iiit") {
+          return name.includes("indian institute of information technology") || name.includes(" iiit ");
+        }
+        if (filterType === "government") {
+          return type.includes("government") || type.includes("govt") || name.includes("govt");
+        }
+        if (filterType === "private") {
+          return type.includes("private") || type.includes("self-financing");
+        }
+        
+        return type.includes(filterType) || name.includes(filterType);
+      });
+      
+      let finalResults = filtered;
       if (args.search) {
         const search = args.search.toLowerCase();
-        filtered = filtered.filter(c => 
+        finalResults = filtered.filter(c => 
           c.name.toLowerCase().includes(search) || 
           c.shortName?.toLowerCase().includes(search) ||
           c.city?.toLowerCase().includes(search) ||
           c.aisheCode?.toLowerCase().includes(search)
         );
       }
-      return filtered.slice(0, 50);
+      return finalResults.slice(0, 1000);
     }
 
     if (args.search) {
@@ -54,7 +77,7 @@ export const list = query({
         c.shortName?.toLowerCase().includes(search) ||
         c.city?.toLowerCase().includes(search) ||
         c.aisheCode?.toLowerCase().includes(search)
-      ).slice(0, 50);
+      ).slice(0, 1000);
     }
 
     // Default return if no filters applied
