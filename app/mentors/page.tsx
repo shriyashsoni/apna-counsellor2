@@ -25,8 +25,8 @@ export default function MentorsPage() {
   const mentors = useQuery(api.mentors.listMentors);
 
   const filteredMentors = mentors?.filter(m => 
-    m.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    m.expertise.toLowerCase().includes(searchTerm.toLowerCase())
+    (m.name || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (m.expertise || "").toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (

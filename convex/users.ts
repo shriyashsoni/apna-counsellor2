@@ -39,11 +39,12 @@ export const listMentors = query({
 
     if (args.search) {
       const s = args.search.toLowerCase();
-      mentors = mentors.filter(m => 
-        m.name?.toLowerCase().includes(s) || 
-        m.college?.toLowerCase().includes(s) || 
-        m.headline?.toLowerCase().includes(s)
-      );
+      mentors = mentors?.filter(m => 
+        (m.name || "").toLowerCase().includes(s) || 
+        (m.college || "").toLowerCase().includes(s) || 
+        (m.headline || "").toLowerCase().includes(s) ||
+        (m.expertise || "").toLowerCase().includes(s)
+      ) || [];
     }
 
     if (args.skill) {
