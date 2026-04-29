@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
 import { motion, AnimatePresence } from "framer-motion"
@@ -26,10 +26,19 @@ const COLLEGE_TYPES = ["All", "IIT", "NIT", "IIIT", "Government", "Private"];
 
 export default function CollegesPage() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [selectedType, setSelectedType] = useState("All");
 
+  // Debounce search to prevent spamming the database
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [searchTerm]);
+
   const colleges = useQuery(api.colleges.list, {
-    search: searchTerm,
+    search: debouncedSearchTerm,
     type: selectedType === "All" ? undefined : selectedType
   });
 
@@ -160,6 +169,16 @@ export default function CollegesPage() {
                 {[1, 2, 3, 4].map(i => (
                   <div key={i} className="h-48 md:h-64 rounded-[1.5rem] md:rounded-[2.5rem] bg-white dark:bg-slate-900 animate-pulse" />
                 ))}
+              </div>
+            ) : (!colleges || colleges.length === 0) && searchTerm.trim() === "" && selectedType === "All" ? (
+              <div className="text-center py-16 md:py-24 bg-white dark:bg-slate-900 rounded-[2.5rem] border-none shadow-sm">
+                <div className="h-20 w-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
+                  <Search className="h-10 w-10 text-primary" />
+                </div>
+                <h3 className="text-2xl font-black mb-3">Explore 70,000+ Colleges</h3>
+                <p className="text-slate-500 font-medium max-w-md mx-auto">
+                  Type a college name above or select a category like IIT or NIT to instantly find verified admission data, cutoffs, and fees.
+                </p>
               </div>
             ) : !colleges || colleges.length === 0 ? (
               <div className="text-center py-12 md:py-20 bg-white dark:bg-slate-900 rounded-[2rem] md:rounded-[3rem] border border-dashed border-slate-200 dark:border-slate-800">

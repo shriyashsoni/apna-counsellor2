@@ -27,52 +27,47 @@ export const list = query({
     type: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
-    let q = ctx.db.query("colleges");
-
-    if (args.search) {
-      const search = args.search;
+    // 1. Search State
+    if (args.search && args.search.trim().length > 0) {
+      const searchTerm = args.search.trim();
       let results = await ctx.db
         .query("colleges")
-        .withSearchIndex("by_name", (q) => q.search("name", search))
-        .take(200);
+        .withSearchIndex("by_name", (q) => q.search("name", searchTerm))
+        .take(50); // Hard limit to 50 for extreme performance
 
       if (args.type && args.type !== "All") {
         const filterType = args.type.toLowerCase();
         results = results.filter(c => {
-          const name = c.name.toLowerCase();
           const type = (c.type || "").toLowerCase();
-          if (filterType === "iit") return name.includes("indian institute of technology") || name.includes(" iit ");
-          if (filterType === "nit") return name.includes("national institute of technology") || name.includes(" nit ");
-          if (filterType === "iiit") return name.includes("indian institute of information technology") || name.includes(" iiit ");
-          return type.includes(filterType) || name.includes(filterType);
+          return type.includes(filterType) || c.name.toLowerCase().includes(filterType);
         });
       }
       return results;
     }
 
+    // 2. Category / Type State (No search term)
     if (args.type && args.type !== "All") {
       const filterType = args.type.toLowerCase();
-      // For types, we still use the smart filter on a large batch
-      const all = await ctx.db.query("colleges").order("desc").take(5000);
+      let keyword = args.type;
       
-      const filtered = all.filter(c => {
-        const name = c.name.toLowerCase();
-        const type = (c.type || "").toLowerCase();
-        
-        if (filterType === "iit") return name.includes("indian institute of technology") || name.includes(" iit ");
-        if (filterType === "nit") return name.includes("national institute of technology") || name.includes(" nit ");
-        if (filterType === "iiit") return name.includes("indian institute of information technology") || name.includes(" iiit ");
-        if (filterType === "government") return type.includes("government") || type.includes("govt") || name.includes("govt");
-        if (filterType === "private") return type.includes("private") || type.includes("self-financing");
-        
-        return type.includes(filterType) || name.includes(filterType);
-      });
+      // Map categories to highly specific search keywords to utilize the search index
+      if (filterType === "iit") keyword = "Indian Institute of Technology";
+      if (filterType === "nit") keyword = "National Institute of Technology";
+      if (filterType === "iiit") keyword = "Indian Institute of Information";
       
-      return filtered.slice(0, 1000);
+      // Use the search index instead of a full table scan
+      const results = await ctx.db
+        .query("colleges")
+        .withSearchIndex("by_name", (q) => q.search("name", keyword))
+        .take(50);
+        
+      return results;
     }
 
-    // Default return if no filters applied
-    return await ctx.db.query("colleges").order("desc").take(2000);
+    // 3. Default "Zero-Load" State
+    // Return an empty array so we don't load 70,000 colleges into memory.
+    // The frontend will prompt the user to search.
+    return [];
   },
 });
 export const getCollegesByCounseling = query({
