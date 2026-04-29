@@ -251,7 +251,8 @@ const Navbar = ({ categorizedCounselling }: NavbarProps) => {
                 )}
               </div>
             ))}
-            <div className="pt-6 space-y-3 border-t border-slate-100 dark:border-slate-800 px-4">
+            <div className="pt-6 space-y-3 border-t border-slate-100 dark:border-slate-800 px-4 flex flex-col gap-3">
+              <UserNav />
               <Link href="/book-call" className="w-full block" onClick={() => setIsMenuOpen(false)}>
                 <Button className="w-full h-12 rounded-xl font-bold">
                   Book a Call

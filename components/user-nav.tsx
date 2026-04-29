@@ -18,12 +18,7 @@ import { LogOut, User, Settings, CreditCard, Sparkles } from "lucide-react"
 export function UserNav() {
   const { user, logout, login, isLoading } = useAuth()
 
-  if (isLoading) {
-    return (
-      <div className="h-10 w-10 rounded-full border-2 border-slate-100 animate-pulse bg-slate-50" />
-    )
-  }
-
+  // Always show the login button unless we have a confirmed user
   if (!user) {
     return (
       <Link href="/login">

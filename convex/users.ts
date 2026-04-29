@@ -1,11 +1,11 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
-import { getAuthUserId } from "@convex-dev/auth/server";
+import { auth } from "./auth";
 
 export const storeUser = mutation({
   args: {},
   handler: async (ctx) => {
-    const userId = await getAuthUserId(ctx);
+    const userId = await auth.getUserId(ctx);
     if (!userId) {
       throw new Error("Called storeUser without authentication");
     }
@@ -13,9 +13,6 @@ export const storeUser = mutation({
     const user = await ctx.db.get(userId);
     if (!user) return null;
 
-    // Optional: update user profile from identity if needed
-    // But @convex-dev/auth usually handles this via accounts
-    
     return userId;
   },
 });
@@ -23,7 +20,7 @@ export const storeUser = mutation({
 export const currentUser = query({
   args: {},
   handler: async (ctx) => {
-    const userId = await getAuthUserId(ctx);
+    const userId = await auth.getUserId(ctx);
     if (!userId) return null;
 
     return await ctx.db.get(userId);
