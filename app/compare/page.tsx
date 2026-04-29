@@ -35,6 +35,7 @@ const METRICS = [
 ];
 
 export default function ComparePage() {
+  const [selectedIds, setSelectedIds] = useState<any[]>([])
   const [search, setSearch] = useState('')
   const [debouncedSearch, setDebouncedSearch] = useState("")
 
