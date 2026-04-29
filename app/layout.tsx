@@ -1,14 +1,17 @@
+"use client"
+
 import type React from "react"
-import type { Metadata, Viewport } from "next"
+import { usePathname } from "next/navigation"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { getCategorizedCounselling } from "@/lib/counselling"
 import { ConvexClientProvider } from "@/components/convex-client-provider"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import BackgroundAnimation from "@/components/background-animation"
 import { AIChatbot } from "@/components/ai/chatbot"
+import { useEffect, useState } from "react"
+import { getCategorizedCounselling } from "@/lib/counselling"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -71,13 +74,9 @@ export default async function RootLayout({
       <body className={inter.className}>
         <ConvexClientProvider>
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-            <div className="flex min-h-screen flex-col">
-              <BackgroundAnimation />
-              <Navbar categorizedCounselling={categorizedCounselling} />
-              <main className="flex-1">{children}</main>
-              <Footer />
-              <AIChatbot />
-            </div>
+            <LayoutWrapper categorizedCounselling={categorizedCounselling}>
+              {children}
+            </LayoutWrapper>
           </ThemeProvider>
         </ConvexClientProvider>
       </body>
