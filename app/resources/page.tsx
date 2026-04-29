@@ -92,9 +92,25 @@ export default function ResourcesPage() {
                             {item.description || `Official counselling portal for ${item.name} admissions.`}
                           </p>
                         </CardHeader>
-                        <CardFooter className="p-8 pt-4">
+                        <CardFooter className="p-8 pt-4 flex flex-col gap-4">
+                          {item.links && item.links.length > 0 && (
+                            <div className="w-full space-y-2">
+                              <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest px-1">Key Resources</p>
+                              <div className="grid grid-cols-1 gap-2">
+                                {item.links.map((link: any, lIdx: number) => (
+                                  <Link key={lIdx} href={link.url} target="_blank" className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-800 hover:border-primary/20 hover:bg-white dark:hover:bg-slate-900 transition-all group/link">
+                                    <div className="flex items-center gap-2">
+                                      <FileText className="h-3 w-3 text-slate-400 group-hover/link:text-primary" />
+                                      <span className="text-[11px] font-bold text-slate-600 dark:text-slate-300 group-hover/link:text-primary">{link.label}</span>
+                                    </div>
+                                    <ExternalLink className="h-3 w-3 text-slate-300 opacity-0 group-hover/link:opacity-100 transition-all" />
+                                  </Link>
+                                ))}
+                              </div>
+                            </div>
+                          )}
                           <Link href={item.officialUrl || "#"} target="_blank" className="w-full">
-                            <Button className="w-full h-12 rounded-xl bg-slate-50 hover:bg-primary hover:text-white text-slate-900 dark:bg-slate-800 border-none font-black shadow-none hover:shadow-lg transition-all">
+                            <Button className="w-full h-12 rounded-xl bg-primary text-white hover:bg-primary/90 font-black shadow-lg shadow-primary/20 transition-all">
                               Visit Official Site <ExternalLink className="ml-2 h-4 w-4" />
                             </Button>
                           </Link>

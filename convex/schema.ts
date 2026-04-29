@@ -97,6 +97,7 @@ export default defineSchema({
     exam: v.optional(v.string()),
     officialUrl: v.optional(v.string()),
     description: v.optional(v.string()),
+    links: v.optional(v.array(v.object({ label: v.string(), url: v.string() }))),
   }).searchIndex("by_name", {
     searchField: "name",
   }),
