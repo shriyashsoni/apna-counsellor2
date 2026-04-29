@@ -58,7 +58,7 @@ export const list = query({
     }
 
     // Default return if no filters applied
-    return await q.order("desc").take(50);
+    return await q.order("desc").take(500);
   },
 });
 export const getCollegesByCounseling = query({

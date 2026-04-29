@@ -24,6 +24,7 @@ import type * as seed_bulk_colleges from "../seed_bulk_colleges.js";
 import type * as seed_india_major from "../seed_india_major.js";
 import type * as seed_international from "../seed_international.js";
 import type * as seed_mentors from "../seed_mentors.js";
+import type * as seed_test from "../seed_test.js";
 import type * as sessions from "../sessions.js";
 import type * as users from "../users.js";
 
@@ -50,6 +51,7 @@ declare const fullApi: ApiFromModules<{
   seed_india_major: typeof seed_india_major;
   seed_international: typeof seed_international;
   seed_mentors: typeof seed_mentors;
+  seed_test: typeof seed_test;
   sessions: typeof sessions;
   users: typeof users;
 }>;
