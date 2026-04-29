@@ -102,8 +102,8 @@ export const getCollegesByCounseling = query({
   handler: async (ctx, args) => {
     return await ctx.db
       .query("colleges")
-      .filter((q) => q.eq(q.field("counselingId"), args.counselingId))
-      .collect();
+      .withIndex("by_counseling", (q) => q.eq("counselingId", args.counselingId))
+      .take(1000); // Limit to 1000 to prevent crashing with 70k+ total records
   },
 });
 
@@ -135,7 +135,8 @@ export const predict = query({
       rank = 50000;
     }
 
-    const colleges = await ctx.db.query("colleges").collect();
+    // Limit processing to 500 colleges to prevent memory/payload issues with 70k+ records
+    const colleges = await ctx.db.query("colleges").take(500);
     const results: any[] = [];
 
     for (const c of colleges) {

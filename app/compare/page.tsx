@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
 import { motion, AnimatePresence } from "framer-motion"
@@ -35,25 +35,29 @@ const METRICS = [
 ];
 
 export default function ComparePage() {
-  const [selectedIds, setSelectedIds] = useState<any[]>([])
   const [search, setSearch] = useState('')
+  const [debouncedSearch, setDebouncedSearch] = useState("")
 
-  // This is a simplified fetch - ideally we'd have a search query
-  const allColleges = useQuery(api.colleges.predict, { exam: "JEE MAINS", category: "General" });
+  // Debounce search
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [search]);
+
+  // Use the optimized list query instead of the crashing predict query
+  const searchResults = useQuery(api.colleges.list, { search: debouncedSearch });
   const comparedColleges = useQuery(api.colleges.getByIds, { ids: selectedIds });
 
   const toggleSelect = (id: any) => {
-    if (selectedIds.includes(id)) {
-      setSelectedIds(selectedIds.filter(i => i !== id))
+    const cid = typeof id === 'string' ? id : id._id || id.id;
+    if (selectedIds.includes(cid)) {
+      setSelectedIds(selectedIds.filter(i => i !== cid))
     } else if (selectedIds.length < 4) {
-      setSelectedIds([...selectedIds, id])
+      setSelectedIds([...selectedIds, cid])
     }
   }
-
-  const filteredColleges = allColleges?.filter(c => 
-    c.name.toLowerCase().includes(search.toLowerCase()) || 
-    c.shortName.toLowerCase().includes(search.toLowerCase())
-  );
 
   return (
     <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950 pt-24 pb-20">
@@ -97,15 +101,15 @@ export default function ComparePage() {
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                 {filteredColleges === undefined ? (
+                 {searchResults === undefined ? (
                    [1,2,3,4,5].map(i => <div key={i} className="h-32 rounded-[2rem] bg-slate-200 dark:bg-slate-800 animate-pulse" />)
                  ) : (
-                   filteredColleges.map((c: any) => (
+                   searchResults.map((c: any) => (
                      <button
-                       key={c.id}
-                       onClick={() => toggleSelect(c.id)}
+                       key={c._id}
+                       onClick={() => toggleSelect(c._id)}
                        className={`p-6 rounded-[2rem] text-left transition-all ${
-                         selectedIds.includes(c.id)
+                         selectedIds.includes(c._id)
                            ? "bg-primary text-white shadow-xl shadow-primary/30"
                            : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-100 dark:border-slate-800"
                        }`}
