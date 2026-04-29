@@ -1,17 +1,11 @@
-"use client"
-
 import type React from "react"
-import { usePathname } from "next/navigation"
+import type { Metadata, Viewport } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { ConvexClientProvider } from "@/components/convex-client-provider"
-import Navbar from "@/components/navbar"
-import Footer from "@/components/footer"
-import BackgroundAnimation from "@/components/background-animation"
-import { AIChatbot } from "@/components/ai/chatbot"
-import { useEffect, useState } from "react"
 import { getCategorizedCounselling } from "@/lib/counselling"
+import LayoutWrapper from "@/components/layout-wrapper"
 
 const inter = Inter({ subsets: ["latin"] })
 
