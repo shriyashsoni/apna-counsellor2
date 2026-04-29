@@ -22,12 +22,16 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
 
-const COLLEGE_TYPES = ["All", "IIT", "NIT", "IIIT", "Government", "Private"];
+const CATEGORIES = ["All", "IIT", "NIT", "IIIT", "Government", "Private"];
+const STATES = ["All", "Maharashtra", "Karnataka", "Tamil Nadu", "Delhi", "Uttar Pradesh", "Gujarat", "Rajasthan", "West Bengal", "Madhya Pradesh"];
+const RANKINGS = ["All", "Top 10", "Top 50", "Top 100", "Top 500"];
 
 export default function CollegesPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
-  const [selectedType, setSelectedType] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedState, setSelectedState] = useState("All");
+  const [selectedRanking, setSelectedRanking] = useState("All");
 
   // Debounce search to prevent spamming the database
   useEffect(() => {
@@ -39,7 +43,9 @@ export default function CollegesPage() {
 
   const colleges = useQuery(api.colleges.list, {
     search: debouncedSearchTerm,
-    type: selectedType === "All" ? undefined : selectedType
+    category: selectedCategory,
+    state: selectedState,
+    ranking: selectedRanking
   });
 
   const container = {
@@ -63,7 +69,7 @@ export default function CollegesPage() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 md:gap-6 mb-6 md:mb-8">
             <div>
               <h1 className="text-2xl md:text-3xl font-black tracking-tight text-slate-900 dark:text-white mb-1 md:mb-2">Explore Institutions</h1>
-              <p className="text-xs md:text-sm text-slate-500 font-medium">Discover 50,000+ colleges across India & Abroad</p>
+              <p className="text-xs md:text-sm text-slate-500 font-medium">Discover 70,000+ colleges across India & Abroad</p>
             </div>
             <div className="flex gap-2 md:gap-3 w-full md:w-auto">
               <Link href="/compare" className="flex-1 md:flex-none">
@@ -81,29 +87,50 @@ export default function CollegesPage() {
             </div>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-3 md:gap-4">
-            <div className="relative flex-grow group">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 md:h-5 md:w-5 text-slate-400 group-focus-within:text-primary transition-colors" />
+          <div className="flex flex-col gap-4">
+            <div className="relative group">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 group-focus-within:text-primary transition-colors" />
               <Input 
                 placeholder="Search by name, city or AISHE code..." 
-                className="pl-10 md:pl-12 h-12 md:h-14 bg-slate-50 dark:bg-slate-800 border-none rounded-xl md:rounded-2xl shadow-inner focus:ring-2 focus:ring-primary/20 text-sm md:text-lg transition-all"
+                className="pl-12 h-14 bg-slate-50 dark:bg-slate-800 border-none rounded-2xl shadow-inner focus:ring-2 focus:ring-primary/20 text-lg transition-all"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
-            <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
-              {COLLEGE_TYPES.map((type) => (
-                <Button
-                  key={type}
-                  variant={selectedType === type ? "default" : "outline"}
-                  onClick={() => setSelectedType(type)}
-                  className={`rounded-lg md:rounded-xl h-10 md:h-14 px-4 md:px-6 font-bold transition-all whitespace-nowrap text-xs md:text-sm ${
-                    selectedType === type ? "shadow-lg shadow-primary/20" : "border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900"
-                  }`}
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-2">Category</label>
+                <select 
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  className="w-full h-12 px-4 rounded-xl bg-slate-50 dark:bg-slate-800 border-none font-bold text-sm focus:ring-2 focus:ring-primary/20 transition-all appearance-none cursor-pointer"
                 >
-                  {type}
-                </Button>
-              ))}
+                  {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+                </select>
+              </div>
+              
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-2">State</label>
+                <select 
+                  value={selectedState}
+                  onChange={(e) => setSelectedState(e.target.value)}
+                  className="w-full h-12 px-4 rounded-xl bg-slate-50 dark:bg-slate-800 border-none font-bold text-sm focus:ring-2 focus:ring-primary/20 transition-all appearance-none cursor-pointer"
+                >
+                  {STATES.map(s => <option key={s} value={s}>{s}</option>)}
+                </select>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-2">Ranking</label>
+                <select 
+                  value={selectedRanking}
+                  onChange={(e) => setSelectedRanking(e.target.value)}
+                  className="w-full h-12 px-4 rounded-xl bg-slate-50 dark:bg-slate-800 border-none font-bold text-sm focus:ring-2 focus:ring-primary/20 transition-all appearance-none cursor-pointer"
+                >
+                  {RANKINGS.map(r => <option key={r} value={r}>{r}</option>)}
+                </select>
+              </div>
             </div>
           </div>
         </div>
@@ -112,38 +139,19 @@ export default function CollegesPage() {
       <div className="container mx-auto px-4 py-8 md:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
           
-          {/* Filters Sidebar */}
+          {/* Sidebar */}
           <aside className="lg:col-span-3 hidden lg:block space-y-8">
-            <Card className="border-none rounded-[2rem] shadow-sm bg-white dark:bg-slate-900 p-8 sticky top-44">
-              <div className="flex items-center gap-3 mb-6">
-                <Filter className="h-5 w-5 text-primary" />
-                <h3 className="text-xl font-black">Refine Search</h3>
-              </div>
-              
-              <div className="space-y-6">
-                <div>
-                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-3">NIRF Ranking</label>
-                  <div className="space-y-2">
-                    {["Top 10", "Top 50", "Top 100"].map(r => (
-                      <label key={r} className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer transition-colors">
-                        <div className="h-5 w-5 rounded border border-slate-300 flex items-center justify-center" />
-                        <span className="text-sm font-bold text-slate-700 dark:text-slate-300">{r}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-3">Popular States</label>
-                  <div className="space-y-2">
-                    {["Maharashtra", "Karnataka", "Tamil Nadu", "Delhi"].map(s => (
-                      <label key={s} className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer transition-colors">
-                        <div className="h-5 w-5 rounded border border-slate-300 flex items-center justify-center" />
-                        <span className="text-sm font-bold text-slate-700 dark:text-slate-300">{s}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
+            <Card className="border-none rounded-[2.5rem] shadow-sm bg-primary/5 p-8 sticky top-64 overflow-hidden group">
+              <div className="absolute -top-10 -right-10 h-32 w-32 bg-primary/10 rounded-full blur-3xl group-hover:bg-primary/20 transition-colors" />
+              <div className="relative z-10">
+                <Trophy className="h-10 w-10 text-primary mb-4" />
+                <h3 className="text-xl font-black mb-2">Need Guidance?</h3>
+                <p className="text-sm text-slate-500 font-medium mb-6">Talk to our experts to find the perfect college for your rank.</p>
+                <Link href="/mentors">
+                  <Button className="w-full rounded-xl bg-primary hover:bg-primary/90 font-black shadow-lg shadow-primary/20">
+                    Book Session
+                  </Button>
+                </Link>
               </div>
             </Card>
           </aside>

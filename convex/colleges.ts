@@ -30,50 +30,71 @@ export const addCollege = mutation({
 export const list = query({
   args: { 
     search: v.optional(v.string()),
-    type: v.optional(v.string()),
+    category: v.optional(v.string()),
+    state: v.optional(v.string()),
+    ranking: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
-    // 1. Search State
+    let results: any[] = [];
+
+    // 1. Primary Query Method
     if (args.search && args.search.trim().length > 0) {
-      const searchTerm = args.search.trim();
-      let results = await ctx.db
+      // Search index is most specific
+      results = await ctx.db
         .query("colleges")
-        .withSearchIndex("by_name", (q) => q.search("name", searchTerm))
-        .take(50); // Hard limit to 50 for extreme performance
+        .withSearchIndex("by_name", (q) => q.search("name", args.search!.trim()))
+        .take(100);
+    } else if (args.state && args.state !== "All") {
+      // State index is next best
+      results = await ctx.db
+        .query("colleges")
+        .withIndex("by_state", (q) => q.eq("state", args.state!))
+        .take(100);
+    } else if (args.category && args.category !== "All") {
+      // Category fallback to keyword search if no search term
+      let keyword = args.category;
+      if (args.category.toLowerCase() === "iit") keyword = "Indian Institute of Technology";
+      if (args.category.toLowerCase() === "nit") keyword = "National Institute of Technology";
+      if (args.category.toLowerCase() === "iiit") keyword = "Indian Institute of Information";
 
-      if (args.type && args.type !== "All") {
-        const filterType = args.type.toLowerCase();
-        results = results.filter(c => {
-          const type = (c.type || "").toLowerCase();
-          return type.includes(filterType) || c.name.toLowerCase().includes(filterType);
-        });
-      }
-      return results;
-    }
-
-    // 2. Category / Type State (No search term)
-    if (args.type && args.type !== "All") {
-      const filterType = args.type.toLowerCase();
-      let keyword = args.type;
-      
-      // Map categories to highly specific search keywords to utilize the search index
-      if (filterType === "iit") keyword = "Indian Institute of Technology";
-      if (filterType === "nit") keyword = "National Institute of Technology";
-      if (filterType === "iiit") keyword = "Indian Institute of Information";
-      
-      // Use the search index instead of a full table scan
-      const results = await ctx.db
+      results = await ctx.db
         .query("colleges")
         .withSearchIndex("by_name", (q) => q.search("name", keyword))
-        .take(50);
-        
-      return results;
+        .take(100);
+    } else {
+      // Default: Return top ranked colleges if no filters
+      results = await ctx.db.query("colleges").order("desc").take(50);
     }
 
-    // 3. Default "Zero-Load" State
-    // Return an empty array so we don't load 70,000 colleges into memory.
-    // The frontend will prompt the user to search.
-    return [];
+    // 2. Secondary Filtering (Refining the 100 results)
+    let filtered = results;
+
+    if (args.category && args.category !== "All") {
+      const cat = args.category.toLowerCase();
+      filtered = filtered.filter(c => {
+        const name = c.name.toLowerCase();
+        const type = (c.type || "").toLowerCase();
+        if (cat === "iit") return name.includes("indian institute of technology") || name.includes(" iit ");
+        if (cat === "nit") return name.includes("national institute of technology") || name.includes(" nit ");
+        if (cat === "iiit") return name.includes("indian institute of information technology") || name.includes(" iiit ");
+        return type.includes(cat) || name.includes(cat);
+      });
+    }
+
+    if (args.state && args.state !== "All" && !args.search) {
+      // Already filtered by state index if no search, but if search exists we filter here
+    } else if (args.state && args.state !== "All") {
+       filtered = filtered.filter(c => c.state === args.state);
+    }
+
+    if (args.ranking && args.ranking !== "All") {
+      const rankLimit = parseInt(args.ranking.replace(/\D/g, ""));
+      if (!isNaN(rankLimit)) {
+        filtered = filtered.filter(c => c.nirfRank && c.nirfRank <= rankLimit);
+      }
+    }
+
+    return filtered.slice(0, 50);
   },
 });
 export const getCollegesByCounseling = query({
