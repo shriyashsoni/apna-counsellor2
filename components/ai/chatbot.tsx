@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { MessageSquare, X, Send, Sparkles, Bot, User, LogIn, BarChart3, ListChecks, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { puter } from "@heyputer/puter.js"
+// import { puter } from "@heyputer/puter.js"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 
@@ -14,19 +14,20 @@ interface Message {
   content: string
 }
 
-export function AIChatbot() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [messages, setMessages] = useState<Message[]>([
-    { role: "bot", content: "Hello! I'm your **Apna Counsellor AI**, powered by advanced models. How can I help you with your admissions, college lists, or cutoffs today?" }
-  ])
-  const [input, setInput] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const [isSignedIn, setIsSignedIn] = useState(false)
-  const scrollRef = useRef<HTMLDivElement>(null)
+  const puterRef = useRef<any>(null)
 
   useEffect(() => {
     // Check if user is signed into Puter
-    setIsSignedIn(puter.auth.isSignedIn())
+    const initPuter = async () => {
+      try {
+        const { puter } = await import("@heyputer/puter.js")
+        puterRef.current = puter
+        setIsSignedIn(puter.auth.isSignedIn())
+      } catch (err) {
+        console.error("Puter load error:", err)
+      }
+    }
+    initPuter()
   }, [])
 
   useEffect(() => {
@@ -36,8 +37,9 @@ export function AIChatbot() {
   }, [messages, isLoading])
 
   const handleSignIn = async () => {
+    if (!puterRef.current) return
     try {
-      await puter.auth.signIn()
+      await puterRef.current.auth.signIn()
       setIsSignedIn(true)
     } catch (error) {
       console.error("Puter Auth Error:", error)
@@ -46,11 +48,11 @@ export function AIChatbot() {
 
   const handleSend = async (customInput?: string) => {
     const textToSend = customInput || input
-    if (!textToSend.trim() || isLoading) return
+    if (!textToSend.trim() || isLoading || !puterRef.current) return
 
     if (!isSignedIn) {
       await handleSignIn()
-      if (!puter.auth.isSignedIn()) return
+      if (!puterRef.current.auth.isSignedIn()) return
     }
 
     const userMessage: Message = { role: "user", content: textToSend }
@@ -67,7 +69,7 @@ export function AIChatbot() {
       If you can provide a "graph" style representation using text-based bars or structured lists, do so.
       Keep your tone professional, encouraging, and premium.`
 
-      const response = await puter.ai.chat(`${systemPrompt}\n\nUser: ${textToSend}`, {
+      const response = await puterRef.current.ai.chat(`${systemPrompt}\n\nUser: ${textToSend}`, {
         model: "claude-3-5-sonnet", // High-end model
         stream: false
       })
