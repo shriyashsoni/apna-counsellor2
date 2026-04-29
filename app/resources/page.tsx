@@ -1,17 +1,19 @@
 "use client"
 
+import { useState } from "react"
 import { useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
-import { ArrowDown, ArrowRight, BookOpen, CheckCircle, FileText, List, ExternalLink, Globe, GraduationCap, ShieldCheck, Sparkles } from "lucide-react"
+import { ArrowDown, ArrowRight, BookOpen, CheckCircle, FileText, List, ExternalLink, Globe, GraduationCap, ShieldCheck, Sparkles, Search } from "lucide-react"
 import { motion } from "framer-motion"
 
 export default function ResourcesPage() {
-  const counselings = useQuery(api.counselings.listCounselings)
+  const [searchQuery, setSearchQuery] = useState("")
+  const counselingsData = useQuery(api.counselings.listCounselings)
 
-  if (counselings === undefined) {
+  if (counselingsData === undefined) {
     return (
       <div className="h-screen flex flex-col items-center justify-center gap-4 bg-slate-50 dark:bg-slate-950">
         <div className="h-16 w-16 border-4 border-primary border-t-transparent rounded-full animate-spin" />
@@ -20,10 +22,17 @@ export default function ResourcesPage() {
     )
   }
 
+  const counselings = counselingsData.filter(c => 
+    c.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    c.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    c.region.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+
   // Categorize for better UI
   const engineering = counselings.filter(c => c.category?.includes("Engineering") || c.name.includes("CET") || c.name.includes("JAC"))
   const medical = counselings.filter(c => c.category?.includes("Medical") || c.name.includes("NEET"))
   const other = counselings.filter(c => !engineering.includes(c) && !medical.includes(c))
+
 
   const categories = [
     { title: "Engineering Counselings", data: engineering, icon: GraduationCap, color: "text-blue-500", bg: "bg-blue-50" },
@@ -47,9 +56,23 @@ export default function ResourcesPage() {
           <h1 className="text-5xl md:text-6xl font-black tracking-tight text-slate-900 dark:text-white">
             Official <span className="text-primary">Resource</span> Hub
           </h1>
-          <p className="text-slate-500 text-lg max-w-2xl mx-auto font-medium">
+          <p className="text-slate-500 text-lg max-w-2xl mx-auto font-medium mb-8">
             Access the most comprehensive directory of admission portals, official cutoffs, and document checklists verified by our experts.
           </p>
+          
+          {/* Search Panel */}
+          <div className="max-w-xl mx-auto relative group">
+            <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+              <Search className="h-5 w-5 text-slate-400 group-focus-within:text-primary transition-colors" />
+            </div>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search for counseling, state, or exam (e.g., MHT-CET, NEET, Delhi)..."
+              className="w-full h-16 pl-12 pr-4 rounded-2xl bg-white dark:bg-slate-900 border-2 border-transparent focus:border-primary/20 shadow-sm outline-none text-lg font-medium transition-all focus:shadow-md"
+            />
+          </div>
         </div>
 
         {/* Categories Grid */}
