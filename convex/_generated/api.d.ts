@@ -14,6 +14,7 @@ import type * as batches from "../batches.js";
 import type * as colleges from "../colleges.js";
 import type * as counselings from "../counselings.js";
 import type * as counselor from "../counselor.js";
+import type * as http from "../http.js";
 import type * as mentors from "../mentors.js";
 import type * as profiles from "../profiles.js";
 import type * as ranks from "../ranks.js";
@@ -39,6 +40,7 @@ declare const fullApi: ApiFromModules<{
   colleges: typeof colleges;
   counselings: typeof counselings;
   counselor: typeof counselor;
+  http: typeof http;
   mentors: typeof mentors;
   profiles: typeof profiles;
   ranks: typeof ranks;

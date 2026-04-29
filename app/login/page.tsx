@@ -1,21 +1,27 @@
 "use client"
 
+import { useState } from "react"
 import { motion } from "framer-motion"
 import { Sparkles, GraduationCap, ShieldCheck, Globe, CheckCircle2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import Link from "next/link"
-
 import { useAuth } from "@/hooks/use-auth"
 
 export default function LoginPage() {
   const { signIn } = useAuth()
+  const [isConnecting, setIsConnecting] = useState(false)
 
   const handleGoogleLogin = async () => {
+    setIsConnecting(true)
     try {
+      console.log("Starting Google Login...")
       await signIn("google")
-    } catch (error) {
+    } catch (error: any) {
       console.error("Sign in failed", error)
+      alert(`Login failed: ${error.message || "Unknown error"}. Check console for details.`)
+    } finally {
+      setIsConnecting(false)
     }
   }
 
