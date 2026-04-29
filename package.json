@@ -9,6 +9,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@auth/core": "^0.37.4",
     "@clerk/nextjs": "^7.2.7",
     "@convex-dev/auth": "^0.0.91",
     "@emotion/is-prop-valid": "latest",

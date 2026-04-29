@@ -32,9 +32,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Application files (excluded as per user request)
-apna_counsellor/
-apnacounsellor-app/
+# Application files (un-ignored to allow deployment)
+# apna_counsellor/
+# apnacounsellor-app/
 import_all_colleges.py
 *.pyc
 __pycache__/

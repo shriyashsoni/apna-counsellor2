@@ -129,17 +129,20 @@ export default defineSchema({
   // --- MENTORSHIP & SESSIONS ---
 
   sessions: defineTable({
-    sessionId: v.string(),
-    studentId: v.string(),
-    studentName: v.string(),
-    mentorId: v.string(),
-    mentorName: v.string(),
-    date: v.string(),
-    timeSlot: v.string(),
-    topic: v.string(),
-    status: v.string(),
-    price: v.number(),
-    createdAt: v.string(),
+    sessionId: v.optional(v.string()),
+    studentId: v.optional(v.string()),
+    studentName: v.optional(v.string()),
+    mentorId: v.optional(v.string()),
+    mentorName: v.optional(v.string()),
+    date: v.optional(v.string()),
+    timeSlot: v.optional(v.string()),
+    topic: v.optional(v.string()),
+    status: v.optional(v.string()),
+    price: v.optional(v.number()),
+    createdAt: v.optional(v.string()),
+    availableSlots: v.optional(v.number()),
+    description: v.optional(v.string()),
+    title: v.optional(v.string()),
   }).index("by_mentor", ["mentorId"]).index("by_student", ["studentId"]),
 
   payments: defineTable({
