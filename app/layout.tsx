@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { ConvexClientProvider } from "@/components/convex-client-provider"
 import { getCategorizedCounselling } from "@/lib/counselling"
 import LayoutWrapper from "@/components/layout-wrapper"
+import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -66,13 +67,15 @@ export default async function RootLayout({
         ></script>
       </head>
       <body className={inter.className}>
-        <ConvexClientProvider>
-          <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-            <LayoutWrapper categorizedCounselling={categorizedCounselling}>
-              {children}
-            </LayoutWrapper>
-          </ThemeProvider>
-        </ConvexClientProvider>
+        <ConvexAuthNextjsServerProvider>
+          <ConvexClientProvider>
+            <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+              <LayoutWrapper categorizedCounselling={categorizedCounselling}>
+                {children}
+              </LayoutWrapper>
+            </ThemeProvider>
+          </ConvexClientProvider>
+        </ConvexAuthNextjsServerProvider>
       </body>
     </html>
   )

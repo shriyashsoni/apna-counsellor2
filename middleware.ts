@@ -1,9 +1,12 @@
-import { NextResponse } from "next/server";
+import { convexAuthNextjsMiddleware, createRouteMatcher, nextjsMiddlewareRedirect } from "@convex-dev/auth/nextjs/server";
 
-export default async function middleware(req: any) {
-  // Clerk is disabled for now to unblock local host
-  return NextResponse.next();
-}
+const isProtectedRoute = createRouteMatcher(["/dashboard(.*)", "/onboarding(.*)", "/settings(.*)"]);
+
+export default convexAuthNextjsMiddleware(async (request, { convexAuth }) => {
+  if (isProtectedRoute(request) && !(await convexAuth.isAuthenticated())) {
+    return nextjsMiddlewareRedirect(request, "/login");
+  }
+});
 
 export const config = {
   matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
