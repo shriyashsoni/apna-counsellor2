@@ -24,7 +24,7 @@ export function useAuth(): AuthContextType & { login: (provider?: string) => Pro
   const user = useQuery(api.users.currentUser, isAuthenticated ? {} : "skip");
   
   const login = async (provider: string = "google") => {
-    await signIn(provider);
+    await signIn(provider, { redirectTo: "/dashboard" });
   };
 
   const logout = async () => {
