@@ -1,0 +1,314 @@
+[
+    {
+        "name": "Indian Institute of Technology Patna ",
+        "city": "Patna",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "National Institute of Technology Patna ",
+        "city": "Patna",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Birla Institute of Technology",
+        "city": "Patna",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bhagalpur College of Engineering",
+        "city": "Bhagalpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Muzaffarpur Institute of Technology",
+        "city": "Muzaffarpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gaya College of Engineering",
+        "city": "Gaya",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Loknayak Jai Prakash Institute of Technology",
+        "city": "Chhapra",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dr Rajendra Prasad Central Agricultural University Samastipur ",
+        "city": "Samastipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Darbhanga College of Engineering",
+        "city": "Mabbi Belauna",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Nalanda College of Engineering",
+        "city": "Dasturpar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Netaji Subhas Institute of Technology",
+        "city": "Patna",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Aryabhatta Knowledge University",
+        "city": "Patna",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Indian Institute of Information Technology",
+        "city": "Bhagalpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Motihari College of Engineering",
+        "city": "Fursatpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Maulana Azad College of Engineering and Technology",
+        "city": "Patna",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bhupendra Narayan Mandal University",
+        "city": "Madhepura",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vidya Vihar Institute of Technology",
+        "city": "Maranga",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "RP Sharma Institute of Technology",
+        "city": "Patna",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Azmet College of Engineering and Technology",
+        "city": "Kishanganj",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Central Institute of Plastics Engineering and Technology",
+        "city": "Hajipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sityog Institute of Technology",
+        "city": "Aurangabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bihar Agricultural University",
+        "city": "Bhagalpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "New Government Polytechnic",
+        "city": "Patna",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Millia Institute of Technology",
+        "city": "Purnea",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "KK College of Engineering and Management",
+        "city": "Nalanda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Siwan Engineering and Technical Institute",
+        "city": "Surapur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Satyam International Institute of Technology",
+        "city": "Patna",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Exalt College of Engineering and Technology",
+        "city": "Patna",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Muzaffarpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Tool Room and Training Center",
+        "city": "Patna",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vidyadaan Institute of Technology and Management",
+        "city": "Buxar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Patna Sahib Technical Campus",
+        "city": "Bhagwanpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Women's Polytechnic",
+        "city": "Muzaffarpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Kishanganj College of Engineering and Technology",
+        "city": "Kishanganj",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Exalt College of Polytechnic",
+        "city": "Patna",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Womens Polytechnic",
+        "city": "Patna",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Buddha Institute of Technology",
+        "city": "Gaya",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Azmet Institute of Technology",
+        "city": "Kishanganj",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "JP Institute of Technology",
+        "city": "Nalanda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "CRK Polytechnic College",
+        "city": "Hajipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Girija Devi Polytechnic College",
+        "city": "Bihiya",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ganga Memorial College of Polytechnic",
+        "city": "Nalanda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Ram Polytechnic",
+        "city": "Madhubani",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Buddha Polytechnic Institute",
+        "city": "Gaya",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dr APJ Abdul Kalam Women's Institute of Technology",
+        "city": "Darbhanga",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Millia Polytechnic",
+        "city": "Purnea",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "KK Polytechnic",
+        "city": "Nalanda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Netaji Subhas Institute of Polytechnic",
+        "city": "Dealpur Daulat",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "GEMS Polytechnic College",
+        "city": "Ratanpura",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Katihar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Moti Babu Institute of Technology",
+        "city": "Forbesganj",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Prabhu Kailash Polytechnic",
+        "city": "Jamalpur",
+        "type": "Engineering",
+        "rating": "nan"
+    }
+]

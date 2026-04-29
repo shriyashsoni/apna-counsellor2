@@ -1,0 +1,2 @@
+Data for Univ. Admissions will be stored here.
+URL: https://www.universityadmissions.se

@@ -1,0 +1,1874 @@
+[
+    {
+        "name": "International Institute of Information Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "3.05"
+    },
+    {
+        "name": "Indian Institute of Technology Hyderabad ",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "BITS Pilani- Hyderabad Campus",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "JNTUH College of Engineering",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chaitanya Bharathi Institute of Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "3.11"
+    },
+    {
+        "name": "University of Hyderabad",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "3.72"
+    },
+    {
+        "name": "University College of Engineering",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "VNR Vignana Jyothi Institute of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "3.73"
+    },
+    {
+        "name": "Vasavi College of Engineering",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gokaraju Rangaraju Institute of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "3.15"
+    },
+    {
+        "name": "CVR College of Engineering",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "3.12"
+    },
+    {
+        "name": "Mahatma Gandhi Institute of Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "ICFAI Foundation for Higher Education",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "3.43"
+    },
+    {
+        "name": "CMR College of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "3.11"
+    },
+    {
+        "name": "Vardhaman College of Engineering",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "3.24"
+    },
+    {
+        "name": "Malla Reddy College of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "3.2"
+    },
+    {
+        "name": "Jawaharlal Nehru Technological University",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "3.01"
+    },
+    {
+        "name": "BV Raju Institute of Technology",
+        "city": "Narsapur",
+        "type": "Engineering",
+        "rating": "3.29"
+    },
+    {
+        "name": "Sreenidhi Institute of Science and Technology",
+        "city": "Yamnampet",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Guru Nanak Institutions Technical Campus",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "3.53"
+    },
+    {
+        "name": "Kakatiya Institute of Technology and Science",
+        "city": "Warangal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "MLR Institute of Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "3.12"
+    },
+    {
+        "name": "Institute of Aeronautical Engineering",
+        "city": "Domara Pocham Pally",
+        "type": "Engineering",
+        "rating": "3.05"
+    },
+    {
+        "name": "CMR Institute of Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "3.16"
+    },
+    {
+        "name": "Marri Laxman Reddy Institute of Technology and Management",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "3.04"
+    },
+    {
+        "name": "CMR Engineering College",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mahindra Ecole Centrale",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "JNTUH College of Engineering",
+        "city": "Pannur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "JNTUH College of Engineering",
+        "city": "Pulkal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "JNTUH College of Engineering",
+        "city": "Karimnagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "CMR Technical Campus",
+        "city": "Kandlakoi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "G Narayanamma Institute of Technology and Science For Women",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "2.53"
+    },
+    {
+        "name": "Kakatiya University",
+        "city": "Hanamkonda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Malla Reddy Engineering College",
+        "city": "Secunderabad",
+        "type": "Engineering",
+        "rating": "3.2"
+    },
+    {
+        "name": "Keshav Memorial Institute of Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "2.85"
+    },
+    {
+        "name": "Malla Reddy Engineering College for Women",
+        "city": "Secunderabad",
+        "type": "Engineering",
+        "rating": "3.05"
+    },
+    {
+        "name": "University College of Engineering",
+        "city": "Kothagudem",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "BVRIT Hyderabad College of Engineering for Women",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sphoorthy Engineering College",
+        "city": "Nadergul",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Maturi Venkata Subba Rao Engineering College",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "TKR College of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vignana Bharathi Institute of Technology",
+        "city": "Ghatkesar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vidya Jyothi Institute of Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "2.84"
+    },
+    {
+        "name": "MJ College of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Geethanjali College of Engineering and Technology",
+        "city": "Secunderabad",
+        "type": "Engineering",
+        "rating": "3.36"
+    },
+    {
+        "name": "Jawaharlal Nehru Architecture and Fine Arts University",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Aurora's Scientific Technological and Research Academy",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Malla Reddy Institute of Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sreyas Institute of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Matrusri Engineering College",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Malla Reddy Institute of Technology and Sciences",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Anurag Group of Institutions",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "3.05"
+    },
+    {
+        "name": "St Martin's Engineering College",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Malla Reddy Engineering College and Management Sciences",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Guru Nanak Institute of Technology",
+        "city": "Ibrahimpatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Malla Reddy Institute of Engineering and Technology",
+        "city": "Secunderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Aurora's Technological and Research Institute",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mahatma Gandhi University",
+        "city": "Nalgonda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "JB Institute of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Teegala Krishna Reddy Engineering College",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Malla Reddy College of Engineering",
+        "city": "Secunderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Nalla Malla Reddy Engineering College",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "3.05"
+    },
+    {
+        "name": "Mahaveer Institute of Science and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jawaharlal Nehru Architecture and Fine Arts University School of Planning and Architecture",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Indu College of Engineering and Technology",
+        "city": "Sheriguda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bhoj Reddy Engineering College for Women",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "ACE Engineering College",
+        "city": "Ghatkesar",
+        "type": "Engineering",
+        "rating": "3.2"
+    },
+    {
+        "name": "Vignan Institute of Technology and Science",
+        "city": "Desh Mukhi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Nalla Narsimha Reddy Education Society's Group of Institutions",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Guru Nanak Institute of Technology",
+        "city": "Ibrahimpatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "St Peter's Engineering College",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Maulana Azad National Urdu University",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "3.09"
+    },
+    {
+        "name": "Hyderabad Institute of Technology and Management",
+        "city": "Kandlakoi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Deccan College of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Methodist College of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Indu Institute of Engineering and Technology",
+        "city": "Sheriguda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Abhinav Hi-Tech College of Engineering",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Stanley College of Engineering and Technology for Women",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Abdulkalam Institute of Technological Sciences",
+        "city": "Khammam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Brilliant Institute of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Anurag College of Engineering",
+        "city": "Ghatkesar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vaagdevi College of Engineering",
+        "city": "Warangal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Samskruti College of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Telangana State Aviation Academy",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Aarushi Group of Institutions",
+        "city": "Warangal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Warangal Institute of Technology and Science",
+        "city": "Guduppad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SR Engineering College",
+        "city": "Anantasagar Colony",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Narsimha Reddy Engineering College",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bharat Institute of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sree Chaitanya College of Engineering",
+        "city": "Karimnagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "AVN Institute of Engineering and Technology",
+        "city": "Ibrahimpatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vignan's Institute of Management and Technology for Women",
+        "city": "Padamatisaiguda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sidhartha Institute of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "GITAM School of Technology",
+        "city": "Rudraram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sridevi Women's Engineering College",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "DRK College of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "ISL Engineering College",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shadan College of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "KG Reddy College of Engineering and Technology",
+        "city": "Chilkur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Kasireddy Narayan Reddy College of Engineering and Research",
+        "city": "Rangareddy",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Holy Mary Institute of Technology and Science",
+        "city": "Rayaraopet",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rajiv Gandhi University of Knowledge Technologies",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "St Mary's Group of Institutions College of Engineering and Technology",
+        "city": "Desh Mukhi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ellenki College of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Balaji Institute of Technology and Science",
+        "city": "Laknepally",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Swarna Bharathi Institute of Science and Technology",
+        "city": "Khammam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chaitanya Institute of Technology and Science",
+        "city": "Hanamkonda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "MVSR Engineering College",
+        "city": "Nadergul",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Lords Institute of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Siddhartha Institute of Technology and Sciences",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Brilliant Grammar School Educational Society's Group of Institutions",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Aurora's Engineering College",
+        "city": "Nalgonda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Anurag Engineering College",
+        "city": "Nalgonda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Chaitanya Technical Campus",
+        "city": "Sheriguda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shadan Women's College of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vishwa Bharathi College of Engineering",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Visvesvaraya College of Engineering and Technology",
+        "city": "Mangalpalle",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Scient Institute of Technology",
+        "city": "Rangareddy",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Kommuri Pratap Reddy Institute of Technology",
+        "city": "Ghatkesar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "DRK Institute of Science and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sai Spurthi Institute of Technology",
+        "city": "Sathupally",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Joginpally B R Engineering College",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Annamacharya Institute of Technology and Science",
+        "city": "Kothaguda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "RRS College of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Kamala Institute of Technology and Science",
+        "city": "Singapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Swami Vivekananda Institute of Technology",
+        "city": "Secunderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Tirumala Engineering College",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ellenki Institute of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Muffakham Jah College of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "KLR College of Engineering and Technology",
+        "city": "Palwancha",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jawaharlal Nehru Institute of Technology",
+        "city": "Mangalpalle",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Al-Habeeb College of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Nishitha College of Engineering and Technology",
+        "city": "Bairaguda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Avanthi's Scientific Technological and Research Academy",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sree Dattha Institute of Engineering and Sciences",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Swathi Institute of Technology and Sciences",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jayamukhi Institute of Technological Sciences",
+        "city": "Patha Makdumpuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "AAR Mahaveer Engineering College",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vidya Bharathi Institute of Technology",
+        "city": "Warangal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Nawab Shah Alam Khan College of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jyothishmathi Institute of Technology and Science",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Institute of Science and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vivekananda Institute of Technology and Science",
+        "city": "Karimnagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Krishna Murthy Institute of Technology and Engineering",
+        "city": "Edulabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vaagdevi Engineering College",
+        "city": "Bollikunta",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jyothishmathi Institute of Technological Sciences",
+        "city": "Karimnagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "TRR College of Engineering",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Nizam Institute of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jaya Prakash Narayan College of Engineering",
+        "city": "Dharmapur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SLC's Institute of Engineering and Technology",
+        "city": "Kothaguda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Khammam Institute of Technology and Sciences",
+        "city": "Thallampadu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rishi MS Institute of Engineering and Technology for Women",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Indur Institute of Engineering and Technology",
+        "city": "Ponnala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Global Institute of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Aurora's Technical and Management Campus",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Arjun College of Technology and Sciences",
+        "city": "Mazidpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "NIMRA Institute of Science and Technology",
+        "city": "Ibrahimpatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Talla Padmavathi College of Engineering",
+        "city": "Kazipet",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sree Chaitanya Institute of Technological Sciences",
+        "city": "Timmapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "MNR College of Engineering and Technology",
+        "city": "Sangareddy",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Kakatiya Institute of Technology and Science for Women",
+        "city": "Nizamabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jagruti Institute of Engineering and Technology",
+        "city": "Toroor",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bhaskar Engineering College",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ashoka Institute of Engineering and Technology",
+        "city": "Nalgonda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Central Institute of Tool Design",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rajiv Gandhi University of Knowledge Technologies",
+        "city": "Nirmal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Anubose Institute of Technology",
+        "city": "Palvoncha",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vaageshwari College of Engineering",
+        "city": "Subhashnagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sreekavitha Engineering College",
+        "city": "Karepalli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Christu Jyothi Institute of Technology and Science",
+        "city": "Warangal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Princeton Institute of Engineering and Technology for Women",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "School of Information Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dr VRK Womens College of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Trinity College of Engineering and Technology",
+        "city": "Peddapalli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Madhira Institute of Technology and Science",
+        "city": "Seethalathanda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sana Engineering College",
+        "city": "Kodad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Megha Institute of Engineering and Technology for Women",
+        "city": "Marripalligudem",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Kshatriya College of Engineering",
+        "city": "Kotha Armur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sree Dattha Group of Institutions Integrated Campus",
+        "city": "Ibrahimpatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mother Theressa College of Engineering and Technology",
+        "city": "Peddapalli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Venkateswara Engineering College",
+        "city": "Suryapet",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sree Rama Institute of Technology and Science",
+        "city": "Kotha Kuppenkuntla",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ganapathy Engineering College",
+        "city": "Warangal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "NRI Institute of Technology",
+        "city": "Kothur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Trinity College of Engineering and Technology",
+        "city": "Karimnagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dhruva Institute of Engineering and Technology",
+        "city": "Dothigudem",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sree Visvesvaraya Institute of Technology and Science",
+        "city": "Mahabubnagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Swami Ramananda Tirtha Institute of Science and Technology",
+        "city": "Nalgonda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Adusumilli Vijaya Institute of Technology and Research Centre",
+        "city": "Nalgonda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Center for Spatial Information Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vijaya Krishna Institute of Technology and Sciences",
+        "city": "Palmakole",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vijay Rural Engineering College",
+        "city": "Borgaon",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "VIF College of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Noble College of Engineering and Technology for Women",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mother Teresa Institute of Science and Technology",
+        "city": "Sathupally",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Laqshya Institute of Technology and Sciences",
+        "city": "Khammam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chilkur Balaji Institute of Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Aurora's Scientific and Technological Institute",
+        "city": "Secunderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gandhi Academy of Technical Education",
+        "city": "Ramapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vivekananda Group of Institutions",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vijaya Engineering College",
+        "city": "Khammam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Farah Institute of Technology",
+        "city": "Chevella",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Nigama Engineering College",
+        "city": "Thaher Kondapur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Netaji Institute of Engineering and Technology",
+        "city": "Toopranpet",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Moghal College of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "DVR College of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Turbomachinery Institute of Technology and Sciences",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Royal Institute of Technology and Science",
+        "city": "Dameriguda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Nalgonda Institute of Technology and Science",
+        "city": "Cherlapalli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ayaan College of Engineering and Technology",
+        "city": "Moinabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Adusumalli Vijaya College of Engineering and Research Centre",
+        "city": "Bommalramaram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Sai Educational Society's Group of Institutions",
+        "city": "Kodad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sahaja Institute of Technology and Sciences for Women",
+        "city": "Kottapalli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "NOVA College of Engineering and Technology",
+        "city": "Hayathnagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "KBR Engineering College",
+        "city": "Bibinagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bomma Institute of Technology and Science",
+        "city": "Basvapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Holy Mary Institute of Technology and Science MCA and MBA",
+        "city": "Secunderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Aurobindo Institute of Engineering and Technology",
+        "city": "Sheriguda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Singareni Collieries Polytechnic",
+        "city": "Mancherial",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vaageshwari Engineering College",
+        "city": "Ramakrishna Colony",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Narayana Engineering and Technical Campus",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mumtaz College of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Holy Mary Institute of Technology",
+        "city": "Bogaram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bandari Srinivas Institute of Technology",
+        "city": "Dharmasagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Aurora's Seethaiah Engineering College",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Anwarul-Uloom College of Engineering and Technology",
+        "city": "Rangareddy",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Aizza College of Engineering and Technology",
+        "city": "Mulkala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Princeton College of Engineering and Technology",
+        "city": "Aushapur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Patnam Rajender Reddy Memorial Engineering College",
+        "city": "Rangareddy",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "TRR Engineering College",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "TRR College of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SR International Institute of Technology",
+        "city": "Bandlaguda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mina Institute of Engineering and Technology for Women",
+        "city": "Miryalaguda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Medha Institute of Science and Technology for Women",
+        "city": "Khammam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Tudi Ram Reddy Institute of Technology and Science",
+        "city": "Gudur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Aurora's Technological and Management Academy",
+        "city": "Ghatkesar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Institute of Electronics",
+        "city": "Secunderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "ICFAI Tech School",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bharat Engineering College",
+        "city": "Vastunagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sumathi Reddy Institute of Technology for Women",
+        "city": "Hasanparthy",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Sarada Institute of Science and Technology",
+        "city": "Ghatkesar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Aurora's Research and Technological Institute",
+        "city": "Warangal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Pulla Reddy Institute of Technology",
+        "city": "Hanamkonda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Maheshwara Engineering College",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Kodada Institute of Technology and Science for Women",
+        "city": "Khanapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Hasvita Institute of Management and Technology",
+        "city": "Secunderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Arkay College of Engineering and Technology",
+        "city": "Nizamabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Amina Institute of Technology",
+        "city": "Secunderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Lumbini Group of Institutions",
+        "city": "Bhuvanagiri",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sagar Institute of Technology",
+        "city": "Ibrahimpalle",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Tudi Ram Reddy Institute of Technology and Science",
+        "city": "Gudur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sindhura College of Engineering and Technology",
+        "city": "Ramagundam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shahjehan College of Engineering and Technology",
+        "city": "Chevella",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Nagarjuna Institute of Technology and Sciences",
+        "city": "Srinivas Nagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Medha College of Engineering",
+        "city": "Secunderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Medak College of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Hi-Point College of Engineering and Technology",
+        "city": "Murtuzaguda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Hasvita Institute of Engineering and Technology",
+        "city": "Secunderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Harshith Group of Institutions",
+        "city": "Malikdanguda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bandari Srinivas College of Engineering and Technology",
+        "city": "Dharmasagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Balaji Institute of Engineering and Sciences",
+        "city": "Laknepally",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Asifia College of Engineering and Technology",
+        "city": "Sheriguda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "JJ Institution of Information Technology",
+        "city": "Maheshwaram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Priyadarshini Institute of Science and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ellenki Engineering College",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mother Theresa Institute of Science and Technology",
+        "city": "Sathupally",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SVS Group of institution",
+        "city": "Hanamkonda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Central Institute of Plastics Engineering and Technology",
+        "city": "Secunderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sana Polytechnic",
+        "city": "Kodad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "TRR College of Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic for Women Minorities",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vishwa Bharathi PG College of Engineering and Management",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sree Kavitha Institute of Science and Technology ",
+        "city": "Kistapuram at Munagala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Elenki Engineering College",
+        "city": "Siddipet",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gayathri Institute of Technology and Sciences",
+        "city": "Atmakur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Daripally Anantha Ramulu College of Engineering and Technology",
+        "city": "Khammam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Hasvita Institute of Science and Technology",
+        "city": "Ramlingam Palle",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Azad College of Engineering and Technology",
+        "city": "Hyderabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "TDR Polytechnic",
+        "city": "Bibinagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "VMR Polytechnic",
+        "city": "Warangal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Pragna Bharath Institute of Technology",
+        "city": "Mudimyal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vivekananda Institute of Science and Information Technology",
+        "city": "Farooqnagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vishnu Sree Institute of Technology",
+        "city": "Jalalpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vinuthna Institute of Technology and Science",
+        "city": "Hasanparthy",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Farah Engineering College",
+        "city": "Chevella",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Syed Hashim College of Science and Technology",
+        "city": "Gundanpalli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Swarna Bharathi College of Engineering",
+        "city": "Gurralapadu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Supraja Institute of Technology and Science",
+        "city": "Ghanpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sujala Bharati Institute of Technology",
+        "city": "Warangal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sudheer Reddy College of Engineering and Technology for Women",
+        "city": "Dichpally",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mona College of Engineering and Technology",
+        "city": "Golla Guda Rural",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mohammadiya Institute of Technology",
+        "city": "Khammam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Khader Memorial College of Engineering and Technology",
+        "city": "Devarakonda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "CRV Institute of Technology and Science",
+        "city": "Lalgadi Malakpet",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ramanadatirtha Engineering College",
+        "city": "Nalgonda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ganapathy College of Engineering",
+        "city": "Warangal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vaageswari College of Engineering",
+        "city": "Ramakrishna Colony",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vaageswari Engineering College",
+        "city": "Ramakrishna Colony",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ratnapuri Institute of Technology College of Polytechnic",
+        "city": "Chintalcheru",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Akshara Polytechnic College",
+        "city": "Chilkur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "BV Krishna Polytechnic College",
+        "city": "Kodad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Kothagudem",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Warangal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SVS Polytechnic",
+        "city": "Hanamkonda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Patanam Rajender Reddy Memorial Engineering College",
+        "city": "Shahabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Pratnam Rajendar Reddy Memorial College",
+        "city": "Shahabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SV Institute of Engineering and Technology",
+        "city": "Moinabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "KVCM NRI Polytechnic College",
+        "city": "Duddepudi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gandhi Academy of Technical Education Polytechnic",
+        "city": "Chilkur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Chegunta",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic for Women",
+        "city": "Pebbair",
+        "type": "Engineering",
+        "rating": "nan"
+    }
+]

@@ -1,0 +1,2 @@
+Data for Goa will be stored here.
+URL: https://dte.goa.gov.in

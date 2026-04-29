@@ -1,0 +1,590 @@
+[
+    {
+        "name": "National Institute of Technology Uttarakhand ",
+        "city": "Srinagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Graphic Era University",
+        "city": "Dehradun",
+        "type": "Engineering",
+        "rating": "3.23"
+    },
+    {
+        "name": "School of Engineering",
+        "city": "Dehradun",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "College of Technology",
+        "city": "Pantnagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Graphic Era Hill University",
+        "city": "Dehradun",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gurukula Kangri Vishwavidyalaya",
+        "city": "Haridwar",
+        "type": "Engineering",
+        "rating": "3.13"
+    },
+    {
+        "name": "DIT University",
+        "city": "Dehradun",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "ICFAI University",
+        "city": "Dehradun",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Govind Ballabh Pant Institute of Engineering and Technology",
+        "city": "Pawomalla",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Govind Ballabh Pant University of Agriculture and Technology",
+        "city": "Pantnagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dehradun Institute of Technology",
+        "city": "Dehradun",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bipin Tripathi Kumaon Institute of Technology",
+        "city": "Hulank Talli Mirai",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Uttaranchal Institute of Technology",
+        "city": "Dehradun",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Hemwati Nandan Bahuguna Garhwal University",
+        "city": "Naur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "THDC Institute of Hydro Power Engineering and Technology",
+        "city": "Tehri",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Uttarakhand Technical University",
+        "city": "Dehradun",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Quantum School of Technology",
+        "city": "Roorkee",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "College of Engineering Roorkee",
+        "city": "Roorkee",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Doon University",
+        "city": "Dehradun",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Tula's Institute The Engineering and Management College",
+        "city": "Dehradun",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Roorkee College of Engineering",
+        "city": "Roorkee",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dev Bhoomi Institute of Technology",
+        "city": "Naugaon",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Quantum University",
+        "city": "Roorkee",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Birla Institute of Applied Sciences",
+        "city": "Bhimtal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shivalik College of Engineering",
+        "city": "Singhniwala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Institute of Technology",
+        "city": "Mathlaggapilng",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Doon Institute of Engineering and Technology",
+        "city": "Rishikesh",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Nanhi Pari Seemant Engineering Institute",
+        "city": "Pithoragarh",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Roorkee Institute of Technology",
+        "city": "Roorkee",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Women's Institute of Technology",
+        "city": "Sudhowala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Himgiri Zee University",
+        "city": "Sherpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Dehradun",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dr APJ Abdul Kalam Institute of Technology",
+        "city": "Tanakpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Motherhood University",
+        "city": "Roorkee",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "College of Basic Sciences and Humanities",
+        "city": "Pantnagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "BFIT Group of Institutions",
+        "city": "Dehradun",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "BSM College of Engineering",
+        "city": "Bijhauli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Amrapali Institute of Technology and Sciences",
+        "city": "Naripur Lamachaur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Beehive College of Engineering and Technology",
+        "city": "Selakui",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dev Bhoomi Institute of Technology and Engineering",
+        "city": "Naugaon",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ramanand Institute of Pharmacy Management and Technology",
+        "city": "Alipur Ibrahimpur Urf Ikk",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rudrapur Institute of Technology",
+        "city": "Rudrapur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Kashipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Six Sigma Institute of Technology and Science",
+        "city": "Amarpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Lohaghat",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "GRD Institute of Management and Technology",
+        "city": "Dehradun",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SelaQui Academy of Higher Education",
+        "city": "Dehradun",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "MIET Kumaon",
+        "city": "Ansingh Nawar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Maya Institute of Technology and Management",
+        "city": "Selakui",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bishamber Sahai Institute of Technology",
+        "city": "Roorkee",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Girls Polytechnic",
+        "city": "Sudhowala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sardar Bhagwan Singh University",
+        "city": "Dehradun",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Pauri Garhwal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Sahiya",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Uttarkashi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bhagirathi Institute of Technology and Management",
+        "city": "Champawat",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Uttarakhand Institute of Technical and Professional Education",
+        "city": "Ramnagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic SIDCUL",
+        "city": "Haridwar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Phonics School of Engineering",
+        "city": "Roorkee",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "ICFAI Tech School",
+        "city": "Selakui",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Alpine College of Management and Technology",
+        "city": "Dehradun",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Drona's Polytechnic College",
+        "city": "Dehradun",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Srinagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Chamoli Gopeshwar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "GET Group of Institution Faculty of Technology",
+        "city": "Bazpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "College of Advanced Technology",
+        "city": "Roorkee",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "KL Polytechnic",
+        "city": "Roorkee",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Dehradun",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Om Institute of Technology",
+        "city": "Haridwar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic Garhi Shyampur",
+        "city": "Rishikesh",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Surajmal College of Engineering and Management",
+        "city": "Kichha",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shree Dev Bhoomi Institute of Education Science and Technology",
+        "city": "Majhaun",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Smt Manjira Devi Shikshan Avam Prakashan Institute",
+        "city": "Uttarkashi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Uttaratech Polytechnic",
+        "city": "Mehwarkalan",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Roorkee College of Polytechnic",
+        "city": "Kishanpur Jamalpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "BSM College of Polytechnic",
+        "city": "Roorkee",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Narendra Nagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Gauchar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Sai Institute of Technology",
+        "city": "Jaspur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dev Bhoomi Institute of Polytechnic",
+        "city": "Naugaon",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bishamber Sahai Diploma Engineering College",
+        "city": "Roorkee",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Blue Mountains Group of Colleges",
+        "city": "Danda Dhoran",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Swami Darshnanand Institute of Management and Technology Polytechnic",
+        "city": "Haridwar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Nainital",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Kotabagh",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Jassowala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Ratura",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Gopeshwar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shakambhari Institute of Higher Education and Technology",
+        "city": "Roorkee",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Barkot",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic Ganai Gangoli",
+        "city": "Ganai Gangoli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "BS Negi Mahila Pravidhik Prashikshan Sansthan",
+        "city": "Dehradun",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Girl's Polytechnic",
+        "city": "Almora",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chander Singh Garhwali Subharti Polytechnic College",
+        "city": "Dehradun",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic Garur",
+        "city": "Garur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Kanalichinna",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Kotdwara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Phonics School of Diploma Programmes",
+        "city": "Imli Khera",
+        "type": "Engineering",
+        "rating": "nan"
+    }
+]

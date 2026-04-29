@@ -1,0 +1,1364 @@
+[
+    {
+        "name": "Thapar Institute of Engineering and Technology",
+        "city": "Patiala",
+        "type": "Engineering",
+        "rating": "3.29"
+    },
+    {
+        "name": "Lovely Professional University",
+        "city": "Phagwara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Indian Institute of Technology Ropar ",
+        "city": "Rupnagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chandigarh University",
+        "city": "Chandigarh",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dr B R Ambedkar National Institute of Technology Jalandhar ",
+        "city": "Jalandhar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sant Longowal Institute of Engineering and Technology",
+        "city": "Longowal",
+        "type": "Engineering",
+        "rating": "2.58"
+    },
+    {
+        "name": "Guru Nanak Dev University",
+        "city": "Amritsar",
+        "type": "Engineering",
+        "rating": "3.51"
+    },
+    {
+        "name": "Guru Nanak Dev Engineering College",
+        "city": "Ludhiana",
+        "type": "Engineering",
+        "rating": "3.1"
+    },
+    {
+        "name": "National Institute of Pharmaceutical Education and Research SAS Nagar ",
+        "city": "Sahibzada Ajit Singh Nagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chitkara University",
+        "city": "Patiala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Punjabi University",
+        "city": "Patiala",
+        "type": "Engineering",
+        "rating": "3.34"
+    },
+    {
+        "name": "Chandigarh Group of Colleges",
+        "city": "Landran",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "IK Gujral Punjab Technical University",
+        "city": "Kapurthala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Indo Global College of Engineering",
+        "city": "New Chandigarh",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Amritsar College of Engineering and Technology",
+        "city": "Amritsar",
+        "type": "Engineering",
+        "rating": "3.05"
+    },
+    {
+        "name": "DAV Institute of Engineering and Technology",
+        "city": "Jalandhar",
+        "type": "Engineering",
+        "rating": "3.07"
+    },
+    {
+        "name": "Beant College of Engineering and Technology",
+        "city": "Gurdaspur",
+        "type": "Engineering",
+        "rating": "2.51"
+    },
+    {
+        "name": "Shaheed Bhagat Singh State Technical Campus",
+        "city": "Firozpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chandigarh Engineering College",
+        "city": "Landran",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Giani Zail Singh Campus College of Engineering and Technology",
+        "city": "Bathinda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chitkara University Institute of Engineering and Technology",
+        "city": "Jhansala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "College of Agricultural Engineering and Technology",
+        "city": "Ludhiana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "CGC College of Engineering",
+        "city": "Landran",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "University College of Engineering",
+        "city": "Patiala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Central University of Punjab",
+        "city": "Bathinda",
+        "type": "Engineering",
+        "rating": "3.06"
+    },
+    {
+        "name": "Panjab University",
+        "city": "Hoshiarpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "GNA University",
+        "city": "Phagwara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Guru Nanak Dev University Regional Campus",
+        "city": "Jalandhar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gulzar Group of Institutes",
+        "city": "Ludhiana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Punjab College of Engineering and Technology",
+        "city": "Malakpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Baba Banda Singh Bahadur Engineering College",
+        "city": "Fatehgarh Sahib",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Baba Hira Singh Bhattal Institute of Engineering and Technology",
+        "city": "Lehragaga",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Guru Granth Sahib World University",
+        "city": "Fatehgarh Sahib",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Malout Institute of Management and Information Technology",
+        "city": "Muktsar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Adesh Institute of Engineering and Technology",
+        "city": "Faridkot",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "RIMT University",
+        "city": "Gobindgarh",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gulzar College of Engineering",
+        "city": "Khanna",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Maharaja Ranjit Singh Punjab Technical University",
+        "city": "Bathinda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Punjab Institute of Engineering and Applied Research",
+        "city": "Mohali",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ludhiana College of Engineering and Technology",
+        "city": "Katani Kalan",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Guru Nanak Dev University Regional Campus",
+        "city": "Chak Thathian",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Guru Nanak Dev Polytechnic College",
+        "city": "Ludhiana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Punjab Institute of Technology",
+        "city": "Rajpura",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rayat and Bahra Institute of Engineering and Nano Technology",
+        "city": "Bohan",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Amritsar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Adesh Institute of Technology",
+        "city": "Gharuan",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "CT Institute of Engineering",
+        "city": "Jalandhar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Guru Angad Dev Veterinary and Animal Sciences University",
+        "city": "Ludhiana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Punjab Aircraft Maintenance Engineering College",
+        "city": "Patiala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Guru Teg Bahadur Khalsa Institute of Engineering and Technology",
+        "city": "Malout",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "GGS College of Modern Technology",
+        "city": "Kharar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Baba Farid College of Engineering and Technology",
+        "city": "Buladewala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Central Institute of Plastics Engineering and Technology",
+        "city": "Amritsar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "CT Institute of Technology",
+        "city": "Jalandhar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Swami Vivekanand Institute of Engineering and Technology",
+        "city": "Patiala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Sai Institute of Engineering and Technology",
+        "city": "Meharbanpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "RIMT Institute of Engineering and Technology",
+        "city": "Mandi Gobindgarh",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "BIS College of Engineering and Technology",
+        "city": "Bhagpur Alias Gagrah",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bhai Gurdas Institute of Engineering and Technology",
+        "city": "Sangrur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Baba Kuma Singh Ji Engineering College",
+        "city": "Hoshiar Nagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Asra College of Engineering and Technology",
+        "city": "Rajpura",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Aman Bhalla Institute of Engineering and Technology",
+        "city": "Pathankot",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Yadavindra College of Engineering",
+        "city": "Talwandi Sabo",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sant Baba Bhag Singh University",
+        "city": "Jalandhar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Global Institute of Management and Emerging Technologies",
+        "city": "Amritsar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Universal Institute of Engineering and Technology",
+        "city": "Lalru",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Sai College of Engineering and Technology",
+        "city": "Bungal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Indo Global College of Architecture",
+        "city": "New Chandigarh",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Akila College of Engineering and Management Technology",
+        "city": "Chak Goniana Khurd",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shaheed Udham Singh Engineering College",
+        "city": "Tangori",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sachdeva Engineering College for Girls",
+        "city": "Gharuan",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ram Devi Jindal Group of Institutions",
+        "city": "Jaula Khurd",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bhutta College of Engineering and Technology",
+        "city": "Bhutta",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Anand College of Engineering and Management",
+        "city": "Rawal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Thapar Polytechnic College",
+        "city": "Patiala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Institute of Engineering and Technology",
+        "city": "Bhaddal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Swami Parmanand College of Engineering and Technology",
+        "city": "aganpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "St Soldier Institute of Engineering and Technology",
+        "city": "Gopalpur Alias Bidh",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Patiala Institute of Engineering and Technology for Women",
+        "city": "Nandpur Kesho",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Guru Ram Dass Institute of Engineering and Technology",
+        "city": "Lehra Mohabbat",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ferozepur College of Engineering and Technology",
+        "city": "Moga",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Punjabi University Regional Centre for Information Technology and Management",
+        "city": "Sahibzada Ajit Singh Nagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mehr Chand Polytechnic College",
+        "city": "Jalandhar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shiv Shankar Institute of Engineering and Technology",
+        "city": "Patti Rural",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sai Institute of Engineering and Technology",
+        "city": "Amritsar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ramgarhia Institute of Engineering and Technology",
+        "city": "Phagwara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "North West Institute of Engineering and Technology",
+        "city": "Dhudike",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Kings Group of Institutions",
+        "city": "Barnala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Khalsa College of Engineering and Technology",
+        "city": "Amritsar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "KC College of Engineering and Information Technology",
+        "city": "Nawanshahr",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Doaba Women Institute of Engineering and Technology",
+        "city": "Ghataur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Doaba Institute of Engineering and Technology",
+        "city": "Ghataur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Desh Bhagat Foundation Group of Institutions",
+        "city": "Dagru",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Aryans College of Engineering",
+        "city": "Nepran",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Guru Nanak Institute of Engineering and Management",
+        "city": "Bassi Babu Khan",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Modern Group of Colleges",
+        "city": "Pandori",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chandigarh Polytechnic College",
+        "city": "Gharuan",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Adesh Polytechnic College",
+        "city": "Marh Mallu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "College of Architecture",
+        "city": "Mianpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "IK Gujral Punjab Technical University Campus",
+        "city": "Amritsar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Punjab Institute of Technology",
+        "city": "Rajpura",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Guru Nanak Institute of Technology",
+        "city": "Hariana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bharat Institute of Engineering and Technology",
+        "city": "Khaira Khurd",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "College of Engineering and Management",
+        "city": "Dogranwala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bhai Maha Singh College of Engineering",
+        "city": "Udekaran",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "KCT College of Engineering and Technology",
+        "city": "Fatehgarh",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shree Ganesh Group of Institutions",
+        "city": "Rakhra",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shaheed Udham Singh College of Engineering and Technology",
+        "city": "Tangori",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Satyam Institute of Engineering and Technology",
+        "city": "Amritsar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ludhiana Group of Colleges",
+        "city": "Ludhiana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Institute of Engineering and Technology",
+        "city": "Ropar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rayat Bahra Faculty of Engineering",
+        "city": "Patiala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Bathinda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Global College of Engineering and Technology",
+        "city": "Kahanpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gian Jyoti Institute of Management and Technology",
+        "city": "Mohali",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Doaba Faculty of Engineering and Technology",
+        "city": "Nawanshahr",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sukhjinder Technical Campus",
+        "city": "Gurdaspur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Sukhmani Institute of Engineering and Technology",
+        "city": "Dera Bassi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SECT Group of Institutes",
+        "city": "Rajpura",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "S Sukhjinder Singh Engineering and Technology College",
+        "city": "Gurdaspur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Quest Group of Institutions",
+        "city": "Mohali",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Lala Lajpat Rai Institute of Engineering and Technology",
+        "city": "Moga",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Golden College of Engineering and Technology",
+        "city": "Gurdaspur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ghubaya College of Engineering and Technology",
+        "city": "Fazilka",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Continental Institute of Engineering and Technology",
+        "city": "Jalverhi Dhumi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Lyallpur Khalsa College of Engineering",
+        "city": "Jalandhar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Radical Technical Institute",
+        "city": "Amritsar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic for Girls",
+        "city": "Patiala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Aryabhatta College of Engineering and Technology",
+        "city": "Barnala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "CT Institute of Technology and Research",
+        "city": "Jalandhar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Aklia College of Engineering and Management Technology",
+        "city": "Goniana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ramgarhia Polytechnic College",
+        "city": "Phagwara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Baba Banda Singh Bahadur Polytechnic College",
+        "city": "Fatehgarh Sahib",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Abbnoor Polytechnic College",
+        "city": "Faridkot",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Longowal Polytechnic College",
+        "city": "Dera Bassi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bhai Mani Singh Polytechnic College",
+        "city": "Surjitpura",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Adarsh Polytechnic College",
+        "city": "Samana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bahra Polytechnic College",
+        "city": "Patiala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Abhishek Polytechnic College",
+        "city": "Abohar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Universal Polytechnic College",
+        "city": "Lalru",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Batala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Tawi Engineering College",
+        "city": "Pathankot",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "MK School of Engineering and Technology",
+        "city": "Jethuwal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "CGC Institute of Architecture",
+        "city": "Gharuan",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Swift Technical Campus",
+        "city": "Rajpura",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rayat-Bahra College of Engineering and Nano Technology for Women",
+        "city": "Chagran",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Swami Sarvanand Institute of Engineering and Technology",
+        "city": "Jhakhar Pindi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Guru Nanak Polytechnic",
+        "city": "Kathar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Central Tool Room",
+        "city": "Ludhiana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Samalsar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Global Polytechnic College",
+        "city": "Bathinda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College for Girls",
+        "city": "Patiala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Patiala Polytechnic College",
+        "city": "Rakhra",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sidana Polytechnic College",
+        "city": "Kotla Doom",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Guru Teg Bahadur Khalsa Polytechnic College",
+        "city": "Malout",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Hi Tech Polytechnic College",
+        "city": "Bathinda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "CT Institute of Architecture and Planning",
+        "city": "Jalandhar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Sukhmani Polytechnic",
+        "city": "Dera Bassi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bhai Gurdas Polytechnic College",
+        "city": "Sangrur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gyan Sagar Polytechnic College",
+        "city": "Bagha Purana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "CT Polytechnic College",
+        "city": "Jalandhar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Aklia Polytechnic College",
+        "city": "Goniana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "BR Mahendra Polytechnic College",
+        "city": "Bathinda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Baba Banda Singh Bahadur Global Polytechnic College",
+        "city": "Indergarh",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "BIS Polytechnic College",
+        "city": "Kot Ise Khan",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "GGS Polytechnic College",
+        "city": "Kharar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Guru Gobind Singh Polytechnic College",
+        "city": "Handowal Kalan",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Guru Gobind Singh Polytechnic College",
+        "city": "Nathana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Guru Hargobind Polytechnic College",
+        "city": "Rampura Phul",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Lord Krishna Polytechnic College",
+        "city": "Kapurthala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Pathankot Polytechnic College",
+        "city": "Pathankot",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Satyam Polytechnic and Pharmacy College",
+        "city": "Amritsar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "St Soldier Institute of Pharmacy and Polytechnic",
+        "city": "Jalandhar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Tawi Polytechnic",
+        "city": "Shahpur Kandi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Apex Institute of Technology",
+        "city": "Gharuan",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "MK Group of Institutions",
+        "city": "Sohian Khurd",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Punjab Institute of Technology",
+        "city": "Moga",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "RIMT- College of Architecture",
+        "city": "Fatehgarh Sahib",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Devraj Group's Technical Campus",
+        "city": "Firozpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shaheed Udham Singh Engineering College",
+        "city": "Tangori",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Swami Devi Dyal Institute of Engineering",
+        "city": "Barwala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Institute of Engineering and Technology",
+        "city": "Bhaddal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Behram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Ferozepur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "RIMT Polytechnic",
+        "city": "Mandi Gobindgarh",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SRS Government Polytechnic College for Girls",
+        "city": "Ludhiana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Lala Lajpat Rai Memorial Polytechnic College",
+        "city": "Ajitwal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "YRS Polytechnic College",
+        "city": "Moga",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Mohali",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Guru Gobind Singh Polytechnic College",
+        "city": "Talwandi Sabo",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Bhikhiwind",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rayat Polytechnic College",
+        "city": "Rail",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Guru Arjan Dev Polytechnic College",
+        "city": "Ludhiana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College for Girls",
+        "city": "Raipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vidya Sagar Polytechnic",
+        "city": "Daulatpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Malwa Polytechnic College",
+        "city": "Mehmuana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mai Bhago Government Polytechnic College For Girls",
+        "city": "Amritsar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Maharaja Aggarsain Institute of Technology",
+        "city": "Alamgarh",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ludhiana Polytechnic College",
+        "city": "Ludhiana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Guru Hargobind Sahib Government Polytechnic College",
+        "city": "Ranwan",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bhutta Polytechnic College",
+        "city": "Bhutta",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Saint Kabir Polytechnic College",
+        "city": "Lalanwali",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "GES Polytechnic College",
+        "city": "Lohar Kangnan",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Desh Bhagat Polytechnic College",
+        "city": "Bardwal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "IK Gujral Punjab Technical University Campus",
+        "city": "Batala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vidya Rattan Polytechnic",
+        "city": "Sangrur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Global Polytechnic College",
+        "city": "Amritsar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SBCMS Institute of Technology",
+        "city": "Mukerian",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Punjab Polytechnic College",
+        "city": "Malakpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Doaba Polytechnic College",
+        "city": "Kurali",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Doaba Polytechnic College",
+        "city": "Balachaur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Doaba Polytechnic College",
+        "city": "Nawanshahr",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Swami Vivekanand Polytechnic College",
+        "city": "Banur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "DIPS Polytechnic College",
+        "city": "Hoshiarpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dr IT College of Polytechnic",
+        "city": "Banur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sant Baba Prem Singh Memorial Government Polytechnic College",
+        "city": "Begowal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jasdev Singh Sandhu Polytechnic College",
+        "city": "Kauli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ludhiana Group of Colleges Polytechnic",
+        "city": "Chaukiman",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "MLM Polytechnic College",
+        "city": "Ajitwal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Nancy Polytechnic",
+        "city": "Samana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Regional Polytechnic College",
+        "city": "Behman Diwana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Sai Polytechnic College",
+        "city": "Badhani",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Swami Parmanand Polytechnic",
+        "city": "Lalru",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bharat Group of Colleges",
+        "city": "Mansa",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Centre for Development of Advanced Computing",
+        "city": "Sahibzada Ajit Singh Nagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chitkara Polytechnic",
+        "city": "Jhansala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Radical Polytechnic College",
+        "city": "Amritsar",
+        "type": "Engineering",
+        "rating": "nan"
+    }
+]

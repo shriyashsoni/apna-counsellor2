@@ -1,0 +1,1448 @@
+[
+    {
+        "name": "Nirma University",
+        "city": "Ahmedabad",
+        "type": "Engineering",
+        "rating": "3.18"
+    },
+    {
+        "name": "Sardar Vallabhbhai National Institute of Technology Surat ",
+        "city": "Surat",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Maharaja Sayajirao University of Baroda",
+        "city": "Vadodara",
+        "type": "Engineering",
+        "rating": "3.16"
+    },
+    {
+        "name": "Dhirubhai Ambani Institute of Information and Communication Technology",
+        "city": "Gandhinagar",
+        "type": "Engineering",
+        "rating": "3.11"
+    },
+    {
+        "name": "Indian Institute of Technology Gandhinagar ",
+        "city": "Gandhinagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "LD College of Engineering",
+        "city": "Ahmedabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Pandit Deendayal Petroleum University",
+        "city": "Gandhinagar",
+        "type": "Engineering",
+        "rating": "3.39"
+    },
+    {
+        "name": "Institute of Infrastructure Technology Research and Management",
+        "city": "Ahmedabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dharmsinh Desai University",
+        "city": "Nadiad",
+        "type": "Engineering",
+        "rating": "2.88"
+    },
+    {
+        "name": "Indian Institute of Information Technology",
+        "city": "Gandhinagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Birla Vishvakarma Mahavidyalaya",
+        "city": "Anand",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vishwakarma Government Engineering College",
+        "city": "Ahmedabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "CEPT University",
+        "city": "Ahmedabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Engineering College",
+        "city": "Gandhinagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gujarat Technological University",
+        "city": "Ahmedabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Charotar University of Science and Technology",
+        "city": "Changa",
+        "type": "Engineering",
+        "rating": "3.11"
+    },
+    {
+        "name": "AD Patel Institute of Technology",
+        "city": "Vitthal Udyognagar INA",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Institute of Engineering and Technology",
+        "city": "Ahmedabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Engineering College",
+        "city": "Rajkot",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Institute of Technology and Management Universe",
+        "city": "Paldi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sarvajanik College of Engineering and Technology",
+        "city": "Surat",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Indus University",
+        "city": "Ahmedabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dr S and SS Ghandhy Government Engineering College",
+        "city": "Surat",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "GH Patel College of Engineering and Technology",
+        "city": "Anand",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shantilal Shah Engineering College",
+        "city": "Bhavnagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Engineering College",
+        "city": "Patan",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "LJ Institute of Engineering and Technology",
+        "city": "Ahmedabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "National Institute of Fashion Technology",
+        "city": "Gandhinagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sardar Vallabhbhai Patel Institute of Technology",
+        "city": "Vasad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Parul Institute of Engineering and Technology",
+        "city": "Vadodara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Indian Institute of Information Technology",
+        "city": "Surat",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Silver Oak College of Engineering and Technology",
+        "city": "Ahmedabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chandubhai S Patel Institute of Technology",
+        "city": "Anand",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Engineering College",
+        "city": "Modasa",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dr S and SS Ghandhy College of Engineering and Technology",
+        "city": "Surat",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Engineering College",
+        "city": "Bhavnagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Lukhdhirji Engineering College",
+        "city": "Morbi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ahmedabad Institute of Technology",
+        "city": "Ahmedabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Navrachana University",
+        "city": "Vadodara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Adani Institute of Infrastructure Engineering",
+        "city": "Shantigram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sal Institute of Technology and Engineering Research",
+        "city": "Ahmedabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gandhinagar Institute of Technology",
+        "city": "Moti Bhoyan",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Hemchandracharya North Gujarat University",
+        "city": "Patan",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "LDRP Institute of Technology and Research",
+        "city": "Gandhinagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Engineering College",
+        "city": "Valsad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Engineering College",
+        "city": "Bharuch",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ganpat University",
+        "city": "Mulsan",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Central Institute of Plastics Engineering and Technology",
+        "city": "Ahmedabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Parul Institute of Technology",
+        "city": "Limda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Indus Institute of Technology and Engineering",
+        "city": "Ahmedabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gujarat Forensic Sciences University",
+        "city": "Gandhinagar",
+        "type": "Engineering",
+        "rating": "3.15"
+    },
+    {
+        "name": "Atmiya Institute of Technology and Science",
+        "city": "Rajkot",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rai University",
+        "city": "Saroda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Engineering College",
+        "city": "Dahod",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Babaria Institute of Technology",
+        "city": "Varanama",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Aditya Silver Oak Institute of Technology",
+        "city": "Ahmedabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SAL College of Engineering",
+        "city": "Ahmedabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "UKA Tarsadia University",
+        "city": "Bardoli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Engineering College",
+        "city": "Bhuj",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shree Swami Atmanand Saraswati Institute of Technology",
+        "city": "Surat",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "GSFC University",
+        "city": "Vadodara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "RK University",
+        "city": "Rajkot",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Amiraj College of Engineering and Technology",
+        "city": "Khoraj",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "CK Pithawala College of Engineering and Technology",
+        "city": "Dumas",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Marwadi Education Foundation Group of Institutions",
+        "city": "Rajkot",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Apollo Institute of Engineering and Technology",
+        "city": "Ahmedabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vadodara Institute of Engineering",
+        "city": "Kotambi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bhagwan Mahavir College of Engineering and Technology",
+        "city": "Surat",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sardarkrushinagar Dantiwada Agricultural University",
+        "city": "Banaskantha",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Govind Guru University",
+        "city": "Godhra",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sigma Institute of Engineering",
+        "city": "Vadodara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shankersinh Vaghela Bapu Institute of Technology",
+        "city": "Randheja",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic For Girls",
+        "city": "Ahmedabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Arvindbhai Patel Institute of Environmental Design",
+        "city": "Anand",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sankalchand Patel College of Engineering",
+        "city": "Mehsana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Darshan Institute of Engineering and Technology",
+        "city": "Hadala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "RC Technical Institute",
+        "city": "Ahmedabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Engineering College",
+        "city": "Jagana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "VVP Engineering College",
+        "city": "Vajdi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri S'ad Vidya Mandal Institute of Technology",
+        "city": "Bharuch",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Aadishwar College of Technology",
+        "city": "Bhoyan Rathod",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Raksha Shakti University",
+        "city": "Ahmedabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shree Swaminarayan Institute of Technology",
+        "city": "Ahmedabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Parul Institute of Architecture and Research",
+        "city": "Limda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chhotubhai Gopalbhai Patel Institute of Technology",
+        "city": "Bardoli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Alpha College of Engineering and Technology",
+        "city": "Khatraj",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sitarambhai Naranji Patel Institute of Technology and Research Centre",
+        "city": "Bardoli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vidyabharti Trust Institute of Technology and Research Centre",
+        "city": "Mota",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Labhubhai Trivedi Institute of Engineering and Technology",
+        "city": "Rajkot",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Neotech Institute of Technology",
+        "city": "Virod",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mahavir Swami College of Engineering and Technology",
+        "city": "Surat",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Merchant Institute of Technology",
+        "city": "Mehsana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Laxmi Institute of Technology",
+        "city": "Vapi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "KJ Institute of Engineering and Technology",
+        "city": "Javla",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Engineering College",
+        "city": "Godhra",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dr Jivraj Mehta Institute of Technology",
+        "city": "Mogar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "UV Patel College of Engineering",
+        "city": "Mulsan",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Universal College of Engineering and Technology",
+        "city": "Kalol",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Hasmukh Goswami College of Engineering",
+        "city": "Raipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Anant National University",
+        "city": "Ahmedabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Arrdekta Institute of Technology",
+        "city": "Khedbrahma",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "AV Parekh Technical Institute",
+        "city": "Rajkot",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sankalchand Patel University",
+        "city": "Visnagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "LJ Polytechnic",
+        "city": "Ahmedabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "PP Savani University",
+        "city": "Kosamba",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Marwadi University",
+        "city": "Rajkot",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SVPES Faculty of Engineering",
+        "city": "Isroli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dr Subhash Technical Campus",
+        "city": "Khamdhrol",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shroff SR Rotary Institute of Chemical Technology",
+        "city": "Vataria",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "CU Shah College of Engineering and Technology",
+        "city": "Surendranagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "AY Dadabhai Technical Institute",
+        "city": "Surat",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Navsari Agricultural University",
+        "city": "Navsari",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Institute of Advanced Research",
+        "city": "Koba",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Narnarayan Shastri Institute of Technology",
+        "city": "Ahmedabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Merchant Engineering College",
+        "city": "Mehsana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mahatma Gandhi Institute of Technical Education and Research Centre",
+        "city": "Eru",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Madhuben and Bhanubhai Patel Institute of Technology",
+        "city": "Anand",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ipcowala Institute of Engineering and Technology",
+        "city": "Dharmaj",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gujarat Power Engineering and Research Institute",
+        "city": "Mehsana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Tolani Foundation Gandhidham Polytechnic",
+        "city": "Gandhidham",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Gandhinagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shree Dhanvantary College of Diploma Engineering",
+        "city": "Surat",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "HJD Institute of Technical Education and Research",
+        "city": "Kera",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Arun Muchhala Engineering College",
+        "city": "Dhari",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "GK Bharad Institute of Engineering",
+        "city": "Rajkot",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri KJ Polytechnic",
+        "city": "Bharuch",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SAL School of Architecture",
+        "city": "Ahmedabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "LJ School of Architecture",
+        "city": "Ahmedabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Ahmedabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Pacific School of Engineering",
+        "city": "Timbarava",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "BH Gardi College of Engineering and Technology",
+        "city": "Anandpar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Aurum Institute of Technology",
+        "city": "Rajkot",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vidhyadeep Institute of Engineering and Technology",
+        "city": "Bolav",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Samarth College of Engineering and Technology",
+        "city": "Sabarkantha (Himmatnagar)",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Noble Group of Institutions",
+        "city": "Junagadh",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SAL Engineering and Technical Institute",
+        "city": "Ahmedabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Jamnagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Venus Institute of Design and Architecture",
+        "city": "Bhoyan Rathod",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Balaji Engineering College",
+        "city": "Pipardi Timbo",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Smt SR Patel Engineering College",
+        "city": "Shihi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SPB Patel Engineering College",
+        "city": "Ahmedabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Kalol Institute of Technology and Research Centre",
+        "city": "Piyaj",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "S S Agrawal Institute of Engineering and Technology",
+        "city": "Navsari",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sardar Patel College Of Engineering",
+        "city": "Vallabh Vidhyanagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Rajkot",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dalia Institute of Diploma Studies",
+        "city": "Kanera",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shree Tapi Brahmcharyashram Sabha College of Diploma Engineering",
+        "city": "Surat",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Indo German Tool Room",
+        "city": "Ahmedabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ganpat University Institute of Computer Technology",
+        "city": "Mehsana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Leads Institute of Technology and Engineering",
+        "city": "Matar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gujarat Institute of Technical Studies",
+        "city": "Dalpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Valsad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Himmatnagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Porbandar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Junagadh",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bhailalbhai and Bhikhabhai Institute of Technology",
+        "city": "Anand",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bhagwan Mahavir Polytechnic",
+        "city": "Surat",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bhagwan Mahavir College of Architecture",
+        "city": "Surat",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dr Jivraj N Mehta Government Polytechnic",
+        "city": "Amreli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Devang Patel Institute of Advance Technology and Research",
+        "city": "Changa",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "ITM- School of Architecture Art and Design",
+        "city": "Paldi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "GIDC Degree Engineering College",
+        "city": "Navsari",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Tatva Institute of Technological Studies",
+        "city": "Modasa",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri JM Sabva Institute of Engineering and Technology",
+        "city": "Samadhiyala No.1",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Grow More Foundations Group of Institutions Faculty of Engineering",
+        "city": "Himmatnagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Engineering College",
+        "city": "Tuwa",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Saffrony Institute of Technology",
+        "city": "Linch",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Aarya-Veer College of Engineering and Technology",
+        "city": "Kuvadva",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Asian Institute of Technology",
+        "city": "Khedbrahma",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Aarsh Mahavidyalaya",
+        "city": "Rajkot",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "VPMP Polytechnic",
+        "city": "Gandhinagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Kalyan Polytechnic",
+        "city": "Moti Banugar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shree Swaminarayan Polytechnic",
+        "city": "Gandhinagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Krishna Institute of Engineering and Technology",
+        "city": "Jambuda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Valia Institute of Technology",
+        "city": "Valia",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "K J Faculty of Engineering and Technology",
+        "city": "Mehsana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shree Saraswati Education Sansthan\u00ef\u00bf\u00bds Group of Institutions- Dept of Engineering",
+        "city": "Irana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Hansaba College of Engineering and Technology",
+        "city": "Siddhpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Swaminarayan College of Engineering and Technology",
+        "city": "Kalol",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Veerayatan Institute of Engineering",
+        "city": "Kutch",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Asiatic Institute of Science and Technology",
+        "city": "Rajkot",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Palanpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "ARPIT Institute of Engineering and Technology",
+        "city": "Hadala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Image Engineering and Technical Institute",
+        "city": "Kheda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gyanmanjari Institute of Technology",
+        "city": "Bhavnagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sigma Polytechnic",
+        "city": "Vadodara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Bharuch",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Waghai",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Parul Polytechnic Institute",
+        "city": "Waghodia",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "MK College of Engineering and Technological Research",
+        "city": "Patan",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Om Engineering College",
+        "city": "Kathrota",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Laljibhai Chaturbhai Institute of Technology",
+        "city": "Bhandu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "DA Degree Engineering and Technology",
+        "city": "Mahemdabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sanjaybhai Rajguru College of Engineering",
+        "city": "Rajkot",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Smt Shantaben Haribhai Gajera Engineering College",
+        "city": "Surat",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Smt Dharini Anilkumar Shukla Education Campus",
+        "city": "Mahemdabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shree NM Gopani Polytechnic Institute",
+        "city": "Kinara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "CU Shah Technical Institute of Diploma Studies",
+        "city": "Wadhwan",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Amrut Institute",
+        "city": "Junagadh",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shree Hari Polytechnic Institute",
+        "city": "Nani Kadi Part",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "CU Shah Polytechnic",
+        "city": "Surendranagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Kilachand Devchand Polytechnic",
+        "city": "Patan",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jashodaba Polytechnic Institute",
+        "city": "Sujanpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bhavnagar Polytechnic Institute",
+        "city": "Mokhadka",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "FD Mubin Institute of Engineering and Technology",
+        "city": "Bahiyal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jayvantrai Harrai Desai Polytechnic",
+        "city": "Surat",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sigma Institute of Technology and Engineering",
+        "city": "Timbi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "NG Patel Polytechnic",
+        "city": "Isroli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Arham Veerayatan Polytechnic Institute",
+        "city": "Kutch",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Bhuj",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vadodara Design Academy",
+        "city": "Vadodara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shantaben Manubhai Patel School of Studies and Research in Architecture and Interior Design",
+        "city": "Vidyanagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Prime Institute of Engineering and Technology",
+        "city": "Mangrol",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sigma Engineering College",
+        "city": "Matar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shree HN Shukla Diploma Engineering College",
+        "city": "Amargadh",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vallabh Budhi Polytechnic",
+        "city": "Navsari",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Atul Polytechnic",
+        "city": "Mansa",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SB Polytechnic",
+        "city": "Savli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Raman Bhakta School of Architecture",
+        "city": "Tarsadi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Om Institute of Technology",
+        "city": "Jokha",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shree Pandit Nathulalji Vyas Technical Campus",
+        "city": "Surendranagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Swami Krishnajivandasji Institute of Technology",
+        "city": "Hansalpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "NR Vekaria Institute Of Technology",
+        "city": "Junagadh",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bhulabhai Vanmalibhai Patel Institute of Technology Diploma Studies",
+        "city": "Surat",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sarvoday Polytechnic Institute",
+        "city": "Bhalgamda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Christ Polytechnic Institute",
+        "city": "Rajkot",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "BS Patel Polytechnic",
+        "city": "Mehsana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Swami Sachchidanand Polytechnic College",
+        "city": "Visnagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Excel Institute of Diploma Studies",
+        "city": "Ahmedabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sanjaybhai Rajguru College of Diploma Engineering",
+        "city": "Rajkot",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "ML Institute of Diploma Studies",
+        "city": "Bhandu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Balasinor College of Polytechnic",
+        "city": "Kheda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Radhe Institute of Engineering and Technology",
+        "city": "Upleta",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Knowledge Institute of Technology and Engineering",
+        "city": "Anand",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Merchant Institute of Diploma Studies",
+        "city": "Piludara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Suraj Muchhala Polytechnic",
+        "city": "Chordi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Valia Polytechnic College",
+        "city": "Valia",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vedvyas Polytechnic",
+        "city": "Himmatnagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Institute of Technology",
+        "city": "Heduva Hanumat",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Grow More School of Architecture",
+        "city": "Himmatnagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Atmiya Institute of Technology and Science for Diploma Studies",
+        "city": "Rajkot",
+        "type": "Engineering",
+        "rating": "nan"
+    }
+]

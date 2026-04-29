@@ -1,0 +1,2318 @@
+[
+    {
+        "name": "Andhra University College of Engineering",
+        "city": "Visakhapatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jawaharlal Nehru Technological University College of Engineering",
+        "city": "Kakinada",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Venkateswara University College of Engineering",
+        "city": "Tirupati",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "GITAM University",
+        "city": "Visakhapatnam",
+        "type": "Engineering",
+        "rating": "3.53"
+    },
+    {
+        "name": "Koneru Lakshmaiah Education Foundation",
+        "city": "Guntur",
+        "type": "Engineering",
+        "rating": "3.57"
+    },
+    {
+        "name": "National Institute of Technology Andhra Pradesh ",
+        "city": "Tadepalligudem",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gayatri Vidya Parishad College of Engineering",
+        "city": "Visakhapatnam",
+        "type": "Engineering",
+        "rating": "3.47"
+    },
+    {
+        "name": "GMR Institute of Technology",
+        "city": "Srikakulam",
+        "type": "Engineering",
+        "rating": "3.16"
+    },
+    {
+        "name": "Velagapudi Ramakrishna Siddhartha Engineering College",
+        "city": "Vijayawada",
+        "type": "Engineering",
+        "rating": "3.17"
+    },
+    {
+        "name": "JNTUK University College of Engineering",
+        "city": "Vizianagaram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jawaharlal Nehru Technological University",
+        "city": "Kakinada",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sree Vidyanikethan Engineering College",
+        "city": "Tirupati",
+        "type": "Engineering",
+        "rating": "2.95"
+    },
+    {
+        "name": "JNTUA College of Engineering",
+        "city": "Anantapur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Indian Institute of Technology Tirupati ",
+        "city": "Tirupati",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vishnu Institute of Technology",
+        "city": "Bhimavaram",
+        "type": "Engineering",
+        "rating": "3.51"
+    },
+    {
+        "name": "SRM University AP",
+        "city": "Kuragallu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vignan's Foundation for Science Technology and Research",
+        "city": "Guntur",
+        "type": "Engineering",
+        "rating": "3.02"
+    },
+    {
+        "name": "Indian Institute of Information Technology",
+        "city": "Sri City",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sagi Ramakrishnam Raju Engineering College",
+        "city": "Bhimavaram",
+        "type": "Engineering",
+        "rating": "3.6"
+    },
+    {
+        "name": "RVR and JC College of Engineering",
+        "city": "Guntur",
+        "type": "Engineering",
+        "rating": "3.19"
+    },
+    {
+        "name": "Sri Venkateswara College of Engineering",
+        "city": "Tirupati",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Acharya Nagarjuna University",
+        "city": "Guntur",
+        "type": "Engineering",
+        "rating": "3.08"
+    },
+    {
+        "name": "Anil Neerukonda Institute of Technology and Sciences",
+        "city": "Visakhapatnam",
+        "type": "Engineering",
+        "rating": "3.01"
+    },
+    {
+        "name": "College of Agricultural Engineering",
+        "city": "Guntur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Padmavati Mahila Visvavidyalayam",
+        "city": "Tirupati",
+        "type": "Engineering",
+        "rating": "3.11"
+    },
+    {
+        "name": "Maharaj Vijayaram Gajapathi Raj College of Engineering",
+        "city": "Vizianagaram",
+        "type": "Engineering",
+        "rating": "3.14"
+    },
+    {
+        "name": "Lakireddy Bali Reddy College of Engineering",
+        "city": "Mylavaram",
+        "type": "Engineering",
+        "rating": "2.96"
+    },
+    {
+        "name": "Indian Institute of Information Technology Design and Manufacturing Kurnool ",
+        "city": "Kurnool",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "School of Planning and Architecture Vijayawada ",
+        "city": "Velpuru",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "G Pulla Reddy Engineering College",
+        "city": "Kurnool",
+        "type": "Engineering",
+        "rating": "3.52"
+    },
+    {
+        "name": "Prasad V Potluri Siddhartha Institute of Technology",
+        "city": "Vijayawada",
+        "type": "Engineering",
+        "rating": "3.38"
+    },
+    {
+        "name": "JNTUA College of Engineering",
+        "city": "Pulivendula",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vasireddy Venkatadri Institute of Technology",
+        "city": "Guntur",
+        "type": "Engineering",
+        "rating": "3.09"
+    },
+    {
+        "name": "ANU College of Engineering and Technology",
+        "city": "Guntur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vignan's Institute of Information Technology",
+        "city": "Visakhapatnam",
+        "type": "Engineering",
+        "rating": "3.41"
+    },
+    {
+        "name": "Madanapalle Institute of Technology and Science",
+        "city": "Madanapalle",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Acharya NG Ranga Agricultural University",
+        "city": "Guntur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "VIT-AP University",
+        "city": "Inavolu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bapatla Engineering College",
+        "city": "Guntur",
+        "type": "Engineering",
+        "rating": "2.7"
+    },
+    {
+        "name": "JNTUA College of Engineering",
+        "city": "Kalikiri",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gayatri Vidya Parishad College for Degree and PG Courses",
+        "city": "Visakhapatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gudlavalleru Engineering College",
+        "city": "Gudlavalleru",
+        "type": "Engineering",
+        "rating": "3.07"
+    },
+    {
+        "name": "Aditya Engineering College",
+        "city": "Surampalem",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Pragati Engineering College",
+        "city": "Surampalem",
+        "type": "Engineering",
+        "rating": "3.08"
+    },
+    {
+        "name": "Godavari Institute of Engineering and Technology",
+        "city": "Rajahmundry",
+        "type": "Engineering",
+        "rating": "3.37"
+    },
+    {
+        "name": "Shri Vishnu Engineering College for Women",
+        "city": "West Godavari",
+        "type": "Engineering",
+        "rating": "3.09"
+    },
+    {
+        "name": "Raghu Engineering College",
+        "city": "Visakhapatnam",
+        "type": "Engineering",
+        "rating": "3.06"
+    },
+    {
+        "name": "Gayatri Vidya Parishad College of Engineering for Women",
+        "city": "Visakhapatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "College of Agricultural Engineering",
+        "city": "Madakasira",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vignan's Lara Institute of Technology and Science",
+        "city": "Vadlamudi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Andhra Loyola Institute of Engineering and Technology",
+        "city": "Vijayawada",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "A1 Global Institute of Engineering and Technology",
+        "city": "Markapur Rural",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "GITAM Institute of Technology",
+        "city": "Visakhapatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rajeev Gandhi Memorial College of Engineering and Technology",
+        "city": "Kurnool",
+        "type": "Engineering",
+        "rating": "3.54"
+    },
+    {
+        "name": "Siddhartha Institute of Engineering and Technology",
+        "city": "Puttur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jawaharlal Nehru Technological University",
+        "city": "Anantapur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SRK Institute of Technology",
+        "city": "Vijayawada",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Krishnadevaraya University College of Engineering and Technology",
+        "city": "Anantapur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gayatri Vidya Parishad College for Degree and PG Courses",
+        "city": "Visakhapatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "G Pullaiah College of Engineering and Technology",
+        "city": "Kurnool",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Narasaraopeta Engineering College",
+        "city": "Narasaraopet",
+        "type": "Engineering",
+        "rating": "3.05"
+    },
+    {
+        "name": "Vignan's Institute of Engineering for Women",
+        "city": "Visakhapatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Aditya College of Engineering",
+        "city": "Surampalem",
+        "type": "Engineering",
+        "rating": "2.72"
+    },
+    {
+        "name": "Sri Venkateswara College of Engineering and Technology",
+        "city": "Tirupati",
+        "type": "Engineering",
+        "rating": "3.08"
+    },
+    {
+        "name": "Sasi Institute of Technology and Engineering",
+        "city": "Tadepalligudem",
+        "type": "Engineering",
+        "rating": "3.14"
+    },
+    {
+        "name": "Sri Venkateswara Engineering College",
+        "city": "Tirupati",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "NRI Institute of Technology",
+        "city": "Gopalapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Annamacharya Institute of Technology and Sciences",
+        "city": "Tirupati",
+        "type": "Engineering",
+        "rating": "3.09"
+    },
+    {
+        "name": "NBKR Institute of Science and Technology",
+        "city": "Nellore",
+        "type": "Engineering",
+        "rating": "3.08"
+    },
+    {
+        "name": "KKR and KSR Institute of Technology and Sciences",
+        "city": "Guntur",
+        "type": "Engineering",
+        "rating": "3.02"
+    },
+    {
+        "name": "Aditya College of Engineering and Technology",
+        "city": "Surampalem",
+        "type": "Engineering",
+        "rating": "2.68"
+    },
+    {
+        "name": "Aditya Institute of Technology and Management",
+        "city": "K Kotturu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Yogi Vemana University",
+        "city": "Kadapa",
+        "type": "Engineering",
+        "rating": "2.54"
+    },
+    {
+        "name": "YSR Engineering College",
+        "city": "Proddatur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Vasavi Engineering College",
+        "city": "West Godavari",
+        "type": "Engineering",
+        "rating": "3.18"
+    },
+    {
+        "name": "Vikas College of Engineering and Technology",
+        "city": "Nunna",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Indian Institute of Petroleum and Energy Visakhapatnam ",
+        "city": "Visakhapatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Potti Sriramulu Chalavadi Mallikharjuna Rao College of Engineering and Technology",
+        "city": "Vijayawada",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Annamacharya Institute of Technology and Sciences",
+        "city": "Kadapa",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dhanekula Institute of Engineering and Technology",
+        "city": "Gangur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Srinivasa Ramanujan Institute of Technology",
+        "city": "Chedulla",
+        "type": "Engineering",
+        "rating": "3.02"
+    },
+    {
+        "name": "Lendi Institute of Engineering and Technology",
+        "city": "Jonnada",
+        "type": "Engineering",
+        "rating": "3.02"
+    },
+    {
+        "name": "ABR College of Engineering and Technology",
+        "city": "Somanapalle",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vignan's Nirula Institute of Technology and Science for Women",
+        "city": "Peda Palakaluru",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Narayana Engineering College",
+        "city": "Nellore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "AM Reddy Memorial College of Engineering and Technology",
+        "city": "Petlurivaripalem",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Venkateswara College of Engineering and Technology",
+        "city": "Etcherla",
+        "type": "Engineering",
+        "rating": "3.08"
+    },
+    {
+        "name": "Vizag Institute of Technology",
+        "city": "Bangarrajupeta",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chadalawada Ramanamma Engineering College",
+        "city": "Tirupati",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "GIET Engineering College",
+        "city": "Chakradwarabandham",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "GIET College of Engineering",
+        "city": "Diwancheruvu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Paladugu Nagaiah Chowdary and Vijai Institute of Engineering and Technology",
+        "city": "Repudi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Nadimpalli Satyanarayana Raju Institute of Technology",
+        "city": "Visakhapatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Usha Rama College of Engineering and Technology",
+        "city": "Krishna",
+        "type": "Engineering",
+        "rating": "3.04"
+    },
+    {
+        "name": "Pydah College of Engineering and Technology",
+        "city": "Visakhapatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Avanthi Institute of Engineering and Technology",
+        "city": "Ranga Reddy Pally",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Nalanda Institute of Engineering and Technology",
+        "city": "Guntur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "St Ann's College of Engineering and Technology",
+        "city": "Nayani Palli Rural",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ideal Institute of Technology",
+        "city": "Kakinada",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sree Rama Engineering College",
+        "city": "Tirupati",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Pydah College of Engineering",
+        "city": "Chollangi Peta",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gates Institute of Technology",
+        "city": "Gooty",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Devineni Venkata Ramana and Dr Hima Sekhar MIC College of Technology",
+        "city": "Saidapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Chaitanya Engineering College",
+        "city": "Visakhapatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Visakha Institute of Engineering and Technology",
+        "city": "Visakhapatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Siddartha Institute of Science and Technology",
+        "city": "Puttur",
+        "type": "Engineering",
+        "rating": "3.03"
+    },
+    {
+        "name": "QIS College of Engineering and Technology",
+        "city": "Vegamukkapalem",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Swarnandhra College of Engineering and Technology",
+        "city": "Ramannapalem",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "PACE Institute of Technology and Sciences",
+        "city": "Valluru",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Kakinada Institute of Technology and Science",
+        "city": "Chandramampalli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Nova College of Engineering and Technology",
+        "city": "Vijayawada",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "International School of Technology and Sciences for Women",
+        "city": "Rajanagaram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Audisankara College of Engineering and Technology",
+        "city": "Gudur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Geethanjali Institute of Science and Technology",
+        "city": "Gangavaram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Venkateswara Veterinary University",
+        "city": "Tirupati",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vemu Institute of Technology",
+        "city": "Karini Palli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bhimavaram Institute of Engineering and Technology",
+        "city": "Pennada Agraharam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Avanthi Institute of Engineering and Technology",
+        "city": "Kothapallem",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "KMM Institute of Technology and Science",
+        "city": "Tirupati",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Kalahastheeswara Institute of Technology",
+        "city": "Chittoor",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Kallam Haranadha Reddy Institute of Technology",
+        "city": "Chowdavaram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Institute of Chemical Engineering",
+        "city": "Visakhapatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dr Lankapalli Bullayya College of Engineering for Women",
+        "city": "Visakhapatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "DNR College of Engineering and Technology",
+        "city": "Bhimavaram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "ASN Women's Engineering College",
+        "city": "Tenali",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Universal College of Engineering and Technology",
+        "city": "Dokiparru",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ramachandra College of Engineering",
+        "city": "Kokkirapadu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Kakinada Institute of Engineering and Technology",
+        "city": "Korangi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Anantha Lakshmi Institute of Technology and Sciences",
+        "city": "Itikalapalli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "GVR and S College of Engineering and Technology",
+        "city": "Guntur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dr KV Subba Reddy Institute of Technology",
+        "city": "Chinna Tekur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sree Venkateswara College of Engineering",
+        "city": "Basavaipalem",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "KSRM College of Engineering",
+        "city": "Kadapa",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sir CV Raman Institute of Technology and Sciences",
+        "city": "Tadipatri",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Loyola Institute of Technology and Management",
+        "city": "Dhulipalla",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bapatla Women's Engineering College",
+        "city": "Bapatla",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Amalapuram Institute of Management Sciences and College of Engineering",
+        "city": "Mummidivaram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "NRI Institute of Technology",
+        "city": "Guntur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Yogananda Institute of Technology and Science",
+        "city": "Tirupati",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chalapathi Institute of Engineering and Technology",
+        "city": "Guntur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Amrita Sai Institute of Science and Technology",
+        "city": "Paritala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sir Vishveshwaraiah Institute of Science and Technology",
+        "city": "Gownivaaripalli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Siddartha Educational Academy Group of Institutions",
+        "city": "Tirupati",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Miracle Educational Society Group of Institutions",
+        "city": "Vizianagaram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Kuppam Engineering College",
+        "city": "Kuppam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Audisankara Institute of Technology",
+        "city": "Gudur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SV Government Polytechnic",
+        "city": "Tirupati",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sreenivasa Institute of Technology and Management Studies",
+        "city": "Kodigunta",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Lingayas Institute of Management and Technology",
+        "city": "Vijayawada",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Krishna Chaitanya Institute of Technology and Sciences",
+        "city": "Idupur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chaitanya Engineering College",
+        "city": "Visakhapatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sanskrithi School of Engineering",
+        "city": "Puttaparthi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Viswanadha Institute of Technology and Management",
+        "city": "Mindivanipalem",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "QIS Institute of Technology",
+        "city": "Vegamukkapalem",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Eluru College of Engineering and Technology",
+        "city": "Eluru",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chalapathi Institute of Technology",
+        "city": "Mothadaka",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bonam Venkata Chalamayya Engineering College",
+        "city": "Odalarevu",
+        "type": "Engineering",
+        "rating": "3.0"
+    },
+    {
+        "name": "Aditya College of Engineering",
+        "city": "Madanapalle",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SSN Engineering College",
+        "city": "Ongole",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Visakhapatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bonam Venkata Chalamayya Institute of Technology and Science",
+        "city": "Bhatlapalem",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Mittapalli College of Engineering",
+        "city": "Guntur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Satya Institute of Technology and Management",
+        "city": "Vizianagaram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "MVR College of Engineering and Technology",
+        "city": "Paritala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Malineni Lakshmaiah Engineering College",
+        "city": "Kanumalla",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Baba Institute of Technology and Sciences",
+        "city": "Visakhapatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rajiv Gandhi University of Knowledge Technologies",
+        "city": "Idupulapaya",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Tadipatri Engineering College",
+        "city": "Veerapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Srinivasa Institute of Engineering and Technology",
+        "city": "Amalapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Sunflower College of Engineering and Technology",
+        "city": "Lankapalli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Priyadarshini Institute of Technology",
+        "city": "Tirupati",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Prakasam Engineering College",
+        "city": "Kandukur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chirala Engineering College",
+        "city": "Kotha Peta Rural",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "College of Dairy Technology",
+        "city": "Tirupati",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Visakha Technical Campus",
+        "city": "Peda Narava",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "VSM College of Engineering",
+        "city": "Ramachandrapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Venkateswara Institute of Science and Information Technology",
+        "city": "Venkatramannagudem",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Vasavi Institute of Engineering and Technology",
+        "city": "Nandamuru",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Santhiram Engineering College",
+        "city": "Kowlur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "RK College of Engineering",
+        "city": "Kethanakonda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Priyadarshini Institute of Technology and Science",
+        "city": "Devarapalle Agraharam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Priyadarshini College of Engineering and Technology",
+        "city": "Kanuparthipadu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Kakinada Institute of Engineering and Technology-II",
+        "city": "Korangi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Guntur Engineering College",
+        "city": "Nadimpalem",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Brindavan Institute of Technology and Science",
+        "city": "Chinna Tekuru",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "BIT Institute of Technology",
+        "city": "Manesamudram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Adarsh College of Engineering",
+        "city": "Chebrolu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Narasaraopeta Institute of Technology",
+        "city": "Narasaraopet",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Venkateswara Institute of Technology",
+        "city": "Ramanepalli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Venkateswara Institute of Science and Technology",
+        "city": "Cherlopalle",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Sai Institute of Technology and Science",
+        "city": "Kadapa",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gandhiji Institute of Science and Technology",
+        "city": "Bhimavaram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chebrolu Engineering College",
+        "city": "Guntur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chaitanya Institute of Science and Technology",
+        "city": "Kakinada",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Venkatesa Perumal College of Engineering and Technology",
+        "city": "China Rajukuppam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Avanthi Institute of Engineering and Technology",
+        "city": "Kotabhogapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Narayana Engineering College",
+        "city": "Gudur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Andhra Engineering College",
+        "city": "Nellore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Andhra Polytechnic College",
+        "city": "Kakinada",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Wellfare Institute of Science Technology and Management",
+        "city": "Mudapaka",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vaagdevi Institute of Technology and Science",
+        "city": "Kadapa",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Krishnadevaraya Engineering College",
+        "city": "Turakapalle",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sree Vahini Institute of Science and Technology",
+        "city": "Patha Tiruvuru",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ravindra College of Engineering for Women",
+        "city": "Kurnool",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Kakinada Institute of Engineering and Technology for Women",
+        "city": "Korangi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Kakinada Institute of Technological Sciences",
+        "city": "Ambikapalli Agrahaaram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Eswar College of Engineering",
+        "city": "Narasaraopet",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SVR Engineering College",
+        "city": "Nandyal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Damsetty Srinivasa Naidu's DBS Institute of Technology",
+        "city": "Nellore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mekapati Rajamohan Reddy Institute of Technology and Science",
+        "city": "Nellore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Swamy Vivekananda Engineering College",
+        "city": "Vizianagaram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Shirdi Sai Institute of Science and Engineering",
+        "city": "Anantapur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shree Rama Educational Society Group of Institutions",
+        "city": "Tirupati",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sanketika Vidya Parishad Engineering College",
+        "city": "Visakhapatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "RISE Krishna Sai Prakasam Group of Institutions",
+        "city": "Valluru",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rajamahendri Institute of Engineering and Technology",
+        "city": "Rajahmundry",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "PVKK Institute of Technology",
+        "city": "Anantapur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dadi Institute of Engineering and Technology",
+        "city": "Golagam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "AKRG College of Engineering and Technology",
+        "city": "Nallajerla",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ramireddy Subbarami Reddy Engineering College",
+        "city": "Kadanuthala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Tirumala Engineering College",
+        "city": "Jonnalagadda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Visvodaya Engineering College",
+        "city": "Kavali",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sarada Institute of Science",
+        "city": "Pinatadivada",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "RISE Krishna Sai Gandhi Group of Institutions",
+        "city": "Valluru",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Malineni Perumallu Educational Society's Group of Institutions",
+        "city": "Guntur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chaitanya Bharathi Institute of Technology",
+        "city": "Pallavolu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mother Theresa Institute of Engineering and Technology",
+        "city": "Malleru",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Swarnandhra Institute of Engineering and Technology",
+        "city": "Ramannapalem",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vaishnavi Institute of Technology",
+        "city": "Tirupati",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "St Johns College of Engineering and Technology",
+        "city": "Yemmiganur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sanketika Institute of Technology and Management",
+        "city": "Visakhapatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Parvatha Reddy Babul Reddy Visvodaya Institute of Technology and Science",
+        "city": "Kavali",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jagan's College of Engineering and Technology",
+        "city": "Venkatachalam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Audisankara College of Engineering for Women",
+        "city": "Nellore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Vijayawada",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Pydah College of Dairy and Food Technology",
+        "city": "Kakinada",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "VKR",
+        "city": "Gudivada",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "VRS and YRN College of Engineering and Technology",
+        "city": "Chirala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "West Godavari Institute of Science and Engineering",
+        "city": "Prakashraopalem",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Sarathi Institute of Engineering and Technology",
+        "city": "Krishna",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shree Institute of Technical Education",
+        "city": "Peddanjimedu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Praveenya Institute of Marine Engineering and Maritime Studies",
+        "city": "Vizianagaram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Nannapaneni Venkat Rao College of Engineering and Technology",
+        "city": "Tenali",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "MJR College of Engineering and Technology",
+        "city": "Yerraguntlapalle",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Malineni Lakshmaiah Women's Engineering College",
+        "city": "Pulladigunta",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Helapuri Institute of Technology and Science",
+        "city": "Kottapalli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gokula Krishna College of Engineering",
+        "city": "Sullurupeta",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gayatri Institute of Engineering and Technology",
+        "city": "Ramacharlagudem",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Daita Madhusudana Sastry Sri Venkateswara Hindu College of Engineering",
+        "city": "Chilakalapudi Rural",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chiranjeevi Reddy Institute of Engineering and Technology",
+        "city": "Anantapur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bheema Institute of Technology and Science",
+        "city": "Dhanapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Amara Institute of Engineering and Technology",
+        "city": "Merikapudi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sai Tirumala NVR Engineering College",
+        "city": "Narasaraopet",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "PBR Visvodaya Engineering College",
+        "city": "Kavali",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "St Marys Group of Institutions",
+        "city": "Narakoduru",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Srinivasa College of Engineering and Technology",
+        "city": "Cheyyeru Gunnepalli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Sivani College of Engineering",
+        "city": "Srikakulam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Raghavendra Institute of Science and Technology",
+        "city": "Nellore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Prakash College of Engineering",
+        "city": "Rajupeta",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Mittapalli Institute of Technology for Women",
+        "city": "Marripalem",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Simhadhri Educational Society Group of Institutions",
+        "city": "Sabbavaram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Prasiddha College of Engineering and Technology",
+        "city": "Amalapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "NIMRA College of Engineering and Technology",
+        "city": "Vijayawada",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Newton's Institute of Engineering",
+        "city": "Macherla",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mandava Institute of Engineering and Technology",
+        "city": "Jaggayyapet",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Lenora College of Engineering",
+        "city": "Rampachodavaram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Pydah Kaushik College of Engineering",
+        "city": "Visakhapatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gokul Institute of Technology and Sciences",
+        "city": "Vizianagaram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Global College of Engineering and Technology",
+        "city": "Chinnamachupalle",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Buchepalli Venkayamma Subbareddy Engineering College",
+        "city": "Prakasam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Brahmaiah College of Engineering",
+        "city": "North Rajupalem",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Akula Sreeramulu College of Engineering",
+        "city": "Tanuku",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "GVVR Institute of Technology",
+        "city": "Tundurru",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Swetha Institute of Technology and Science",
+        "city": "C Ramapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "AANM and VVRSR Polytechnic",
+        "city": "Gudlavalleru",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Great Lakes International University",
+        "city": "Sricity",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Thandra Paparaya Institute of Science and Technology",
+        "city": "Vennelabutchampeta",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Srinivasa Institute of Technology and Science",
+        "city": "Kadapa",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sarojini Institute of Technology",
+        "city": "Telaprolu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Paladugu Parvathi Devi College of Engineering and Technology",
+        "city": "Surampalli Auto Nagar (ALEAP)",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Nova Institute of Technology",
+        "city": "Eluru",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "KLM College of Engineering for Women",
+        "city": "Kopparthi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gonna Institute of Information Technology and Sciences",
+        "city": "Visakhapatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bhuma Shobha Nagireddy Memorial College of Engineering and Technology",
+        "city": "Pedda Kotakandukur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Acharya College of Engineering",
+        "city": "Badvel",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Intell Engineering College",
+        "city": "Anantapur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Balaji Institute of Engineering and Management Studies",
+        "city": "North Rajupalem",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "KLU School of Architecture",
+        "city": "Guntur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "NOVA College of Engineering and Technology",
+        "city": "Vegavaram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Chundi Ranganayakulu Engineering College",
+        "city": "Guntur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Seshachala Institute of Technology",
+        "city": "Gollakandriga",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Priyadarshini College of Engineering",
+        "city": "Sullurupeta",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Narayanadri Institute of Science and Technology",
+        "city": "Kadapa",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Krishnaveni Engineering College for Women",
+        "city": "Kesanapalli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dr KV Subba Reddy College of Engineering for Women",
+        "city": "Kurnool",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Avanthi's Research and Technological Academy",
+        "city": "Nandigam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "BVC College of Engineering",
+        "city": "East Godavari",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chadalawada Venkata Subbaiah College of Engineering",
+        "city": "Tirupati",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Golden Valley Integrated Campus",
+        "city": "Madanapalle",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Priyadarshini Institute of Technology",
+        "city": "Nellore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "GDMM College of Engineering and Technology",
+        "city": "Nandigama",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sai Ganapathi Engineering College",
+        "city": "Visakhapatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "ESC Government Polytechnic",
+        "city": "Nandyal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Vani School of Engineering",
+        "city": "Vijayawada",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Quba College of Engineering and Technology",
+        "city": "Nellore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "KORM College of Engineering",
+        "city": "Krishnapuram Village",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jogaiah Institute of Technology and Sciences",
+        "city": "Kalagampudi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "DJR Institute of Engineering and Technology",
+        "city": "Velpuru",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "DJR College of Engineering and Technology",
+        "city": "Vijayawada",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Coastal Institute of Technology and Management",
+        "city": "Vizianagaram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chintalapudi Engineering College",
+        "city": "Guntur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "ASK College of Technology and Management",
+        "city": "Visakhapatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Avanthis St Theressa Institute of Engineering and Technology",
+        "city": "Garividi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic for Women",
+        "city": "Srikakulam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bonam Venkata Chalamayya Engineering College",
+        "city": "Rajahmundry",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Swarnadhara College of Engineering and Technology",
+        "city": "Ramannapalem",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "St Mark Educational Institution Society Group of Institution",
+        "city": "Anantapur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Vaishnavi College of Engineering",
+        "city": "Srikakulam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Satya Narayana College of Engineering and Technology",
+        "city": "Ongole",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Prakash College of Technology",
+        "city": "Rajupeta",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SKR College of Engineering and Technology",
+        "city": "Kudithipalle",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Priyadarshini Institute of Technology and Science for Women",
+        "city": "Duggirala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Indira Institute of Technology and Sciences",
+        "city": "Idupur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Hindu College of Engineering and Technology",
+        "city": "Guntur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gouthami Institute of Technology and Management for Women",
+        "city": "Proddatur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dr Samuel George Institute of Engineering and Technology",
+        "city": "Markapur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Benaiah Institute of Technology and Sciences",
+        "city": "Burugupudi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rajiv Gandhi Recs Polytechnic",
+        "city": "Anakapalle",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "RISE Krishna Sai Polytechnic College",
+        "city": "Ongole",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Visakha Technical Campus Varaha Lakshmi Narasimha Swamy Educational Trust Group of Institutions",
+        "city": "Peda Narava",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shiva Rama Krishna College of Engineering and Technology",
+        "city": "Turakalakota",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Seshachala Institute of Engineering and Technology",
+        "city": "Gollakandriga",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Safa College of Engineering and Technology",
+        "city": "B. Thandrapadu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bharath College of Engineering and Technology for Women",
+        "city": "Kadapa",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "AMAKSIK College of Technology and Management",
+        "city": "Anakapalle",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sai Rajeswari Institute of Technology",
+        "city": "Kanapalli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Siddhartha Educational Academy Group of Institutions",
+        "city": "Tirupati",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Akula Sree Ramulu Institute of Engineering and Technology",
+        "city": "Tadepalligudem",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sreenivasa College of Engineering and Technology",
+        "city": "Pedda Tekur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Diviseema Polytechnic",
+        "city": "Machavaram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Varalakshmi Polytechnic",
+        "city": "Machilipatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sanketika Polytechnic College",
+        "city": "Visakhapatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Nalanda Institute of Technology",
+        "city": "Kantepudi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dr Paul Raj Engineering College",
+        "city": "East Godavari",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Velaga Nageswara Rao College of Engineering",
+        "city": "VallabhaRaoPalem",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "VS Lakshmi Engineering College for Women",
+        "city": "Matlapalem",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Swetha Institute of Technology and Science for Women",
+        "city": "C Ramapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Newton's Institute of Science and Technology",
+        "city": "Guntur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "KKC Institute of Technology and Engineering for Women",
+        "city": "Parameswara Mangalam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Intellectual Engineering College",
+        "city": "Anantapur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gurindapalli Devanandam Mary Memorial College of Engineering and Technology for Women",
+        "city": "Nandigama",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Grandhi Varalakshmi Venkata Rao Institute of Technology",
+        "city": "Tundurru",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "St Anns Engineering College",
+        "city": "Nayani Palli Rural",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Col DS Raju Polytechnic",
+        "city": "Poduru",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Leela Krishna Babuji Polytechnic",
+        "city": "Ravulapalem",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Smt B Seetha Polytechnic",
+        "city": "Kumudavalli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Jyothi Polytechnic",
+        "city": "Kalavapamula",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shiridi Sai Diploma in Engineering and Technology",
+        "city": "Vizianagaram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gokul Group of Institutions",
+        "city": "Vizianagaram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Visvodaya Engineering College",
+        "city": "Nellore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Prasanthi Polytechnic College",
+        "city": "Pudimadaka",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Avanthis Polytechnic College",
+        "city": "Vizianagaram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Behara Polytechnic",
+        "city": "Visakhapatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Gudur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "TGL Gopalsetty Polytechnic",
+        "city": "Adoni",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Tayyib Muslim Polytechnic College",
+        "city": "Kadapa",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Kandula Srinivasa Reddy College of Engineering",
+        "city": "Krishnapuram Village",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chadalwada Venkta Subbaiah College of Engineering",
+        "city": "Tirupati",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rajahmundry Engineering College",
+        "city": "Rajahmundry",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Seshachala Institute of Engineering and Technology",
+        "city": "Utharapukhandriga",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Priyadarshini Institute of Technology and Management",
+        "city": "Pulladigunta",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Guntupalli Venkateswarlu Memorial Polytechnic",
+        "city": "Parchoor",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "TVR Polytechnic College",
+        "city": "Pattangi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Balajee Polytechnic College",
+        "city": "T.K.Seetharama Puram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Swamy Vivekananda Polytechnic",
+        "city": "Vakadavalasa",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Smt Tamma Kotamma Reddy Polytechnic",
+        "city": "Pamarru",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vasavi Polytechnic",
+        "city": "Mittapalle",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Nuzvid Polytechnic",
+        "city": "Hanumanthunigudem",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chundi Ranganayakulu Polytechnic",
+        "city": "Chilakaluripet",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sai Ganapathi Polytechnic",
+        "city": "Visakhapatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri YVS and Sri BRM Polytechnic",
+        "city": "Muktheswaram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "BA Ramaiah Polytechnic",
+        "city": "Rajahmundry",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Addanki",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Repalle",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Yalamarty College of Polytechnic",
+        "city": "Visakhapatnam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bellamkonda Polytechnic College",
+        "city": "Podili",
+        "type": "Engineering",
+        "rating": "nan"
+    }
+]

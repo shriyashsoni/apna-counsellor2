@@ -1,0 +1,2 @@
+Data for Common App will be stored here.
+URL: https://www.commonapp.org

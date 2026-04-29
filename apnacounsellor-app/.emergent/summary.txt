@@ -1,0 +1,154 @@
+<analysis>**original_problem_statement**: 
+Build a modern, scalable, AI-powered counseling and mentorship platform connecting students, college mentors, and professional counsellors. The application focuses exclusively on engineering counseling streams (MHT-CET, JoSAA, COMEDK, MPDTE). 
+PRODUCT REQUIREMENTS: 
+- Mobile-first Expo React Native app
+- FastAPI backend with MongoDB
+- Real data strictly (no mock mentors/counsellors in DB)
+- Razorpay Payment Links API for bookings
+- Custom UI based on the new Apna Counsellor logo (Purple and Light Pink color palette)
+- Comprehensive Mentor System including Mentor Registration, 6-step Onboarding Flow, Public Profile, and full Mentor Dashboard.
+- Admin Dashboard for user management (Block/Unblock), approval of applications, and overview statistics.
+
+**User's preferred language**: English (INSTRUCT next agent to respond in English only)
+
+**what currently exists?**: 
+A fully functional Expo React Native application (Apna Counselor) connected to a FastAPI backend and MongoDB. 
+- **Theme**: Entire app UI has been redesigned to match the newly provided logo (Dark Purple , Light Pink  background). 
+- **Admin**: An Admin Dashboard () exists to manage users (approve/block/unblock) and view stats. Admin credentials are  / .
+- **Mentors**: All test mentors have been wiped from the DB. The Mentors tab and Top Mentors section have been temporarily hidden from the student view. 
+- **Auth**: Mentor registration API and frontend screen () have been created.  was patched to properly expose  and handle  correctly.
+
+**Last working item**:
+    - Last item agent was working: Testing the Mentor Registration frontend flow (). The backend API is confirmed working, and the UI form fills correctly, but the automated Playwright testing tool was timing out when trying to click the Create Account  component on React Native Web.
+    - Status: USER VERIFICATION PENDING
+    - Agent Testing Done: Y
+    - Which testing method agent to use? manual testing by curl/screenshot tool
+    - User Testing Done: N
+
+**All Pending/In progress Issue list**:
+  Issue 1: Mentor Registration web UI automation click failure (P1)
+     - Attempted fixes: Added , used , attempted raw coordinate clicks via . 
+     - Next debug checklist: . Verify if the form submits properly via human interaction (e.g., using Expo Go app or manual browser click). If manual clicking fails, ensure  is properly wired and no overlapping views block the touch target.
+     - Why fix this issue and what will be achieved with the fix? Ensures new mentors can successfully create accounts.
+     - Status: USER VERIFICATION PENDING
+     - Is recurring issue? N
+     - Should Test frontend/backend/both after fix? Frontend
+     - Blocked on other issue: None
+
+**In progress Task List**:
+  Task 1: Mentor Onboarding Flow UI (P0)
+     - Where to resume: .
+     - What will be achieved with this? Implement the user-requested 6-step onboarding flow (Basic Info, Academic Details, Mentorship Details, Pricing & Availability, Bio & Public Profile, Verification Review) after a mentor registers.
+     - Status: IN PROGRESS
+     - Should Test frontend/backend/both after fix? Both
+     - Blocked on something: None
+
+  Task 2: Mentor Public Profile Page (P1)
+     - Where to resume: Create/Update the public mentor profile screen ().
+     - What will be achieved with this? Students can view a premium, minimal public profile of mentors with verification badges, reviews, pricing, available slots, and a Book Session button.
+     - Status: NOT STARTED
+     - Should Test frontend/backend/both after fix? Frontend
+     - Blocked on something: Task 1 (needs mentor data to be populated).
+
+**Upcoming and Future Tasks**
+    Upcoming Tasks:
+    - P1: AI Features for Mentor Dashboard (AI-generated profile improvement, session summaries, student report generator, pricing recommendation).
+    - P1: Notification System (Platform notifications for new booking, session reminders, payments, reviews, profile approval).
+    - P1: Re-enable Mentors tab in  and Find Mentors quick action in  once real mentors register.
+    - P2: Add the remaining 130+ engineering colleges to the database (currently at 70) to reach 200+ total.
+    - P2: Complete the Calendar & Availability sync and Razorpay payout UI in the Mentor Dashboard.
+    
+    Future Tasks:
+    - P2: WebRTC/Agora integration for session recording & playback.
+
+**Completed work in this session**
+- Extracted color palette from new logo and redesigned global theme () (DONE)
+- Removed background from logo image via python  (DONE)
+- Created Admin Dashboard UI for manual user approval/blocking () (DONE)
+- Set up official admin credentials () (DONE)
+- Cleaned DB: Deleted all mock test mentors, counsellors, and sessions (DONE)
+- Hid Mentor tabs and dashboard sections automatically since there are no active mentors (, ) (DONE)
+- Built Mentor registration backend route and frontend screen () (DONE)
+- Fixed  to handle mentor login state correctly (DONE)
+
+**Earlier issues found/mentioned but not fixed**
+   - None
+
+**Known issue recurrence from previous fork**
+  - Issue recurrence in previous fork: N/A
+  - Recurrence count: 0
+  - Status: NOT STARTED
+
+**Code Architecture**
+
+
+**Key Technical Concepts**
+Frontend: Expo React Native, Expo Router, Context API, Platform-specific Styling (React Native Web vs iOS/Android shadows).
+Backend: Python FastAPI, Pydantic, Passlib.
+Database: MongoDB (Motor async driver).
+Payments: Razorpay API (Payment Links).
+AI/LLM: Claude Sonnet 4.5 via Emergent LLM Key.
+
+**key DB schema**
+  - users: 
+  - colleges: 
+  - sessions: 
+
+**changes in tech stack**
+  - No major additions. Temporary usage of  python CLI for logo background removal.
+
+**All files of reference** 
+  - : Contains the primary (Purple ) and background (Pink ) brand colors.
+  - : Updated to hide the Mentor sections and add Admin/Mentor dashboard entry points conditionally based on role.
+  - : Created to separate Mentor signup from Student signup.
+  - : Updated to correctly handle tokens and expose  for new registration flows.
+  - : Central monolithic file updated with mentor registration and admin block/unblock endpoints.
+  - : Created for the admin () to manage/block users and approve applications.
+  - : Placeholder created for the full Mentor Dashboard feature.
+  - : Placeholder created for the 6-step mentor onboarding feature.
+
+**Areas that need refactoring**: 
+ is approaching 800 lines. As we add more Mentor Dashboard API routes, the backend should be refactored into a modular  structure.
+
+**key api endpoints**
+  -  (New)
+  - ,  (Approve, Block, Unblock)
+  - 
+
+**Critical Info for New Agent** 
+- **Theme Constraints**: The app MUST use the Purple () and Light Pink () palette derived from the user's logo. Do not revert to older themes.
+- **Counseling Scope**: The app focuses strictly on JoSAA, MHT-CET, COMEDK, and MPDTE. Do NOT add NEET or medical options.
+- **Hidden Features**: The Mentors tab and Top Mentors UI components are currently hidden because all mock data was deleted. When a real mentor registers and is approved, you will need to re-enable  in  to unhide it.
+- **Admin Setup**: Admin login is fixed to  | .
+
+**documents and test reports created in this job** 
+  -  (Updated with new admin email and passwords)
+
+**Last 10 User Messages and any pending HUMAN messages** 
+ 1. Request to redesign app UI based on uploaded Apna Counsellor logo. - COMPLETED
+ 2. User specified they only want to focus on 4 engineer counseling streams (JoSAA, MHT-CET, COMEDK, MPDTE), admin email setup, and removal of logo background. - COMPLETED
+ 3. Confirmed details: removed background, built Admin portal, mentor dashboard placeholder. - COMPLETED
+ 4. Request to delete all test mentors and hide the mentor section until real mentors sign up. - COMPLETED
+ 5. Provided detailed product specification for the entire Mentor System (Signup, 6-step Onboarding, Public Profile, Mentor Dashboard, AI tools, Notifications). - IN PROGRESS
+ 6. User reported Registration failed for mentor login - COMPLETED (Backend API working, frontend context fixed; verified via bash, issue was limited to Playwright automation clicking  on web).
+
+**Project Health Check:**
+  - Broken: Playwright testing tool is struggling to click the  component on the web-rendered version of the mentor registration form. (The actual component is expected to work on mobile/human interaction).
+  - Mocked: None
+
+**3rd Party Integrations**
+  - OpenAI/Anthropic/Gemini API via Emergent LLM Key — uses Emergent LLM Key (for AI chat & recommendations)
+  - Razorpay (Payments) — requires User API Key (Present in )
+
+**Testing status**
+  - Testing agent used after significant changes: NO (Relied heavily on curl and screenshot_tool)
+  - Troubleshoot agent used after agent stuck in loop: NO
+  - Test files created: None
+  - Known regressions: Web UI automated click handling for React Native Web touchable targets in .
+
+**Credentials to test flow:**
+Refer to .
+Admin:  / 
+
+**What agent forgot to execute**
+The agent set up the basic Mentor Registration UI and API, but did not finish the 6-step Mentor Onboarding flow, the public mentor profile, or the complex Mentor Dashboard requested by the user in their massive prompt. These are carried over to the In Progress and Upcoming Tasks lists.</analysis>

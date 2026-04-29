@@ -1,0 +1,1400 @@
+[
+    {
+        "name": "Indian Institute of Space Science and Technology",
+        "city": "Thiruvananthapuram",
+        "type": "Engineering",
+        "rating": "2.87"
+    },
+    {
+        "name": "College of Engineering",
+        "city": "Thiruvananthapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Cochin University of Science and Technology",
+        "city": "Kochi",
+        "type": "Engineering",
+        "rating": "3.09"
+    },
+    {
+        "name": "TKM College of Engineering",
+        "city": "Kollam",
+        "type": "Engineering",
+        "rating": "3.11"
+    },
+    {
+        "name": "Rajiv Gandhi Institute of Technology",
+        "city": "Kottayam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Engineering College",
+        "city": "Thrissur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mahatma Gandhi University",
+        "city": "Kottayam",
+        "type": "Engineering",
+        "rating": "3.24"
+    },
+    {
+        "name": "Amrita School of Engineering",
+        "city": "Vallikavu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rajagiri School of Engineering and Technology",
+        "city": "Kochi",
+        "type": "Engineering",
+        "rating": "3.03"
+    },
+    {
+        "name": "Mar Athanasius College of Engineering",
+        "city": "Kothamangalam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Indian Institute of Information Technology",
+        "city": "Kottayam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Indian Institute of Technology Palakkad ",
+        "city": "Palakkad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sree Chitra Thirunal College of Engineering",
+        "city": "Thiruvananthapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Engineering College",
+        "city": "Thiruvananthapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "School of Engineering",
+        "city": "Kochi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "University of Calicut",
+        "city": "Malappuram",
+        "type": "Engineering",
+        "rating": "3.13"
+    },
+    {
+        "name": "TKM Institute of Technology",
+        "city": "Kollam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "University of Kerala",
+        "city": "Thiruvananthapuram",
+        "type": "Engineering",
+        "rating": "3.03"
+    },
+    {
+        "name": "College of Engineering",
+        "city": "Chengannur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "MES College of Engineering",
+        "city": "Malappuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government College of Engineering",
+        "city": "Kannur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "NSS College of Engineering",
+        "city": "Palakkad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Engineering College",
+        "city": "Kozhikode",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SCMS School of Engineering and Technology",
+        "city": "Ernakulam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sree Chitra Tirunal Institute for Medical Sciences and Technology Trivandrum ",
+        "city": "Thiruvananthapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Engineering College",
+        "city": "Idukki Township",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Engineering College",
+        "city": "Sreekrishnapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mar Baselios College of Engineering and Technology",
+        "city": "Thiruvananthapuram",
+        "type": "Engineering",
+        "rating": "3.13"
+    },
+    {
+        "name": "Government Model Engineering College",
+        "city": "Ernakulam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Engineering College",
+        "city": "Tindummal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Federal Institute of Science and Technology",
+        "city": "Mookkannoor",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Amal Jyothi College of Engineering",
+        "city": "Koovappally",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Indian Maritime University",
+        "city": "Kochi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "LBS College of Engineering",
+        "city": "Bovikanam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Saintgits College of Engineering",
+        "city": "Pathamuttam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Cochin University College of Engineering",
+        "city": "Pullinkunnu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Adi Shankara Institute of Engineering and Technology",
+        "city": "Kalady",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "ACE College of Engineering",
+        "city": "Thiruvananthapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "LBS Institute of Technology for Women",
+        "city": "Thiruvananthapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Muthoot Institute of Technology and Science",
+        "city": "Thiruvaniyoor",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jyothi Engineering College",
+        "city": "Thrissur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vidya Academy of Science and Technology",
+        "city": "Thrissur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "CAT College of Architecture",
+        "city": "Vilappilsala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "College of Engineering",
+        "city": "Thalassery",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Toc H Institute of Science and Technology",
+        "city": "Ernakulam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jawaharlal College of Engineering and Technology",
+        "city": "Lakkidi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sree Narayana Gurukulam College of Engineering",
+        "city": "Kadayirippu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "College of Engineering",
+        "city": "Manakala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rajadhani Institute of Engineering and Technology",
+        "city": "Thiruvananthapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Kerala University of Fisheries and Ocean Studies",
+        "city": "Ernakulam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Calicut University Institute of Engineering Technology",
+        "city": "Pallikal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "College of Engineering",
+        "city": "Vadakara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "College of Engineering",
+        "city": "Munnar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Cochin Institute of Science and Technology",
+        "city": "Eattappilly",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sahrdaya College of Engineering and Technology",
+        "city": "Thrissur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Marian Engineering College",
+        "city": "Thiruvananthapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "College of Engineering",
+        "city": "Attingal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Christ College of Engineering",
+        "city": "Thrissur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Department of Ship Technology",
+        "city": "Ernakulam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "College of Engineering and Management",
+        "city": "Alappuzha",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "University College of Engineering",
+        "city": "Thiruvananthapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Cochin College of Engineering and Technology",
+        "city": "Kattipparuthi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "St Joseph's College of Engineering and Technology",
+        "city": "Choondacherry",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Viswajyothi College of Engineering and Technology",
+        "city": "Ernakulam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "College of Engineering",
+        "city": "Thiruvananthapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "ILM College of Engineering and Technology",
+        "city": "Ernakulam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "College of Engineering",
+        "city": "Kollam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "College of Engineering",
+        "city": "Cheemeni",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ahalia School of Engineering and Technology",
+        "city": "Palakkad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "College of Engineering",
+        "city": "Madathumbhagom North",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "College of Engineering",
+        "city": "Kottarakkara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "International School of Photonics",
+        "city": "Ernakulam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "TKM School of Architecture",
+        "city": "Ezhukone",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vimal Jyothi Engineering College",
+        "city": "Kannur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ilahia College of Engineering and Technology",
+        "city": "Mulavoor",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "College of Engineering",
+        "city": "Kidangoor",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "College of Engineering",
+        "city": "Karunagappally",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Christ Knowledge City",
+        "city": "Ernakulam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mar Baselios Institute of Technology and Science",
+        "city": "Nellimattom",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "College of Engineering",
+        "city": "Pathanapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vedavyasa Institute of Technology",
+        "city": "Kozhikode",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mohandas College of Engineering and Technology",
+        "city": "Nedumangad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "MEA Engineering College",
+        "city": "Vengoor",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Albertian Institute of Science and Technology- Technical Campus",
+        "city": "Ernakulam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "St Thomas Institute for Science and Technology",
+        "city": "Chanthavila",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bishop Jerome Institute",
+        "city": "Kollam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Nehru College of Engineering and Research Centre",
+        "city": "Pambadi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mount Zion College of Engineering",
+        "city": "Kadammanitta",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Malabar College of Engineering and Technology",
+        "city": "Pallur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "College of Engineering",
+        "city": "Thavanakkadavu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Thejus Engineering College",
+        "city": "Vellarakkad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sree Buddha College of Engineering",
+        "city": "Alappuzha",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sarabhai Institute of Science and Technology",
+        "city": "Thiruvananthapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "KMEA Engineering College",
+        "city": "Pukkattupady",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "University College of Engineering",
+        "city": "Muttom",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "KMCT College of Engineering for Women",
+        "city": "Poolacode",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "College of Engineering",
+        "city": "Poonjar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "MET's School of Engineering",
+        "city": "Valiyaparambu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "MG College of Engineering",
+        "city": "Thiruvananthapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Valia Koonambaikulathamma College of Engineering and Technology",
+        "city": "Trivandrum",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mar Baselios Christian College of Engineering and Technology",
+        "city": "Idukki",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Heera College of Engineering and Technology",
+        "city": "Panavoor",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "KMCT College of Engineering",
+        "city": "Poolacode",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Hindustan College of Engineering",
+        "city": "Madathara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vidya Academy of Science and Technology - Technical Campus",
+        "city": "Thiruvananthapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Thottada",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bishop Jerome School of Architecture and Design",
+        "city": "Kollam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Nirmala College of Engineering",
+        "city": "Meloor",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mangalam College of Engineering",
+        "city": "Ettumanoor",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "IES College of Engineering",
+        "city": "Chitilappilly",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "College of Engineering and Technology",
+        "city": "Payyanur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "AWH Engineering College",
+        "city": "Kuttikkattoor",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Al Salama Institute of Architecture",
+        "city": "Kuruvambalam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Marian College of Architecture and Planning",
+        "city": "Thiruvananthapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Carmel Polytechnic College",
+        "city": "Alappuzha",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Malappuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sree Narayana Guru Institute of Science and Technology",
+        "city": "Mannam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sree Narayana Institute of Technology",
+        "city": "Ezhamkulam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sree Buddha College of Engineering",
+        "city": "Muttathukonam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Lourdes Matha College of Science and Technology",
+        "city": "Kuttichal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "John Cox Memorial CSI Institute of Technology",
+        "city": "Thiruvananthapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Al-Ameen Engineering College",
+        "city": "Palakkad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "College of Engineering",
+        "city": "Kidangannoor",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Carmel College of Engineering and Technology",
+        "city": "Alappuzha",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "KMEA College of Architecture",
+        "city": "Aluva",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "JDT Islam Polytechnic College",
+        "city": "Kozhikode",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SNM Institute of Management and Technology",
+        "city": "Madaplathuruth",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "UKF College of Engineering and Technology",
+        "city": "Kollam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Trinity College of Engineering",
+        "city": "Thiruvananthapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sree Narayana Guru College of Engineering and Technology",
+        "city": "Kannur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Musaliar College of Engineering and Technology",
+        "city": "Malayalapuzha",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ilahia School of Science and Technology",
+        "city": "Ernakulam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Baselios Thomas I Catholicose College of Engineering and Technology",
+        "city": "Koothattukulam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Al Azhar College of Engineering and Technology",
+        "city": "Idukki",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "M Dasan Institute of Technology",
+        "city": "Ulliyeri",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "KVM College of Engineering and IT",
+        "city": "Cherthala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Vellappally Natesan College of Engineering",
+        "city": "Bharanikkavu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "MES Institute of Technology and Management",
+        "city": "Kollam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "MES College of Engineering and Technology",
+        "city": "Kunnukara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Holy Kings College of Engineering and Technology",
+        "city": "Memury",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Believers Church Caarmel Engineering College",
+        "city": "Koonamkara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Baselios Mathews II College of Engineering",
+        "city": "Bharanikavu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Archana College of Engineering",
+        "city": "Palamel",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ammini College of Engineering",
+        "city": "Palakkad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Pinnacle School of Engineering and Technology",
+        "city": "Mathra",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Department of Electronics",
+        "city": "Kochi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Providence College of Engineering",
+        "city": "Ala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Royal College of Engineering and Technology",
+        "city": "Chiramanangad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Eranad Knowledge City Technical Campus",
+        "city": "Malappuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Aryanet Institute of Technology",
+        "city": "Palakkad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vijnan Institute of Science and Technology",
+        "city": "Ernakulam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Prime College of Engineering",
+        "city": "Pallatheri",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Madin Polytechnic College",
+        "city": "Malappuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SCMS School of Architecture",
+        "city": "Edakkunnu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "North Malabar Institute of Technology",
+        "city": "Kasaragod",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Holy Grace Academy of Engineering",
+        "city": "Kuruvilassery",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Universal Engineering College",
+        "city": "Thrissur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "St Thomas College of Engineering and Technology",
+        "city": "Parachanta",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sree Ernakulathappan College of Engineering and Management",
+        "city": "Injakundu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "School of Technology and Applied Sciences",
+        "city": "Kottayam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "PRS College of Engineering and Technology",
+        "city": "Keezharoor",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Muslim Association College of Engineering",
+        "city": "Thiruvananthapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mount Zion Institute of Science and Technology",
+        "city": "Alappuzha",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Matha College of Technology",
+        "city": "Ernakulam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Kottayam Institute of Technology and Science",
+        "city": "Anickadu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gurudeva Institute of Science and Technology",
+        "city": "Meenadom",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Axis College of Engineering and Technology",
+        "city": "Thrissur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Musaliar College of Engineering",
+        "city": "Chirayinkeezhu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "TOMS College of Engineering for Startups",
+        "city": "Mattakkara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "National Centre for Aquatic Animal Health",
+        "city": "Ernakulam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "AWH Polytechnic College",
+        "city": "Kuttikkattoor",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Younus Institute of Technology",
+        "city": "Kannanalloor",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sreepathy Institute of Management and Technology",
+        "city": "Palakkad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Malabar Institute of Technology",
+        "city": "Anjarakandy",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "KR Gouri Amma College of Engineering",
+        "city": "Thuravoor Thekku",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "National Institute of Electronics and Information Technology",
+        "city": "Kattangal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Focus Institute of Science and Technology",
+        "city": "Killannur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Maharaja's Technological Institute",
+        "city": "Thrissur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Swami Nithyananda Polytechnic College",
+        "city": "Kanhangad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Seethi Sahib Memorial Polytechnic College",
+        "city": "Tirur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Younus College of Engineering and Technology",
+        "city": "Kollam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Travancore Engineering College",
+        "city": "Kollam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shahul Hameed Memorial Engineering College",
+        "city": "Kollam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Indira Gandhi Institute of Engineering and Technology",
+        "city": "Ernakulam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Amrita Center for Nanosciences and Molecular Medicine",
+        "city": "Ernakulam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "St Thomas College of Engineering and Technology",
+        "city": "Mattannur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Cherthala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jai Bharath College of Management and Engineering Technology",
+        "city": "Vengola",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Younus College of Engineering",
+        "city": "Kollam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sadguru Swami Nithyananda Institute of Technology",
+        "city": "Kanhangad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Women's Polytechnic College",
+        "city": "Alappuzha",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Women's Polytechnic College",
+        "city": "Thrissur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "KMCT Polytechnic College",
+        "city": "Thazhecode",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Idukki",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Al Azhar Polytechnic College",
+        "city": "Thodupuzha",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Chelakkara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Nattakom",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Pankajakasthuri College of Engineering and Technology",
+        "city": "Maranalloor",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "DG College of Architecture",
+        "city": "Malappuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sneha College of Architecture",
+        "city": "Palakkad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "College of Applied Science",
+        "city": "Vadakkencherry",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "MES College of Architecture",
+        "city": "Kakkodi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "LBS Centre for Science and Technology",
+        "city": "Thiruvananthapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Department of Computer Science",
+        "city": "Thiruvananthapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Nizar Rahim and Mark School of Architecture",
+        "city": "Kollam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sree Rama Government Polytechnic College",
+        "city": "Valapad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vedavyasa College of Architecture",
+        "city": "Malappuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Kannur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Periye",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Koovappady",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Koratty",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "ER and DCI Institute of Technology",
+        "city": "Thiruvananthapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "School of Computer Sciences",
+        "city": "Kottayam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "St Mary's Polytechnic College",
+        "city": "Mudappallur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Keltron Toolroom Research and Training Centre",
+        "city": "Kochi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Thiagarajar Polytechnic College",
+        "city": "Vendore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Chelad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Women's Polytechnic College",
+        "city": "Kozhikode",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Manakala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Thrissur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Neyyattinkara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Muttom",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Global Institute of Architecture",
+        "city": "Palakkad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "St Gregorios College of Engineering",
+        "city": "Perla",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Noorul Islam Polytechnic College",
+        "city": "Thiruvananthapuram",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Indira Gandhi Polytechnic",
+        "city": "Eramalloor",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Malabar Polytechnic Campus",
+        "city": "Cherpulassery",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Institute of Printing Technology and Government Polytechnic College",
+        "city": "Kulappully",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Kaduthuruthy",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Model Polytechnic College",
+        "city": "Poonjar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Model Polytechnic College",
+        "city": "Mattakkara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Model Polytechnic College",
+        "city": "Vadakara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Orphanage Polytechnic College",
+        "city": "Edavanna",
+        "type": "Engineering",
+        "rating": "nan"
+    }
+]

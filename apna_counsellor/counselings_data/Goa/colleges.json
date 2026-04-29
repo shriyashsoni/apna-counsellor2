@@ -1,0 +1,80 @@
+[
+    {
+        "name": "National Institute of Technology Goa ",
+        "city": "Ponda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "BITS Pilani",
+        "city": "Chicalim",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Indian Institute of Technology Goa ",
+        "city": "Ponda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Goa College of Engineering",
+        "city": "Ponda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Padre Conceicao College of Engineering",
+        "city": "Majorda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Goa College of Architecture",
+        "city": "Panaji",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Don Bosco College of Engineering",
+        "city": "Margao",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Agnel Institute of Technology and Design",
+        "city": "Assagao",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shree Rayeshwar Institute of Engineering and Information Technology",
+        "city": "Shiroda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Institute of Shipbuilding Technology",
+        "city": "Vasco da Gama",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Agnel Polytechnic",
+        "city": "Goa",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Panaji",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Bicholim",
+        "type": "Engineering",
+        "rating": "nan"
+    }
+]

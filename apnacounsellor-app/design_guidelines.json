@@ -1,0 +1,148 @@
+{
+  "project_type": "Expo React Native App",
+  "theme_archetype": {
+    "theme": "Light",
+    "archetype": "Swiss Minimalist / High-Contrast Monochrome",
+    "rationale": "Aligns with user request for strict Black and White, clean, minimal SaaS-like UI. Represents authority, clarity, and trust for educational counseling."
+  },
+  "technical_rules": [
+    "Strictly use React Native components: View, Text, TouchableOpacity, ScrollView, TextInput, Image.",
+    "All styling MUST use StyleSheet.create(). NO Tailwind CSS, NO HTML, NO className.",
+    "Include `testID` property (React Native's data-testid) on all interactive and key UI elements (e.g., testID=\"login-submit-button\").",
+    "Use `expo-blur` (BlurView) for glassmorphism effects."
+  ],
+  "color_system": {
+    "primary": "#000000",
+    "background": "#FFFFFF",
+    "surface_main": "#F5F5F5",
+    "surface_elevated": "#FAFAFA",
+    "border": "#E5E5E5",
+    "text_primary": "#000000",
+    "text_secondary": "#737373",
+    "text_inverse": "#FFFFFF",
+    "overlay": "rgba(0, 0, 0, 0.5)",
+    "rules": "Strictly Grayscale. NO primary colored buttons. NO teal, blue, or purple. Use heavy black for actions, gray for disabled."
+  },
+  "typography_system": {
+    "font_family": {
+      "heading": "Outfit",
+      "body": "Manrope",
+      "fallback": "System"
+    },
+    "scale": {
+      "h1": { "fontSize": 32, "lineHeight": 40, "fontWeight": "800", "letterSpacing": -1 },
+      "h2": { "fontSize": 24, "lineHeight": 32, "fontWeight": "700", "letterSpacing": -0.5 },
+      "h3": { "fontSize": 20, "lineHeight": 28, "fontWeight": "600" },
+      "body_large": { "fontSize": 18, "lineHeight": 26, "fontWeight": "400" },
+      "body": { "fontSize": 16, "lineHeight": 24, "fontWeight": "400" },
+      "label": { "fontSize": 14, "lineHeight": 20, "fontWeight": "500", "textTransform": "uppercase", "letterSpacing": 1 },
+      "caption": { "fontSize": 12, "lineHeight": 16, "fontWeight": "400", "color": "#737373" }
+    }
+  },
+  "layout_and_spacing": {
+    "spacing": {
+      "xs": 4,
+      "sm": 8,
+      "md": 16,
+      "lg": 24,
+      "xl": 32,
+      "xxl": 48
+    },
+    "border_radius": {
+      "sm": 8,
+      "md": 12,
+      "lg": 16,
+      "pill": 100
+    },
+    "patterns": {
+      "screen_padding": "paddingHorizontal: 24, paddingVertical: 32",
+      "card_gap": "marginBottom: 16",
+      "alignment": "Left-align dense text. Center-align hero text and main actions."
+    }
+  },
+  "components": {
+    "Button": {
+      "primary": "backgroundColor: '#000000', borderRadius: 100, paddingVertical: 16, paddingHorizontal: 32, alignItems: 'center', justifyContent: 'center'",
+      "primary_text": "color: '#FFFFFF', fontSize: 16, fontWeight: '600'",
+      "secondary": "backgroundColor: 'transparent', borderWidth: 1, borderColor: '#E5E5E5', borderRadius: 100, paddingVertical: 16, paddingHorizontal: 32, alignItems: 'center'",
+      "secondary_text": "color: '#000000', fontSize: 16, fontWeight: '600'"
+    },
+    "Card": {
+      "base": "backgroundColor: '#FAFAFA', borderRadius: 16, padding: 24, borderWidth: 1, borderColor: '#E5E5E5'",
+      "elevated": "backgroundColor: '#FFFFFF', shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.05, shadowRadius: 24, elevation: 4"
+    },
+    "Input": {
+      "base": "height: 56, backgroundColor: '#F5F5F5', borderRadius: 12, paddingHorizontal: 16, fontSize: 16, color: '#000000', borderWidth: 1, borderColor: 'transparent'",
+      "focused": "borderColor: '#000000', backgroundColor: '#FFFFFF'"
+    },
+    "Avatar": {
+      "base": "borderRadius: 100, backgroundColor: '#E5E5E5'"
+    },
+    "GlassHeader": {
+      "rules": "Use Expo BlurView with intensity={50} and tint='light' for floating top navs and bottom tab bars."
+    }
+  },
+  "screens": {
+    "RoleSelection": {
+      "design": "Massive touch targets (50% screen height each) for 'Student' and 'Mentor'. Pure monochrome contrast."
+    },
+    "StudentDashboard": {
+      "design": "H2 Greeting. Black AI Action Card with white text. Horizontal ScrollView for 'Upcoming Sessions'. 2-column Grid for 'Recommended Mentors'."
+    },
+    "MentorProfile": {
+      "design": "Top hero image (maxHeight: 300). Clean sheet overlay curving up. Large typography for name and rating. Fixed glassmorphism bottom bar for 'Book Session' action."
+    },
+    "CollegeRecommender": {
+      "design": "Bento box style vertical list. Cards containing high-quality monochrome images of campuses. 1px gray borders."
+    },
+    "AIChatAssistant": {
+      "design": "Message bubbles: User gets black bg/white text. AI gets gray bg/black text. Input area fixed at bottom."
+    },
+    "SessionBooking": {
+      "design": "Minimalist calendar grid. Only numbers visible. Selected date is a black circle. Time slots as rounded secondary pills."
+    },
+    "EarningsDashboard": {
+      "design": "Massive typography for total balance. Custom minimal bar chart (black rectangles on gray tracks). No axis lines."
+    },
+    "ProfileBuilder": {
+      "design": "Multi-step form. 1 massive input per screen. Generous top padding. Progress bar (black line) at top."
+    }
+  },
+  "media": {
+    "student_imagery": [
+      {
+        "url": "https://images.unsplash.com/photo-1598755935111-1e49a6ad63b5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1OTN8MHwxfHNlYXJjaHwzfHxzdHVkZW50JTIwc3R1ZHlpbmclMjBibGFjayUyMGFuZCUyMHdoaXRlfGVufDB8fHx8MTc3NjM0Mjk4MHww&ixlib=rb-4.1.0&q=85",
+        "description": "Student looking forward, grayscale"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1689032025581-647cd084e3da?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1OTN8MHwxfHNlYXJjaHwxfHxzdHVkZW50JTIwc3R1ZHlpbmclMjBibGFjayUyMGFuZCUyMHdoaXRlfGVufDB8fHx8MTc3NjM0Mjk4MHww&ixlib=rb-4.1.0&q=85",
+        "description": "Student sitting, studying"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1747228727330-90f4d9026a50?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1OTN8MHwxfHNlYXJjaHwyfHxzdHVkZW50JTIwc3R1ZHlpbmclMjBibGFjayUyMGFuZCUyMHdoaXRlfGVufDB8fHx8MTc3NjM0Mjk4MHww&ixlib=rb-4.1.0&q=85",
+        "description": "Smiling student portrait"
+      }
+    ],
+    "mentor_imagery": [
+      {
+        "url": "https://images.unsplash.com/photo-1635144908626-cf7418a50aee?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNzl8MHwxfHNlYXJjaHwzfHxwcm9mZXNzaW9uYWwlMjBtZW50b3IlMjBjb25zdWx0aW5nJTIwYmxhY2slMjBhbmQlMjB3aGl0ZXxlbnwwfHx8fDE3NzYzNDI5ODB8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Mentors consulting at laptop"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1573496773437-c5780ca4202d?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNzl8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBtZW50b3IlMjBjb25zdWx0aW5nJTIwYmxhY2slMjBhbmQlMjB3aGl0ZXxlbnwwfHx8fDE3NzYzNDI5ODB8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Professional mentor portrait"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1573167659694-342d570ce45a?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNzl8MHwxfHNlYXJjaHwyfHxwcm9mZXNzaW9uYWwlMjBtZW50b3IlMjBjb25zdWx0aW5nJTIwYmxhY2slMjBhbmQlMjB3aGl0ZXxlbnwwfHx8fDE3NzYzNDI5ODB8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Two women talking, mentoring session"
+      }
+    ]
+  },
+  "instructions_to_main_agent": [
+    "NEVER use placeholder domains like via.placeholder.com. ONLY use the Unsplash URLs provided.",
+    "This is an Expo React Native app. You MUST use StyleSheet.create. DO NOT USE className, Tailwind, or web tags like <div>.",
+    "Implement testID on all interactive elements. Example: <TouchableOpacity testID='submit-btn'>",
+    "Use expo-blur for glassmorphism panels.",
+    "Strict monochrome only: Do not introduce ANY arbitrary colors for alerts or success. Rely on black, gray borders, and distinct shapes."
+  ]
+}

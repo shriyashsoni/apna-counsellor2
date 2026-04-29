@@ -1,0 +1,1568 @@
+[
+    {
+        "name": "Maulana Azad National Institute of Technology Bhopal ",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Indian Institute of Technology Indore ",
+        "city": "Simrol",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Atal Bihari Vajpayee Indian Institute of Information Technology and Management Gwalior ",
+        "city": "Gwalior",
+        "type": "Engineering",
+        "rating": "3.13"
+    },
+    {
+        "name": "Indian Institute of Information Technology Design and Manufacturing Jabalpur ",
+        "city": "Jabalpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Govindram Seksaria Institute of Technology and Science",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "ITM University",
+        "city": "Gwalior",
+        "type": "Engineering",
+        "rating": "2.31"
+    },
+    {
+        "name": "Indian Institute of Science Education and Research Bhopal ",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Lakshmi Narain College of Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Institute of Engineering and Technology Devi Ahilya Vishwavidyalaya",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jabalpur Engineering College",
+        "city": "Jabalpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "University Institute of Technology Rajiv Gandhi Proudyogiki Vishwavidyalaya",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jiwaji University",
+        "city": "Gwalior",
+        "type": "Engineering",
+        "rating": "3.06"
+    },
+    {
+        "name": "Rajiv Gandhi Proudyogiki Vishwavidyalaya",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Madhav Institute of Technology and Science",
+        "city": "Gwalior",
+        "type": "Engineering",
+        "rating": "2.86"
+    },
+    {
+        "name": "Acropolis Institute of Technology and Research",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sagar Institute of Science and Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sagar Institute of Research and Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Barkatullah University Institute of Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ujjain Engineering College",
+        "city": "Ujjain",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Oriental Institute of Science and Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Institute of Engineering and Science",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dr Harisingh Gour Vishwavidyalaya",
+        "city": "Sagar",
+        "type": "Engineering",
+        "rating": "3.04"
+    },
+    {
+        "name": "Lakshmi Narain College of Technology and Science",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sarvepalli Radhakrishnan University",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "School of Planning and Architecture Bhopal ",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Technocrats Institute of Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Institute of Engineering and Technology",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Vaishnav Institute of Technology and Science",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Indian Institute of Information Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Avantika University",
+        "city": "Lekoda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Symbiosis University of Applied Sciences",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Amity University",
+        "city": "Gwalior",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sagar Institute of Science",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Samrat Ashok Technological Institute",
+        "city": "Vidisha",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sagar Institute of Science Technology and Engineering",
+        "city": "Sikandarabad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Indore Institute of Science and Technology",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Swami Vivekanand University",
+        "city": "Sironja",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rewa Engineering College",
+        "city": "Rewa",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vikram University",
+        "city": "Ujjain",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Engineering College Nowgong",
+        "city": "Chhatarpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Indira Gandhi Engineering College",
+        "city": "Baheria Gadgad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jaypee University of Engineering and Technology",
+        "city": "Chetabarri",
+        "type": "Engineering",
+        "rating": "3.06"
+    },
+    {
+        "name": "RKDF University",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Hitkarini College of Engineering and Technology",
+        "city": "Chakdehi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rustamji Institute of Technology",
+        "city": "Gwalior",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Patel Institute of Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Acropolis Technical Campus",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Peoples University",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mahatma Gandhi Chitrakoot Gramodaya Vishwavidyalaya",
+        "city": "Satna",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Medi-Caps University",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "AKS University",
+        "city": "Satna",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Oriental College of Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "School of Computer Science and Information Technology",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Aurobindo Institute of Technology",
+        "city": "Bhawrasla",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sanghvi Institute of Management and Science",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "TIT College",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gyan Ganga Institute of Technology and Sciences",
+        "city": "Jabalpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sardar Vallabhbai Polytechnic College",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shiv Kumar Singh Institute of Technology and Science",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Patel College of Science and Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Lakshmi Narain College of Technology",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Radharaman Institute of Technology and Science",
+        "city": "Mendora",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Vaishnav Vidyapeeth Vishwavidyalaya",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rajeev Gandhi Proudyogiki Mahavidyalaya",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "AISECT Institute of Science and Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chameli Devi Group of Institutions",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Swami Vivekanand College of Engineering",
+        "city": "Bardari",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bansal Institute of Science and Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Satya Sai University of Technology and Medical Sciences",
+        "city": "Sehore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rajeev Gandhi Prodyogiki Mahavidyalaya-2",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Aditya College of Technology and Science",
+        "city": "Satna",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Acropolis Institute of Technology and Research",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "VNS Group of Institutions",
+        "city": "Barkheda Nathu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Prestige Institute of Engineering Management and Research",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sagar Institute of Research and Technology-Excellence",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "NRI Institute of Information Science and Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Millennium Institute of Technology and Science",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "ADINA Institute of Science and Technology",
+        "city": "Lahdara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "School of Architecture",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Indore Institute of Science and Technology-II",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Central India institute of Technology",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Astral Institute of Technology and Research",
+        "city": "Mirjapur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mahatma Gandhi Institute of Engineering and Management",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SAM College of Engineering and Technology",
+        "city": "Sagoni Kalan",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Malwa Institute of Technology",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Alpine Institute of Technology",
+        "city": "Ujjain",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "All Saints' College of Engineering",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Agnos College of Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Lakshmi Narain College of Technology and Science",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Central Institute of Plastics Engineering and Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "School of Electronics",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Vaishnav Polytechnic College",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "University Institute of Technology Rajiv Gandhi Proudyogiki Vishwavidyalaya",
+        "city": "Shahdol",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "ITM Institute of Technology and Management",
+        "city": "Gwalior",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sagar Institute of Research Technology and Science",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "TRUBA Institute of Engineering and Information Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Ram Institute of Technology",
+        "city": "Jabalpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rishiraj Institute of Technology",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Radharaman Engineering College",
+        "city": "Mendora",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "National Institute of Technical Teachers Training and Research",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SAGE University",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Trinity Institute of Technology and Research",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bansal College of Engineering",
+        "city": "Itaya Kalan",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sagar Institute of Research and Technology",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "IPS College of Technology and Management",
+        "city": "Gwalior",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Corporate Institute of Science and Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dr BR Ambedkar Polytechnic College",
+        "city": "Gwalior",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "All Saints' College of Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sha-Shib College of Technology",
+        "city": "Parwaliya Sadak",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "RKDF Institute of Science and Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gwalior Engineering College",
+        "city": "Gwalior",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Global Engineering College",
+        "city": "Jabalpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Lakshmi Narain College of Technology Excellence",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "School of Energy and Environmental Studies",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Technocrats Institute of Technology Excellence",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "RKDF College of Technology and Research",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "NRI Institute of Research and Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jai Narain College of Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gyan Ganga College of Technology",
+        "city": "Jabalpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bhopal Institute of Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bhabha Engineering Research Institute",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Indore Women's Polytechnic College",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Venkteshwar Institute of Technology",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vidhyapeeth Institute of Science and Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Ram College of Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Pandit Dev Prabhakar Shastri College of Technology",
+        "city": "Chhatarpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Prestige Institute of Engineering and Science",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Laxmipati Institute of Science and Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Ram Institute of Science and Technology",
+        "city": "Jabalpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Takshshila Institute of Engineering and Technology",
+        "city": "Jabalpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Swami Vivekanand College of Science and Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mittal Institute of Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Lord Krishna College of Technology",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bhopal Institute of Technology and Management",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sushila Devi Bansal College of Engineering",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Truba College of Science and Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Women's Polytechnic College",
+        "city": "Jabalpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Women's Polytechnic College",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Maharaja College",
+        "city": "Chhatarpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vikrant Institute of Technology and Management",
+        "city": "Harnya Khedi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Technocrats Institute of Technology and Science",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sardar Patel College of Technology",
+        "city": "Balaghat",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vidyasagar Institute of Technology",
+        "city": "Khudel",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vedica Institute of Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vaishnavi Institute of Technology and Science",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Satya Sai College of Engineering",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "RKDF College of Engineering",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Millennium Institute of Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Maharana Pratap College of Technology",
+        "city": "Gwalior",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Kopal Institute of Science and Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jawaharlal Institute of Technology",
+        "city": "Borawan",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gwalior Institute of Information Technology",
+        "city": "Gwalior",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gwalior Institute of Technology and Science",
+        "city": "Gwalior",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Girdhar Shiksha Evam Samaj Kalyan Samiti Group of Institutions",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bhopal Institute of Technology and Science",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bhabha College of Engineering",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Hitkarini College of Architecture and Town Planning",
+        "city": "Jabalpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SR Government Polytechnic College",
+        "city": "Sagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Ujjain",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Dadaji Institute of Technology and Science",
+        "city": "Khandwa",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Saraswati Institute of Engineering and Technology",
+        "city": "Jabalpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sakshi Institute of Technology and Management",
+        "city": "Guna",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mahakal Institute of Technology",
+        "city": "Datana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "School of Research and Technology People's University",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vindhya Institute of Technology and Science",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Surabhi College of Engineering and Technology",
+        "city": "Sukhi Sewania",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Srajan Institute of Technology",
+        "city": "Ratlam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Yogindra Sagar Institute of Technology and Science",
+        "city": "Ratlam",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Balaji Institute of Technology and Management",
+        "city": "Sakadehi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SCOPE College of Engineering",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mathuradevi Institute of Technology and Management",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Malwa Institute of Science and Technology",
+        "city": "Palakhedi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mahakal Institute of Technology and Science",
+        "city": "Ujjain",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Infinity Management and Engineering College",
+        "city": "Sagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "IASSCOM Fortune Institute of Technology",
+        "city": "Ratibad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bansal Institute of Research and Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Babulal Tarabai Institute of Research and Technology",
+        "city": "Sironja",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Oriental Institute of Science and Technology",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "BM College of Technology",
+        "city": "Gokanya",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Patel College of Science and Technology",
+        "city": "Indore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Rawatpura Sarkar Institute of Technology and Science",
+        "city": "Dagurai",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vindhya Institute of Technology and Science",
+        "city": "Chakbandi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vikrant Institute of Technology and Management",
+        "city": "Ratwai",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Thakur Shivkumarsingh Memorial Engineering College",
+        "city": "Nimbola",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shree Institute of Science and Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rukmani Devi Institute of Science and Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rewa Institute of Technology",
+        "city": "Rewa",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Radhaswami Institute of Technology",
+        "city": "Atha Kheda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Priyatam Institute of Technology and Management",
+        "city": "Bheslay",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Patel Institute of Engineering and Science",
+        "city": "Fatehpur Dobra",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Oriental Engineering College",
+        "city": "Kugawan",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jawaharlal Nehru College of Technology",
+        "city": "Rewa",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Institute of People's Science and Technology",
+        "city": "Satna",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Hindustan Institute of Technology Science and Management",
+        "city": "Gwalior",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Guru Ramdas Khalsa Institute of Science and Technology",
+        "city": "Kukuri Kheda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gargi Institute of Science and Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "BVM College of Technology and Management",
+        "city": "Gwalior",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bethesda Institute of Technology and Science",
+        "city": "Banarpura",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Balaji Institute of Technology",
+        "city": "Kerwa",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bagula Mukhi College of Technology",
+        "city": "Mungalia Kot",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Global Engineering and Management College",
+        "city": "GCF Jabalpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Institute of Information Technology and Management",
+        "city": "Gwalior",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "GICTS Group of Institutions",
+        "city": "Gwalior",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Khargone",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Balaghat",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Mandsaur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Satna",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "MJP Government Polytechnic College",
+        "city": "Khandwa",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "GT Government Polytechnic College",
+        "city": "Jaora",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Oriental Institute of Science and Technology",
+        "city": "Kugawan",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Nagaji Institute of Technology and Management",
+        "city": "Gwalior",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Malwa Institute of Technology and Management",
+        "city": "Adupurajagir",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Lakshmi Narain College of Technology",
+        "city": "Sihoda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Swami Vivekanand Institute of Technology",
+        "city": "Sagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "St Aloysius Institute of Technology",
+        "city": "Jamtara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Ram Group of Institutions Integrated Campus",
+        "city": "Jabalpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Krishna Institute of Technology and Management",
+        "city": "Gwalior",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Guru Sandipani Institute of Technology and Science",
+        "city": "Ujjain",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shreejee Institute of Technology and Management",
+        "city": "Meharja",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sardar Patel Institute of Technology and Management",
+        "city": "Thangoan",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SGBM Institute of Technology and Science",
+        "city": "Sukha",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Radharaman Institute of Research and Technology",
+        "city": "Mahua Kheda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Prashanti Institute of Technology and Science",
+        "city": "Ujjain",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mahakal Institute of Technology and Management",
+        "city": "Khajuria Rehwari",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Kailash Narayan Patidar College of Science and Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gyan Sagar College of Engineering",
+        "city": "Sironj",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Global Institute of Engineering and Science",
+        "city": "Barwani",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Corporate Institute of Research and Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "RKDF College of Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Parashuram Institute of Technology and Research",
+        "city": "Khandwa",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Rewa",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Technocrats Institute of Technology Advance",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Saheed Jageshwar Nagar Government Polytechnic College",
+        "city": "Dewas",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Jhabua",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "ShriRam Institute of Information Technology",
+        "city": "Gwalior",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "ShriRam College of Engineering and Management",
+        "city": "Gwalior",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Rawatpura Sarkar Institute of Technology and Management",
+        "city": "Kudan",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Lakshmi Bai Sahuji Institute of Engineering and Technology",
+        "city": "Jabalpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vindhya Institute of Technology and Science",
+        "city": "Jabalpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Synergy Institute of Technology",
+        "city": "Dewas",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sushila Devi Bansal College of Technology",
+        "city": "Umariya",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Star Academy of Technology and Management",
+        "city": "Bhawrasla",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ojaswini Institute of Management and Technology",
+        "city": "Hathna",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Maxim Institute of Technology",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mandsaur Institute of Technology",
+        "city": "Daulatpura",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Malhotra Technical Research Institute",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Maharana Pratap College of Technology and Management",
+        "city": "Kheriya Modi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jagadguru Dattatray College of Technology",
+        "city": "Nawda Panth",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Globus Engineering College",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bansal Institute of Research Technology and Science",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Annie Institute of Technology and Research Centre",
+        "city": "Thuniya Bhand",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Krishna College of Engineering",
+        "city": "Mangawan",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Lakshmi Narain College of Technology and Science",
+        "city": "Gwalior",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Morena",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Manthan Polytechnic College",
+        "city": "Amlaha",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Barwani",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Amity School of Engineering and Technology",
+        "city": "Gwalior",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "NRI College of Engineering and Management",
+        "city": "Barauapichhore",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jaypee Polytechnic and Training Centre",
+        "city": "Nowbasata",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vedica College of Pharmacy Polytechnic",
+        "city": "Bhopal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "JLU School of Engineering and Technology",
+        "city": "Ratibad",
+        "type": "Engineering",
+        "rating": "nan"
+    }
+]

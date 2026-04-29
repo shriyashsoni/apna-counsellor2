@@ -1,0 +1,24 @@
+{
+    "steps": [
+        {
+            "step": 1,
+            "title": "Registration",
+            "details": "Register on the official portal with valid credentials."
+        },
+        {
+            "step": 2,
+            "title": "Document Upload",
+            "details": "Upload required certificates (Marksheets, ID proof)."
+        },
+        {
+            "step": 3,
+            "title": "Choice Filling",
+            "details": "Select preferred colleges and lock choices."
+        },
+        {
+            "step": 4,
+            "title": "Seat Allotment",
+            "details": "Check allotment result in Round 1/2/3."
+        }
+    ]
+}

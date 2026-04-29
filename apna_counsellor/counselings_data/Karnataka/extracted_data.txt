@@ -1,0 +1,2 @@
+Data for Karnataka will be stored here.
+URL: https://kea.kar.nic.in

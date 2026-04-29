@@ -1,0 +1,284 @@
+[
+    {
+        "name": "Birla Institute of Technology",
+        "city": "Ranchi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Indian Institute of Technology Indian School of Mines Dhanbad ",
+        "city": "Dhanbad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "National Institute of Technology Jamshedpur ",
+        "city": "Jamshedpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "National Institute of Foundry and Forge Technology",
+        "city": "Ranchi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "BIT Sindri",
+        "city": "Dhanbad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Indian Institute of Information Technology",
+        "city": "Ranchi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ranchi University",
+        "city": "Ranchi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Central University of Jharkhand",
+        "city": "Ranchi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Birla Institute of Technology Extension Centre",
+        "city": "Deoghar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "RVS College of Engineering and Technology",
+        "city": "Idalbera",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sai Nath University",
+        "city": "Ranchi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "ICFAI University",
+        "city": "Ranchi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "University College of Engineering and Technology",
+        "city": "Hazaribagh",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Amity University",
+        "city": "Ranchi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Cambridge Institute of Technology",
+        "city": "Tatisilwai",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jharkhand Rai University",
+        "city": "Ranchi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Al Kabir Polytechnic",
+        "city": "Jamshedpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Jamshedpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chaibasa Engineering College",
+        "city": "Kelende",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "University Polytechnic",
+        "city": "Mesra",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "RTC Institute of Technology",
+        "city": "Dardag",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Dhanbad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "KK College of Engineering and Management",
+        "city": "Dhanbad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ramgarh Engineering College",
+        "city": "Sukrigara Bamni",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Nilai Institute of Technology",
+        "city": "Ginjo Thakurgaon",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Dhanbad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ramgovind Institute of Technology",
+        "city": "Koderma",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Guru Gobind Singh Educational Society's Technical Campus",
+        "city": "Chas",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "BA College of Engineering and Technology",
+        "city": "Jamshedpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dumka Engineering College",
+        "city": "Balia",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "BITT Polytechnic",
+        "city": "Getlatu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Maryland Institute of Technology and Management",
+        "city": "Jamshedpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "DAV Institute of Engineering and Technology",
+        "city": "Hisra alias Pokhraha",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Indo Danish Tool Room",
+        "city": "Jamshedpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Dumka",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Dhanbad",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Ranchi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Koderma",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Alice Institute of Technology",
+        "city": "Angara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Silli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jharkhand Government Mini Tool Room and Training Centre",
+        "city": "Ranchi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vidya Memorial Institute of Technology",
+        "city": "Ranchi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Centre For Bioinformatics",
+        "city": "Ranchi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Cambridge Institute of Polytechnic",
+        "city": "Baheya",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ramgovind Polytechnic Institute",
+        "city": "Jhumri Telaiya",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ramchandra Chandravansi Institute of Technology",
+        "city": "Bisrampur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Kharsawan",
+        "type": "Engineering",
+        "rating": "nan"
+    }
+]

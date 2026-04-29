@@ -1,0 +1,2 @@
+Data for Uttar Pradesh will be stored here.
+URL: https://uptac.admissions.nic.in

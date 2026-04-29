@@ -1,0 +1,412 @@
+[
+    {
+        "name": "National Institute of Technology Rourkela ",
+        "type": "Public/Government",
+        "location": "Odisha"
+    },
+    {
+        "name": "Visvesvaraya National Institute of Technology Nagpur ",
+        "type": "Public/Government",
+        "location": "Maharashtra"
+    },
+    {
+        "name": "Indian Institute of Technology Hyderabad ",
+        "type": "Public/Government",
+        "location": "Telangana"
+    },
+    {
+        "name": "Sardar Vallabhbhai National Institute of Technology Surat ",
+        "type": "Public/Government",
+        "location": "Gujarat"
+    },
+    {
+        "name": "National Institute of Technology Durgapur ",
+        "type": "Public/Government",
+        "location": "West Bengal"
+    },
+    {
+        "name": "Indian Institute of Technology Banaras Hindu University Varanasi ",
+        "type": "Public/Government",
+        "location": "Uttar Pradesh"
+    },
+    {
+        "name": "National Institute of Technology Delhi ",
+        "type": "Public/Government",
+        "location": "Delhi"
+    },
+    {
+        "name": "National Institute of Technology Kurukshetra ",
+        "type": "Public/Government",
+        "location": "Haryana"
+    },
+    {
+        "name": "Malaviya National Institute of Technology Jaipur ",
+        "type": "Public/Government",
+        "location": "Rajasthan"
+    },
+    {
+        "name": "Maulana Azad National Institute of Technology Bhopal ",
+        "type": "Public/Government",
+        "location": "Madhya Pradesh"
+    },
+    {
+        "name": "Indian Institute of Technology Guwahati ",
+        "type": "Public/Government",
+        "location": "Assam"
+    },
+    {
+        "name": "Indian Institute of Technology Indian School of Mines Dhanbad ",
+        "type": "Public/Government",
+        "location": "Jharkhand"
+    },
+    {
+        "name": "Indian Institute of Technology Indore ",
+        "type": "Public/Government",
+        "location": "Madhya Pradesh"
+    },
+    {
+        "name": "Indian Institute of Technology Gandhinagar ",
+        "type": "Public/Government",
+        "location": "Gujarat"
+    },
+    {
+        "name": "Indian Institute of Technology Ropar ",
+        "type": "Public/Government",
+        "location": "Punjab"
+    },
+    {
+        "name": "National Institute of Technology Silchar ",
+        "type": "Public/Government",
+        "location": "Assam"
+    },
+    {
+        "name": "National Institute of Technology Raipur ",
+        "type": "Public/Government",
+        "location": "Chhattisgarh"
+    },
+    {
+        "name": "Dr B R Ambedkar National Institute of Technology Jalandhar ",
+        "type": "Public/Government",
+        "location": "Punjab"
+    },
+    {
+        "name": "Indian Institute of Technology Bhubaneswar ",
+        "type": "Public/Government",
+        "location": "Odisha"
+    },
+    {
+        "name": "Indian Institute of Technology Patna ",
+        "type": "Public/Government",
+        "location": "Bihar"
+    },
+    {
+        "name": "National Institute of Technology Jamshedpur ",
+        "type": "Public/Government",
+        "location": "Jharkhand"
+    },
+    {
+        "name": "National Institute of Technology Hamirpur ",
+        "type": "Public/Government",
+        "location": "Himachal Pradesh"
+    },
+    {
+        "name": "National Institute of Technology Patna ",
+        "type": "Public/Government",
+        "location": "Bihar"
+    },
+    {
+        "name": "National Institute of Technology Manipur ",
+        "type": "Public/Government",
+        "location": "Manipur"
+    },
+    {
+        "name": "National Institute of Technology Uttarakhand ",
+        "type": "Public/Government",
+        "location": "Uttarakhand"
+    },
+    {
+        "name": "National Institute of Technology Agartala ",
+        "type": "Public/Government",
+        "location": "Tripura"
+    },
+    {
+        "name": "Indian Institute of Technology Mandi ",
+        "type": "Public/Government",
+        "location": "Himachal Pradesh"
+    },
+    {
+        "name": "National Institute of Technology Goa ",
+        "type": "Public/Government",
+        "location": "Goa"
+    },
+    {
+        "name": "National Institute of Technology Andhra Pradesh ",
+        "type": "Public/Government",
+        "location": "Andhra Pradesh"
+    },
+    {
+        "name": "National Institute of Technology Srinagar ",
+        "type": "Public/Government",
+        "location": "Jammu and Kashmir"
+    },
+    {
+        "name": "Indian Institute of Technology Jodhpur ",
+        "type": "Public/Government",
+        "location": "Rajasthan"
+    },
+    {
+        "name": "Nitte Meenakshi Institute of Technology",
+        "type": "Private",
+        "location": "Karnataka"
+    },
+    {
+        "name": "National Institute of Technology Puducherry Karaikal ",
+        "type": "Public/Government",
+        "location": "Puducherry"
+    },
+    {
+        "name": "National Institute of Technology Meghalaya ",
+        "type": "Public/Government",
+        "location": "Meghalaya"
+    },
+    {
+        "name": "National Institute of Technology Arunachal Pradesh ",
+        "type": "Public/Government",
+        "location": "Arunachal Pradesh"
+    },
+    {
+        "name": "National Institute of Technology Nagaland ",
+        "type": "Public/Government",
+        "location": "Nagaland"
+    },
+    {
+        "name": "National Institute of Technology Mizoram ",
+        "type": "Public/Government",
+        "location": "Mizoram"
+    },
+    {
+        "name": "National Institute of Technology Sikkim ",
+        "type": "Public/Government",
+        "location": "Sikkim"
+    },
+    {
+        "name": "Indian Institute of Technology Tirupati ",
+        "type": "Public/Government",
+        "location": "Andhra Pradesh"
+    },
+    {
+        "name": "NIIT University",
+        "type": "Private",
+        "location": "Rajasthan"
+    },
+    {
+        "name": "Indian Institute of Technology Palakkad ",
+        "type": "Public/Government",
+        "location": "Kerala"
+    },
+    {
+        "name": "Babu Banarasi Das National Institute of Technology and Management",
+        "type": "Private",
+        "location": "Uttar Pradesh"
+    },
+    {
+        "name": "Indian Institute of Technology Goa ",
+        "type": "Public/Government",
+        "location": "Goa"
+    },
+    {
+        "name": "Nitra Technical Campus",
+        "type": "Public/Government",
+        "location": "Uttar Pradesh"
+    },
+    {
+        "name": "Indian Institute of Technology Bhilai ",
+        "type": "Public/Government",
+        "location": "Chhattisgarh"
+    },
+    {
+        "name": "United College of Engineering and Research",
+        "type": "Private",
+        "location": "Uttar Pradesh"
+    },
+    {
+        "name": "Indian Institute of Technology Dharwad ",
+        "type": "Public/Government",
+        "location": "Karnataka"
+    },
+    {
+        "name": "United Institute of Technology",
+        "type": "Private",
+        "location": "Uttar Pradesh"
+    },
+    {
+        "name": "United College of Engineering and Research",
+        "type": "Private",
+        "location": "Uttar Pradesh"
+    },
+    {
+        "name": "Indian Institute of Technology Jammu ",
+        "type": "Public/Government",
+        "location": "Jammu and Kashmir"
+    },
+    {
+        "name": "Trinity College of Engineering and Research",
+        "type": "Private",
+        "location": "Maharashtra"
+    },
+    {
+        "name": "United College of Engineering and Management",
+        "type": "Private",
+        "location": "Uttar Pradesh"
+    },
+    {
+        "name": "KIIT Polytechnic",
+        "type": "Private",
+        "location": "Odisha"
+    },
+    {
+        "name": "Trinity Academy of Engineering",
+        "type": "Private",
+        "location": "Maharashtra"
+    },
+    {
+        "name": "KIIT College of Engineering",
+        "type": "Private",
+        "location": "Haryana"
+    },
+    {
+        "name": "Trinity College of Engineering and Technology",
+        "type": "Private",
+        "location": "Telangana"
+    },
+    {
+        "name": "Satyam International Institute of Technology",
+        "type": "Private",
+        "location": "Bihar"
+    },
+    {
+        "name": "Trinity College of Engineering and Technology",
+        "type": "Private",
+        "location": "Telangana"
+    },
+    {
+        "name": "Trinity Institute of Technology and Research",
+        "type": "Private",
+        "location": "Madhya Pradesh"
+    },
+    {
+        "name": "United Institute of Technology",
+        "type": "Private",
+        "location": "Tamil Nadu"
+    },
+    {
+        "name": "Trinity College of Engineering",
+        "type": "Private",
+        "location": "Kerala"
+    },
+    {
+        "name": "College of Basic Sciences and Humanities",
+        "type": "Public/Government",
+        "location": "Uttarakhand"
+    },
+    {
+        "name": "SR International Institute of Technology",
+        "type": "Private",
+        "location": "Telangana"
+    },
+    {
+        "name": "International Institute of Technology and Management",
+        "type": "Private",
+        "location": "Haryana"
+    },
+    {
+        "name": "IITT College of Engineering",
+        "type": "Private",
+        "location": "Himachal Pradesh"
+    },
+    {
+        "name": "Swami Nithyananda Polytechnic College",
+        "type": "Private",
+        "location": "Kerala"
+    },
+    {
+        "name": "International Institute of Technology and Business",
+        "type": "Private",
+        "location": "Haryana"
+    },
+    {
+        "name": "Infinity Management and Engineering College",
+        "type": "Private",
+        "location": "Madhya Pradesh"
+    },
+    {
+        "name": "BRM International Institute of Technology",
+        "type": "Private",
+        "location": "Odisha"
+    },
+    {
+        "name": "Nitte Institute of Architecture",
+        "type": "Private",
+        "location": "Karnataka"
+    },
+    {
+        "name": "Sadguru Swami Nithyananda Institute of Technology",
+        "type": "Private",
+        "location": "Kerala"
+    },
+    {
+        "name": "Meerut International Institute of Technology",
+        "type": "Private",
+        "location": "Uttar Pradesh"
+    },
+    {
+        "name": "GNIT Girls Institute of Technology",
+        "type": "Private",
+        "location": "Uttar Pradesh"
+    },
+    {
+        "name": "Trinity Polytechnic",
+        "type": "Private",
+        "location": "Maharashtra"
+    },
+    {
+        "name": "Sine International Institute of Technology",
+        "type": "Private",
+        "location": "Rajasthan"
+    },
+    {
+        "name": "Maharishi Arvind International Institute of Technology",
+        "type": "Private",
+        "location": "Rajasthan"
+    },
+    {
+        "name": "VIIT College of Technology and Management",
+        "type": "Private",
+        "location": "Uttar Pradesh"
+    },
+    {
+        "name": "Zenith Institute of Science and Technology",
+        "type": "Private",
+        "location": "Odisha"
+    },
+    {
+        "name": "NIT Polytechnic",
+        "type": "Private",
+        "location": "Maharashtra"
+    },
+    {
+        "name": "VIIT Polytechnic College",
+        "type": "Private",
+        "location": "Uttar Pradesh"
+    },
+    {
+        "name": "Infinity Institute of Technology",
+        "type": "Private",
+        "location": "Uttar Pradesh"
+    },
+    {
+        "name": "Kai Sau Sunitatai Eknathrao Dhakane Polytechnic College",
+        "type": "Private",
+        "location": "Maharashtra"
+    }
+]

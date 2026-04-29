@@ -1,0 +1,2 @@
+Data for Studyinfo.fi will be stored here.
+URL: https://studyinfo.fi

@@ -1,0 +1,12 @@
+[
+    {
+        "name": "Institute of Technology",
+        "location": "Main Campus",
+        "type": "Government"
+    },
+    {
+        "name": "Medical College A",
+        "location": "City Center",
+        "type": "Private"
+    }
+]

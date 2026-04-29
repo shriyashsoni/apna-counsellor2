@@ -1,0 +1,14 @@
+[
+    {
+        "college": "Institute of Technology",
+        "category": "General",
+        "opening": 100,
+        "closing": 5000
+    },
+    {
+        "college": "Medical College A",
+        "category": "OBC",
+        "opening": 200,
+        "closing": 6000
+    }
+]

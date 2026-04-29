@@ -1,0 +1,476 @@
+[
+    {
+        "name": "National Institute of Technology Raipur ",
+        "city": "Raipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Guru Ghasidas Vishwavidyalaya",
+        "city": "Bilaspur",
+        "type": "Engineering",
+        "rating": "2.72"
+    },
+    {
+        "name": "Bhilai Institute of Technology",
+        "city": "Durg",
+        "type": "Engineering",
+        "rating": "3.15"
+    },
+    {
+        "name": "Government Engineering College",
+        "city": "Sejbahar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Pt Ravishankar Shukla University",
+        "city": "Raipur",
+        "type": "Engineering",
+        "rating": "3.02"
+    },
+    {
+        "name": "Government Engineering College",
+        "city": "Bilaspur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rungta College of Engineering and Technology",
+        "city": "Bhilai",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dr Shyama Prasad Mukherjee International Institute of Information Technology",
+        "city": "Naya Raipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Indian Institute of Technology Bhilai ",
+        "city": "Bhilai",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Shankaracharya Group of Institutions",
+        "city": "Bhilai",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Kalinga University",
+        "city": "Naya Raipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chhattisgarh Swami Vivekanand Technical University",
+        "city": "Bhilai",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bhilai Institute of Technology",
+        "city": "Naya Raipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "OP Jindal University",
+        "city": "Raigarh",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Shankaracharya Engineering College",
+        "city": "Bhilai",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Engineering College",
+        "city": "Jagdalpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dr CV Raman University",
+        "city": "Bilaspur",
+        "type": "Engineering",
+        "rating": "2.61"
+    },
+    {
+        "name": "ITM University",
+        "city": "Raipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Central College of Engineering and Management",
+        "city": "Raipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chhatrapati Shivaji Institute of Technology",
+        "city": "Durg",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Raipur Institute of Technology",
+        "city": "Naya Raipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "GD Rungta College of Engineering and Technology",
+        "city": "Bhilai",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Shankaracharya Institute of Professional Management and Technology",
+        "city": "Datrenga",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rungta Engineering College",
+        "city": "Bhilai",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Shankaracharya Institute of Technology and Management",
+        "city": "Bhilai",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rungta Engineering College",
+        "city": "Raipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Shankaracharya Institute of Engineering and Technology",
+        "city": "Khapri Alias Pipardih",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "ICFAI University",
+        "city": "Raipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vishwavidyalaya Engineering College Sarguja University",
+        "city": "Ambikapur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rungta College of Engineering and Technology",
+        "city": "Atari",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chouksey Engineering College",
+        "city": "Bilaspur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Columbia Institute of Engineering and Technology",
+        "city": "Bhurkoni",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chhattisgarh Institute of Technology",
+        "city": "Rajnandgaon",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chhattisgarh Engineering College",
+        "city": "Dhanora",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Central Institute of Technology",
+        "city": "Naya Raipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Institute of Technology",
+        "city": "Jhagarha",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Parthivi College of Engineering and Management",
+        "city": "Sirsa Khurd",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Kirodimal Institute of Technology",
+        "city": "Raigarh",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Disha Institute of Management and Technology",
+        "city": "Raipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Rawatpura Sarkar Institute of Technology",
+        "city": "Raipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ashoka Institute of Technology and Management",
+        "city": "Rajnandgaon",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Professional Institute of Engineering and Technology",
+        "city": "Raipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "MM College of Technology",
+        "city": "Chhattisgarh",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Uday Prasad Uday Government Polytechnic",
+        "city": "Durg",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "RSR Rungta College of Engineering and Technology",
+        "city": "Raipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bharti College of Engineering and Technology",
+        "city": "Durg",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "JK Institute of Engineering",
+        "city": "Bilaspur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chhattisgarh Institute of Management and Technology",
+        "city": "Pachpedi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Pragati College of Engineering and Management",
+        "city": "Sejbahar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Christian College of Engineering and Technology",
+        "city": "Bhilai",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Lakhmi Chand Institute of Technology",
+        "city": "Bodri",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Yugantar Institute of Technology and Management",
+        "city": "Thekwa",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Kruti Institute of Technology and Engineering",
+        "city": "Nardaha Village",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Girls Polytechnic",
+        "city": "Raipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Garv Institute of Management and Technology",
+        "city": "Purai",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "RSR Rungta College of Engineering and Technology",
+        "city": "Bhilai",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Rawatpura Sarkar Institute of Technology -2",
+        "city": "Naya Raipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Ambikapur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Krishna Engineering College",
+        "city": "Bhilai",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Ravi Shankar Institute of Technology and Management",
+        "city": "Naya Raipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Kirodimal Government Polytechnic",
+        "city": "Raigarh",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bilaspur College of Polytechnic",
+        "city": "Farhada",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Girls Polytechnic",
+        "city": "Bilaspur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sun Engineering College",
+        "city": "Kolihapuri",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bharti College of Polytechnic",
+        "city": "Durg",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Minimata Government Girls Polytechnic",
+        "city": "Rajnandgaon",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mansa Polytechnic",
+        "city": "Bhilai",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Ramanuj Ganj",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Baikunthpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Kanker",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vindhya Institute of Technology and Science",
+        "city": "Raipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic",
+        "city": "Lalpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Girls Polytechnic",
+        "city": "Jagdalpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Sai Polytechnic",
+        "city": "Ahiwara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "NMDC DAV Polytechnic",
+        "city": "Dantewada",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Co Ed Polytechnic",
+        "city": "Jagdalpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Rawatpura Sarkar Polytechnic",
+        "city": "Dhaneli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "MATS School of Engineering and Information Technology",
+        "city": "Arang",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "IBT College of Diploma Engineering",
+        "city": "Janjgiri",
+        "type": "Engineering",
+        "rating": "nan"
+    }
+]

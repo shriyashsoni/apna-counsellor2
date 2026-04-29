@@ -1,0 +1,1436 @@
+[
+    {
+        "name": "Malaviya National Institute of Technology Jaipur ",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "LNM Institute of Information Technology",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "3.15"
+    },
+    {
+        "name": "Indian Institute of Technology Jodhpur ",
+        "city": "Jodhpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Banasthali Vidyapith",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Manipal University",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rajasthan Technical University",
+        "city": "Kota",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "MBM Engineering College",
+        "city": "Jodhpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jaipur National University",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "2.28"
+    },
+    {
+        "name": "Rajasthan Institute of Engineering and Technology",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "NIMS University",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "2.54"
+    },
+    {
+        "name": "College of Technology and Engineering",
+        "city": "Udaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Indian Institute of Information Technology",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "JECRC University",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mody University of Science and Technology",
+        "city": "Sikar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "University of Rajasthan",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "3.21"
+    },
+    {
+        "name": "Vivekananda Global University",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "NIIT University",
+        "city": "Neemrana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Poornima University",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jaipur Engineering College and Research Centre",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Amity University",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Poornima College of Engineering",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dr KN Modi University",
+        "city": "Tonk",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "University College of Engineering and Technology",
+        "city": "Bikaner",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Engineering College",
+        "city": "Bikaner",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Engineering College",
+        "city": "Ajmer",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Swami Keshvanand Institute of Technology",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "JK Lakshmipat University",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "RNB Global University",
+        "city": "Bikaner",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Central University of Rajasthan",
+        "city": "Bandar Sindri",
+        "type": "Engineering",
+        "rating": "3.01"
+    },
+    {
+        "name": "Jodhpur National University",
+        "city": "Jodhpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jai Narain Vyas University",
+        "city": "Jodhpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rajasthan College of Engineering for Women",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Arya College of Engineering and IT",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Raffles University",
+        "city": "Neemrana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Global Institute of Technology",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Singhania University",
+        "city": "Rasoolpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Women Engineering College",
+        "city": "Ajmer",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Arya College of Engineering and Research Centre",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Tantia University",
+        "city": "Sri Ganganagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "B K Birla Institute of Engineering and Technology",
+        "city": "Pilani",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sir Padampat Singhania University",
+        "city": "Udaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mewar University",
+        "city": "Chittorgarh",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Maharana Pratap University of Agriculture and Technology",
+        "city": "Udaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "University of Engineering and Management",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jagannath University",
+        "city": "Jaisinghpura",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Engineering College",
+        "city": "Bharatpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "School of Aeronautics",
+        "city": "Neemrana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "ICFAI University",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "MLV Government Textile and Engineering College",
+        "city": "Bhilwara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mahatma Jyoti Rao Phoole University",
+        "city": "Kalwad Kalan and Khurd",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SunRise University",
+        "city": "Bagar Rajput",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Ramchandra Khaitan Polytechnic College",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "University of Kota",
+        "city": "Kota",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Maharshi Dayanand Saraswati University",
+        "city": "Ajmer",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Janardan Rai Nagar Rajasthan Vidyapeeth",
+        "city": "Udaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jodhpur Institute of Engineering and Technology",
+        "city": "Mogra",
+        "type": "Engineering",
+        "rating": "3.19"
+    },
+    {
+        "name": "Jayoti Vidyapeeth Women's University",
+        "city": "Jharna",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Career Point University",
+        "city": "Aalniya",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Apex Group of Institutions",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Engineering College",
+        "city": "Moondla Khera",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Central Institute of Plastics Engineering and Technology",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "JECRC UDML College of Engineering",
+        "city": "Kookas",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sobhasaria Group of Institutions",
+        "city": "Sikar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Maharishi Arvind Institute of Engineering and Technology",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Apex Group of Institutions",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Anand International College of Engineering",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jaipur Engineering College",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Poornima Institute of Engineering and Technology",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shridhar University",
+        "city": "Pilani",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Alwar Institute of Engineering and Technology",
+        "city": "Alwar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Jagdishprasad Jhabarmal Tibrewala University",
+        "city": "Jhunjhunu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SLBS Engineering College",
+        "city": "Jodhpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "College of Dairy and Food Science Technology",
+        "city": "Udaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Pratap University",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Arya Institute of Engineering and Technology",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Madhav University",
+        "city": "Bharja",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Jodhpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SS College of Engineering",
+        "city": "Umra",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shekhawati Institute of Engineering and Technology",
+        "city": "Sikar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Regional College for Education Research and Technology",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Engineering College",
+        "city": "Banswara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vivekananda Institute of Technology East",
+        "city": "Seesyawas",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jaipur Institute of Engineering and Management",
+        "city": "Garoti",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Apex Institute of Engineering and Technology",
+        "city": "Murlipura at Mishra Ka Barh",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sangam University",
+        "city": "Gathila Kheda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rajasthan Engineering College",
+        "city": "Dausa",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dr Radhakrishnan Institute of Technology",
+        "city": "Kalwara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Aravali Institute of Technical Studies",
+        "city": "Eklingpura",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Poornima Group of Institutions",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Institute of Engineering and Technology",
+        "city": "Alwar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sawai Madhopur College of Engineering and Technology",
+        "city": "Pachipalya",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Advait Vedanta Institute of Technology",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shrinathji Institute of Technology and Engineering",
+        "city": "Upli Odan",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shankara Institute of Technology",
+        "city": "Chimanpura",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Maharishi Arvind College of Engineering and Research Centre",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Geetanjali Institute of Technical Studies",
+        "city": "Udaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mahatma Gandhi Engineering College",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Kautilya Institute of Technology and Engineering",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chartered Institute of Technology",
+        "city": "Karoli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Laxmi Devi Institute of Engineering and Technology",
+        "city": "Chikani",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "OPJS University",
+        "city": "Churu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Aayojan School of Architecture",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Stani Memorial College of Engineering and Technology",
+        "city": "Phagi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gurukul Institute of Engineering and Technology",
+        "city": "Ranpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bhartiya Institute of Engineering and Technology",
+        "city": "Sikar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vivekananda Institute of Technology",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Baldev Ram Mirdha Institute of Technology",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sardar Patel University of Police Security and Criminal Justice",
+        "city": "Daijar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Modi Institute of Technology",
+        "city": "Daulatganj at",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sri Balaji College of Engineering and Technology",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shree Digamber Institute of Technology",
+        "city": "Gumanpura",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jagan Nath Gupta Institute of Engineering and Technology",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Asians Institute of Technology",
+        "city": "Deeppura",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jaipur Institute of Technology- Group of Institutions",
+        "city": "Kalwara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vedic Gurukul Institute of Engineering and Technology",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Techno India NJR Institute of Technology",
+        "city": "Biliya",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "St Margaret Engineering College",
+        "city": "Neemrana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rajdhani Institute of Technology and Management",
+        "city": "Daloowala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rajdhani Engineering College",
+        "city": "Jaisinghpura at Roopwas",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Pink City Engineering College and Research Centre",
+        "city": "Badanpura",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Pacific Institute of Technology",
+        "city": "Udaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Northern Institute of Engineering Technical Campus",
+        "city": "Baldeobas",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Marudhar Engineering College",
+        "city": "Bikaner",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Manda Institute of Technology",
+        "city": "Bikaner",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Maharaja College of Engineering",
+        "city": "Debari",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Jaipur Institute of Engineering and Technology",
+        "city": "Nestiwas",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Biff and Bright College of Engineering and Technology",
+        "city": "Padasoli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Arya Institute of Engineering Technology and Management",
+        "city": "Sodala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Piparda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Birla Technical Training Institute",
+        "city": "Pilani",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "RN Modi Engineering College",
+        "city": "Kherajagpura",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vedant College of Engineering and Technology",
+        "city": "Bundi",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sunrise Group of Institutions",
+        "city": "Udaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Ummed Singh Bhati College of Engineering and Management",
+        "city": "Mount Abu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shekhawati Engineering College",
+        "city": "Jhunjhunu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SJ College Engineering and Technology",
+        "city": "Jirota Kalan",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Raj Engineering College",
+        "city": "Bawarla",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Pratap Institute of Technology and Science",
+        "city": "Sheeshyoo",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Nathdwara Institute of Engineering and Technology",
+        "city": "Nathdwara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Marwar Engineering College and Research Centre",
+        "city": "Jodhpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Maharani Girls Engineering College",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dungarpur College of Engineering and Technology",
+        "city": "Bhandariya With Chak",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chandravati Group of Institution",
+        "city": "Bharatpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Chanakya Technical Campus",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Global College of Technology",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vyas Institute of Engineering and Technology",
+        "city": "Jodhpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Alwar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Kota Polytechnic College",
+        "city": "Kota",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Residential Women's Polytechnic College",
+        "city": "Jodhpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vidya Bhawan Polytechnic College",
+        "city": "Udaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Yaduvanshi College of Engineering and Technology",
+        "city": "Sohali",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Surendra Group of Institutions",
+        "city": "Sri Ganganagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "St Wilfreds Institute of Engineering and Technology",
+        "city": "Ajmer",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Bhavani Niketan Institute of Technology and Management",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Buddha Institute of Architecture and Town Planning",
+        "city": "Udaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Yagyavalkya Institute of Technology",
+        "city": "Laxmipura at Nataniwala",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Tagore Engineering College",
+        "city": "Kuchaman City",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Swasthya Kalyan Technical Campus",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Sine International Institute of Technology",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Pacific College of Engineering",
+        "city": "Udaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mayurakshi Institute of Engineering and Technology",
+        "city": "Basni Karwar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Maharishi Arvind International Institute of Technology",
+        "city": "Kota",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Maharishi Arvind College of Engineering and Technology",
+        "city": "Ranpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Institute of Technology and Management",
+        "city": "Bhilwara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "CLG Institute of Engineering and Technology",
+        "city": "Sumerpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Baldev Ram Mirdha Institute of Technology East Campus",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Deepshikha College of Technical Education",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vyas College of Engineering and Technology",
+        "city": "Jodhpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vashisth Polytechnic College",
+        "city": "Suratgarh",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Kota",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Guru Kripa Polytechnic College",
+        "city": "Kota",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Alwar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Imperial Institute of Polytechnic and Technology",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Churu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Marudhara Polytechnic College",
+        "city": "Laxmangarh",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shyam Institute of Engineering and Technology",
+        "city": "Lalsot",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rajasthan Vidyapeeth Technology College",
+        "city": "Udaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Aryabhatta College of Engineering and Research Centre",
+        "city": "Ajmer",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Modern Institute of Technology and Research Centre",
+        "city": "Alwar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Keystone Group of Institutions",
+        "city": "Pilod",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SJ College of Engineering and Technology",
+        "city": "Bhandana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Siddhivinayak College of Science and Higher Education",
+        "city": "Alwar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mahaveer Institute of Technology and Science",
+        "city": "Pali",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Siddhi Vinayak College of Science and Higher Education",
+        "city": "Alwar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vivekananda Polytechnic College",
+        "city": "Khetri",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rajasthan Polytechnic College",
+        "city": "Jhunjhunu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "CMRB Government Polytechnic College",
+        "city": "Sri Ganganagar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "RK Polytechnic College",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "SS Polytechnic College",
+        "city": "Umarda",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Govindam Polytechnic College",
+        "city": "Sikar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Apex Polytechnic Institute",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Aarav Polytechnic College",
+        "city": "Chomu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Dr Radhakrishnan Polytechnic College",
+        "city": "Kalwara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Dewal",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Jhalawar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Nagaur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Pacific Polytechnic College",
+        "city": "Udaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Siddhi Vinayak Polytechnic",
+        "city": "Alwar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "BLM Institute of Technology and Management Sciences",
+        "city": "Rajota",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shekhawati Girls Engineering College",
+        "city": "Johar Ki Dhani",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri USB College of Engineering and Management",
+        "city": "Abu Road",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Universal Technical College",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bal Krishna Institute of Technology",
+        "city": "Kherajagpura",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shyam College of Engineering",
+        "city": "Didwana",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vikas Polytechnic College",
+        "city": "Madhera",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mantram Women's Polytechnic College",
+        "city": "Dungarpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Vriddhi Polytechnic College",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Bajrang Polytechnic College",
+        "city": "Deeg",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bhawani Institute of Technical Education",
+        "city": "Nagaur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Satyam Institute of Technology",
+        "city": "Sanwa",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "LBS Polytechnic College",
+        "city": "Jhunjhunu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Veena Institute of Technical Education Women Polytechnic College",
+        "city": "Karauli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Saraswati Polytechnic College",
+        "city": "Khetri",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "JITS Polytechnic",
+        "city": "Deoli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Bhilwara",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "PNB Polytechnic College",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Raman Polytechnic College",
+        "city": "Bikaner",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Deendayal Polytechnic College",
+        "city": "Beer Fatehpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rajasthan Polytechnic College",
+        "city": "Jhunjhunu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Aryan Mukul Polytechnic College",
+        "city": "Deoli",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Pragyan Research Institute of Diploma Engineering",
+        "city": "Balotra",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Saint Joseph College for Technical Education",
+        "city": "Tonk",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Balaji Polytechnic College",
+        "city": "Udaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Sikar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mother India Polytechnic College",
+        "city": "Khanpur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gurukul Polytechnic College",
+        "city": "Chomu",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri Devi Women Polytechnic",
+        "city": "Hanumangarh",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shri USB Polytechnic College",
+        "city": "Abu Road",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Siddharth Institute of Technology",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Abu Road Polytechnic College",
+        "city": "Abu Road",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Aryan Polytechnic College",
+        "city": "Ajmer",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Bansur Polytechnic College",
+        "city": "Bansur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Government Polytechnic College",
+        "city": "Daulat Pura",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Shekhawati Polytechnic College",
+        "city": "Sikar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Yaduvanshi Polytechnic",
+        "city": "Sohali",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Mewar School of Engineering and Technology",
+        "city": "Gangarar",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Rajasthan Institute of Engineering and Technology",
+        "city": "Semalpura",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Gyan Vihar School of Applied and Bio Sciences",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    },
+    {
+        "name": "Centre for Design Excellence",
+        "city": "Jaipur",
+        "type": "Engineering",
+        "rating": "nan"
+    }
+]
