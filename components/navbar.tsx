@@ -59,8 +59,8 @@ const Navbar = ({ categorizedCounselling }: NavbarProps) => {
       transition={{ duration: 0.5 }}
       className={`sticky top-0 z-50 w-full border-b transition-all duration-300 ${
         scrolled 
-        ? "bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-sm border-slate-200/50 dark:border-slate-800/50 h-14 md:h-16" 
-        : "bg-transparent border-transparent h-16 md:h-20"
+        ? "bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-sm border-slate-200/50 dark:border-slate-800/50 h-12 md:h-14" 
+        : "bg-transparent border-transparent h-14 md:h-16"
       }`}
     >
       <div className="container flex h-full items-center justify-between">
@@ -70,7 +70,7 @@ const Navbar = ({ categorizedCounselling }: NavbarProps) => {
           transition={{ type: "spring", stiffness: 400, damping: 10 }}
         >
           <Link href="/" className="flex items-center space-x-2 md:space-x-3">
-            <div className="relative h-8 w-8 md:h-12 md:w-12 flex-shrink-0">
+            <div className="relative h-8 w-8 md:h-10 md:w-10 flex-shrink-0">
               <Image 
                 src="/images/apna-counsellor-logo.png" 
                 alt="Apna Counsellor Logo" 
@@ -78,16 +78,107 @@ const Navbar = ({ categorizedCounselling }: NavbarProps) => {
                 className="object-contain"
               />
             </div>
-            <span className="font-extrabold text-xl md:text-2xl tracking-tight hidden sm:inline-block">
+            <span className="font-black text-lg md:text-xl tracking-tighter hidden sm:inline-block">
               Apna <span className="text-primary">Counsellor</span>
             </span>
           </Link>
         </motion.div>
-// ... (rest of desktop nav remains same)
-        {/* Mobile Menu Button */}
-        <div className="md:hidden flex items-center space-x-2 md:space-x-4">
+
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center space-x-0.5">
+          {navItems.map((item) => (
+            <div key={item.name}>
+              {item.isMega ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      className={`px-3 py-1.5 rounded-lg text-[13px] font-bold transition-all flex items-center h-9 ${
+                        isActive(item.path)
+                        ? "text-primary bg-primary/5" 
+                        : "text-slate-600 dark:text-slate-400 hover:text-primary hover:bg-slate-100 dark:hover:bg-slate-800"
+                      }`}
+                    >
+                      {item.name}
+                      <ChevronDown className="ml-1 h-3.5 w-3.5" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="rounded-2xl mt-2 p-5 w-[700px] max-w-[90vw]">
+                    <div className="grid grid-cols-3 gap-6">
+                      <div>
+                        <h4 className="text-[10px] font-black uppercase tracking-widest text-primary mb-3 px-2">National</h4>
+                        <div className="space-y-0.5">
+                          {categorizedCounselling?.national?.map(c => (
+                            <DropdownMenuItem key={c.id} asChild>
+                              <Link href={`/counselling/${c.id}`} className="block px-2 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-800">
+                                {c.name}
+                              </Link>
+                            </DropdownMenuItem>
+                          ))}
+                        </div>
+                      </div>
+                      <div>
+                        <h4 className="text-[10px] font-black uppercase tracking-widest text-primary mb-3 px-2">State</h4>
+                        <div className="space-y-0.5 overflow-y-auto max-h-[250px] pr-2 scrollbar-hide">
+                          {categorizedCounselling?.state?.map(c => (
+                            <DropdownMenuItem key={c.id} asChild>
+                              <Link href={`/counselling/${c.id}`} className="block px-2 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-800">
+                                {c.name}
+                              </Link>
+                            </DropdownMenuItem>
+                          ))}
+                        </div>
+                      </div>
+                      <div>
+                        <h4 className="text-[10px] font-black uppercase tracking-widest text-primary mb-3 px-2">Global</h4>
+                        <div className="space-y-0.5 overflow-y-auto max-h-[250px] pr-2 scrollbar-hide">
+                          {categorizedCounselling?.international?.map(c => (
+                            <DropdownMenuItem key={c.id} asChild>
+                              <Link href={`/counselling/${c.id}`} className="block px-2 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-800">
+                                {c.name}
+                              </Link>
+                            </DropdownMenuItem>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <motion.div whileHover={{ y: -0.5 }}>
+                  <Link
+                    href={item.path}
+                    className={`px-3 py-1.5 rounded-lg text-[13px] font-bold transition-all block h-9 flex items-center ${
+                      isActive(item.path) 
+                      ? "text-primary bg-primary/5" 
+                      : "text-slate-600 dark:text-slate-400 hover:text-primary hover:bg-slate-100 dark:hover:bg-slate-800"
+                    }`}
+                  >
+                    {item.name}
+                  </Link>
+                </motion.div>
+              )}
+            </div>
+          ))}
+        </nav>
+
+        <div className="hidden md:flex items-center space-x-2">
           <ThemeToggle />
-          <button className="md:hidden p-2 rounded-xl bg-slate-50 dark:bg-slate-800" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Toggle Menu">
+          <div className="h-5 w-[1px] bg-slate-200 dark:bg-slate-800 mx-1" />
+          <UserNav />
+          <motion.div whileHover={{ scale: 1.02 }} transition={{ type: "spring", stiffness: 400, damping: 10 }}>
+            <Link href="/book-call">
+              <Button size="sm" className="rounded-lg px-4 font-bold h-9 text-xs shadow-lg shadow-primary/20">
+                Book Call
+              </Button>
+            </Link>
+          </motion.div>
+        </div>
+
+        {/* Mobile Menu Button */}
+        <div className="md:hidden flex items-center space-x-2">
+          <ThemeToggle />
+          <button className="p-1.5 rounded-lg bg-slate-50 dark:bg-slate-800" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Toggle Menu">
             {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
