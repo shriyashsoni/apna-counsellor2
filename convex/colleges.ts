@@ -58,7 +58,9 @@ export const list = query({
     }
 
     // Default return if no filters applied
-    return await q.order("desc").take(500);
+    // Note: We are taking 2000 to show a large dataset as requested.
+    // For 50,000+, we recommend using pagination to avoid browser lag.
+    return await q.order("desc").take(2000);
   },
 });
 export const getCollegesByCounseling = query({
