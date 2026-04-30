@@ -1,7 +1,18 @@
-import { convexAuthNextjsAction } from "@convex-dev/auth/nextjs/server";
+import { NextRequest } from "next/server";
 
-export const { GET, POST } = convexAuthNextjsAction();
+export async function GET(req: NextRequest, ctx: any) {
+  const { convexAuthNextjsAction } = await import("@convex-dev/auth/nextjs/server");
+  const { GET: handler } = convexAuthNextjsAction();
+  return handler(req, ctx);
+}
+
+export async function POST(req: NextRequest, ctx: any) {
+  const { convexAuthNextjsAction } = await import("@convex-dev/auth/nextjs/server");
+  const { POST: handler } = convexAuthNextjsAction();
+  return handler(req, ctx);
+}
 
 export const dynamic = "force-dynamic";
+
 
 
