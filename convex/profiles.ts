@@ -49,10 +49,18 @@ export const createProfile = mutation({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Not authenticated");
 
-    const existing = await ctx.db
+    let existing = await ctx.db
       .query("profiles")
       .withIndex("by_userId", (q) => q.eq("userId", identity.subject))
       .unique();
+
+    if (!existing && identity.email) {
+      existing = await ctx.db
+        .query("profiles")
+        .withIndex("by_email", (q) => q.eq("email", identity.email))
+        .unique();
+    }
+
 
     if (existing) {
       return await ctx.db.patch(existing._id, {
