@@ -115,8 +115,8 @@ export default function ComparePage() {
                            : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-100 dark:border-slate-800"
                        }`}
                      >
-                       <p className="font-black text-lg leading-tight mb-1">{c.shortName}</p>
-                       <p className="text-[10px] font-black uppercase opacity-60">#{c.nirfRank} · {c.state}</p>
+                       <p className="font-black text-lg leading-tight mb-1 line-clamp-2">{c.name}</p>
+                       <p className="text-[10px] font-black uppercase opacity-60">#{c.nirfRank || 'N/A'} · {c.state} · {c.type}</p>
                      </button>
                    ))
                  )}

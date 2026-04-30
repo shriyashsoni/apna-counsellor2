@@ -24,14 +24,15 @@ import Link from "next/link"
 
 const CATEGORIES = ["All", "IIT", "NIT", "IIIT", "Government", "Private"];
 const STATES = ["All", "Maharashtra", "Karnataka", "Tamil Nadu", "Delhi", "Uttar Pradesh", "Gujarat", "Rajasthan", "West Bengal", "Madhya Pradesh"];
-const RANKINGS = ["All", "Top 10", "Top 50", "Top 100", "Top 500"];
+import { useSearchParams } from "next/navigation"
 
 export default function CollegesPage() {
+  const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState(searchParams.get("category") || "All");
   const [selectedState, setSelectedState] = useState("All");
-  const [selectedRanking, setSelectedRanking] = useState("All");
+  const [selectedRanking, setSelectedRanking] = useState(searchParams.get("ranking") || "All");
 
   // Debounce search to prevent spamming the database
   useEffect(() => {
@@ -232,7 +233,7 @@ export default function CollegesPage() {
                           </div>
 
                           <h3 className="text-lg md:text-xl font-black mb-1 md:mb-2 text-slate-900 dark:text-white leading-tight group-hover:text-primary transition-colors line-clamp-2">
-                            {college.shortName || college.name}
+                            {college.name}
                           </h3>
                           <div className="flex items-center gap-2 text-slate-400 mb-4 md:mb-6 font-medium text-[10px] md:text-sm">
                             <MapPin className="h-3 w-3 md:h-4 md:w-4" />

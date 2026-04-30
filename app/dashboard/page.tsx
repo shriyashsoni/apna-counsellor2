@@ -184,6 +184,41 @@ function StudentDashboard({ profile, user }: { profile: any, user: any }) {
       <div className="grid lg:grid-cols-12 gap-8">
         <div className="lg:col-span-8 space-y-8">
           
+          {/* Top Institutions Quick Lists */}
+          <section className="mb-12">
+            <div className="flex justify-between items-center mb-6 px-2">
+              <div className="flex items-center gap-3">
+                <div className="h-8 w-8 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                  <Trophy className="h-5 w-5" />
+                </div>
+                <h2 className="text-2xl font-black tracking-tight">Top Institutions</h2>
+              </div>
+              <Link href="/colleges" className="text-primary text-sm font-bold hover:underline flex items-center gap-1">
+                Explore All <ChevronRight className="h-4 w-4" />
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                { label: "IITs", count: "23", color: "bg-blue-500", filter: "IIT" },
+                { label: "NITs", count: "31", color: "bg-emerald-500", filter: "NIT" },
+                { label: "IIITs", count: "26", color: "bg-purple-500", filter: "IIIT" },
+                { label: "Top 50", count: "50", color: "bg-orange-500", filter: "Top 50" },
+              ].map((cat, i) => (
+                <Link key={i} href={`/colleges?category=${cat.filter}`}>
+                  <Card className="border-none rounded-[2rem] shadow-sm bg-white dark:bg-slate-900 group hover:shadow-xl hover:-translate-y-1 transition-all">
+                    <CardContent className="p-6 flex flex-col items-center text-center">
+                      <div className={`h-12 w-12 rounded-2xl ${cat.color} text-white flex items-center justify-center mb-4 shadow-lg shadow-black/5 font-black text-xs`}>
+                        {cat.label}
+                      </div>
+                      <p className="font-black text-lg mb-1">{cat.label}</p>
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{cat.count} Institutions</p>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          </section>
+
           {/* Recommendations */}
           <section>
             <div className="flex justify-between items-center mb-6 px-2">
