@@ -1,10 +1,11 @@
 "use client"
 
 import { useState } from "react"
-import { useQuery, useMutation } from "convex/react"
+import { useQuery, useMutation, useAction } from "convex/react"
 import { api } from "@/convex/_generated/api"
 import { useParams, useRouter } from "next/navigation"
 import { motion } from "framer-motion"
+
 import { 
   Star, 
   MapPin, 
@@ -39,6 +40,10 @@ export default function MentorProfilePage() {
   const dbUser = useQuery(api.users.currentUser)
   const bookSession = useMutation(api.sessions.bookSession)
 
+  const createOrder = useAction(api.razorpay.createOrder)
+  const verifyPayment = useAction(api.razorpay.verifyPayment)
+  const savePayment = useMutation(api.payments.savePayment)
+
   const [isBooking, setIsBooking] = useState(false)
 
   if (!mentor) return (
@@ -47,25 +52,108 @@ export default function MentorProfilePage() {
     </div>
   )
 
+  const loadRazorpay = () => {
+
+    return new Promise((resolve) => {
+      const script = document.createElement("script")
+      script.src = "https://checkout.razorpay.com/v1/checkout.js"
+      script.onload = () => resolve(true)
+      script.onerror = () => resolve(false)
+      document.body.appendChild(script)
+    })
+  }
+
   const handleBook = async (sessionId: any) => {
     if (dbUser === null) {
       toast.error("Please login to book a session")
+      router.push("/login")
       return
     }
 
     if (dbUser === undefined) {
-      toast.info("Still verifying your session...")
+      toast.info("Verifying session...")
       return
     }
-    
+
+    const session = sessions?.find(s => s._id === sessionId)
+    if (!session) return
+
     setIsBooking(true)
+    const res = await loadRazorpay()
+
+    if (!res) {
+      toast.error("Failed to load payment gateway. Please check your internet.")
+      setIsBooking(false)
+      return
+    }
+
     try {
-      await bookSession({ sessionId, studentId: dbUser._id })
-      toast.success("Session booked successfully!", {
-        description: "Check your dashboard for meeting details.",
+      // 1. Create Order on Backend
+      const order = await createOrder({
+        amount: session.price || mentor.pricing || 499,
+        currency: "INR",
+        receipt: `receipt_${sessionId}`,
       })
-    } catch (e) {
-      toast.error("Booking failed. Please try again.")
+
+      // 2. Open Razorpay Checkout
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        amount: order.amount,
+        currency: order.currency,
+        name: "Apna Counsellor",
+        description: `Booking session with ${mentor.name}`,
+        order_id: order.id,
+        handler: async (response: any) => {
+          try {
+            // 3. Verify Payment on Backend
+            const isVerified = await verifyPayment({
+              orderId: response.razorpay_order_id,
+              paymentId: response.razorpay_payment_id,
+              signature: response.razorpay_signature,
+            })
+
+            if (isVerified) {
+              // 4. Save Payment and Book Session
+              await savePayment({
+                paymentId: response.razorpay_payment_id,
+                orderId: response.razorpay_order_id,
+                signature: response.razorpay_signature,
+                amount: session.price || mentor.pricing || 499,
+                currency: "INR",
+                status: "success",
+                userId: dbUser._id,
+                mentorId: mentor._id,
+                sessionId: session._id,
+                type: "mentorship_session"
+              })
+
+              await bookSession({ sessionId: session._id, studentId: dbUser._id })
+              
+              toast.success("Payment Successful! Session booked.")
+              router.push("/dashboard")
+            } else {
+              toast.error("Payment verification failed. Please contact support.")
+            }
+          } catch (err) {
+            console.error(err)
+            toast.error("An error occurred during verification.")
+          }
+        },
+        prefill: {
+          name: dbUser.name,
+          email: dbUser.email,
+        },
+        theme: {
+          color: "#6d28d9",
+        },
+      }
+
+      const paymentObject = new (window as any).Razorpay(options)
+      paymentObject.open()
+      
+    } catch (error: any) {
+      console.error(error)
+      toast.error(error.message || "Failed to initiate payment")
     } finally {
       setIsBooking(false)
     }
