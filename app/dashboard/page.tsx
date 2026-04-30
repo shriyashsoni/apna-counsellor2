@@ -29,16 +29,22 @@ import {
   Trophy,
   Users,
   BookCheck,
-  BarChart3
+  BarChart3,
+  Zap,
+  Landmark,
+  ShieldAlert,
+  Database
 } from "lucide-react"
 
 
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
 import { UserNav } from "@/components/user-nav"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
+
 
 
 export default function DashboardPage() {
@@ -74,16 +80,20 @@ export default function DashboardPage() {
 
 
 function AdminDashboard({ user }: { user: any }) {
+  const stats = useQuery(api.diagnostics.getCounts)
+
+  const adminStats = [
+    { label: "Total Students", value: stats?.users || 0, icon: User, color: "text-blue-500", trend: "+12%" },
+    { label: "Revenue (MTD)", value: `₹${stats?.revenue || 0}`, icon: CreditCard, color: "text-emerald-500", trend: "+8%" },
+    { label: "Total Mentors", value: stats?.mentors || 0, icon: GraduationCap, color: "text-purple-500", trend: "+5" },
+    { label: "Colleges", value: stats?.colleges || 0, icon: Database, color: "text-orange-500", trend: "+2" },
+  ]
+
   return (
     <div className="space-y-8">
       {/* Admin Stats */}
       <section className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        {[
-          { label: "Total Students", value: "1,284", icon: User, color: "text-blue-500", trend: "+12%" },
-          { label: "Revenue (MTD)", value: "₹4.2L", icon: CreditCard, color: "text-emerald-500", trend: "+8%" },
-          { label: "Pending Tasks", value: "24", icon: ListChecks, color: "text-orange-500", trend: "-2" },
-          { label: "Active Mentors", value: "48", icon: GraduationCap, color: "text-purple-500", trend: "+5" },
-        ].map((stat, i) => (
+        {adminStats.map((stat, i) => (
           <Card key={i} className="border-none rounded-[2rem] shadow-sm bg-white dark:bg-slate-900 overflow-hidden group hover:shadow-xl transition-all">
             <CardContent className="p-8">
               <div className="flex justify-between items-start mb-6">
@@ -98,6 +108,7 @@ function AdminDashboard({ user }: { user: any }) {
           </Card>
         ))}
       </section>
+
 
       <div className="grid lg:grid-cols-12 gap-8">
         <div className="lg:col-span-8 space-y-8">
@@ -157,6 +168,24 @@ function StudentDashboard({ profile, user }: { profile: any, user: any }) {
   const subscription = useQuery(api.subscriptions.getActive, { userId: user?._id ?? "" })
   const sessions = useQuery(api.sessions.listByStudent, { studentId: user?._id ?? "" })
   const isPro = !!subscription;
+
+  const getRecommendedPortals = () => {
+    const portals = []
+    if (profile.examType === "JEE") {
+      portals.push({ id: "JoSAA", name: "JoSAA 2026", desc: "IIT & NIT Admission Portal", icon: "J", color: "orange" })
+      portals.push({ id: "CSAB", name: "CSAB 2026", desc: "NIT+ System Spot Rounds", icon: "C", color: "blue" })
+    }
+    if (profile.examType === "NEET") {
+      portals.push({ id: "MCC", name: "MCC Medical", desc: "All India Quota Medical Admissions", icon: "M", color: "red" })
+    }
+    if (profile?.interestedStates?.includes("Maharashtra") || profile.city === "Mumbai" || profile.city === "Pune") {
+      portals.push({ id: "MHT-CET", name: "MHT-CET 2026", desc: "Maharashtra Engineering Portal", icon: "M", color: "purple" })
+    }
+    if (portals.length === 0) {
+      portals.push({ id: "JEE-Main", name: "JEE Main Portal", desc: "Exam registration & results", icon: "J", color: "blue" })
+    }
+    return portals.slice(0, 4)
+  }
 
   return (
     <div className="space-y-8">
