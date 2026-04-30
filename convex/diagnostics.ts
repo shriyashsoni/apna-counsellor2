@@ -2,11 +2,12 @@ import { query } from "./_generated/server";
 
 export const getCounts = query({
   handler: async (ctx) => {
-    const counselings = await ctx.db.query("counselings").take(100);
-    const colleges = await ctx.db.query("colleges").take(100);
-    const users = await ctx.db.query("users").take(1000);
-    const mentors = await ctx.db.query("users").withIndex("by_role", q => q.eq("role", "mentor")).take(500);
-    const payments = await ctx.db.query("payments").take(500);
+    // Optimized counting for large tables
+    const users = await ctx.db.query("users").collect();
+    const colleges = await ctx.db.query("colleges").collect();
+    const counselings = await ctx.db.query("counselings").collect();
+    const mentors = users.filter(u => u.role === "mentor");
+    const payments = await ctx.db.query("payments").collect();
 
     const revenue = payments.reduce((acc, p) => acc + (p.amount || 0), 0);
     
@@ -16,9 +17,10 @@ export const getCounts = query({
       users: users.length,
       mentors: mentors.length,
       revenue,
-      isApproximate: true
+      isApproximate: false
     };
   },
 });
+
 
 

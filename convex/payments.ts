@@ -1,5 +1,31 @@
-import { action } from "./_generated/server";
+import { query, mutation, action } from "./_generated/server";
 import { v } from "convex/values";
+
+export const listRecent = query({
+  args: {},
+  handler: async (ctx) => {
+    return await ctx.db
+      .query("payments")
+      .order("desc")
+      .take(10);
+  },
+});
+
+export const listByUser = query({
+  args: { userId: v.string(), role: v.optional(v.string()) },
+  handler: async (ctx, args) => {
+    if (args.role === "mentor") {
+      return await ctx.db
+        .query("payments")
+        .withIndex("by_user", (q) => q.eq("userId", args.userId))
+        .collect();
+    }
+    return await ctx.db
+      .query("payments")
+      .withIndex("by_user", (q) => q.eq("userId", args.userId))
+      .collect();
+  },
+});
 
 export const createOrder = action({
   args: {
