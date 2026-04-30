@@ -2,21 +2,24 @@ import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
 export const listPostedSessions = query({
-  args: { mentorId: v.id("users") },
+  args: { mentorId: v.string() },
+
   handler: async (ctx, args) => {
     return await ctx.db
       .query("sessions")
-      .filter((q) => q.eq(q.field("counsellorId"), args.mentorId))
+      .filter((q) => q.eq(q.field("mentorId"), args.mentorId))
       .filter((q) => q.eq(q.field("status"), "pending"))
       .collect();
+
   },
 });
 
 export const bookSession = mutation({
   args: {
     sessionId: v.id("sessions"),
-    studentId: v.id("users"),
+    studentId: v.string(),
   },
+
   handler: async (ctx, args) => {
     const session = await ctx.db.get(args.sessionId);
     if (!session) throw new Error("Session not found");
@@ -30,7 +33,7 @@ export const bookSession = mutation({
 
     // Create a notification for the mentor
     await ctx.db.insert("notifications", {
-      userId: session.counsellorId,
+      userId: session.mentorId!,
       title: "New Booking!",
       body: "A student has booked a session with you.",
       type: "session_reminder",
@@ -38,12 +41,14 @@ export const bookSession = mutation({
       createdAt: Date.now(),
     });
 
+
     return args.sessionId;
   },
 });
 
 export const getMySessions = query({
-  args: { userId: v.id("users"), role: v.string() },
+  args: { userId: v.string(), role: v.string() },
+
   handler: async (ctx, args) => {
     if (args.role === "student") {
       return await ctx.db
@@ -53,8 +58,9 @@ export const getMySessions = query({
     } else {
       return await ctx.db
         .query("sessions")
-        .filter((q) => q.eq(q.field("counsellorId"), args.userId))
+        .filter((q) => q.eq(q.field("mentorId"), args.userId))
         .collect();
     }
+
   },
 });

@@ -20,20 +20,21 @@ export const storeUser = mutation({
 export const currentUser = query({
   args: {},
   handler: async (ctx) => {
-    // Try getting user ID from convex-auth first
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) return null;
+
+    // 1. Try getting user ID from convex-auth session
     const userId = await auth.getUserId(ctx);
     if (userId) {
       const user = await ctx.db.get(userId);
       if (user) return user;
     }
 
-    // Fallback: Check identity directly
-    const identity = await ctx.auth.getUserIdentity();
-    if (identity) {
-      // Look up user by subject if ID lookup failed
+    // 2. Fallback: Search by email if session lookup failed or returned no user
+    if (identity.email) {
       const user = await ctx.db
         .query("users")
-        .withIndex("by_email", (q) => q.eq("email", identity.email!))
+        .withIndex("by_email", (q) => q.eq("email", identity.email))
         .unique();
       if (user) return user;
     }
@@ -41,6 +42,7 @@ export const currentUser = query({
     return null;
   },
 });
+
 
 export const listMentors = query({
   args: {
@@ -71,11 +73,14 @@ export const listMentors = query({
 });
 
 export const getById = query({
-  args: { id: v.id("users") },
+  args: { id: v.string() },
   handler: async (ctx, args) => {
-    return await ctx.db.get(args.id);
+    const userId = ctx.db.normalizeId("users", args.id);
+    if (!userId) return null;
+    return await ctx.db.get(userId);
   },
 });
+
 
 export const updateUser = mutation({
   args: {

@@ -7,12 +7,32 @@ export const getProfile = query({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) return null;
 
-    return await ctx.db
+    // 1. Try finding by current userId (Convex ID)
+    let profile = await ctx.db
       .query("profiles")
       .withIndex("by_userId", (q) => q.eq("userId", identity.subject))
       .unique();
+    
+    if (profile) return profile;
+
+    // 2. Fallback: Find by email if lookup by ID failed
+    if (identity.email) {
+      profile = await ctx.db
+        .query("profiles")
+        .withIndex("by_email", (q) => q.eq("email", identity.email!))
+        .unique();
+        
+      if (profile) {
+        // We found an orphan profile! We'll return it, 
+        // and ideally the frontend or a mutation should 'link' it.
+        return profile;
+      }
+    }
+
+    return null;
   },
 });
+
 
 export const createProfile = mutation({
   args: {
