@@ -1,89 +1,66 @@
 "use client"
 
 import { motion } from "framer-motion"
-import Link from "next/link"
-import { ArrowLeft } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Scale, FileText, CheckCircle2, AlertTriangle } from "lucide-react"
 
 export default function TermsConditionsPage() {
+  const terms = [
+    {
+      title: "Platform Usage",
+      content: "Apna Counsellor provides AI-driven admission predictions. While our data is highly accurate, it should be used as a guidance tool. The final admission decision rests with the respective counseling authorities (JoSAA, MCC, etc.)."
+    },
+    {
+      title: "Subscription & Payments",
+      content: "Premium features require a paid subscription. All payments are processed securely via Razorpay. We offer a 48-hour refund policy as outlined in our Refund Policy page."
+    },
+    {
+      title: "User Conduct",
+      content: "Users must provide accurate rank and category information. Misrepresentation of data to manipulate predictions is strictly prohibited and may lead to account suspension."
+    },
+    {
+      title: "Intellectual Property",
+      content: "All content, including the AI prediction engine, counseling data, and UI design, is the intellectual property of APNA COUNSELLOR TECH SOLUTIONS PRIVATE LIMITED."
+    }
+  ]
+
   return (
-    <div className="container mx-auto px-4 py-12">
-      <div className="max-w-4xl mx-auto">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-          <Link href="/">
-            <Button variant="ghost" className="mb-6 pl-0">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Home
-            </Button>
-          </Link>
+    <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950 pt-24 pb-20">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div className="text-center mb-16">
+          <div className="h-16 w-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-primary">
+            <Scale className="h-8 w-8" />
+          </div>
+          <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-4">Terms & <span className="text-primary">Conditions.</span></h1>
+          <p className="text-slate-500 font-medium">Agreement for Apna Counsellor Services</p>
+        </div>
 
-          <h1 className="text-4xl font-bold mb-8">📜 Terms and Conditions</h1>
-          <p className="text-sm text-gray-500 mb-8">Effective Date: 19 May 2025</p>
-
-          <div className="prose dark:prose-invert max-w-none">
-            <p>These Terms & Conditions govern your use of the Apna Counsellor platform and services.</p>
-
-            <h2 className="text-2xl font-bold mt-8 mb-4">1. Acceptance of Terms:</h2>
-            <p>
-              By accessing this website or using our services, you agree to abide by these terms and all applicable
-              laws.
-            </p>
-
-            <h2 className="text-2xl font-bold mt-8 mb-4">2. Services:</h2>
-            <p>
-              Apna Counsellor offers academic counseling, admission guidance, career mentorship, and support for
-              entrance exams such as MHT CET, JEE, CUET, etc.
-            </p>
-
-            <h2 className="text-2xl font-bold mt-8 mb-4">3. User Responsibilities:</h2>
-            <ul className="list-disc pl-6 space-y-2">
-              <li>Provide accurate personal and academic details.</li>
-              <li>Do not share false or misleading information.</li>
-              <li>You are responsible for maintaining the confidentiality of your login details.</li>
-              <li>Respect other users and refrain from spamming or misuse of the platform.</li>
-            </ul>
-
-            <h2 className="text-2xl font-bold mt-8 mb-4">4. Payment & Refund Policy:</h2>
-            <ul className="list-disc pl-6 space-y-2">
-              <li>Counseling sessions, form support, and paid services are chargeable.</li>
-              <li>Once booked, counseling sessions are non-refundable unless canceled 24 hours in advance.</li>
-              <li>Custom refund situations will be handled on a case-by-case basis.</li>
-            </ul>
-
-            <h2 className="text-2xl font-bold mt-8 mb-4">5. Intellectual Property:</h2>
-            <p>
-              All content (logos, videos, designs, content, etc.) on this website belongs to Apna Counsellor. You may
-              not copy, reproduce, or distribute any materials without our written permission.
-            </p>
-
-            <h2 className="text-2xl font-bold mt-8 mb-4">6. Third-party Links:</h2>
-            <p>
-              Our site may contain links to third-party websites. We are not responsible for their content or privacy
-              practices.
-            </p>
-
-            <h2 className="text-2xl font-bold mt-8 mb-4">7. Termination:</h2>
-            <p>
-              We reserve the right to suspend or terminate user access for violating our terms or engaging in harmful
-              behavior.
-            </p>
-
-            <h2 className="text-2xl font-bold mt-8 mb-4">8. Changes to Terms:</h2>
-            <p>
-              Apna Counsellor reserves the right to change or modify these terms at any time. Your continued use of the
-              site means you accept those changes.
-            </p>
-
-            <h2 className="text-2xl font-bold mt-8 mb-4">9. Contact:</h2>
-            <p>
-              For any questions or complaints, email us at{" "}
-              <a href="mailto:apnacounsellor@gmail.com" className="text-primary">
-                apnacounsellor@gmail.com
-              </a>{" "}
-              or message us at <strong>+91 91098 81906</strong>.
+        <div className="space-y-8 bg-white dark:bg-slate-900 p-8 md:p-12 rounded-[3rem] border border-slate-100 dark:border-slate-800 shadow-sm">
+          {terms.map((term, i) => (
+            <motion.div
+              key={term.title}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+            >
+              <h2 className="text-xl font-black mb-3 flex items-center gap-3">
+                <FileText className="h-5 w-5 text-primary" />
+                {term.title}
+              </h2>
+              <p className="text-slate-500 leading-relaxed font-medium">
+                {term.content}
+              </p>
+            </motion.div>
+          ))}
+          
+          <div className="pt-8 border-t border-slate-100 dark:border-slate-800 flex items-start gap-4">
+            <AlertTriangle className="h-6 w-6 text-orange-500 flex-shrink-0 mt-1" />
+            <p className="text-sm text-slate-400 font-medium italic">
+              Limitation of Liability: Apna Counsellor is not responsible for any admission failures or incorrect choice filling by the user. Our tools are for estimation and guidance only.
             </p>
           </div>
-        </motion.div>
+        </div>
+
       </div>
     </div>
   )
