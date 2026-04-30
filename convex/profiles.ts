@@ -15,23 +15,42 @@ export const getProfile = query({
     
     if (profile) return profile;
 
-    // 2. Fallback: Find by email if lookup by ID failed
+    // 2. Fallback: Find by email
     if (identity.email) {
       profile = await ctx.db
         .query("profiles")
-        .withIndex("by_email", (q) => q.eq("email", identity.email!))
+        .withIndex("by_email", (q) => q.eq("email", identity.email))
         .unique();
         
-      if (profile) {
-        // We found an orphan profile! We'll return it, 
-        // and ideally the frontend or a mutation should 'link' it.
-        return profile;
-      }
+      if (profile) return profile;
+    }
+
+    // 3. Last Resort: Construct a "Virtual Profile" from the users table 
+    // (since some data might have been stored there during previous migrations)
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_email", (q) => q.eq("email", identity.email!))
+      .unique();
+
+    if (user && user.onboardingComplete) {
+      return {
+        _id: user._id,
+        userId: identity.subject,
+        fullName: user.name || "User",
+        phone: user.phone || "",
+        city: user.city || "",
+        examType: user.exam || "JEE",
+        targetYear: 2026,
+        category: user.category || "General",
+        interestedStates: user.interestedStates || [],
+        onboarded: true,
+      };
     }
 
     return null;
   },
 });
+
 
 
 export const createProfile = mutation({

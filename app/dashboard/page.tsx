@@ -25,17 +25,34 @@ import {
   Target,
   Bot,
   ListChecks,
-  CheckCircle2
+  CheckCircle2,
+  Trophy,
+  Users,
+  BookCheck,
+  BarChart3
 } from "lucide-react"
+
+
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { UserNav } from "@/components/user-nav"
-import { redirect } from "next/navigation"
+import { useRouter } from "next/navigation"
+import { useEffect } from "react"
+
 
 export default function DashboardPage() {
+  const router = useRouter()
   const profile = useQuery(api.profiles.getProfile)
   const user = useQuery(api.users.currentUser)
+
+  useEffect(() => {
+    if (user === null) {
+      router.push("/login")
+    } else if (user && profile === null) {
+      router.push("/onboarding")
+    }
+  }, [user, profile, router])
 
   if (user === undefined || profile === undefined) return (
     <div className="h-screen flex flex-col items-center justify-center gap-4 bg-slate-50 dark:bg-slate-950">
@@ -44,7 +61,7 @@ export default function DashboardPage() {
     </div>
   )
   
-  if (!user) redirect("/login")
+  if (!user || profile === null) return null;
 
   // Admin Dashboard View
   if (user.role === "admin") {
@@ -52,9 +69,9 @@ export default function DashboardPage() {
   }
 
   // Student Dashboard View
-  if (profile === null) redirect("/onboarding")
   return <StudentDashboard profile={profile} user={user} />
 }
+
 
 function AdminDashboard({ user }: { user: any }) {
   return (
