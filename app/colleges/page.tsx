@@ -24,15 +24,27 @@ import Link from "next/link"
 
 const CATEGORIES = ["All", "IIT", "NIT", "IIIT", "Government", "Private"];
 const STATES = ["All", "Maharashtra", "Karnataka", "Tamil Nadu", "Delhi", "Uttar Pradesh", "Gujarat", "Rajasthan", "West Bengal", "Madhya Pradesh"];
+const RANKINGS = ["All", "Top 50", "Top 100", "Top 200", "Top 500"];
+
 import { useSearchParams } from "next/navigation"
+import { Suspense } from "react"
 
 export default function CollegesPage() {
+  return (
+    <Suspense fallback={<div className="h-screen flex items-center justify-center">Loading search...</div>}>
+      <CollegesList />
+    </Suspense>
+  )
+}
+
+function CollegesList() {
   const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get("category") || "All");
   const [selectedState, setSelectedState] = useState("All");
   const [selectedRanking, setSelectedRanking] = useState(searchParams.get("ranking") || "All");
+
 
   // Debounce search to prevent spamming the database
   useEffect(() => {
@@ -179,7 +191,8 @@ export default function CollegesPage() {
                   <div key={i} className="h-48 md:h-64 rounded-[1.5rem] md:rounded-[2.5rem] bg-white dark:bg-slate-900 animate-pulse" />
                 ))}
               </div>
-            ) : (!colleges || colleges.length === 0) && searchTerm.trim() === "" && selectedType === "All" ? (
+            ) : (!colleges || colleges.length === 0) && searchTerm.trim() === "" && selectedCategory === "All" ? (
+
               <div className="text-center py-16 md:py-24 bg-white dark:bg-slate-900 rounded-[2.5rem] border-none shadow-sm">
                 <div className="h-20 w-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
                   <Search className="h-10 w-10 text-primary" />
@@ -267,3 +280,4 @@ export default function CollegesPage() {
     </div>
   )
 }
+

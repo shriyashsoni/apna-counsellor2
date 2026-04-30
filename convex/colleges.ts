@@ -94,9 +94,14 @@ export const list = query({
       }
     }
 
-    return filtered.slice(0, 50);
+    return filtered.slice(0, 50).map(c => {
+      // Exclude large fields like cutoffs to save bandwidth and bytes read
+      const { cutoffs, ...rest } = c;
+      return rest;
+    });
   },
 });
+
 export const getCollegesByCounseling = query({
   args: { counselingId: v.id("counselings") },
   handler: async (ctx, args) => {
@@ -135,9 +140,21 @@ export const predict = query({
       rank = 50000;
     }
 
-    // Limit processing to 500 colleges to prevent memory/payload issues with 70k+ records
-    const colleges = await ctx.db.query("colleges").take(500);
+    // Optimized Query: Use index if filtering by state to avoid full scans
+    let query = ctx.db.query("colleges");
+    
+    if (args.preferredStates && args.preferredStates.length === 1) {
+      // If user only wants one state, we can use the index perfectly
+      query = query.withIndex("by_state", (q) => q.eq("state", args.preferredStates![0]));
+    } else if (args.preferredStates && args.preferredStates.length > 1) {
+      // If multiple, we still use the first one's index as a starting point 
+      // or just take more records and filter in memory
+      query = query.withIndex("by_state", (q) => q.eq("state", args.preferredStates![0]));
+    }
+
+    const colleges = await query.take(500);
     const results: any[] = [];
+
 
     for (const c of colleges) {
       if (args.preferredStates && args.preferredStates.length > 0 && !args.preferredStates.includes(c.state)) {

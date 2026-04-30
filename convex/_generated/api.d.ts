@@ -11,6 +11,7 @@
 import type * as ai from "../ai.js";
 import type * as auth from "../auth.js";
 import type * as batches from "../batches.js";
+import type * as cleanup from "../cleanup.js";
 import type * as colleges from "../colleges.js";
 import type * as counselings from "../counselings.js";
 import type * as counselor from "../counselor.js";
@@ -46,6 +47,7 @@ declare const fullApi: ApiFromModules<{
   ai: typeof ai;
   auth: typeof auth;
   batches: typeof batches;
+  cleanup: typeof cleanup;
   colleges: typeof colleges;
   counselings: typeof counselings;
   counselor: typeof counselor;
