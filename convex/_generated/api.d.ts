@@ -23,6 +23,7 @@ import type * as payments from "../payments.js";
 import type * as profiles from "../profiles.js";
 import type * as rankings from "../rankings.js";
 import type * as ranks from "../ranks.js";
+import type * as razorpay from "../razorpay.js";
 import type * as scraper from "../scraper.js";
 import type * as seed from "../seed.js";
 import type * as seed_aishe from "../seed_aishe.js";
@@ -64,6 +65,7 @@ declare const fullApi: ApiFromModules<{
   profiles: typeof profiles;
   rankings: typeof rankings;
   ranks: typeof ranks;
+  razorpay: typeof razorpay;
   scraper: typeof scraper;
   seed: typeof seed;
   seed_aishe: typeof seed_aishe;
