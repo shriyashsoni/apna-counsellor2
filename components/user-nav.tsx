@@ -18,7 +18,16 @@ import { LogOut, User, Settings, CreditCard, Sparkles, LayoutDashboard } from "l
 export function UserNav() {
   const { user, logout, login, isLoading } = useAuth()
 
-  // Always show the login button unless we have a confirmed user
+  // Show loading state while verifying
+  if (isLoading) {
+    return (
+      <div className="h-9 w-9 md:h-10 md:w-10 rounded-full border-2 border-primary/10 flex items-center justify-center animate-pulse">
+        <div className="h-4 w-4 rounded-full bg-primary/20" />
+      </div>
+    )
+  }
+
+  // Only show login if we are definitely not authenticated
   if (!user) {
     return (
       <Link href="/login">

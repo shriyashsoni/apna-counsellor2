@@ -48,8 +48,13 @@ export default function MentorProfilePage() {
   )
 
   const handleBook = async (sessionId: any) => {
-    if (!dbUser) {
+    if (dbUser === null) {
       toast.error("Please login to book a session")
+      return
+    }
+
+    if (dbUser === undefined) {
+      toast.info("Still verifying your session...")
       return
     }
     
