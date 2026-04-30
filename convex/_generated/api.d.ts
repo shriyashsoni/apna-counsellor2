@@ -26,6 +26,7 @@ import type * as scraper from "../scraper.js";
 import type * as seed from "../seed.js";
 import type * as seed_aishe from "../seed_aishe.js";
 import type * as seed_bulk_colleges from "../seed_bulk_colleges.js";
+import type * as seed_clean from "../seed_clean.js";
 import type * as seed_counselings from "../seed_counselings.js";
 import type * as seed_data from "../seed_data.js";
 import type * as seed_deep_links from "../seed_deep_links.js";
@@ -36,6 +37,7 @@ import type * as seed_mentors from "../seed_mentors.js";
 import type * as seed_resources_massive from "../seed_resources_massive.js";
 import type * as seed_test from "../seed_test.js";
 import type * as sessions from "../sessions.js";
+import type * as sync from "../sync.js";
 import type * as users from "../users.js";
 
 import type {
@@ -63,6 +65,7 @@ declare const fullApi: ApiFromModules<{
   seed: typeof seed;
   seed_aishe: typeof seed_aishe;
   seed_bulk_colleges: typeof seed_bulk_colleges;
+  seed_clean: typeof seed_clean;
   seed_counselings: typeof seed_counselings;
   seed_data: typeof seed_data;
   seed_deep_links: typeof seed_deep_links;
@@ -73,6 +76,7 @@ declare const fullApi: ApiFromModules<{
   seed_resources_massive: typeof seed_resources_massive;
   seed_test: typeof seed_test;
   sessions: typeof sessions;
+  sync: typeof sync;
   users: typeof users;
 }>;
 

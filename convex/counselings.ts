@@ -16,8 +16,9 @@ export const addCounseling = mutation({
   },
 });
 
-export const listCounselings = query({
+export const list = query({
   handler: async (ctx) => {
     return await ctx.db.query("counselings").collect();
   },
 });
+
