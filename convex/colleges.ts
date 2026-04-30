@@ -33,8 +33,10 @@ export const list = query({
     category: v.optional(v.string()),
     state: v.optional(v.string()),
     ranking: v.optional(v.string()),
+    tier: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
+
     let results: any[] = [];
 
     // 1. Primary Query Method
@@ -94,6 +96,11 @@ export const list = query({
       }
     }
 
+    if (args.tier && args.tier !== "All") {
+      filtered = filtered.filter(c => c.tier === args.tier);
+    }
+
+
     return filtered.slice(0, 50).map(c => {
       // Exclude large fields like cutoffs to save bandwidth and bytes read
       const { cutoffs, ...rest } = c;
@@ -140,17 +147,19 @@ export const predict = query({
       rank = 50000;
     }
 
-    // Optimized Query: Use index if filtering by state to avoid full scans
+    // Optimized Query: Use index if filtering by state or counseling to avoid full scans
     let query = ctx.db.query("colleges");
     
-    if (args.preferredStates && args.preferredStates.length === 1) {
-      // If user only wants one state, we can use the index perfectly
-      query = query.withIndex("by_state", (q) => q.eq("state", args.preferredStates![0]));
-    } else if (args.preferredStates && args.preferredStates.length > 1) {
-      // If multiple, we still use the first one's index as a starting point 
-      // or just take more records and filter in memory
+    // If the user selected a specific counselling, we MUST filter by that counselingId
+    if (args.exam) {
+      const counseling = await ctx.db.query("counselings").filter(q => q.eq(q.field("name"), args.exam)).unique();
+      if (counseling) {
+        query = query.withIndex("by_counseling", (q) => q.eq("counselingId", counseling._id));
+      }
+    } else if (args.preferredStates && args.preferredStates.length === 1) {
       query = query.withIndex("by_state", (q) => q.eq("state", args.preferredStates![0]));
     }
+
 
     const colleges = await query.take(500);
     const results: any[] = [];

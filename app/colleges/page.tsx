@@ -25,8 +25,10 @@ import Link from "next/link"
 const CATEGORIES = ["All", "IIT", "NIT", "IIIT", "Government", "Private"];
 const STATES = ["All", "Maharashtra", "Karnataka", "Tamil Nadu", "Delhi", "Uttar Pradesh", "Gujarat", "Rajasthan", "West Bengal", "Madhya Pradesh"];
 const RANKINGS = ["All", "Top 50", "Top 100", "Top 200", "Top 500"];
+const TIERS = ["All", "Elite (Top 50)", "Premium (Top 100)", "Superior (Top 200)", "Value (Top 500)"];
 
 import { useSearchParams } from "next/navigation"
+
 import { Suspense } from "react"
 
 export default function CollegesPage() {
@@ -44,6 +46,8 @@ function CollegesList() {
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get("category") || "All");
   const [selectedState, setSelectedState] = useState("All");
   const [selectedRanking, setSelectedRanking] = useState(searchParams.get("ranking") || "All");
+  const [selectedTier, setSelectedTier] = useState("All");
+
 
 
   // Debounce search to prevent spamming the database
@@ -58,8 +62,10 @@ function CollegesList() {
     search: debouncedSearchTerm,
     category: selectedCategory,
     state: selectedState,
-    ranking: selectedRanking
+    ranking: selectedRanking,
+    tier: selectedTier
   });
+
 
   const container = {
     hidden: { opacity: 0 },
@@ -111,7 +117,7 @@ function CollegesList() {
               />
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
               <div className="space-y-1.5">
                 <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-2">Category</label>
                 <select 
@@ -135,7 +141,18 @@ function CollegesList() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-2">Ranking</label>
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-2">AI Ranking</label>
+                <select 
+                  value={selectedTier}
+                  onChange={(e) => setSelectedTier(e.target.value)}
+                  className="w-full h-12 px-4 rounded-xl bg-slate-50 dark:bg-slate-800 border-none font-bold text-sm focus:ring-2 focus:ring-primary/20 transition-all appearance-none cursor-pointer"
+                >
+                  {TIERS.map(t => <option key={t} value={t}>{t}</option>)}
+                </select>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-2">NIRF Limit</label>
                 <select 
                   value={selectedRanking}
                   onChange={(e) => setSelectedRanking(e.target.value)}
@@ -145,6 +162,7 @@ function CollegesList() {
                 </select>
               </div>
             </div>
+
           </div>
         </div>
       </div>
@@ -230,14 +248,20 @@ function CollegesList() {
                               <div>
                                 <div className="flex items-center gap-2">
                                   <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-[8px] md:text-[9px] font-black uppercase tracking-wider text-slate-500">
-                                    {college.type || "Private"}
+                                    {college.tier || college.type || "Private"}
                                   </span>
+                                  {college.aiScore && (
+                                    <span className="px-2 py-0.5 rounded-full bg-primary/10 text-[8px] md:text-[9px] font-black uppercase tracking-wider text-primary border border-primary/10 flex items-center gap-1">
+                                      <Sparkles className="h-2 w-2" /> AI {college.aiScore}
+                                    </span>
+                                  )}
                                   {college.nirfRank && (
                                     <span className="px-2 py-0.5 rounded-full bg-orange-500/10 text-[8px] md:text-[9px] font-black uppercase tracking-wider text-orange-500 border border-orange-500/10">
                                       NIRF #{college.nirfRank}
                                     </span>
                                   )}
                                 </div>
+
                               </div>
                             </div>
                             <Button variant="ghost" size="icon" className="rounded-full text-slate-300 group-hover:text-primary transition-colors">

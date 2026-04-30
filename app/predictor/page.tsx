@@ -28,7 +28,9 @@ const EXAMS = ['JEE Advanced', 'JEE Mains', 'MHT-CET', 'COMEDK', 'AKTU', 'BITSAT
 const CATEGORIES = ['General', 'OBC', 'SC', 'ST', 'EWS'];
 
 export default function PredictorPage() {
-  const [exam, setExam] = useState('JEE Advanced');
+  const counselings = useQuery(api.counselings.list);
+  const [selectedCounseling, setSelectedCounseling] = useState<any>(null);
+  const [exam, setExam] = useState('');
   const [rank, setRank] = useState('');
   const [percentile, setPercentile] = useState('');
   const [category, setCategory] = useState('General');
@@ -40,13 +42,14 @@ export default function PredictorPage() {
 
   // Convex Query for prediction (data-based)
   const dbResults = useQuery(api.colleges.predict, showResults ? {
-    exam,
-    rank: rank ? parseInt(rank) : undefined,
+    exam: selectedCounseling?.name || exam,
+    rank: rank ? parseInt(rank.replace(/,/g, "")) : undefined,
     percentile: percentile ? parseFloat(percentile) : undefined,
     category,
   } : "skip");
 
   const results = aiResults || dbResults;
+
 
   const handlePredict = async () => {
     if (!rank && !percentile) return;
@@ -108,25 +111,45 @@ export default function PredictorPage() {
                 <Card className="border-none rounded-[2.5rem] shadow-2xl shadow-slate-200/50 dark:shadow-none bg-white dark:bg-slate-900 overflow-hidden">
                   <CardContent className="p-8 sm:p-12 space-y-10">
                     
-                    {/* Exam Selection */}
+                    {/* Counselling Selection */}
                     <div className="space-y-4">
-                      <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Select Entrance Exam</label>
-                      <div className="flex flex-wrap gap-3">
-                        {EXAMS.map((e) => (
-                          <button
-                            key={e}
-                            onClick={() => setExam(e)}
-                            className={`px-6 py-3 rounded-2xl font-bold text-sm transition-all ${
-                              exam === e 
-                                ? "bg-primary text-white shadow-lg shadow-primary/30" 
-                                : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200"
-                            }`}
-                          >
-                            {e}
-                          </button>
-                        ))}
+                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2">
+                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Select Counselling / Exam</label>
+                        <div className="relative w-full sm:max-w-[250px]">
+                          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
+                          <Input 
+                            placeholder="Search 100+ predictors..." 
+                            className="pl-9 h-10 rounded-xl text-xs bg-slate-50 dark:bg-slate-800 border-none focus:ring-2 focus:ring-primary/20 transition-all"
+                            value={exam}
+                            onChange={(e) => setExam(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-h-[350px] overflow-y-auto pr-2 scrollbar-hide">
+                        {(counselings || [])
+                          .filter(c => c.name.toLowerCase().includes(exam.toLowerCase()))
+                          .map((c: any) => (
+                            <button
+                              key={c._id}
+                              onClick={() => setSelectedCounseling(c)}
+                              className={`p-4 rounded-2xl font-bold text-[10px] sm:text-xs text-left transition-all border-2 flex items-center gap-3 ${
+                                selectedCounseling?._id === c._id 
+                                  ? "bg-primary border-primary text-white shadow-lg shadow-primary/30" 
+                                  : "bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-primary/50"
+                              }`}
+                            >
+                              <div className={`h-8 w-8 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                                selectedCounseling?._id === c._id ? "bg-white/20" : "bg-primary/5"
+                              }`}>
+                                <GraduationCap className={`h-4 w-4 ${selectedCounseling?._id === c._id ? "text-white" : "text-primary"}`} />
+                              </div>
+                              <span className="line-clamp-2 leading-tight">{c.name}</span>
+                            </button>
+                          ))}
                       </div>
                     </div>
+
 
                     {/* Category Selection */}
                     <div className="space-y-4">

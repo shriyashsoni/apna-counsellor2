@@ -20,6 +20,7 @@ import type * as http from "../http.js";
 import type * as mentors from "../mentors.js";
 import type * as migration from "../migration.js";
 import type * as profiles from "../profiles.js";
+import type * as rankings from "../rankings.js";
 import type * as ranks from "../ranks.js";
 import type * as scraper from "../scraper.js";
 import type * as seed from "../seed.js";
@@ -56,6 +57,7 @@ declare const fullApi: ApiFromModules<{
   mentors: typeof mentors;
   migration: typeof migration;
   profiles: typeof profiles;
+  rankings: typeof rankings;
   ranks: typeof ranks;
   scraper: typeof scraper;
   seed: typeof seed;

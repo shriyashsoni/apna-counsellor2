@@ -77,7 +77,10 @@ export default defineSchema({
     location: v.optional(v.string()),
     type: v.optional(v.string()),
     nirfRank: v.optional(v.number()),
+    aiScore: v.optional(v.number()), 
+    tier: v.optional(v.string()), 
     established: v.optional(v.number()),
+
     annualFee: v.optional(v.string()),
     avgPackage: v.optional(v.string()),
     website: v.optional(v.string()),
