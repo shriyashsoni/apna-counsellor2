@@ -36,12 +36,26 @@ export const currentUser = query({
         .query("users")
         .withIndex("by_email", (q) => q.eq("email", identity.email))
         .unique();
-      if (user) return user;
+      
+      if (user) {
+        // Strict Admin Enforcement
+        const isAdmin = user.email === "apnacounsellor@gmail.com";
+        return { ...user, isAdmin };
+      }
     }
 
     return null;
   },
 });
+
+export const checkAdmin = query({
+  args: {},
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    return identity?.email === "apnacounsellor@gmail.com";
+  },
+});
+
 
 
 export const listMentors = query({
@@ -82,7 +96,17 @@ export const getById = query({
 });
 
 
+export const listAll = query({
+  args: {},
+  handler: async (ctx) => {
+    const admin = await checkAdmin(ctx, {});
+    if (!admin) return [];
+    return await ctx.db.query("users").order("desc").collect();
+  },
+});
+
 export const updateUser = mutation({
+
   args: {
     id: v.id("users"),
     data: v.any(),

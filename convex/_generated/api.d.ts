@@ -22,6 +22,7 @@ import type * as migration from "../migration.js";
 import type * as profiles from "../profiles.js";
 import type * as rankings from "../rankings.js";
 import type * as ranks from "../ranks.js";
+import type * as razorpay from "../razorpay.js";
 import type * as scraper from "../scraper.js";
 import type * as seed from "../seed.js";
 import type * as seed_aishe from "../seed_aishe.js";
@@ -37,6 +38,7 @@ import type * as seed_mentors from "../seed_mentors.js";
 import type * as seed_resources_massive from "../seed_resources_massive.js";
 import type * as seed_test from "../seed_test.js";
 import type * as sessions from "../sessions.js";
+import type * as subscriptions from "../subscriptions.js";
 import type * as sync from "../sync.js";
 import type * as users from "../users.js";
 
@@ -61,6 +63,7 @@ declare const fullApi: ApiFromModules<{
   profiles: typeof profiles;
   rankings: typeof rankings;
   ranks: typeof ranks;
+  razorpay: typeof razorpay;
   scraper: typeof scraper;
   seed: typeof seed;
   seed_aishe: typeof seed_aishe;
@@ -76,6 +79,7 @@ declare const fullApi: ApiFromModules<{
   seed_resources_massive: typeof seed_resources_massive;
   seed_test: typeof seed_test;
   sessions: typeof sessions;
+  subscriptions: typeof subscriptions;
   sync: typeof sync;
   users: typeof users;
 }>;

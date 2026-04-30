@@ -23,6 +23,8 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
+import { AuthGuard } from "@/components/auth-guard"
+
 
 const EXAMS = ['JEE Advanced', 'JEE Mains', 'MHT-CET', 'COMEDK', 'AKTU', 'BITSAT'];
 const CATEGORIES = ['General', 'OBC', 'SC', 'ST', 'EWS'];
@@ -76,7 +78,9 @@ export default function PredictorPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950 pt-20 pb-20">
+    <AuthGuard requireSubscription={true} message="The AI Predictor is a Premium tool. Unlock it to see your admission chances.">
+      <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950 pt-20 pb-20">
+
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
@@ -330,5 +334,7 @@ export default function PredictorPage() {
         </div>
       </div>
     </div>
+    </AuthGuard>
   )
 }
+

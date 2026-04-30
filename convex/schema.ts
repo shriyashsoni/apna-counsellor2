@@ -161,15 +161,28 @@ export default defineSchema({
   }).index("by_mentor", ["mentorId"]).index("by_student", ["studentId"]),
 
   payments: defineTable({
-    paymentId: v.string(),
+    paymentId: v.string(), // Razorpay payment ID
+    orderId: v.optional(v.string()), // Razorpay order ID
+    signature: v.optional(v.string()), // Razorpay signature
     amount: v.number(),
     currency: v.string(),
     status: v.string(),
     userId: v.string(),
-    mentorId: v.string(),
+    mentorId: v.optional(v.string()),
     sessionId: v.optional(v.string()),
+    type: v.optional(v.string()), // "subscription", "mentorship", "course"
     createdAt: v.string(),
   }).index("by_payment_id", ["paymentId"]).index("by_user", ["userId"]),
+
+  subscriptions: defineTable({
+    userId: v.string(),
+    planId: v.string(), // "pro", "elite", "basic"
+    status: v.string(), // "active", "expired", "cancelled"
+    startDate: v.string(),
+    endDate: v.string(),
+    razorpaySubscriptionId: v.optional(v.string()),
+  }).index("by_user", ["userId"]),
+
 
   reviews: defineTable({
     reviewId: v.string(),

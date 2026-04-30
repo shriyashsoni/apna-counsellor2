@@ -154,28 +154,38 @@ function AdminDashboard({ user }: { user: any }) {
 }
 
 function StudentDashboard({ profile, user }: { profile: any, user: any }) {
-  const getRecommendedPortals = () => {
-    const portals = []
-    if (profile.examType === "JEE") {
-      portals.push({ id: "JoSAA", name: "JoSAA 2026", desc: "IIT & NIT Admission Portal", icon: "J", color: "orange" })
-      portals.push({ id: "CSAB", name: "CSAB 2026", desc: "NIT+ System Spot Rounds", icon: "C", color: "blue" })
-    }
-    if (profile.examType === "NEET") {
-      portals.push({ id: "MCC", name: "MCC Medical", desc: "All India Quota Medical Admissions", icon: "M", color: "red" })
-    }
-    if (profile?.interestedStates?.includes("Maharashtra")) {
-      portals.push({ id: "MHT-CET", name: "MHT-CET 2026", desc: "Maharashtra Engineering Portal", icon: "M", color: "purple" })
-    }
-    if (portals.length === 0) {
-      portals.push({ id: "JEE-Main", name: "JEE Main Portal", desc: "Exam registration & results", icon: "J", color: "blue" })
-    }
-    return portals.slice(0, 4)
-  }
+  const subscription = useQuery(api.subscriptions.getActive, { userId: user?._id ?? "" })
+  const sessions = useQuery(api.sessions.listByStudent, { studentId: user?._id ?? "" })
+  const isPro = !!subscription;
 
   return (
     <div className="space-y-8">
+      {/* Pro Banner for free users */}
+      {!isPro && (
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="p-8 rounded-[2.5rem] bg-slate-900 text-white relative overflow-hidden group shadow-2xl"
+        >
+          <div className="absolute top-0 right-0 p-12 opacity-10 group-hover:scale-110 transition-transform duration-700">
+              <Zap className="h-40 w-40" />
+          </div>
+          <div className="relative z-10 max-w-2xl">
+            <Badge className="bg-primary text-white border-none font-black text-[10px] uppercase tracking-widest px-3 mb-4">Limited Access</Badge>
+            <h2 className="text-3xl font-black mb-4">Unlock the Full Potential of AI.</h2>
+            <p className="text-slate-400 font-medium text-lg leading-relaxed mb-8">
+              Upgrade to **Pro** to unlock 100+ predictors, expert cutoff analysis, and priority mentor booking.
+            </p>
+            <Link href="/pricing">
+              <Button className="rounded-2xl h-14 px-10 font-black text-base shadow-xl shadow-primary/20 bg-primary">Get Pro Now</Button>
+            </Link>
+          </div>
+        </motion.div>
+      )}
+
       {/* Stats Overview */}
       <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
+
         {[
           { label: "Goal", value: profile.examType, icon: Target, color: "text-primary" },
           { label: "Category", value: profile.category, icon: ShieldCheck, color: "text-emerald-500" },

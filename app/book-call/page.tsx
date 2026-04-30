@@ -1,177 +1,120 @@
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import Link from "next/link"
-import { ArrowRight, Calendar, CheckCircle, Clock, CreditCard, Languages, Phone } from "lucide-react"
-import BookingForm from "./BookingForm"
-import type { Metadata } from "next"
+"use client"
 
-export const metadata: Metadata = {
-  title: "Book a Counselling Call – Get Expert Admission Guidance",
-  description:
-    "Book a personalized counselling session with Apna Counsellor experts. Get guidance for MHT CET, JEE, MP DTE, COMEDK admissions. Sessions start from ₹250.",
-  keywords:
-    "book counselling call, admission guidance, MHT CET counselling, JEE counselling, college admission help, personalized guidance, expert counsellor",
-}
+import { motion } from "framer-motion"
+import { 
+  Calendar, 
+  Clock, 
+  Video, 
+  Phone, 
+  ChevronRight, 
+  Sparkles,
+  MessageSquare,
+  ShieldCheck
+} from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
 
 export default function BookCallPage() {
+  const options = [
+    { 
+      title: "Quick Admission Chat", 
+      time: "15 mins", 
+      price: "Free", 
+      desc: "Instant answers for basic admission queries.",
+      icon: MessageSquare,
+      color: "blue"
+    },
+    { 
+      title: "Expert Strategy Session", 
+      time: "45 mins", 
+      price: "₹999", 
+      desc: "Deep dive into your profile and choice filling.",
+      icon: Video,
+      color: "primary"
+    },
+    { 
+      title: "Parent Counseling", 
+      time: "60 mins", 
+      price: "₹1,499", 
+      desc: "Special session for parents about fees and safety.",
+      icon: Users,
+      color: "orange"
+    }
+  ]
+
   return (
-    <div className="container mx-auto px-4 py-12">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-bold mb-6 text-center">Book a Counselling Call</h1>
-        <p className="text-lg mb-12 text-center max-w-3xl mx-auto">
-          Get personalized guidance from our expert counsellors to help you navigate the admission process and secure a
-          seat in your dream college.
-        </p>
-
-        <div className="grid lg:grid-cols-3 gap-8 mb-12">
-          {/* Booking Form - Takes 2 columns */}
-          <div className="lg:col-span-2">
-            <BookingForm />
-          </div>
-
-          {/* Information Sidebar - Takes 1 column */}
-          <div className="space-y-6">
-            <Card className="border-primary/20">
-              <CardHeader>
-                <CardTitle className="text-xl">What You'll Get</CardTitle>
-                <CardDescription>Our counselling sessions include</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {[
-                  "One-on-one session with expert counsellor",
-                  "Personalized college recommendations",
-                  "Guidance on choice filling strategy",
-                  "Document verification assistance",
-                  "Fee structure and scholarship info",
-                  "Post-counselling WhatsApp support",
-                ].map((point, index) => (
-                  <div key={index} className="flex items-start">
-                    <CheckCircle className="h-4 w-4 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                    <p className="text-sm">{point}</p>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-
-            <Card className="border-primary/20">
-              <CardHeader>
-                <CardTitle className="text-xl">Session Details</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center">
-                  <Clock className="h-4 w-4 text-primary mr-3" />
-                  <div>
-                    <h4 className="font-medium text-sm">Duration</h4>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">30-45 minutes per session</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center">
-                  <CreditCard className="h-4 w-4 text-primary mr-3" />
-                  <div>
-                    <h4 className="font-medium text-sm">Pricing</h4>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">Starting from ₹250 per session</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center">
-                  <Calendar className="h-4 w-4 text-primary mr-3" />
-                  <div>
-                    <h4 className="font-medium text-sm">Availability</h4>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">7 days a week, 10 AM to 8 PM</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center">
-                  <Languages className="h-4 w-4 text-primary mr-3" />
-                  <div>
-                    <h4 className="font-medium text-sm">Languages</h4>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">Hindi, English, and Marathi</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center">
-                  <Phone className="h-4 w-4 text-primary mr-3" />
-                  <div>
-                    <h4 className="font-medium text-sm">Mode</h4>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">WhatsApp call or Direct phone call</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-primary/20 bg-gray-50 dark:bg-gray-800">
-              <CardHeader>
-                <CardTitle className="text-xl">Quick Contact</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm mb-4">Need immediate assistance?</p>
-                <div className="space-y-2">
-                  <a href="https://wa.me/919109881906" target="_blank" rel="noopener noreferrer">
-                    <Button variant="outline" size="sm" className="w-full">
-                      WhatsApp: +91 9109881906
-                    </Button>
-                  </a>
-                  <a href="mailto:apnacounsellor@gmail.com">
-                    <Button variant="outline" size="sm" className="w-full">
-                      Email Us
-                    </Button>
-                  </a>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-
-        <div className="bg-gray-50 dark:bg-gray-800 p-8 rounded-lg mb-12">
-          <h2 className="text-2xl font-bold mb-4">How It Works</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                step: "1",
-                title: "Fill the Form",
-                description: "Complete the booking form with your details and counselling requirements",
-              },
-              {
-                step: "2",
-                title: "WhatsApp Redirect",
-                description: "Get redirected to WhatsApp with your details pre-filled for quick contact",
-              },
-              {
-                step: "3",
-                title: "Schedule Session",
-                description: "Our team will contact you within 2-4 hours to schedule your session",
-              },
-              {
-                step: "4",
-                title: "Get Guidance",
-                description: "Receive personalized counselling and ongoing support throughout the process",
-              },
-            ].map((item, index) => (
-              <div key={index} className="text-center">
-                <div className="flex items-center justify-center h-12 w-12 rounded-full bg-primary text-white font-bold mx-auto mb-3">
-                  {item.step}
-                </div>
-                <h3 className="font-semibold mb-2">{item.title}</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">{item.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">Ready to Secure Your Future?</h2>
-          <p className="text-lg mb-6">
-            Don't miss the opportunity to get expert guidance for your college admission process.
+    <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950 pt-24 pb-20">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Header */}
+        <div className="text-center mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 text-[10px] font-black uppercase tracking-widest mb-6"
+          >
+            <ShieldCheck className="h-3 w-3" /> Certified Expert Counselors
+          </motion.div>
+          <h1 className="text-4xl md:text-6xl font-black tracking-tighter mb-6">
+            Book your <span className="text-primary text-glow">Consultation.</span>
+          </h1>
+          <p className="text-slate-500 font-medium text-lg">
+            Choose a session type that fits your needs and talk to our experts today.
           </p>
-          <Link href="#booking-form">
-            <Button size="lg" className="animated-gradient text-white hover:text-white">
-              Book Your Counselling Call Now
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </Link>
         </div>
+
+        <div className="grid gap-6">
+          {options.map((opt, i) => (
+            <motion.div
+              key={opt.title}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: i * 0.1 }}
+            >
+              <Card className="border-none rounded-[2rem] md:rounded-[2.5rem] shadow-sm bg-white dark:bg-slate-900 hover:shadow-2xl hover:shadow-primary/5 transition-all group overflow-hidden">
+                <CardContent className="p-0">
+                  <div className="flex flex-col md:flex-row">
+                    <div className="flex-1 p-8 md:p-10">
+                      <div className="flex items-center gap-4 mb-6">
+                         <div className="h-12 w-12 rounded-2xl bg-primary/5 flex items-center justify-center text-primary">
+                            <opt.icon className="h-6 w-6" />
+                         </div>
+                         <div>
+                            <h3 className="text-2xl font-black group-hover:text-primary transition-colors">{opt.title}</h3>
+                            <div className="flex items-center gap-3 mt-1">
+                               <Badge variant="secondary" className="rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 font-bold text-[10px] tracking-wide uppercase px-2 py-0.5 border-none">
+                                  <Clock className="h-3 w-3 mr-1 inline" /> {opt.time}
+                               </Badge>
+                               <span className="text-primary font-black text-sm">{opt.price}</span>
+                            </div>
+                         </div>
+                      </div>
+                      <p className="text-slate-500 font-medium leading-relaxed max-w-md">
+                        {opt.desc}
+                      </p>
+                    </div>
+                    <div className="md:w-48 bg-slate-50 dark:bg-slate-800/50 flex flex-col items-center justify-center p-8 border-t md:border-t-0 md:border-l border-slate-100 dark:border-slate-800">
+                       <Button className="w-full rounded-2xl h-14 font-black shadow-lg shadow-primary/20">Book Now</Button>
+                       <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-4">No login required</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Info */}
+        <div className="mt-12 p-8 rounded-[2rem] bg-amber-500/5 border border-amber-500/10 text-center">
+           <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">
+             Need something else? Call us directly at <span className="text-primary font-black">+91 91724 10300</span> or email <span className="text-primary font-black">apnacounsellor@gmail.com</span>
+           </p>
+        </div>
+
       </div>
     </div>
   )
 }
+
+import { Users } from "lucide-react"

@@ -1,66 +1,48 @@
-import { mutation, query } from "./_generated/server";
+import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
 
-export const listPostedSessions = query({
+export const listByMentor = query({
   args: { mentorId: v.string() },
-
   handler: async (ctx, args) => {
+    if (!args.mentorId) return [];
+    
     return await ctx.db
       .query("sessions")
-      .filter((q) => q.eq(q.field("mentorId"), args.mentorId))
-      .filter((q) => q.eq(q.field("status"), "pending"))
-      .collect();
-
+      .withIndex("by_mentor", (q) => q.eq("mentorId", args.mentorId))
+      .order("desc")
+      .take(50);
   },
 });
 
-export const bookSession = mutation({
+export const listByStudent = query({
+  args: { studentId: v.string() },
+  handler: async (ctx, args) => {
+    if (!args.studentId) return [];
+    
+    return await ctx.db
+      .query("sessions")
+      .withIndex("by_student", (q) => q.eq("studentId", args.studentId))
+      .order("desc")
+      .take(50);
+  },
+});
+
+export const createSession = mutation({
   args: {
-    sessionId: v.id("sessions"),
+    mentorId: v.string(),
+    mentorName: v.string(),
     studentId: v.string(),
+    studentName: v.string(),
+    date: v.string(),
+    timeSlot: v.string(),
+    price: v.number(),
+    topic: v.optional(v.string()),
   },
-
   handler: async (ctx, args) => {
-    const session = await ctx.db.get(args.sessionId);
-    if (!session) throw new Error("Session not found");
-    if (session.status !== "pending") throw new Error("Session already booked");
-
-    await ctx.db.patch(args.sessionId, {
-      studentId: args.studentId,
-      status: "confirmed",
-      updatedAt: Date.now(),
+    return await ctx.db.insert("sessions", {
+      ...args,
+      status: "booked",
+      createdAt: new Date().toISOString(),
     });
-
-    // Create a notification for the mentor
-    await ctx.db.insert("notifications", {
-      userId: session.mentorId!,
-      title: "New Booking!",
-      body: "A student has booked a session with you.",
-      type: "session_reminder",
-      isRead: false,
-      createdAt: Date.now(),
-    });
-
-
-    return args.sessionId;
-  },
-});
-
-export const getMySessions = query({
-  args: { userId: v.string(), role: v.string() },
-
-  handler: async (ctx, args) => {
-    if (args.role === "student") {
-      return await ctx.db
-        .query("sessions")
-        .filter((q) => q.eq(q.field("studentId"), args.userId))
-        .collect();
-    } else {
-      return await ctx.db
-        .query("sessions")
-        .filter((q) => q.eq(q.field("mentorId"), args.userId))
-        .collect();
-    }
-
   },
 });
