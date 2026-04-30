@@ -88,9 +88,10 @@ const Footer = () => {
             <ul className="space-y-4">
               {["College Predictor", "Choice Filling AI", "Cutoff Analyzer", "Trend Tracker", "Seat Matrix", "Document Verifier"].map(item => (
                 <li key={item}>
-                  <Link href="/predictors" className="text-slate-400 hover:text-white transition-colors text-sm font-medium">
+                  <Link href="/predictor" className="text-slate-400 hover:text-white transition-colors text-sm font-medium">
                     {item}
                   </Link>
+
                 </li>
               ))}
             </ul>
@@ -99,7 +100,7 @@ const Footer = () => {
           <div>
             <h3 className="font-black text-sm uppercase tracking-widest text-primary mb-8">Company</h3>
             <ul className="space-y-4">
-              {["About Us", "Founder", "Our Story", "Global Hub", "Contact", "Careers"].map(item => (
+              {["About", "Founder", "Our Story", "Global Hub", "Contact", "Careers"].map(item => (
                 <li key={item}>
                   <Link href={`/${item.toLowerCase().replace(/ /g, "-")}`} className="text-slate-400 hover:text-white transition-colors text-sm font-medium">
                     {item}
@@ -115,11 +116,12 @@ const Footer = () => {
             © {new Date().getFullYear()} APNA COUNSELLOR TECH SOLUTIONS PRIVATE LIMITED
           </p>
           <div className="flex flex-wrap justify-center gap-8 text-xs font-bold uppercase tracking-widest text-slate-500">
-            <Link href="/privacy" className="hover:text-primary transition-colors">Privacy</Link>
-            <Link href="/terms" className="hover:text-primary transition-colors">Terms</Link>
+            <Link href="/privacy-policy" className="hover:text-primary transition-colors">Privacy</Link>
+            <Link href="/terms-conditions" className="hover:text-primary transition-colors">Terms</Link>
             <Link href="/refund" className="hover:text-primary transition-colors">Refund Policy</Link>
             <Link href="/security" className="hover:text-primary transition-colors">Security</Link>
           </div>
+
         </div>
       </div>
     </footer>
