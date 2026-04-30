@@ -17,6 +17,7 @@ import type * as counselor from "../counselor.js";
 import type * as diagnostics from "../diagnostics.js";
 import type * as http from "../http.js";
 import type * as mentors from "../mentors.js";
+import type * as migration from "../migration.js";
 import type * as profiles from "../profiles.js";
 import type * as ranks from "../ranks.js";
 import type * as scraper from "../scraper.js";
@@ -51,6 +52,7 @@ declare const fullApi: ApiFromModules<{
   diagnostics: typeof diagnostics;
   http: typeof http;
   mentors: typeof mentors;
+  migration: typeof migration;
   profiles: typeof profiles;
   ranks: typeof ranks;
   scraper: typeof scraper;

@@ -29,7 +29,6 @@ export default defineSchema({
     budget: v.optional(v.string()),
     preferredLocation: v.optional(v.string()),
     onboardingComplete: v.optional(v.boolean()),
-    email: v.optional(v.string()), // For migration linking
     
     // Unified Profile Fields (Mentor)
     college: v.optional(v.string()),
@@ -46,7 +45,8 @@ export default defineSchema({
     earnings: v.optional(v.number()),
     headline: v.optional(v.string()),
     about: v.optional(v.string()),
-  }).index("by_email", ["email"]).index("by_userId", ["userId"]).index("by_role", ["role"]),
+  }).index("by_email", ["email"]).index("by_role", ["role"]),
+
 
   // Legacy/Compatibility table (keeping for now to avoid breaking existing code)
   profiles: defineTable({
