@@ -52,11 +52,27 @@ export const predictAI = action({
         }),
       });
 
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Groq API error:", errorText);
+        return null;
+      }
+
       const data = await response.json();
       const content = data.choices[0].message.content;
-      // Some models might wrap it in a root object
+      console.log("AI Raw Response:", content);
+      
       const parsed = JSON.parse(content);
-      return Array.isArray(parsed) ? parsed : (parsed.colleges || parsed.results || []);
+      
+      // Handle different possible JSON structures from LLM
+      if (Array.isArray(parsed)) return parsed;
+      if (parsed.colleges && Array.isArray(parsed.colleges)) return parsed.colleges;
+      if (parsed.results && Array.isArray(parsed.results)) return parsed.results;
+      if (parsed.predictions && Array.isArray(parsed.predictions)) return parsed.predictions;
+      
+      // If it's an object with numeric keys or something weird, try to find an array
+      const firstArray = Object.values(parsed).find(v => Array.isArray(v));
+      return (firstArray as any[]) || [];
     } catch (error) {
       console.error("Groq AI prediction failed:", error);
       return null;
