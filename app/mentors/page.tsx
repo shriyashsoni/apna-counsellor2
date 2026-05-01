@@ -103,14 +103,16 @@ export default function MentorsPage() {
                     </div>
 
                     <div className="flex flex-col gap-3">
-                      <Link href={`/mentorship/${mentor._id}`} className="w-full">
+                      <Link href={`/mentor/${mentor._id}`} className="w-full">
                         <Button className="w-full h-14 rounded-2xl bg-primary hover:bg-primary/90 font-black text-lg shadow-lg shadow-primary/10">
                           Book a Session
                         </Button>
                       </Link>
-                      <Button variant="ghost" className="w-full h-12 rounded-xl font-bold text-slate-400 hover:text-primary">
-                        View Profile <ChevronRight className="ml-2 h-4 w-4" />
-                      </Button>
+                      <Link href={`/mentor/${mentor._id}`} className="w-full">
+                        <Button variant="ghost" className="w-full h-12 rounded-xl font-bold text-slate-400 hover:text-primary">
+                          View Profile <ChevronRight className="ml-2 h-4 w-4" />
+                        </Button>
+                      </Link>
                     </div>
                   </CardContent>
                 </Card>
