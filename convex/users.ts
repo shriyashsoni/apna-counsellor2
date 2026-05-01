@@ -24,35 +24,53 @@ export const currentUser = query({
     if (!identity) return null;
 
     // 1. Try getting user ID from convex-auth session
+    let user = null;
     const userId = await auth.getUserId(ctx);
     if (userId) {
-      const user = await ctx.db.get(userId);
-      if (user) return user;
+      user = await ctx.db.get(userId);
     }
 
     // 2. Fallback: Search by email if session lookup failed or returned no user
-    if (identity.email) {
-      const user = await ctx.db
+    if (!user && identity.email) {
+      user = await ctx.db
         .query("users")
         .withIndex("by_email", (q) => q.eq("email", identity.email))
         .unique();
-      
-      if (user) {
-        // Strict Admin Enforcement
-        const isAdmin = user.email === "apnacounsellor@gmail.com";
-        return { ...user, isAdmin };
-      }
+    }
+
+    if (user) {
+      // Strict Admin Enforcement
+      const isAdmin = user.email === "apnacounsellor@gmail.com" || 
+                      user.email === "sonishriyash@gmail.com" || 
+                      user.role === "admin";
+      return { ...user, isAdmin };
     }
 
     return null;
   },
 });
 
+// Helper function for internal checks
+async function isAdminCheck(ctx: any) {
+  const identity = await ctx.auth.getUserIdentity();
+  if (!identity?.email) return false;
+  
+  if (identity.email === "apnacounsellor@gmail.com" || identity.email === "sonishriyash@gmail.com") {
+    return true;
+  }
+
+  const user = await ctx.db
+    .query("users")
+    .withIndex("by_email", (q) => q.eq("email", identity.email))
+    .unique();
+  
+  return user?.role === "admin";
+}
+
 export const checkAdmin = query({
   args: {},
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
-    return identity?.email === "apnacounsellor@gmail.com";
+    return await isAdminCheck(ctx);
   },
 });
 
@@ -99,7 +117,7 @@ export const getById = query({
 export const listAll = query({
   args: {},
   handler: async (ctx) => {
-    const admin = await checkAdmin(ctx, {});
+    const admin = await isAdminCheck(ctx);
     if (!admin) return [];
     return await ctx.db.query("users").order("desc").collect();
   },

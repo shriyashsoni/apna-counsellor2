@@ -14,7 +14,8 @@ import {
   Search,
   Check,
   X,
-  Phone
+  Phone,
+  Loader2
 } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -25,11 +26,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 export default function AdminDashboard() {
   const users = useQuery(api.users.listAll)
   const mentors = useQuery(api.users.listMentors)
-  const pendingMentors = mentors?.filter(m => !m.approved)
   const stats = useQuery(api.diagnostics.getCounts)
   const payments = useQuery(api.payments.listRecent)
 
   const approveMentor = useMutation(api.users.updateUser)
+
+  const isLoading = users === undefined || mentors === undefined || stats === undefined
+  const pendingMentors = mentors?.filter(m => !m.approved) || []
 
   return (
     <AdminGuard>
@@ -100,7 +103,12 @@ export default function AdminDashboard() {
                   </div>
                 </CardHeader>
                 <CardContent className="p-0">
-                  {!pendingMentors || pendingMentors.length === 0 ? (
+                  {isLoading ? (
+                    <div className="py-20 text-center">
+                      <Loader2 className="h-10 w-10 animate-spin text-primary mx-auto mb-4" />
+                      <p className="text-slate-500 font-bold">Loading applications...</p>
+                    </div>
+                  ) : pendingMentors.length === 0 ? (
                     <div className="py-20 text-center">
                       <div className="h-20 w-20 bg-slate-950 rounded-full flex items-center justify-center mx-auto mb-6">
                         <Check className="h-10 w-10 text-slate-800" />
@@ -164,7 +172,19 @@ export default function AdminDashboard() {
             </TabsContent>
 
             <TabsContent value="users">
-               {/* User list logic ... */}
+              <Card className="bg-slate-900 border-slate-800 rounded-[2.5rem]">
+                <CardHeader className="p-10 border-b border-slate-800">
+                  <CardTitle className="text-2xl font-black">User Directory</CardTitle>
+                  <p className="text-slate-500 font-medium text-sm mt-1">Manage all registered students and mentors.</p>
+                </CardHeader>
+                <CardContent className="p-10">
+                   {users ? (
+                     <p className="text-slate-400">Total registered users: {users.length}</p>
+                   ) : (
+                     <p className="text-slate-400">Loading user data...</p>
+                   )}
+                </CardContent>
+              </Card>
             </TabsContent>
           </Tabs>
 

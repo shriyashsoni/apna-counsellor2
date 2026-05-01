@@ -58,6 +58,13 @@
     overflow-x: hidden;
     width: 100%;
     position: relative;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  img, video, iframe {
+    max-width: 100%;
+    height: auto;
   }
   
   html {
@@ -67,9 +74,7 @@
   }
 
   .container {
-    @apply mx-auto px-4 sm:px-6 lg:px-8;
-    max-width: 100%;
-    overflow-x: hidden;
+    @apply mx-auto;
   }
 }
 

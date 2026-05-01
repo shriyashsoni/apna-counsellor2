@@ -19,16 +19,30 @@ interface AuthContextType {
 }
 
 export function useAuth(): AuthContextType & { login: (provider?: string) => Promise<void>, logout: () => Promise<void> } {
-  const { signIn, signOut } = useAuthActions();
-  const { isAuthenticated, isLoading: isAuthLoading } = useConvexAuth();
+  const authActions = useAuthActions();
+  const convexAuth = useConvexAuth();
+  
+  const signIn = authActions?.signIn;
+  const signOut = authActions?.signOut;
+  const isAuthenticated = convexAuth?.isAuthenticated || false;
+  const isAuthLoading = convexAuth?.isLoading || false;
+
   const user = useQuery(api.users.currentUser, isAuthenticated ? {} : "skip");
   
   const login = async (provider: string = "google") => {
-    await signIn(provider, { redirectTo: "/dashboard" });
+    if (signIn) {
+      await signIn(provider, { redirectTo: "/dashboard" });
+    } else {
+      console.error("signIn function is not available");
+    }
   };
 
   const logout = async () => {
-    await signOut();
+    if (signOut) {
+      await signOut();
+    } else {
+      console.error("signOut function is not available");
+    }
   };
 
   return {

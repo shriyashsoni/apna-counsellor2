@@ -18,8 +18,15 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
     )
   }
 
-  // Strict email check for apnacounsellor@gmail.com
-  if (!user || user.email !== "apnacounsellor@gmail.com") {
+  // Strict email check for admins
+  const isAdmin = user && (
+    user.email === "apnacounsellor@gmail.com" || 
+    user.email === "sonishriyash@gmail.com" || 
+    (user as any).isAdmin === true || 
+    user.role === "admin"
+  );
+
+  if (!user || !isAdmin) {
     return (
       <div className="h-screen flex flex-col items-center justify-center p-8 text-center bg-slate-950 text-white">
         <div className="h-24 w-24 rounded-full bg-red-500/10 flex items-center justify-center mb-8 border border-red-500/20">

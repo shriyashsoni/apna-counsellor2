@@ -21,7 +21,7 @@ export function AuthGuard({
 }: AuthGuardProps) {
   const { isAuthenticated, isLoading } = useConvexAuth()
   const user = useQuery(api.users.currentUser)
-  const subscription = useQuery(api.subscriptions.getActive, { userId: user?._id ?? "" })
+  const subscription = useQuery(api.subscriptions.getActive, user?._id ? { userId: user._id } : "skip")
   const router = useRouter()
   const [isClient, setIsClient] = useState(false)
 
