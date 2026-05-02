@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
-import { ArrowRight, BookOpen, CheckCircle, MessageCircle, Phone, Calendar, Sparkles, Globe, Shield, GraduationCap } from "lucide-react"
+import { ArrowRight, BookOpen, CheckCircle, MessageCircle, Phone, Calendar, Sparkles, Globe, Shield, GraduationCap, User } from "lucide-react"
 import HeroSection from "@/components/hero-section"
 import CounsellingPlatforms from "@/components/counselling-platforms"
 import TestimonialSection from "@/components/testimonial-section"
@@ -144,40 +144,6 @@ export default function Home() {
 
       {/* Stats Section */}
       <StatsSection />
-    </div>
-  )
-}
-
-function StatsSection() {
-  const stats = useQuery(api.diagnostics.getCounts, {});
-
-  const statItems = [
-    { label: "Successful Placements", value: "1200+" }, // Keep as mission-based or fetch if possible
-    { label: "College Records", value: stats?.colleges ? `${(stats.colleges / 1000).toFixed(0)}k+` : "..." },
-    { label: "Counseling Platforms", value: stats?.counselings || "..." },
-    { label: "Expert Mentors", value: stats?.mentors || "..." }
-  ];
-
-  return (
-    <section className="py-24 container mx-auto px-4">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-        {statItems.map((stat, i) => (
-          <motion.div 
-            key={i}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
-            viewport={{ once: true }}
-            className="text-center"
-          >
-            <div className="text-4xl sm:text-6xl font-black text-primary mb-2">{stat.value}</div>
-            <div className="text-sm font-bold text-slate-500 uppercase tracking-widest">{stat.label}</div>
-          </motion.div>
-        ))}
-      </div>
-    </section>
-  );
-}
 
       {/* Call to Action Section */}
       <section className="py-24 container mx-auto px-4">
@@ -261,14 +227,41 @@ function StatsSection() {
   )
 }
 
+function StatsSection() {
+  const stats = useQuery(api.diagnostics.getCounts, {});
+
+  const statItems = [
+    { label: "Successful Placements", value: "1200+" },
+    { label: "College Records", value: stats?.colleges ? `${(stats.colleges / 1000).toFixed(0)}k+` : "..." },
+    { label: "Counseling Platforms", value: stats?.counselings || "..." },
+    { label: "Expert Mentors", value: stats?.mentors || "..." }
+  ];
+
+  return (
+    <section className="py-24 container mx-auto px-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        {statItems.map((stat, i) => (
+          <motion.div 
+            key={i}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.1 }}
+            viewport={{ once: true }}
+            className="text-center"
+          >
+            <div className="text-4xl sm:text-6xl font-black text-primary mb-2">{stat.value}</div>
+            <div className="text-sm font-bold text-slate-500 uppercase tracking-widest">{stat.label}</div>
+          </motion.div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function Badge({ children, className }: { children: React.ReactNode, className?: string }) {
   return (
     <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest ${className}`}>
       {children}
     </span>
   )
-}
-
-function User({ className }: { className?: string }) {
-  return <div className={className}><GraduationCap /></div>
 }
