@@ -27,7 +27,42 @@ export const listByStudent = query({
   },
 });
 
+// Alias used by mentor/[id] page - lists sessions posted by a mentor for students to book
+export const listPostedSessions = query({
+  args: { mentorId: v.string() },
+  handler: async (ctx, args) => {
+    if (!args.mentorId) return [];
+
+    return await ctx.db
+      .query("sessions")
+      .withIndex("by_mentor", (q) => q.eq("mentorId", args.mentorId))
+      .order("desc")
+      .take(50);
+  },
+});
+
 export const createSession = mutation({
+  args: {
+    mentorId: v.string(),
+    mentorName: v.string(),
+    studentId: v.string(),
+    studentName: v.string(),
+    date: v.string(),
+    timeSlot: v.string(),
+    price: v.number(),
+    topic: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.insert("sessions", {
+      ...args,
+      status: "booked",
+      createdAt: new Date().toISOString(),
+    });
+  },
+});
+
+// Used by mentor/[id] page booking flow
+export const bookSession = mutation({
   args: {
     mentorId: v.string(),
     mentorName: v.string(),

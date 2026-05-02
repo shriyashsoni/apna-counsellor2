@@ -22,3 +22,16 @@ export const list = query({
   },
 });
 
+// Used by counseling-details/[id] dynamic page
+export const getById = query({
+  args: { id: v.string() },
+  handler: async (ctx, args) => {
+    try {
+      const normalizedId = ctx.db.normalizeId("counselings", args.id);
+      if (!normalizedId) return null;
+      return await ctx.db.get(normalizedId);
+    } catch (e) {
+      return null;
+    }
+  },
+});
