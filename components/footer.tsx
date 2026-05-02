@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { Facebook, Instagram, Youtube, MessageCircle, Mail, Phone, ArrowRight, Sparkles, ShieldCheck, Globe, Zap, Apple, Play } from "lucide-react"
+import { Facebook, Instagram, Youtube, MessageCircle, Mail, Phone, ArrowRight, Sparkles, ShieldCheck, Globe, Zap, Apple, Play, Linkedin, Send, Twitter } from "lucide-react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 
@@ -139,16 +139,18 @@ const Footer = () => {
                <p className="text-xs font-black uppercase tracking-widest text-slate-500">Let&apos;s get social :</p>
                <div className="flex gap-3">
                   {[
-                    { icon: Youtube, color: "hover:bg-red-500" },
-                    { icon: Instagram, color: "hover:bg-pink-500" },
-                    { icon: MessageCircle, color: "hover:bg-emerald-500" },
-                    { icon: Globe, color: "hover:bg-blue-500" },
-                    { icon: Facebook, color: "hover:bg-blue-600" }
+                    { icon: Instagram, href: "https://www.instagram.com/counsellorapna/", color: "hover:bg-pink-500" },
+                    { icon: Linkedin, href: "https://in.linkedin.com/company/apnacounsellor", color: "hover:bg-blue-600" },
+                    { icon: MessageCircle, href: "https://whatsapp.com/channel/0029VabjCVD5PO11jeEupQ44", color: "hover:bg-emerald-500" },
+                    { icon: Send, href: "https://t.me/apnacounsellor", color: "hover:bg-blue-500" },
+                    { icon: Twitter, href: "https://x.com/apnacounsellor", color: "hover:bg-sky-500" }
                   ].map((social, i) => (
                     <motion.a
                       key={i}
                       whileHover={{ scale: 1.1 }}
-                      href="#"
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className={`h-10 w-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 transition-all ${social.color}`}
                     >
                       <social.icon className="h-5 w-5" />
@@ -184,7 +186,7 @@ const Footer = () => {
                   <div className="space-y-4">
                     <div className="flex items-center gap-4 text-slate-400">
                       <Mail className="h-5 w-5 text-primary" />
-                      <span className="text-sm font-bold">sonishriyash@gmail.com</span>
+                      <span className="text-sm font-bold">info@apnacounsellor.in</span>
                     </div>
                     <div className="flex items-center gap-4 text-slate-400">
                       <Phone className="h-5 w-5 text-primary" />
