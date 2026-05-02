@@ -13,7 +13,6 @@ export default defineSchema({
     phone: v.optional(v.string()),
     phoneVerificationTime: v.optional(v.number()),
     role: v.optional(v.string()), // "student", "mentor", "admin"
-    phone: v.optional(v.string()),
     bio: v.optional(v.string()),
     blocked: v.optional(v.boolean()),
     verified: v.optional(v.boolean()),
