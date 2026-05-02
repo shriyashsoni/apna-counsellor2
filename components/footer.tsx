@@ -6,8 +6,6 @@ import { Facebook, Instagram, Youtube, MessageCircle, Mail, Phone, ArrowRight, S
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 
-import { Badge } from "@/components/ui/badge"
-
 const Footer = () => {
   const footerSections = [
     {
@@ -98,7 +96,7 @@ const Footer = () => {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-8 gap-y-12 mb-20">
           {footerSections.map((section) => (
             <div key={section.title} className="space-y-6">
-              <h4 className="text-sm font-black uppercase tracking-[0.2em] text-white/90 border-b border-primary/20 pb-2 inline-block">
+              <h4 className="text-sm font-black uppercase tracking-[0.2em] text-white border-b border-primary/40 pb-2 inline-block">
                 {section.title}
               </h4>
               <ul className="space-y-3">
@@ -106,7 +104,7 @@ const Footer = () => {
                   <li key={link.name}>
                     <Link 
                       href={link.href} 
-                      className="text-[13px] font-medium text-slate-400 hover:text-primary transition-colors block"
+                      className="text-[13px] font-medium text-white/80 hover:text-white transition-colors block"
                     >
                       {link.name}
                     </Link>
@@ -121,22 +119,22 @@ const Footer = () => {
         <div className="grid lg:grid-cols-12 gap-12 py-20 border-t border-white/5 mb-20">
           <div className="lg:col-span-5 space-y-8">
             <div className="flex items-center space-x-3">
-              <div className="relative h-12 w-12 bg-white/5 p-2 rounded-2xl border border-white/10">
+              <div className="relative h-12 w-12 bg-white p-2 rounded-2xl border border-white/10">
                 <Image
                   src="/images/apna-counsellor-logo.png"
                   alt="Apna Counsellor Logo"
                   fill
-                  className="object-contain invert p-2"
+                  className="object-contain p-2"
                 />
               </div>
-              <span className="font-black text-3xl tracking-tighter">Apna <span className="text-primary">Counsellor</span></span>
+              <span className="font-black text-3xl tracking-tighter text-white">Apna <span className="text-primary">Counsellor</span></span>
             </div>
-            <p className="text-slate-400 text-sm font-medium leading-relaxed max-w-md italic">
+            <p className="text-white text-sm font-medium leading-relaxed max-w-md italic opacity-90">
               &quot;We understand that every student has unique needs and abilities, that&apos;s why our counseling ecosystem is designed to adapt to your rank and help you grow into your dream college.&quot;
             </p>
             
             <div className="space-y-4">
-               <p className="text-xs font-black uppercase tracking-widest text-slate-500">Let&apos;s get social :</p>
+               <p className="text-xs font-black uppercase tracking-widest text-white/60">Let&apos;s get social :</p>
                <div className="flex gap-3">
                   {[
                     { icon: Instagram, href: "https://www.instagram.com/counsellorapna/", color: "hover:bg-pink-500" },
@@ -151,7 +149,7 @@ const Footer = () => {
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`h-10 w-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 transition-all ${social.color}`}
+                      className={`h-10 w-10 rounded-xl bg-white/10 flex items-center justify-center border border-white/20 transition-all ${social.color} text-white`}
                     >
                       <social.icon className="h-5 w-5" />
                     </motion.a>
@@ -163,34 +161,34 @@ const Footer = () => {
           <div className="lg:col-span-7 flex flex-col justify-center">
             <div className="grid sm:grid-cols-2 gap-8">
                <div className="space-y-6">
-                  <h4 className="text-xs font-black uppercase tracking-widest text-slate-500">Download Our App</h4>
+                  <h4 className="text-xs font-black uppercase tracking-widest text-white/60">Download Our App</h4>
                   <div className="flex flex-col gap-3">
-                    <Button variant="outline" className="h-16 rounded-2xl border-white/10 bg-white/5 justify-start px-6 gap-4 hover:bg-white/10 group transition-all">
+                    <Button variant="outline" className="h-16 rounded-2xl border-white/20 bg-white/5 justify-start px-6 gap-4 hover:bg-white/10 group transition-all text-white hover:text-white border-2">
                       <Play className="h-8 w-8 text-primary group-hover:scale-110 transition-transform" />
                       <div className="text-left">
-                        <p className="text-[10px] font-black uppercase text-slate-500">Get it on</p>
+                        <p className="text-[10px] font-black uppercase text-white/50">Get it on</p>
                         <p className="text-xl font-black">Google Play</p>
                       </div>
                     </Button>
-                    <Button variant="outline" className="h-16 rounded-2xl border-white/10 bg-white/5 justify-start px-6 gap-4 hover:bg-white/10 group transition-all">
+                    <Button variant="outline" className="h-16 rounded-2xl border-white/20 bg-white/5 justify-start px-6 gap-4 hover:bg-white/10 group transition-all text-white hover:text-white border-2">
                       <Apple className="h-8 w-8 text-white group-hover:scale-110 transition-transform" />
                       <div className="text-left">
-                        <p className="text-[10px] font-black uppercase text-slate-500">Download on the</p>
+                        <p className="text-[10px] font-black uppercase text-white/50">Download on the</p>
                         <p className="text-xl font-black">App Store</p>
                       </div>
                     </Button>
                   </div>
                </div>
                <div className="space-y-6">
-                  <h4 className="text-xs font-black uppercase tracking-widest text-slate-500">Quick Contact</h4>
+                  <h4 className="text-xs font-black uppercase tracking-widest text-white/60">Quick Contact</h4>
                   <div className="space-y-4">
-                    <div className="flex items-center gap-4 text-slate-400">
-                      <Mail className="h-5 w-5 text-primary" />
+                    <div className="flex items-center gap-4 text-white">
+                      <Mail className="h-5 w-5 text-white" />
                       <span className="text-sm font-bold">info@apnacounsellor.in</span>
                     </div>
-                    <div className="flex items-center gap-4 text-slate-400">
-                      <Phone className="h-5 w-5 text-primary" />
-                      <span className="text-sm font-bold">Talk to a Counsellor</span>
+                    <div className="flex items-center gap-4 text-white">
+                      <Phone className="h-5 w-5 text-white" />
+                      <span className="text-sm font-bold underline underline-offset-4">Talk to a Counsellor</span>
                     </div>
                   </div>
                </div>
@@ -201,28 +199,28 @@ const Footer = () => {
         {/* Informational Text Block */}
         <div className="space-y-12 pb-20 border-b border-white/5 mb-12">
           <div className="space-y-6">
-            <h3 className="text-xl font-black text-white/90">Know about Apna Counsellor</h3>
-            <p className="text-slate-400 text-xs leading-loose font-medium">
+            <h3 className="text-xl font-black text-white underline decoration-primary decoration-4 underline-offset-8">Know about Apna Counsellor</h3>
+            <p className="text-white text-xs leading-loose font-medium opacity-80">
               Apna Counsellor is India&apos;s leading tech-driven admission ecosystem designed to assist students from rank identification to college enrollment. We provide extensive seat matrix data, real-time cutoff updates, and AI-powered choice filling tools. Our platform empowers over 50,000+ students every year to secure seats in prestigious institutions including IITs, NITs, and top medical colleges. By leveraging advanced data analytics and one-on-one mentorship from alumni of top-tier colleges, we ensure that no rank goes wasted and every student finds their perfect academic fit.
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-12">
             <div className="space-y-4">
-               <h4 className="text-sm font-black text-primary">We Stand Out because</h4>
-               <p className="text-slate-500 text-[11px] leading-relaxed font-medium">
+               <h4 className="text-sm font-black text-white border-l-4 border-primary pl-4 uppercase tracking-tighter">We Stand Out because</h4>
+               <p className="text-white text-[11px] leading-relaxed font-medium opacity-70">
                   We provide students with intensive tools and verified data curated by IITians and Industry Experts. Apna Counsellor strives to make the complex counseling journey simple, accessible, and transparent for every student regardless of their background.
                </p>
             </div>
             <div className="space-y-4">
-               <h4 className="text-sm font-black text-primary">Our Key Focus Areas</h4>
-               <p className="text-slate-500 text-[11px] leading-relaxed font-medium">
+               <h4 className="text-sm font-black text-white border-l-4 border-primary pl-4 uppercase tracking-tighter">Our Key Focus Areas</h4>
+               <p className="text-white text-[11px] leading-relaxed font-medium opacity-70">
                   Our main focus is to create high-accuracy college predictors and strategic choice-filling lists. With tools like the rank-to-college mapper, we have been able to provide a digital-first solution for lakhs of aspirants across India.
                </p>
             </div>
             <div className="space-y-4">
-               <h4 className="text-sm font-black text-primary">What Makes Us Different</h4>
-               <p className="text-slate-500 text-[11px] leading-relaxed font-medium">
+               <h4 className="text-sm font-black text-white border-l-4 border-primary pl-4 uppercase tracking-tighter">What Makes Us Different</h4>
+               <p className="text-white text-[11px] leading-relaxed font-medium opacity-70">
                   We develop comprehensive pedagogical structures for counseling, where students get state-of-the-art rank analysis. Apart from predictors, we also provide physical document verification support and premium mentorship.
                </p>
             </div>
@@ -232,19 +230,19 @@ const Footer = () => {
         {/* Final Bottom Footer */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="space-y-2 text-center md:text-left">
-            <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em]">
+            <p className="text-white text-[10px] font-black uppercase tracking-[0.2em]">
               © {new Date().getFullYear()} APNA COUNSELLOR TECH SOLUTIONS PVT LTD
             </p>
-            <p className="text-slate-600 text-[9px] font-bold uppercase tracking-widest">
+            <p className="text-white/60 text-[9px] font-bold uppercase tracking-widest">
               CIN: U72900MH2023PTC402345 · Made with Passion for India&apos;s Students
             </p>
           </div>
           
-          <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 text-[10px] font-black uppercase tracking-widest text-slate-500">
-            <Link href="/privacy-policy" className="hover:text-primary transition-colors">Privacy Policy</Link>
-            <Link href="/terms-conditions" className="hover:text-primary transition-colors">Terms of Use</Link>
-            <Link href="/refund" className="hover:text-primary transition-colors">Refund Policy</Link>
-            <Link href="/security" className="hover:text-primary transition-colors">Security</Link>
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 text-[10px] font-black uppercase tracking-widest text-white">
+            <Link href="/privacy-policy" className="hover:text-primary transition-colors underline decoration-white/20 underline-offset-4">Privacy Policy</Link>
+            <Link href="/terms-conditions" className="hover:text-primary transition-colors underline decoration-white/20 underline-offset-4">Terms of Use</Link>
+            <Link href="/refund" className="hover:text-primary transition-colors underline decoration-white/20 underline-offset-4">Refund Policy</Link>
+            <Link href="/security" className="hover:text-primary transition-colors underline decoration-white/20 underline-offset-4">Security</Link>
           </div>
         </div>
       </div>
