@@ -127,7 +127,15 @@ export default function MentorProfilePage() {
                 type: "mentorship_session"
               })
 
-              await bookSession({ sessionId: session._id, studentId: dbUser._id })
+              await bookSession({
+                mentorId: mentor._id,
+                mentorName: mentor.name || "Mentor",
+                studentId: dbUser._id,
+                studentName: dbUser.name || "Student",
+                date: session.date || new Date().toISOString(),
+                timeSlot: session.timeSlot || "TBD",
+                price: session.price || mentor.pricing || 499,
+              })
               
               toast.success("Payment Successful! Session booked.")
               router.push("/dashboard")
