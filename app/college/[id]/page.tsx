@@ -81,7 +81,7 @@ export default async function CollegeDetailPage({ params }: CollegePageProps) {
     imageUrl: `https://images.unsplash.com/photo-1541339907198-e08756ebafe3?q=80&w=1000&auto=format&fit=crop`
   };
 
-  const WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/L1fXpZ3z8f9F1z1z1z1z1z";
+  const WHATSAPP_GROUP_LINK = "https://www.whatsapp.com/channel/0029VabjCVD5PO11jeEupQ44";
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">

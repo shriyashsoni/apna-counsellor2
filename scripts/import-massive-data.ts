@@ -28,11 +28,13 @@ async function importMassiveData() {
       try {
         const localColleges = JSON.parse(fs.readFileSync(collegesPath, 'utf8'));
         localColleges.forEach((c: any) => {
+          const cleanState = state.replace(/_/g, ' ');
+          const cleanCity = (c.city || 'Main Campus').trim();
           allColleges.push({
             counselingId,
-            name: c.name,
-            location: `${c.city || 'N/A'}, ${state.replace(/_/g, ' ')}`,
-            type: c.type || "Engineering",
+            name: c.name.trim(),
+            location: `${cleanCity}, ${cleanState}`,
+            type: c.type || "Premier Institute",
             aisheCode: c.aisheCode || "N/A"
           });
         });
