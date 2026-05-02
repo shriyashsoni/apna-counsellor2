@@ -4,7 +4,7 @@ import { Inter, Outfit } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { ConvexClientProvider } from "@/components/convex-client-provider"
-import { getCategorizedCounselling } from "@/lib/counselling"
+import { getCategorizedCounselling, type CategorizedCounselling } from "@/lib/counselling"
 import LayoutWrapper from "@/components/layout-wrapper"
 import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server"
 import Script from 'next/script'
@@ -63,7 +63,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  let categorizedCounselling = { national: [], state: [], international: [] };
+  let categorizedCounselling: CategorizedCounselling = { national: [], state: [], international: [] };
   try {
     categorizedCounselling = await getCategorizedCounselling()
   } catch (error) {
