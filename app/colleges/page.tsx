@@ -59,51 +59,13 @@ function CollegesList() {
     return () => clearTimeout(handler);
   }, [searchTerm]);
 
-  const dbColleges = useQuery(api.colleges.list, {
+  const colleges = useQuery(api.colleges.list, {
     search: debouncedSearchTerm,
     category: selectedCategory,
     state: selectedState,
     ranking: selectedRanking,
     tier: selectedTier
   });
-
-  // Programmatic Search Fallback for 1.1 Lakh colleges
-  const [colleges, setColleges] = useState<any[]>([]);
-
-  useEffect(() => {
-    if (dbColleges) {
-      if (dbColleges.length === 0 && debouncedSearchTerm.length > 2) {
-        // Generate virtual results if DB has nothing but user is searching
-        const virtualResults = [
-          {
-            _id: `v-${debouncedSearchTerm.toLowerCase().replace(/ /g, '-')}`,
-            name: debouncedSearchTerm.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
-            city: "Search Result",
-            state: "India",
-            type: "Premier Institute",
-            tier: "Verified",
-            aiScore: 85,
-            isVirtual: true
-          },
-          // Add some variations
-          {
-            _id: `v-${debouncedSearchTerm.toLowerCase().replace(/ /g, '-')}-it`,
-            name: `${debouncedSearchTerm.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')} Institute of Technology`,
-            city: "Campus A",
-            state: "India",
-            type: "Engineering",
-            tier: "Elite",
-            aiScore: 92,
-            isVirtual: true
-          }
-        ];
-        setColleges(virtualResults);
-      } else {
-        setColleges(dbColleges);
-      }
-    }
-  }, [dbColleges, debouncedSearchTerm]);
-
 
   const container = {
     hidden: { opacity: 0 },
@@ -290,11 +252,6 @@ function CollegesList() {
                               </div>
                               <div>
                                 <div className="flex items-center gap-2">
-                                  {college.isVirtual && (
-                                    <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-[8px] md:text-[9px] font-black uppercase tracking-wider text-emerald-600 border border-emerald-500/10 flex items-center gap-1">
-                                      <TrendingUp className="h-2 w-2" /> AI Verified
-                                    </span>
-                                  )}
                                   <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-[8px] md:text-[9px] font-black uppercase tracking-wider text-slate-500">
                                     {college.tier || college.type || "Private"}
                                   </span>
