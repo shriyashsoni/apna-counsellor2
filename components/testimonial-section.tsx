@@ -1,9 +1,8 @@
 "use client"
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { Star, Quote, ExternalLink } from "lucide-react"
+import { Star, Quote } from "lucide-react"
 import { motion } from "framer-motion"
-import Image from "next/image"
 
 const googleReviews = [
   {
@@ -54,7 +53,7 @@ const googleReviews = [
   {
     "author": "Bhavesh Mali",
     "rating": 5,
-    "text": "First of all thanks Aapna counsellor for supporting and standing with us one thing I like about the Apna counsellor is they help us 24/7 and giving us continuous information.and because of this I got my dream college ( Bramha vally institute of technology and research Nashik)in nashik city."
+    "text": "First of all thanks Aapna counsellor for supporting and standing with us one thing I like about the Apna counsellor is they help us 24/7 and giving us continuous information.and because of this I got my dream college."
   },
   {
     "author": "WARRIOR QUEEN",
@@ -84,55 +83,76 @@ const googleReviews = [
 ]
 
 const TestimonialSection = () => {
-  return (
-    <section className="py-24 bg-slate-50/50 dark:bg-slate-900/20 overflow-hidden">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-black uppercase tracking-widest mb-6"
-          >
-            <Star className="h-3 w-3 fill-current" />
-            Verified Google Reviews
-          </motion.div>
-          <h2 className="text-4xl md:text-6xl font-black mb-6 tracking-tight">
-            Loved by <span className="text-primary">Thousands</span> of Students
-          </h2>
-          <p className="text-slate-500 max-w-2xl mx-auto text-lg font-medium leading-relaxed">
-            Real feedback from students who secured their dream colleges with the help of Apna Counsellor.
-          </p>
-        </div>
+  // Triple the reviews for a very long seamless marquee
+  const extendedReviews = [...googleReviews, ...googleReviews, ...googleReviews]
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {googleReviews.map((review, index) => (
+  return (
+    <section className="py-24 bg-slate-50/30 dark:bg-slate-900/10 overflow-hidden relative">
+      <div className="container mx-auto px-4 mb-16">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="text-center md:text-left">
             <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.05 }}
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              whileHover={{ y: -8 }}
-              className="group"
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-black uppercase tracking-widest mb-4"
             >
-              <Card className="h-full border-none shadow-sm hover:shadow-2xl transition-all rounded-[2rem] bg-white dark:bg-slate-900 overflow-hidden flex flex-col">
-                <CardHeader className="p-8 pb-4">
-                  <div className="flex justify-between items-start mb-6">
-                    <div className="flex items-center gap-4">
-                      <div className="h-12 w-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-black text-primary text-xl">
-                        {review.author[0].toUpperCase()}
-                      </div>
-                      <div>
-                        <h3 className="font-black text-slate-900 dark:text-white leading-tight">{review.author}</h3>
-                        <div className="flex gap-0.5 mt-1">
-                          {[...Array(5)].map((_, i) => (
-                            <Star key={i} className={`h-3 w-3 ${i < review.rating ? 'fill-amber-400 text-amber-400' : 'text-slate-200'}`} />
-                          ))}
-                        </div>
+              <Star className="h-3 w-3 fill-current" />
+              Real Student Reviews
+            </motion.div>
+            <h2 className="text-4xl md:text-5xl font-black tracking-tight">
+              What Our <span className="text-primary">Students</span> Say
+            </h2>
+          </div>
+          <div className="flex items-center gap-6 px-6 py-3 bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm">
+             <div className="text-center border-r border-slate-100 dark:border-slate-800 pr-6">
+                <p className="text-2xl font-black text-slate-900 dark:text-white leading-none">4.9</p>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Google Rating</p>
+             </div>
+             <div className="flex flex-col gap-1">
+                <div className="flex gap-0.5">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+                  ))}
+                </div>
+                <p className="text-[10px] font-black text-slate-500">200+ Verified Reviews</p>
+             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Infinite Marquee Wrapper */}
+      <div className="relative flex whitespace-nowrap group">
+        <motion.div 
+          className="flex gap-6 animate-marquee py-4"
+          initial={{ x: 0 }}
+          animate={{ x: "-50%" }}
+          transition={{ 
+            duration: 60, 
+            repeat: Infinity, 
+            ease: "linear",
+          }}
+          whileHover={{ animationPlayState: "paused" }}
+        >
+          {extendedReviews.map((review, index) => (
+            <div
+              key={index}
+              className="inline-block w-[350px] flex-shrink-0"
+            >
+              <Card className="h-full border-none shadow-sm hover:shadow-xl transition-all rounded-[1.5rem] bg-white dark:bg-slate-900 overflow-hidden flex flex-col p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center font-black text-primary text-sm">
+                      {review.author[0].toUpperCase()}
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-sm text-slate-900 dark:text-white leading-tight">{review.author}</h3>
+                      <div className="flex gap-0.5 mt-0.5">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} className={`h-2.5 w-2.5 ${i < review.rating ? 'fill-amber-400 text-amber-400' : 'text-slate-200'}`} />
+                        ))}
                       </div>
                     </div>
-                    <div className="h-8 w-8 bg-slate-50 dark:bg-slate-800 rounded-lg flex items-center justify-center opacity-40">
+                    <div className="ml-auto opacity-20">
                       <svg className="h-4 w-4" viewBox="0 0 24 24">
                         <path fill="currentColor" d="M21.35 11.1h-9.17v2.73h5.14c-.22 1.1-.88 2.03-1.85 2.68v2.23h3c1.76-1.62 2.77-4.01 2.77-6.91 0-.61-.05-1.2-.14-1.73z" />
                         <path fill="currentColor" d="M12.18 21c2.43 0 4.47-.8 5.96-2.18l-3-2.23c-.83.56-1.9.89-3.07.89-2.34 0-4.32-1.58-5.03-3.71h-3.11v2.41c1.5 2.97 4.59 5.01 8.21 5.01z" />
@@ -141,35 +161,21 @@ const TestimonialSection = () => {
                       </svg>
                     </div>
                   </div>
-                </CardHeader>
-                <CardContent className="px-8 pb-8 flex-grow">
                   <div className="relative">
-                    <Quote className="absolute -top-2 -left-2 h-8 w-8 text-primary/5 -z-1" />
-                    <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed relative z-10 font-medium">
+                    <Quote className="absolute -top-1 -left-1 h-6 w-6 text-primary/5 -z-1" />
+                    <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed line-clamp-3 font-medium whitespace-normal">
                       &quot;{review.text}&quot;
                     </p>
                   </div>
-                </CardContent>
               </Card>
-            </motion.div>
+            </div>
           ))}
-        </div>
-
-        <div className="mt-20 text-center">
-          <motion.a
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            href="https://share.google/b54K0yjeuIL8wL4FA"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 px-8 py-4 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 font-black text-sm hover:shadow-xl transition-all hover:border-primary group"
-          >
-            View More Google Reviews 
-            <ExternalLink className="h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-          </motion.a>
-        </div>
+        </motion.div>
       </div>
+
+      {/* Gradient Fades for Marquee */}
+      <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-slate-50 dark:from-slate-950 to-transparent z-10 pointer-events-none" />
+      <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-slate-50 dark:from-slate-950 to-transparent z-10 pointer-events-none" />
     </section>
   )
 }
