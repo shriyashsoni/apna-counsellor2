@@ -81,9 +81,9 @@ export default function MentorBookingPage() {
                   </div>
                   <p className="text-primary font-bold text-xl mb-4">{mentor.expertise}</p>
                   <div className="flex flex-wrap gap-4 text-slate-500 font-medium text-sm">
-                    <span className="flex items-center gap-2"><Award className="h-4 w-4" /> IIT Bombay Alumnus</span>
-                    <span className="flex items-center gap-2"><MessageSquare className="h-4 w-4" /> English, Hindi</span>
-                    <span className="flex items-center gap-2"><Zap className="h-4 w-4" /> Top 1% Mentor</span>
+                    {mentor.college && <span className="flex items-center gap-2"><Award className="h-4 w-4" /> {mentor.college} Alumnus</span>}
+                    <span className="flex items-center gap-2"><MessageSquare className="h-4 w-4" /> Professional Counseling</span>
+                    <span className="flex items-center gap-2"><Zap className="h-4 w-4" /> Verified Expert</span>
                   </div>
                 </div>
               </div>
@@ -91,15 +91,17 @@ export default function MentorBookingPage() {
               <Card className="border-none rounded-[3rem] shadow-sm bg-white dark:bg-slate-900 p-10">
                 <h2 className="text-2xl font-black mb-6">About the Mentor</h2>
                 <p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed font-medium">
-                  {mentor.bio || `Specialized in ${mentor.expertise} with over 5 years of experience in guiding students through the complex Indian admission landscape. I focus on data-driven branch selection and preference order optimization.`}
+                  {mentor.bio || mentor.about || "No biography provided."}
                 </p>
-                <div className="grid sm:grid-cols-2 gap-4 mt-8">
-                   {["Choice Filling", "Rank Analysis", "Branch Trends", "Scholarships"].map(tag => (
-                     <div key={tag} className="flex items-center gap-3 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 font-bold text-slate-700 dark:text-slate-300">
-                       <CheckCircle2 className="h-5 w-5 text-emerald-500" /> {tag}
-                     </div>
-                   ))}
-                </div>
+                {mentor.skills && mentor.skills.length > 0 && (
+                  <div className="grid sm:grid-cols-2 gap-4 mt-8">
+                     {mentor.skills.map(tag => (
+                       <div key={tag} className="flex items-center gap-3 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 font-bold text-slate-700 dark:text-slate-300">
+                         <CheckCircle2 className="h-5 w-5 text-emerald-500" /> {tag}
+                       </div>
+                     ))}
+                  </div>
+                )}
               </Card>
             </div>
 

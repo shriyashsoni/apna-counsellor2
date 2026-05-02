@@ -87,7 +87,7 @@ export default function MentorsPage() {
                           <Star className="h-4 w-4 fill-current" />
                           <span>{mentor.rating || "4.9"}</span>
                         </div>
-                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">150+ Sessions</span>
+                        {mentor.sessionsCount && <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">{mentor.sessionsCount}+ Sessions</span>}
                       </div>
                     </div>
 
@@ -95,10 +95,10 @@ export default function MentorsPage() {
                       <h3 className="text-2xl font-black group-hover:text-primary transition-colors">{mentor.name}</h3>
                       <div className="flex items-center gap-2 text-primary font-bold text-sm">
                         <Award className="h-4 w-4" />
-                        {mentor.expertise}
+                        {mentor.expertise || mentor.headline || "Expert Counselor"}
                       </div>
                       <p className="text-slate-500 text-sm line-clamp-2 font-medium">
-                        {mentor.bio || "Passionate about helping students navigate the complex world of college admissions with data-driven insights."}
+                        {mentor.bio || mentor.about || "Providing expert admission guidance and personalized counseling sessions."}
                       </p>
                     </div>
 

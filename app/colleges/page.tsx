@@ -283,13 +283,13 @@ function CollegesList() {
                               <p className="text-[8px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 flex items-center gap-1">
                                 <DollarSign className="h-2 w-2 md:h-3 md:w-3" /> Fee
                               </p>
-                              <p className="text-xs md:text-sm font-bold text-slate-700 dark:text-slate-300">{college.annualFee || "₹2.5L"}</p>
+                              <p className="text-xs md:text-sm font-bold text-slate-700 dark:text-slate-300">{college.annualFee || "Contact for Fee"}</p>
                             </div>
                             <div>
                               <p className="text-[8px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 flex items-center gap-1">
                                 <Trophy className="h-2 w-2 md:h-3 md:w-3" /> Package
                               </p>
-                              <p className="text-xs md:text-sm font-bold text-emerald-500">{college.avgPackage || "₹12 LPA"}</p>
+                              <p className="text-xs md:text-sm font-bold text-emerald-500">{college.avgPackage || "TBD"}</p>
                             </div>
                           </div>
                         </CardContent>

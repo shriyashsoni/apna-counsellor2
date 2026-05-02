@@ -8,72 +8,7 @@ import { ArrowRight, CheckCircle, Gift, Phone, Mail, MapPin, Instagram } from "l
 import { motion } from "framer-motion"
 
 export default function CoursesClientPage() {
-  const courses = [
-    {
-      id: "mhtcet",
-      title: "MHT CET Counselling Support 2025",
-      description: "Get end-to-end support for MHT CET 2025: from documentation to final college admission.",
-      logo: "/images/mht-cet-logo.webp",
-      highlights: [
-        "Expert Guidance",
-        "Personalized 1-on-1 Sessions",
-        "Strategic Help with CAP Rounds, Choice Filling",
-        "Cutoff Analysis, College Reviews",
-        "Scholarship + Management Quota Support",
-      ],
-      bonuses: ["Roadmap PDF", "Mistake Sheet", "Priority List"],
-      fee: "₹1000",
-      paymentLink: "https://pages.razorpay.com/pl_QX3SVcl6JWTzXx/view",
-    },
-    {
-      id: "josaa",
-      title: "JoSAA Counselling Support 2025",
-      description: "Full guidance for JoSAA 2025 – including NITs, IIITs, GFTIs, and IITs.",
-      logo: "/images/josaa-logo.png",
-      highlights: [
-        "Rank-based Counseling",
-        "Freeze/Float/Slide Support",
-        "Cutoff Data for IITs/NITs",
-        "College & Branch Prediction",
-        "Fee Matrix, Category Quota Assistance",
-      ],
-      bonuses: ["Smart Roadmap", "Mistake Sheet", "Cutoff Chart"],
-      fee: "₹1000",
-      paymentLink: "https://rzp.io/rzp/LCzbmwuB",
-    },
-    {
-      id: "mpdte",
-      title: "MP DTE Counselling Support 2025",
-      description: "Complete help for students applying through MP DTE 2025 portal.",
-      logo: "/images/mp-dte-logo.jpeg",
-      highlights: [
-        "College Prediction for Round 1, 2, CLC",
-        "Document Support & Choice Filling",
-        "Fee Structures & Cutoff Insights",
-        "Scholarship & Management Quota Assistance",
-        "Real-Time WhatsApp + Call Support",
-      ],
-      bonuses: ["Alerts", "Mistake Guide", "College Review PDF"],
-      fee: "₹1000",
-      paymentLink: "https://rzp.io/rzp/EkwtGHQr",
-    },
-    {
-      id: "comedk",
-      title: "COMEDK Counselling Support 2025",
-      description: "Expert assistance for all COMEDK counselling rounds in 2025.",
-      logo: "/images/comedk-logo.png",
-      highlights: [
-        "College List Based on Your Rank",
-        "Spot Round + Management Quota Guidance",
-        "Fee Structure & Scholarship Help",
-        "Live Counseling on WhatsApp / Call",
-        "Document Verification, Choice Filling Help",
-      ],
-      bonuses: ["Mistakes Sheet", "College Guide", "PDF Materials"],
-      fee: "₹1000",
-      paymentLink: "https://rzp.io/rzp/PRpyJv9",
-    },
-  ]
+  const courses: any[] = []
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -94,7 +29,12 @@ export default function CoursesClientPage() {
         </motion.div>
 
         <div className="space-y-16">
-          {courses.map((course, index) => (
+          {courses.length === 0 ? (
+            <div className="text-center py-20 bg-slate-50 dark:bg-slate-900/50 rounded-[3rem] border-2 border-dashed border-slate-200 dark:border-slate-800">
+              <h2 className="text-2xl font-black text-slate-400">Courses coming soon.</h2>
+              <p className="text-slate-500 mt-2">Check back later for personalized counseling support programs.</p>
+            </div>
+          ) : courses.map((course, index) => (
             <motion.div
               key={course.id}
               initial={{ opacity: 0, y: 30 }}

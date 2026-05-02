@@ -11,6 +11,8 @@ import { PartnershipCarousel } from "@/components/partnership-carousel"
 import { AIToolsSection } from "@/components/ai-tools-section"
 import { HowItWorks } from "@/components/how-it-works"
 import { ResourceDirectory } from "@/components/resource-directory"
+import { useQuery } from "convex/react"
+import { api } from "@/convex/_generated/api"
 import { motion } from "framer-motion"
 
 export default function Home() {
@@ -141,28 +143,41 @@ export default function Home() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-24 container mx-auto px-4">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          {[
-            { label: "Successful Placements", value: "1200+" },
-            { label: "College Records", value: "70k+" },
-            { label: "Counselling Platforms", value: "200+" },
-            { label: "Mentorship Hours", value: "5000+" }
-          ].map((stat, i) => (
-            <motion.div 
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
-              viewport={{ once: true }}
-              className="text-center"
-            >
-              <div className="text-4xl sm:text-6xl font-black text-primary mb-2">{stat.value}</div>
-              <div className="text-sm font-bold text-slate-500 uppercase tracking-widest">{stat.label}</div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
+      <StatsSection />
+    </div>
+  )
+}
+
+function StatsSection() {
+  const stats = useQuery(api.diagnostics.getCounts, {});
+
+  const statItems = [
+    { label: "Successful Placements", value: "1200+" }, // Keep as mission-based or fetch if possible
+    { label: "College Records", value: stats?.colleges ? `${(stats.colleges / 1000).toFixed(0)}k+` : "..." },
+    { label: "Counseling Platforms", value: stats?.counselings || "..." },
+    { label: "Expert Mentors", value: stats?.mentors || "..." }
+  ];
+
+  return (
+    <section className="py-24 container mx-auto px-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        {statItems.map((stat, i) => (
+          <motion.div 
+            key={i}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.1 }}
+            viewport={{ once: true }}
+            className="text-center"
+          >
+            <div className="text-4xl sm:text-6xl font-black text-primary mb-2">{stat.value}</div>
+            <div className="text-sm font-bold text-slate-500 uppercase tracking-widest">{stat.label}</div>
+          </motion.div>
+        ))}
+      </div>
+    </section>
+  );
+}
 
       {/* Call to Action Section */}
       <section className="py-24 container mx-auto px-4">

@@ -9,7 +9,7 @@ interface BlogPageProps {
   };
 }
 
-// Static blog data — replace with DB/CMS data when available
+// Empty record - real data should be fetched from DB
 const STATIC_BLOGS: Record<string, {
   title: string;
   description: string;
@@ -18,26 +18,7 @@ const STATIC_BLOGS: Record<string, {
   category: string;
   readingTime: string;
   content: string;
-}> = {
-  'josaa-2025-complete-guide': {
-    title: 'JoSAA 2025 Complete Counseling Guide',
-    description: 'Everything you need to know about JoSAA 2025 counseling — round schedule, choice filling strategy, and seat allotment tips.',
-    date: '2025-05-01',
-    author: 'Apna Counsellor Team',
-    category: 'Engineering',
-    readingTime: '8 min',
-    content: `JoSAA (Joint Seat Allocation Authority) 2025 is the gateway to IITs, NITs, IIITs, and other Government Funded Technical Institutes (GFTIs). This guide covers everything you need to know...`,
-  },
-  'neet-2025-counseling-guide': {
-    title: 'NEET 2025 Counseling Process Explained',
-    description: 'MCC All India Quota counseling, state quota counseling — a step-by-step breakdown for NEET 2025 aspirants.',
-    date: '2025-04-28',
-    author: 'Apna Counsellor Team',
-    category: 'Medical',
-    readingTime: '6 min',
-    content: `NEET 2025 counseling is conducted by the Medical Counseling Committee (MCC) for All India Quota seats. This guide breaks down the process step by step...`,
-  },
-};
+}> = {};
 
 export async function generateStaticParams() {
   return Object.keys(STATIC_BLOGS).map((slug) => ({ slug }));
@@ -87,10 +68,6 @@ export default function BlogPostPage({ params }: BlogPageProps) {
 
       <div className="prose prose-slate prose-lg max-w-none shadow-sm bg-white p-8 md:p-12 rounded-3xl border border-slate-100 mb-16">
         <p>{blog.content}</p>
-        <p>
-          For personalized guidance on your admission journey, book a session with one of our expert mentors. 
-          Our team has helped thousands of students secure seats in their dream colleges.
-        </p>
       </div>
 
       <footer className="mt-20">
