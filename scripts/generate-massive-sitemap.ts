@@ -74,6 +74,7 @@ async function generateMassiveSitemaps() {
     }
   });
 
+  cutoffXml += `\n</urlset>`;
   fs.writeFileSync(path.join(publicDir, 'sitemap-cutoffs.xml'), cutoffXml);
   indexXml += `\n  <sitemap><loc>${BASE_URL}/sitemap-cutoffs.xml</loc></sitemap>`;
 
