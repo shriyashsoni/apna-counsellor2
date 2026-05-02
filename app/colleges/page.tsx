@@ -236,9 +236,14 @@ function CollegesList() {
                 animate="show"
                 className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6"
               >
-                {colleges.map((college) => (
-                  <motion.div key={college._id} variants={item}>
-                    <Link href={`/college/${college._id}`}>
+                {colleges.map((college) => {
+                  const collegeId = college.collegeId || (college as any).id || college._id;
+                  const collegeSlug = (college.name || '').toLowerCase().replace(/[^a-z0-9]/g, '-');
+                  const finalId = collegeId || collegeSlug;
+
+                  return (
+                  <motion.div key={finalId} variants={item}>
+                    <Link href={`/college/${finalId}`}>
                       <Card className="h-full border-none rounded-[1.5rem] md:rounded-[2.5rem] shadow-sm bg-white dark:bg-slate-900 group hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-300 overflow-hidden">
                         <CardContent className="p-5 md:p-8">
                           <div className="flex justify-between items-start mb-4 md:mb-6">
@@ -296,7 +301,8 @@ function CollegesList() {
                       </Card>
                     </Link>
                   </motion.div>
-                ))}
+                  );
+                })}
               </motion.div>
             )}
           </main>
