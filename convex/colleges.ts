@@ -6,11 +6,27 @@ export const getById = query({
   handler: async (ctx, args) => {
     try {
       const normalizedId = ctx.db.normalizeId("colleges", args.id);
-      if (!normalizedId) return null;
+      if (!normalizedId) {
+        // Fallback: search by name/slug if ID is not a valid Convex ID
+        return await ctx.db
+          .query("colleges")
+          .filter((q) => q.eq(q.field("name"), args.id)) // Simplified search
+          .first();
+      }
       return await ctx.db.get(normalizedId);
     } catch (e) {
       return null;
     }
+  },
+});
+
+export const getByName = query({
+  args: { name: v.string() },
+  handler: async (ctx, args) => {
+    return await ctx.db
+      .query("colleges")
+      .withSearchIndex("by_name", (q) => q.search("name", args.name))
+      .first();
   },
 });
 

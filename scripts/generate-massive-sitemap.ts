@@ -30,6 +30,36 @@ async function generateMassiveSitemaps() {
 
   const colleges = await client.query(api.colleges.list, {}) || [];
   
+  // Also get colleges from local JSON files
+  let allColleges = [...colleges.map((c: any) => ({ ...c, id: c._id }))];
+  const stateDirs = fs.readdirSync(dataDir).filter(dir => fs.statSync(path.join(dataDir, dir)).isDirectory());
+  
+  stateDirs.forEach(state => {
+    const collegesPath = path.join(dataDir, state, 'colleges.json');
+    if (fs.existsSync(collegesPath)) {
+      try {
+        const localColleges = JSON.parse(fs.readFileSync(collegesPath, 'utf8'));
+        localColleges.forEach((c: any) => {
+          // Use a slug-based ID if real ID is missing
+          const slugId = (c.name || '').toLowerCase().replace(/[^a-z0-9]/g, '-');
+          if (slugId) {
+            allColleges.push({
+              id: slugId,
+              name: c.name,
+              state: state.replace(/_/g, ' '),
+              ...c
+            });
+          }
+        });
+      } catch (e) {
+        console.error(`Error parsing ${collegesPath}: ${e}`);
+      }
+    }
+  });
+
+  // Unique by ID
+  const uniqueColleges = Array.from(new Map(allColleges.map(c => [c.id, c])).values());
+  
   const publicDir = path.join(__dirname, '..', 'public');
   if (!fs.existsSync(publicDir)) fs.mkdirSync(publicDir);
 
@@ -38,13 +68,13 @@ async function generateMassiveSitemaps() {
   
   // 2. Colleges (5,000 per sitemap)
   const CHUNK_SIZE = 5000;
-  for (let i = 0; i < colleges.length; i += CHUNK_SIZE) {
-    const chunk = colleges.slice(i, i + CHUNK_SIZE);
+  for (let i = 0; i < uniqueColleges.length; i += CHUNK_SIZE) {
+    const chunk = uniqueColleges.slice(i, i + CHUNK_SIZE);
     const fileName = `sitemap-colleges-${i / CHUNK_SIZE + 1}.xml`;
     let xml = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
     
     chunk.forEach((c: any) => {
-      xml += `\n  <url><loc>${BASE_URL}/college/${c._id}</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>`;
+      xml += `\n  <url><loc>${BASE_URL}/college/${c.id}</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>`;
     });
     
     xml += `\n</urlset>`;
@@ -57,18 +87,18 @@ async function generateMassiveSitemaps() {
   let cutoffCount = 0;
   let cutoffXml = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
   
-  colleges.forEach((c: any) => {
+  uniqueColleges.forEach((c: any) => {
     // If college has branches, add them
     if (c.branches && c.branches.length > 0) {
       c.branches.forEach((branch: string) => {
         const branchSlug = encodeURIComponent(branch);
-        cutoffXml += `\n  <url><loc>${BASE_URL}/cutoff/${c._id}/${branchSlug}</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>`;
+        cutoffXml += `\n  <url><loc>${BASE_URL}/cutoff/${c.id}/${branchSlug}</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>`;
         cutoffCount++;
       });
     } else {
       // Fallback: common engineering branches for SEO
       ['Computer-Science', 'IT', 'Electronics', 'Mechanical', 'Civil'].forEach(b => {
-        cutoffXml += `\n  <url><loc>${BASE_URL}/cutoff/${c._id}/${b}</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>`;
+        cutoffXml += `\n  <url><loc>${BASE_URL}/cutoff/${c.id}/${b}</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>`;
         cutoffCount++;
       });
     }
@@ -92,8 +122,8 @@ async function generateMassiveSitemaps() {
 
   fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), indexXml);
   
-  console.log(`✅ Successfully mapped ${colleges.length} Colleges and ${cutoffCount} Cutoff/Branch pages.`);
-  console.log(`📊 Total estimated indexed pages: ${colleges.length + cutoffCount + counselings.length + 300}+`);
+  console.log(`✅ Successfully mapped ${uniqueColleges.length} Colleges and ${cutoffCount} Cutoff/Branch pages.`);
+  console.log(`📊 Total estimated indexed pages: ${uniqueColleges.length + cutoffCount + allCounselingIds.length + 300}+`);
 }
 
 generateMassiveSitemaps().catch(console.error);
