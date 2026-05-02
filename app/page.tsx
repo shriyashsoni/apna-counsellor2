@@ -228,12 +228,10 @@ export default function Home() {
 }
 
 function StatsSection() {
-  const stats = useQuery(api.diagnostics.getCounts, {});
-
-  // Safe display values with fallbacks to avoid crashes
-  const collegesCount = stats?.colleges || 30000;
-  const counselingsCount = stats?.counselings || 185;
-  const mentorsCount = stats?.mentors || 45;
+  // Hardcoded for stability during massive data indexing
+  const collegesCount = 30000;
+  const counselingsCount = 185;
+  const mentorsCount = 45;
 
   const statItems = [
     { label: "Successful Placements", value: "1200+" },
