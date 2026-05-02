@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "contentlayer build && next build",
-    "dev": "concurrently \"contentlayer dev\" \"next dev\"",
+    "build": "next build",
+    "dev": "next dev",
     "lint": "next lint",
     "start": "next start",
     "postbuild": "next-sitemap",

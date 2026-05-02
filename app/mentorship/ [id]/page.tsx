@@ -31,7 +31,8 @@ export default function MentorBookingPage() {
   const [selectedDate, setSelectedDate] = useState<string>("")
   const [selectedSlot, setSelectedSlot] = useState<string>("")
 
-  const mentor = useQuery(api.mentors.listMentors)?.find(m => m._id === mentorId)
+  const mentorsData = useQuery(api.users.listMentors, {})
+  const mentor = mentorsData?.find(m => m._id === mentorId)
   
   const handleBooking = () => {
     if (!selectedSlot) {

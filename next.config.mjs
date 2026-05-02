@@ -1,11 +1,9 @@
-import { withContentlayer } from 'next-contentlayer';
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   compress: true,
   poweredByHeader: false,
   images: {
-    domains: ['apnacounsellor.in'],
+    domains: ['apnacounsellor.in', 'api.dicebear.com'],
     formats: ['image/avif', 'image/webp'],
     minimumCacheTTL: 60,
   },
@@ -22,9 +20,6 @@ const nextConfig = {
       },
     ];
   },
-  experimental: {
-    optimizeCss: true,
-  },
 };
 
-export default withContentlayer(nextConfig);
+export default nextConfig;
