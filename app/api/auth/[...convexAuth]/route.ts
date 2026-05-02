@@ -3,4 +3,10 @@ import { createRouteHandler } from "@convex-dev/auth/nextjs/server";
 
 export const dynamic = "force-dynamic";
 
-export const { GET, POST } = createRouteHandler(auth);
+export async function GET(request: Request) {
+  return createRouteHandler(auth).GET(request);
+}
+
+export async function POST(request: Request) {
+  return createRouteHandler(auth).POST(request);
+}
