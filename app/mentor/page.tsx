@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 
 export default function MentorPortal() {
-  const user = useQuery(api.users.currentUser)
+  const user = useQuery(api.users.currentUser, {})
   const sessions = useQuery(api.sessions.listByMentor, { mentorId: user?._id || "" })
   
   const stats = [

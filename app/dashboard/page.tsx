@@ -49,8 +49,8 @@ import { useEffect } from "react"
 
 export default function DashboardPage() {
   const router = useRouter()
-  const profile = useQuery(api.profiles.getProfile)
-  const user = useQuery(api.users.currentUser)
+  const profile = useQuery(api.profiles.getProfile, {})
+  const user = useQuery(api.users.currentUser, {})
 
   useEffect(() => {
     if (user === null) {

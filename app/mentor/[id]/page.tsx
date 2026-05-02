@@ -37,7 +37,7 @@ export default function MentorProfilePage() {
   
   const mentor = useQuery(api.users.getById, { id: mentorId })
   const sessions = useQuery(api.sessions.listPostedSessions, { mentorId })
-  const dbUser = useQuery(api.users.currentUser)
+  const dbUser = useQuery(api.users.currentUser, {})
   const bookSession = useMutation(api.sessions.bookSession)
 
   const createOrder = useAction(api.razorpay.createOrder)

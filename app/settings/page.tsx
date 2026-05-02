@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { User, Bell, Shield, CreditCard, Laptop } from "lucide-react"
 
 export default function SettingsPage() {
-  const user = useQuery(api.users.currentUser)
+  const user = useQuery(api.users.currentUser, {})
 
   if (!user) return null
 

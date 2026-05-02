@@ -27,7 +27,7 @@ import { toast } from "sonner"
 export default function MentorRegisterPage() {
   const router = useRouter()
   // Clerk removed to unblock local host
-  const dbUser = useQuery(api.users.currentUser)
+  const dbUser = useQuery(api.users.currentUser, {})
   const updateUser = useMutation(api.users.updateUser)
 
   const [step, setStep] = useState(1)

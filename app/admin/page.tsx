@@ -26,10 +26,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Image from "next/image"
 
 export default function AdminDashboard() {
-  const users = useQuery(api.users.listAll)
-  const mentors = useQuery(api.users.listMentors)
+  const users = useQuery(api.users.listAll, {})
+  const mentors = useQuery(api.users.listMentors, {})
   const stats = useQuery(api.diagnostics.getCounts)
-  const payments = useQuery(api.payments.listRecent)
+  const payments = useQuery(api.payments.listRecent, {})
 
   const approveMentor = useMutation(api.users.updateUser)
 

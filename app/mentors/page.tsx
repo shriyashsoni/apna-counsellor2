@@ -22,7 +22,7 @@ import Link from "next/link"
 
 export default function MentorsPage() {
   const [searchTerm, setSearchTerm] = useState("");
-  const mentors = useQuery(api.mentors.listMentors);
+  const mentors = useQuery(api.users.listMentors, {});
 
   const filteredMentors = mentors?.filter(m => 
     (m.name || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
