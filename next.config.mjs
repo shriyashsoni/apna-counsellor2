@@ -13,9 +13,18 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
-    domains: ['apnacounsellor.in', 'api.dicebear.com'],
-    formats: ['image/avif', 'image/webp'],
-    minimumCacheTTL: 60,
+    // Disable Next.js image optimization so images from any host load
+    // without needing to be whitelisted. This fixes the broken images
+    // coming from vercel-storage blobs, svgrepo, and other CDNs.
+    unoptimized: true,
+    remotePatterns: [
+      { protocol: 'https', hostname: '**.public.blob.vercel-storage.com' },
+      { protocol: 'https', hostname: 'apnacounsellor.in' },
+      { protocol: 'https', hostname: 'api.dicebear.com' },
+      { protocol: 'https', hostname: 'www.svgrepo.com' },
+      { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
+      { protocol: 'https', hostname: 'images.unsplash.com' },
+    ],
   },
   async headers() {
     return [
