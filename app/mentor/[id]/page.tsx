@@ -211,7 +211,7 @@ export default function MentorProfilePage() {
                         </div>
                         <div className="flex items-center gap-2">
                            <MapPin className="h-5 w-5 text-slate-400" />
-                           <span>{mentor.location || 'India'}</span>
+                           <span>{mentor.preferredLocation || 'India'}</span>
                         </div>
                      </div>
                      <div className="flex flex-wrap justify-center md:justify-start gap-3 pt-2">
@@ -358,7 +358,7 @@ export default function MentorProfilePage() {
                    <div className="flex gap-1">
                       {[1,2,3,4,5].map(i => <Star key={i} className="h-5 w-5 text-amber-500 fill-amber-500" />)}
                    </div>
-                   <p className="text-slate-400 font-bold text-sm uppercase tracking-widest">{mentor.reviews || 0} Verified Reviews</p>
+                   <p className="text-slate-400 font-bold text-sm uppercase tracking-widest">{mentor.reviewsCount || 0} Verified Reviews</p>
                 </div>
                 <div className="space-y-3">
                    {[
