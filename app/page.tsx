@@ -53,14 +53,14 @@ export default function Home() {
           >
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-black uppercase tracking-widest mb-6">
               <Sparkles className="h-4 w-4" />
-              Empowering 100,000+ Students
+              Empowering 50,000+ Students
             </div>
             <h2 className="text-4xl sm:text-5xl font-black text-slate-900 dark:text-white mb-8 tracking-tight leading-tight">
               India&apos;s #1 AI-Driven <br/><span className="text-primary">Admissions Platform</span>
             </h2>
             <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
               Apna Counsellor isn&apos;t just a platform; it&apos;s your AI-powered companion for career success. 
-              We track 70,000+ institution records across 200+ national and international admission portals to ensure 
+              We track 1,26,000+ institution guides across 200+ national and international admission portals to ensure 
               you never miss your dream college.
             </p>
             <div className="grid sm:grid-cols-2 gap-4 mb-10">
@@ -105,7 +105,7 @@ export default function Home() {
               </div>
               <p className="text-slate-600 dark:text-slate-400 mb-8 leading-relaxed italic text-lg">
                 &quot;Our mission is to make premium career guidance accessible to every student. 
-                With 1200+ students already placed, we are just getting started.&quot;
+                With 50,000+ students already guided, we are just getting started.&quot;
               </p>
               <Link href="/founder">
                 <Button variant="outline" className="rounded-xl font-bold border-slate-200 dark:border-slate-800">
@@ -234,10 +234,10 @@ function StatsSection() {
   const mentorsCount = 45;
 
   const statItems = [
-    { label: "Successful Placements", value: "1200+" },
-    { label: "College Records", value: `${(collegesCount / 1000).toFixed(0)}k+` },
-    { label: "Counseling Platforms", value: counselingsCount.toString() },
-    { label: "Expert Mentors", value: mentorsCount.toString() }
+    { label: "Admissions Guided", value: "50k+" },
+    { label: "College Guides", value: "1.2L+" },
+    { label: "Counseling Portals", value: "200+" },
+    { label: "Expert Mentors", value: "45+" }
   ];
 
   return (

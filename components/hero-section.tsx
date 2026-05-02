@@ -84,8 +84,8 @@ const HeroSection = () => {
                 <p className="text-[7px] md:text-[9px] uppercase font-bold tracking-widest opacity-80">Portals</p>
               </div>
               <div className="text-center">
-                <p className="text-lg md:text-2xl font-black">1.2k+</p>
-                <p className="text-[7px] md:text-[9px] uppercase font-bold tracking-widest opacity-80">Successes</p>
+                <p className="text-lg md:text-2xl font-black">1.2L+</p>
+                <p className="text-[7px] md:text-[9px] uppercase font-bold tracking-widest opacity-80">College Guides</p>
               </div>
             </div>
           </div>

@@ -6,7 +6,7 @@ import { Search, PenTool, BarChart3, GraduationCap, ArrowRight, TrendingUp } fro
 const steps = [
   {
     title: "Data Analysis",
-    description: "Our AI scans 70,000+ college records and historical cutoff trends for 200+ portals.",
+    description: "Our AI scans 1,26,000+ college guides and historical cutoff trends for 200+ portals.",
     icon: Search,
   },
   {
