@@ -1,157 +1,110 @@
-"use client"
+import Link from 'next/link';
+import { allBlogs } from 'contentlayer/generated';
+import { compareDesc, format, parseISO } from 'date-fns';
+import { Metadata } from 'next';
 
-import { motion } from "framer-motion"
-import { 
-  Search, 
-  Calendar, 
-  User, 
-  ArrowRight,
-  TrendingUp,
-  Sparkles,
-  BookOpen
-} from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
+export const metadata: Metadata = {
+  title: 'Admission Blog | Expert Insights by Apna Counsellor',
+  description: 'Latest news, tips, and strategy for JEE, NEET, MHT-CET and other entrance exams in India. Stay updated with Apna Counsellor.',
+};
 
-export default function BlogPage() {
-  const posts = [
-    { 
-      title: "Expected JoSAA 2025 Cutoffs for Top NITs", 
-      excerpt: "Analyze the current trends and previous year patterns to predict where the cutoffs might land this year.",
-      date: "May 12, 2024",
-      author: "Rahul Sharma",
-      category: "JoSAA",
-      image: "https://images.unsplash.com/photo-1562774053-701939374585?w=800&auto=format&fit=crop&q=60"
-    },
-    { 
-      title: "MHT-CET 2025: Top Engineering Colleges in Pune", 
-      excerpt: "Pune is the Oxford of the East. Explore the best engineering colleges and their placement stats.",
-      date: "May 10, 2024",
-      author: "Priya Patil",
-      category: "MHT-CET",
-      image: "https://images.unsplash.com/photo-1541339907198-e08759df9a73?w=800&auto=format&fit=crop&q=60"
-    },
-    { 
-      title: "Career Guidance: CSE vs IT vs AI & ML", 
-      excerpt: "Confused between different computer science branches? Here is a detailed comparison of curriculum and future scope.",
-      date: "May 8, 2024",
-      author: "Dr. K. Saxena",
-      category: "Guidance",
-      image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&auto=format&fit=crop&q=60"
-    }
-  ]
+export default function BlogListingPage() {
+  const blogs = allBlogs.sort((a, b) => compareDesc(parseISO(a.date), parseISO(b.date)));
+
+  // Extract unique categories
+  const categories = Array.from(new Set(blogs.map(b => b.category)));
 
   return (
-    <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950 pt-24 pb-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
-          <div className="max-w-2xl">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest mb-6"
-            >
-              <BookOpen className="h-4 w-4" /> Expert Insights & News
-            </motion.div>
-            <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-4">
-              Apna <span className="text-primary">Blog.</span>
-            </h1>
-            <p className="text-lg text-slate-500 font-medium">
-              Latest news, expert advice, and data-driven insights for Indian students.
-            </p>
-          </div>
-          <div className="relative w-full max-w-[400px]">
-             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
-             <Input placeholder="Search articles..." className="h-14 rounded-2xl pl-12 bg-white dark:bg-slate-900 border-none shadow-sm focus-visible:ring-primary" />
-          </div>
+    <main className="max-w-7xl mx-auto px-4 py-20">
+      <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+        <div className="max-w-2xl">
+          <span className="text-blue-600 font-black uppercase tracking-[0.3em] text-sm mb-4 block">Knowledge Hub</span>
+          <h1 className="text-5xl md:text-7xl font-black text-slate-900 leading-none">
+            Admission <span className="text-blue-600">Insights.</span>
+          </h1>
+          <p className="text-xl text-slate-500 mt-6">
+            Automatically updated guides and expert tips for your admission journey.
+          </p>
         </div>
-
-        {/* Featured Post */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-16"
-        >
-          <Card className="border-none rounded-[3rem] shadow-xl shadow-slate-200/50 dark:shadow-none bg-white dark:bg-slate-900 overflow-hidden group">
-            <CardContent className="p-0">
-              <div className="flex flex-col lg:flex-row h-full lg:min-h-[500px]">
-                <div className="lg:w-1/2 relative overflow-hidden">
-                   <img 
-                    src={posts[0].image} 
-                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
-                    alt="Featured Post" 
-                   />
-                   <div className="absolute top-8 left-8">
-                      <Badge className="bg-primary text-white font-black px-4 py-1.5 rounded-xl uppercase text-[10px] tracking-widest border-none">Featured Article</Badge>
-                   </div>
-                </div>
-                <div className="lg:w-1/2 p-10 lg:p-16 flex flex-col justify-center">
-                  <div className="flex items-center gap-4 mb-6 text-[10px] font-black uppercase tracking-widest text-slate-400">
-                    <span className="flex items-center gap-1.5"><Calendar className="h-3 w-3" /> {posts[0].date}</span>
-                    <span>•</span>
-                    <span className="flex items-center gap-1.5"><User className="h-3 w-3" /> {posts[0].author}</span>
-                  </div>
-                  <h2 className="text-4xl lg:text-5xl font-black tracking-tight mb-6 group-hover:text-primary transition-colors">
-                    {posts[0].title}
-                  </h2>
-                  <p className="text-slate-500 font-medium text-lg leading-relaxed mb-10">
-                    {posts[0].excerpt}
-                  </p>
-                  <Button className="w-fit rounded-2xl h-14 px-10 font-black shadow-xl shadow-primary/20 gap-3">
-                    Read Article <ArrowRight className="h-5 w-5" />
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-
-        {/* Post Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {posts.slice(1).map((post, i) => (
-            <motion.div
-              key={post.title}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
-            >
-              <Card className="h-full border-none rounded-[2.5rem] shadow-sm bg-white dark:bg-slate-900 group hover:shadow-2xl hover:shadow-primary/5 transition-all overflow-hidden flex flex-col">
-                <div className="h-56 relative overflow-hidden">
-                   <img src={post.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt={post.title} />
-                   <div className="absolute top-4 left-4">
-                      <Badge className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm text-primary font-black px-3 py-1 rounded-xl uppercase text-[9px] tracking-widest border-none">
-                        {post.category}
-                      </Badge>
-                   </div>
-                </div>
-                <CardContent className="p-8 flex flex-col flex-1">
-                   <div className="flex items-center gap-3 mb-4 text-[9px] font-black uppercase tracking-widest text-slate-400">
-                     <span className="flex items-center gap-1"><Calendar className="h-3 w-3" /> {post.date}</span>
-                     <span>•</span>
-                     <span className="flex items-center gap-1"><User className="h-3 w-3" /> {post.author}</span>
-                   </div>
-                   <h3 className="text-xl font-black mb-4 group-hover:text-primary transition-colors leading-snug">
-                     {post.title}
-                   </h3>
-                   <p className="text-slate-500 font-medium text-sm leading-relaxed mb-8 line-clamp-3">
-                     {post.excerpt}
-                   </p>
-                   <div className="mt-auto">
-                      <Button variant="ghost" className="p-0 font-black text-xs text-primary gap-2 hover:bg-transparent group-hover:translate-x-1 transition-transform">
-                        Read Story <ArrowRight className="h-4 w-4" />
-                      </Button>
-                   </div>
-                </CardContent>
-              </Card>
-            </motion.div>
+        
+        <div className="flex flex-wrap gap-2">
+          <button className="px-6 py-2 bg-slate-900 text-white rounded-full text-sm font-bold">All Posts</button>
+          {categories.map(cat => (
+            <button key={cat} className="px-6 py-2 bg-slate-100 text-slate-600 rounded-full text-sm font-bold hover:bg-blue-50 hover:text-blue-600 transition-all">
+              {cat}
+            </button>
           ))}
         </div>
-
       </div>
-    </div>
-  )
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        {blogs.map((blog, idx) => (
+          <article 
+            key={blog._id} 
+            className={`group bg-white border border-slate-100 rounded-[2.5rem] overflow-hidden hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.1)] transition-all duration-500 flex flex-col ${idx === 0 ? 'md:col-span-2 lg:col-span-2' : ''}`}
+          >
+            <div className={`relative ${idx === 0 ? 'h-80 md:h-full' : 'h-64'} w-full overflow-hidden bg-slate-100`}>
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-indigo-600/20 group-hover:scale-110 transition-transform duration-700"></div>
+              <div className="absolute top-6 left-6 z-10">
+                <span className="px-4 py-1.5 bg-white/90 backdrop-blur-md text-slate-900 text-xs font-black rounded-full uppercase tracking-widest shadow-sm">
+                  {blog.category}
+                </span>
+              </div>
+            </div>
+            <div className="p-10 flex-1 flex flex-col justify-between">
+              <div>
+                <div className="text-slate-400 text-sm font-bold mb-4 uppercase tracking-widest">
+                  {format(parseISO(blog.date), 'MMMM dd, yyyy')} • {blog.readingTime} read
+                </div>
+                <Link href={blog.url}>
+                  <h2 className={`font-black text-slate-900 group-hover:text-blue-600 transition-colors mb-4 ${idx === 0 ? 'text-4xl' : 'text-2xl'}`}>
+                    {blog.title}
+                  </h2>
+                </Link>
+                <p className="text-slate-500 text-lg line-clamp-3 leading-relaxed mb-8">
+                  {blog.description}
+                </p>
+              </div>
+              <Link href={blog.url} className="inline-flex items-center gap-2 text-blue-600 font-black group/link">
+                Read Full Post 
+                <span className="group-hover/link:translate-x-1 transition-transform">→</span>
+              </Link>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      {blogs.length === 0 && (
+        <div className="text-center py-32 bg-slate-50 rounded-[4rem] border border-dashed border-slate-200">
+          <div className="text-6xl mb-6">✍️</div>
+          <p className="text-2xl font-bold text-slate-400 italic">Our AI agents are currently writing the latest updates...</p>
+          <p className="text-slate-400 mt-2">New posts will appear here automatically every 24 hours.</p>
+        </div>
+      )}
+
+      <section className="mt-32">
+        <div className="bg-blue-600 rounded-[3rem] p-12 md:p-20 text-white flex flex-col md:flex-row items-center gap-12 overflow-hidden relative">
+          <div className="absolute bottom-0 right-0 w-64 h-64 bg-white/10 blur-3xl rounded-full -mb-32 -mr-32"></div>
+          <div className="flex-1 relative z-10">
+            <h2 className="text-4xl md:text-5xl font-black mb-6">Stay ahead of the curve.</h2>
+            <p className="text-xl text-blue-100 max-w-xl">
+              Subscribe to our newsletter to get automated admission alerts and expert strategy guides directly in your inbox.
+            </p>
+          </div>
+          <div className="w-full md:w-auto relative z-10">
+            <div className="bg-white/10 backdrop-blur-md p-2 rounded-full flex border border-white/20">
+              <input 
+                type="email" 
+                placeholder="Enter your email" 
+                className="bg-transparent border-none focus:ring-0 px-6 py-3 text-white placeholder:text-white/50 w-full md:w-64"
+              />
+              <button className="bg-white text-blue-600 px-8 py-3 rounded-full font-black hover:bg-blue-50 transition-all whitespace-nowrap">
+                Join Now
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  );
 }

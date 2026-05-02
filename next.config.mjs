@@ -1,24 +1,28 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  typescript: {
-    ignoreBuildErrors: true,
-  },
+  compress: true,
+  poweredByHeader: false,
   images: {
-    unoptimized: true,
-    remotePatterns: [
+    domains: ['apnacounsellor.in'],
+    formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 60,
+  },
+  async headers() {
+    return [
       {
-        protocol: "https",
-        hostname: "hebbkx1anhila5yf.public.blob.vercel-storage.com",
+        source: '/_next/static/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
       },
-    ],
+    ];
   },
-  eslint: {
-    ignoreDuringBuilds: true,
+  experimental: {
+    optimizeCss: true,
   },
-  onDemandEntries: {
-    maxInactiveAge: 60 * 1000,
-    pagesBufferLength: 5,
-  },
-}
+};
 
-export default nextConfig
+export default nextConfig;

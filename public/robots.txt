@@ -1,0 +1,24 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /login
+Disallow: /signup
+Disallow: /dashboard/
+Disallow: /_next/
+Disallow: /static/
+
+# Sitemap Indices
+Sitemap: https://apnacounsellor.in/sitemap-index.xml
+Sitemap: https://apnacounsellor.in/sitemap-counseling.xml
+Sitemap: https://apnacounsellor.in/sitemap-colleges.xml
+Sitemap: https://apnacounsellor.in/sitemap-blogs.xml
+Sitemap: https://apnacounsellor.in/sitemap-tools.xml
+Sitemap: https://apnacounsellor.in/sitemap-comparisons.xml
+
+# Crawl-delay for slower bots
+User-agent: bingbot
+Crawl-delay: 1
+
+User-agent: Googlebot
+Allow: /
