@@ -191,7 +191,7 @@ export default function MentorProfilePage() {
                   <div className="relative h-40 w-40 rounded-[2.5rem] overflow-hidden shadow-2xl ring-8 ring-slate-50 dark:ring-slate-800 shrink-0">
                     <Image 
                       src={mentor.image || `https://api.dicebear.com/7.x/avataaars/svg?seed=${mentor.name}`} 
-                      alt={mentor.name}
+                      alt={mentor.name || "Mentor"}
                       fill
                       className="object-cover"
                     />
