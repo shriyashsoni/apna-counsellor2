@@ -70,7 +70,7 @@ export default function CoursesClientPage() {
                         Key Highlights:
                       </h3>
                       <ul className="space-y-2">
-                        {course.highlights.map((highlight, idx) => (
+                        {course.highlights.map((highlight: string, idx: number) => (
                           <li key={idx} className="flex items-start">
                             <div className="h-1.5 w-1.5 rounded-full bg-primary mt-2 mr-2"></div>
                             <span>{highlight}</span>
@@ -85,7 +85,7 @@ export default function CoursesClientPage() {
                           Bonuses:
                         </h3>
                         <ul className="space-y-2">
-                          {course.bonuses.map((bonus, idx) => (
+                          {course.bonuses.map((bonus: string, idx: number) => (
                             <li key={idx} className="flex items-start">
                               <div className="h-1.5 w-1.5 rounded-full bg-primary mt-2 mr-2"></div>
                               <span>{bonus}</span>
