@@ -1,6 +1,8 @@
 import { convexAuthNextjsToken } from "@convex-dev/auth/nextjs/server";
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: Request) {
   const { convexAuthToken } = await convexAuthNextjsToken();
   if (convexAuthToken === null) {
