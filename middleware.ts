@@ -1,13 +1,10 @@
 import { convexAuthNextjsMiddleware, createRouteMatcher, nextjsMiddlewareRedirect } from "@convex-dev/auth/nextjs/server";
 
 const isProtectedRoute = createRouteMatcher(["/dashboard(.*)", "/onboarding(.*)", "/settings(.*)"]);
-const isAuthRoute = createRouteMatcher(["/api/auth(.*)"]);
 
 export default convexAuthNextjsMiddleware(async (request, { convexAuth }) => {
   try {
-    if (isAuthRoute(request)) {
-      return;
-    }
+    // The middleware handles /api/auth automatically by proxying to Convex
     
     if (isProtectedRoute(request) && !(await convexAuth.isAuthenticated())) {
       return nextjsMiddlewareRedirect(request, "/login");
