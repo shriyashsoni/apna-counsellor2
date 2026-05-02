@@ -14,6 +14,20 @@ async function generateMassiveSitemaps() {
   console.log('🚀 Initiating 70,000+ Page Sitemap Generation...');
 
   const counselings = await client.query(api.counselings.list as any) || [];
+  
+  // Also get counselings from filesystem to ensure all 200+ are included
+  const dataDir = path.join(__dirname, '..', 'apna_counsellor', 'counselings_data');
+  let fsCounselingIds: string[] = [];
+  if (fs.existsSync(dataDir)) {
+    fsCounselingIds = fs.readdirSync(dataDir).filter(dir => fs.statSync(path.join(dataDir, dir)).isDirectory());
+  }
+
+  // Merge unique IDs and filter out falsy/undefined values
+  const allCounselingIds = Array.from(new Set([
+    ...counselings.map((c: any) => c.id),
+    ...fsCounselingIds
+  ])).filter(Boolean);
+
   const colleges = await client.query(api.colleges.list, {}) || [];
   
   const publicDir = path.join(__dirname, '..', 'public');
@@ -64,7 +78,7 @@ async function generateMassiveSitemaps() {
   indexXml += `\n  <sitemap><loc>${BASE_URL}/sitemap-cutoffs.xml</loc></sitemap>`;
 
   // 4. Manual / Strategic Pages
-  const counselingXml = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${counselings.map((c: any) => `\n  <url><loc>${BASE_URL}/counselling/${c.id}</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>`).join('')}\n</urlset>`;
+  const counselingXml = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${allCounselingIds.map((id: string) => `\n  <url><loc>${BASE_URL}/counselling/${id}</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>`).join('')}\n</urlset>`;
   fs.writeFileSync(path.join(publicDir, 'sitemap-counseling.xml'), counselingXml);
   
   const blogsXml = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n</urlset>`; // Placeholder for now
