@@ -74,14 +74,14 @@ async function generateMassiveSitemaps() {
     ];
     const prefixes = ['', 'Government', 'Private', 'Autonomous', 'Professional', 'Elite', 'Global'];
     
-    let target = 21000;
+    let target = 30000;
     let i = 0;
     while (uniqueColleges.length < target && i < 100000) {
       const d = districts[Math.floor(Math.random() * districts.length)];
       const t = types[Math.floor(Math.random() * types.length)];
       const p = prefixes[Math.floor(Math.random() * prefixes.length)];
-      const name = `${p ? p + ' ' : ''}${d} ${t} ${Math.floor(Math.random() * 100) + 1}`;
-      const id = name.toLowerCase().replace(/[^a-z0-9]/g, '-');
+      const name = `${p ? p + ' ' : ''}${d} ${t} ${Math.floor(Math.random() * 1000) + 1}`;
+      const id = name.toLowerCase().trim().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
       
       if (!uniqueColleges.find(c => c.id === id)) {
         uniqueColleges.push({

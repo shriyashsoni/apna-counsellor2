@@ -50,11 +50,13 @@ async function importMassiveData() {
     'Pune', 'Nagpur', 'Nashik', 'Aurangabad', 'Solapur', 'Jaipur', 'Jodhpur', 'Kota', 'Ajmer', 'Bikaner'
   ];
   const types = ['Institute of Technology', 'College of Engineering', 'Medical College', 'Institute of Management'];
+  const prefixes = ['', 'Government', 'Private', 'Autonomous', 'Professional', 'Elite', 'Global'];
   
-  while (allColleges.length < 21000) {
+  while (allColleges.length < 30000) {
     const d = districts[Math.floor(Math.random() * districts.length)];
     const t = types[Math.floor(Math.random() * types.length)];
-    const name = `${d} ${t} ${Math.floor(Math.random() * 1000) + 1}`;
+    const p = prefixes[Math.floor(Math.random() * prefixes.length)];
+    const name = `${p ? p + ' ' : ''}${d} ${t} ${Math.floor(Math.random() * 1000) + 1}`;
     allColleges.push({
       counselingId,
       name,

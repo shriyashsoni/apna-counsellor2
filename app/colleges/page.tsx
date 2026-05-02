@@ -236,12 +236,12 @@ function CollegesList() {
                 className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6"
               >
                 {colleges.map((college) => {
-                  const collegeId = college.collegeId || (college as any).id || college._id;
-                  const collegeSlug = (college.name || '').toLowerCase().replace(/[^a-z0-9]/g, '-');
-                  const finalId = collegeId || collegeSlug;
+                  // Always generate the slug from the name to match the sitemap's <loc>
+                  const nameSlug = (college.name || '').toLowerCase().trim().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
+                  const finalId = nameSlug;
 
                   return (
-                  <motion.div key={finalId} variants={item}>
+                  <motion.div key={college._id || finalId} variants={item}>
                     <Link href={`/college/${finalId}`}>
                       <Card className="h-full border-none rounded-[1.5rem] md:rounded-[2.5rem] shadow-sm bg-white dark:bg-slate-900 group hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-300 overflow-hidden">
                         <CardContent className="p-5 md:p-8">
