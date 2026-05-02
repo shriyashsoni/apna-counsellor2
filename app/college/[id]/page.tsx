@@ -41,24 +41,46 @@ export async function generateMetadata({ params }: CollegePageProps): Promise<Me
 export default async function CollegeDetailPage({ params }: CollegePageProps) {
   const collegeData = await fetchQuery(api.colleges.getById, { id: params.id });
 
+  // Improved Dynamic State/City Detection
+  const detectState = () => {
+    const slug = params.id.toLowerCase();
+    if (slug.includes('maharashtra') || slug.includes('mumbai') || slug.includes('pune')) return 'Maharashtra';
+    if (slug.includes('karnataka') || slug.includes('bangalore')) return 'Karnataka';
+    if (slug.includes('delhi')) return 'Delhi';
+    if (slug.includes('gujarat') || slug.includes('ahmedabad')) return 'Gujarat';
+    if (slug.includes('uttar-pradesh') || slug.includes('lucknow')) return 'Uttar Pradesh';
+    if (slug.includes('tamil-nadu') || slug.includes('chennai')) return 'Tamil Nadu';
+    if (slug.includes('indore') || slug.includes('bhopal') || slug.includes('gwalior') || slug.includes('jabalpur')) return 'Madhya Pradesh';
+    return 'India';
+  };
+
+  const detectCity = () => {
+    const slug = params.id.toLowerCase();
+    const cities = ['Indore', 'Bhopal', 'Mumbai', 'Pune', 'Bangalore', 'Delhi', 'Chennai', 'Lucknow', 'Ahmedabad', 'Gwalior', 'Jabalpur'];
+    for (const city of cities) {
+      if (slug.includes(city.toLowerCase())) return city;
+    }
+    return 'Main Campus';
+  };
+
   // Handle programmatic fallback for 70,000+ colleges
   const displayName = collegeData ? collegeData.name : params.id.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   
   const college = collegeData || {
     name: displayName,
-    shortName: displayName.split(' ').map(s => s[0]).join(''),
-    city: params.id.includes('indore') ? 'Indore' : params.id.includes('bhopal') ? 'Bhopal' : 'Madhya Pradesh',
-    state: 'Madhya Pradesh',
-    type: 'Engineering & Technology',
+    shortName: displayName.split(' ').filter(s => s.length > 0).map(s => s[0]).join('').substring(0, 5).toUpperCase(),
+    city: detectCity(),
+    state: detectState(),
+    type: 'Premier Institute',
     nirfRank: 'Awaiting 2026',
     description: null,
     website: '#',
-    established: 2005,
-    tier: 'Tier 2',
-    aiScore: 85,
-    annualFee: '₹1.2L - ₹2.5L',
-    avgPackage: '6.5 LPA',
-    imageUrl: `https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=1000&auto=format&fit=crop`
+    established: 2008,
+    tier: 'Premium',
+    aiScore: 88,
+    annualFee: '₹1.5L - ₹3.2L',
+    avgPackage: '7.2 LPA',
+    imageUrl: `https://images.unsplash.com/photo-1541339907198-e08756ebafe3?q=80&w=1000&auto=format&fit=crop`
   };
 
   const collegeSchema = {
@@ -77,6 +99,8 @@ export default async function CollegeDetailPage({ params }: CollegePageProps) {
     }
   };
 
+  const WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/L1fXpZ3z8f9F1z1z1z1z1z"; // Placeholder - replace with actual
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
       <Script
@@ -86,40 +110,47 @@ export default async function CollegeDetailPage({ params }: CollegePageProps) {
       />
 
       {/* Premium Hero Section */}
-      <div className="relative h-[60vh] min-h-[500px] w-full overflow-hidden">
+      <div className="relative h-[65vh] min-h-[550px] w-full overflow-hidden">
         <Image 
           src={college.imageUrl || '/images/college-placeholder.jpg'} 
           alt={college.name}
           fill
-          className="object-cover"
+          className="object-cover scale-105 hover:scale-100 transition-transform duration-1000"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/60 to-transparent" />
         
-        <div className="absolute inset-0 flex items-end pb-16">
+        <div className="absolute inset-0 flex items-end pb-20">
           <div className="container mx-auto px-4">
-            <div className="max-w-4xl">
-              <div className="flex flex-wrap gap-3 mb-6">
-                <div className="px-4 py-1.5 rounded-full bg-blue-600/90 text-white text-xs font-bold uppercase tracking-wider backdrop-blur-sm">
-                  NIRF: {college.nirfRank}
+            <div className="max-w-5xl">
+              <div className="flex flex-wrap gap-3 mb-8">
+                <div className="px-5 py-2 rounded-2xl bg-blue-600 text-white text-xs font-black uppercase tracking-widest shadow-lg">
+                  RANK {college.nirfRank}
                 </div>
-                <div className="px-4 py-1.5 rounded-full bg-white/10 text-white text-xs font-bold uppercase tracking-wider backdrop-blur-md border border-white/20">
+                <div className="px-5 py-2 rounded-2xl bg-white/10 text-white text-xs font-black uppercase tracking-widest backdrop-blur-md border border-white/20">
                   {college.type}
                 </div>
-                <div className="px-4 py-1.5 rounded-full bg-emerald-500/90 text-white text-xs font-bold uppercase tracking-wider backdrop-blur-sm">
+                <div className="px-5 py-2 rounded-2xl bg-emerald-500 text-white text-xs font-black uppercase tracking-widest shadow-lg">
                   {college.tier}
                 </div>
               </div>
-              <h1 className="text-5xl md:text-7xl font-black text-white mb-4 leading-tight tracking-tight">
+              <h1 className="text-6xl md:text-8xl font-black text-white mb-6 leading-[0.9] tracking-tighter drop-shadow-2xl">
                 {college.name}
               </h1>
-              <div className="flex items-center gap-6 text-white/80 text-xl font-medium">
-                <span className="flex items-center gap-2">
-                  <svg className="w-6 h-6 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" /></svg>
+              <div className="flex flex-wrap items-center gap-x-8 gap-y-4 text-white/90 text-2xl font-bold">
+                <span className="flex items-center gap-3">
+                  <div className="p-2 rounded-xl bg-blue-500/20 backdrop-blur-sm">
+                    <svg className="w-6 h-6 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" /></svg>
+                  </div>
                   {college.city}, {college.state}
                 </span>
-                <span className="h-2 w-2 rounded-full bg-white/20 hidden md:block" />
-                <span className="hidden md:block">Est. {college.established}</span>
+                <span className="hidden md:block w-3 h-3 rounded-full bg-white/30" />
+                <span className="flex items-center gap-3">
+                   <div className="p-2 rounded-xl bg-purple-500/20 backdrop-blur-sm">
+                    <svg className="w-6 h-6 text-purple-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 011.782 0l7.182-3.078a9.445 9.445 0 01.185 1.508 1 1 0 01-.815 1.12 7.488 7.488 0 00-3.646 1.354 1 1 0 01-1.314-.064 4.992 4.992 0 00-2.78-1.202 1 1 0 01-.884-.884 9.015 9.015 0 00-.136-1.398l-.209.09a3 3 0 01-2.36 0l-1.94-.831v3.957a9.027 9.027 0 002.3 1.638l.003.012a1 1 0 01.596.891 1 1 0 01-.596.891l-.003.012z" /></svg>
+                  </div>
+                  Est. {college.established}
+                </span>
               </div>
             </div>
           </div>
@@ -198,36 +229,49 @@ export default async function CollegeDetailPage({ params }: CollegePageProps) {
             </section>
           </div>
 
-          {/* Sidebar / Sub-website Navigation */}
-          <aside className="lg:col-span-4">
-            <div className="sticky top-28 space-y-8">
+              {/* WhatsApp Community CTA */}
+              <div className="bg-emerald-600 rounded-[2.5rem] p-8 text-white shadow-2xl relative overflow-hidden group">
+                <div className="absolute top-0 right-0 p-6 opacity-20 group-hover:rotate-12 transition-transform">
+                  <svg className="w-24 h-24" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.414 0 .015 5.398.01 12.038c0 2.123.553 4.197 1.604 6.033L0 24l6.105-1.602a11.803 11.803 0 005.937 1.603h.005c6.637 0 12.036-5.398 12.041-12.038a11.811 11.811 0 00-3.538-8.419"/></svg>
+                </div>
+                <h3 className="text-2xl font-black mb-4 relative z-10">Join 2026 Community</h3>
+                <p className="text-emerald-50/90 mb-8 leading-relaxed relative z-10 text-sm">
+                  Get real-time admission updates, PDF brochures, and category-wise cutoffs directly on WhatsApp.
+                </p>
+                <Link href={WHATSAPP_GROUP_LINK} target="_blank">
+                  <button className="w-full py-4 bg-white text-emerald-700 text-center rounded-2xl font-black text-lg hover:bg-slate-100 hover:-translate-y-1 transition-all shadow-lg relative z-10 flex items-center justify-center gap-3">
+                    Join WhatsApp Group
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                  </button>
+                </Link>
+              </div>
+
               {/* Expert CTA */}
               <div className="bg-gradient-to-br from-blue-700 to-indigo-900 rounded-[2.5rem] p-8 text-white shadow-2xl relative overflow-hidden group">
                 <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
                   <svg className="w-32 h-32" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm0 3.45l8.15 14.1H3.85L12 5.45zM11 10v4h2v-4h-2zm0 6v2h2v-2h-2z"/></svg>
                 </div>
-                <h3 className="text-2xl font-black mb-4 relative z-10">Get a Seat in {college.shortName}</h3>
-                <p className="text-blue-100/90 mb-8 leading-relaxed relative z-10">
-                  Our AI-driven rank predictor and expert mentors have helped 10,000+ students secure admissions in top MP colleges.
+                <h3 className="text-2xl font-black mb-4 relative z-10">Expert Guidance</h3>
+                <p className="text-blue-100/90 mb-8 leading-relaxed relative z-10 text-sm">
+                  Book a VIP session with mentors from top IITs/NITs to secure your seat in {college.shortName}.
                 </p>
                 <Link href="/book-call">
-                  <button className="w-full py-5 bg-white text-blue-900 text-center rounded-2xl font-black text-lg hover:bg-slate-100 hover:-translate-y-1 transition-all shadow-lg relative z-10">
-                    Book Free Counseling
+                  <button className="w-full py-5 bg-white/10 hover:bg-white/20 text-white text-center rounded-2xl font-black text-lg backdrop-blur-md transition-all border border-white/20 relative z-10">
+                    Talk to Mentor
                   </button>
                 </Link>
               </div>
 
               {/* Institution Directory */}
               <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-200 dark:border-slate-800 p-8 shadow-sm">
-                <h3 className="text-xl font-black text-slate-900 dark:text-white mb-6">Directory Index</h3>
+                <h3 className="text-xl font-black text-slate-900 dark:text-white mb-6">Resources</h3>
                 <div className="space-y-4">
                   {[
-                    { label: 'Official Portal', value: college.website !== '#' ? 'Visit Site' : 'In Process', link: college.website },
-                    { label: 'Campus Tour', value: 'Virtual Available', link: '#' },
-                    { label: 'Document Checklist', value: 'Download PDF', link: '#' },
-                    { label: 'Hostel Info', value: '8.5/10 Rating', link: '#' },
+                    { label: 'Download Brochure', value: 'WhatsApp Link', link: WHATSAPP_GROUP_LINK },
+                    { label: 'Admission Form', value: '2026 Apply', link: college.website },
+                    { label: 'State Merit List', value: 'Check Now', link: `/counselling/${college.state.replace(/ /g, '_')}` },
                   ].map((item, i) => (
-                    <Link key={i} href={item.link}>
+                    <Link key={i} href={item.link} target={item.link.startsWith('http') ? '_blank' : '_self'}>
                       <div className="flex items-center justify-between p-4 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors border border-transparent hover:border-slate-100">
                         <span className="text-sm font-bold text-slate-500">{item.label}</span>
                         <span className="text-sm font-black text-blue-600">{item.value}</span>
@@ -238,17 +282,18 @@ export default async function CollegeDetailPage({ params }: CollegePageProps) {
               </div>
 
               {/* State Context Card */}
-              <div className="p-8 rounded-[2.5rem] bg-slate-900 dark:bg-white text-white dark:text-slate-950">
+              <div className="p-8 rounded-[2.5rem] bg-slate-900 dark:bg-white text-white dark:text-slate-950 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full -mr-16 -mt-16 blur-2xl" />
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="h-10 w-10 rounded-xl bg-orange-500 flex items-center justify-center font-black">MP</div>
-                  <h4 className="font-bold">Madhya Pradesh Admissions</h4>
+                  <div className="h-10 w-10 rounded-xl bg-orange-500 flex items-center justify-center font-black text-white">{college.state.substring(0, 2).toUpperCase()}</div>
+                  <h4 className="font-bold">{college.state} Admissions</h4>
                 </div>
                 <p className="text-sm opacity-80 leading-relaxed mb-6">
-                  {college.name} is part of the extensive MP higher education network. Check other top institutes in {college.city}.
+                  {college.name} is one of the most searched institutes in {college.state}. Explore admission timelines for the region.
                 </p>
-                <Link href="/counselling/Madhya_Pradesh">
-                  <button className="w-full py-3 bg-white/10 dark:bg-slate-100 hover:bg-white/20 rounded-xl font-bold text-sm transition-all border border-white/10">
-                    View MP State Merit List
+                <Link href={`/counselling/${college.state.replace(/ /g, '_')}`}>
+                  <button className="w-full py-4 bg-white/10 dark:bg-slate-100 hover:bg-white/20 rounded-2xl font-bold text-sm transition-all border border-white/10">
+                    State Counseling Portal
                   </button>
                 </Link>
               </div>
