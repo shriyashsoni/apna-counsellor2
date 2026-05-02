@@ -1,13 +1,13 @@
 import { api } from '../convex/_generated/api';
-import { createConvexClient } from 'convex/browser';
+import { ConvexHttpClient } from 'convex/browser';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
 
-dotenv.config();
+dotenv.config({ path: '.env.local' });
 
 const CONVEX_URL = process.env.NEXT_PUBLIC_CONVEX_URL!;
-const client = createConvexClient(CONVEX_URL);
+const client = new ConvexHttpClient(CONVEX_URL);
 const BASE_URL = 'https://apnacounsellor.in';
 
 async function generateMassiveSitemaps() {
@@ -64,11 +64,18 @@ async function generateMassiveSitemaps() {
   indexXml += `\n  <sitemap><loc>${BASE_URL}/sitemap-cutoffs.xml</loc></sitemap>`;
 
   // 4. Manual / Strategic Pages
+  const counselingXml = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${counselings.map((c: any) => `\n  <url><loc>${BASE_URL}/counselling/${c.id}</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>`).join('')}\n</urlset>`;
+  fs.writeFileSync(path.join(publicDir, 'sitemap-counseling.xml'), counselingXml);
+  
+  const blogsXml = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n</urlset>`; // Placeholder for now
+  fs.writeFileSync(path.join(publicDir, 'sitemap-blogs.xml'), blogsXml);
+
+  indexXml += `\n  <sitemap><loc>${BASE_URL}/sitemap-0.xml</loc></sitemap>`;
   indexXml += `\n  <sitemap><loc>${BASE_URL}/sitemap-counseling.xml</loc></sitemap>`;
   indexXml += `\n  <sitemap><loc>${BASE_URL}/sitemap-blogs.xml</loc></sitemap>`;
   indexXml += `\n</sitemapindex>`;
 
-  fs.writeFileSync(path.join(publicDir, 'sitemap-index.xml'), indexXml);
+  fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), indexXml);
   
   console.log(`✅ Successfully mapped ${colleges.length} Colleges and ${cutoffCount} Cutoff/Branch pages.`);
   console.log(`📊 Total estimated indexed pages: ${colleges.length + cutoffCount + counselings.length + 300}+`);
