@@ -1,21 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <sitemap>
-    <loc>https://apnacounsellor.in/sitemap-0.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://apnacounsellor.in/sitemap-counseling.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://apnacounsellor.in/sitemap-colleges.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://apnacounsellor.in/sitemap-blogs.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://apnacounsellor.in/sitemap-tools.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://apnacounsellor.in/sitemap-comparisons.xml</loc>
-  </sitemap>
+<sitemap><loc>https://apnacounsellor.in/sitemap-0.xml</loc></sitemap>
+<sitemap><loc>https://apnacounsellor.in/sitemap-colleges.xml</loc></sitemap>
+<sitemap><loc>https://apnacounsellor.in/sitemap-counseling.xml</loc></sitemap>
+<sitemap><loc>https://apnacounsellor.in/sitemap-blogs.xml</loc></sitemap>
 </sitemapindex>

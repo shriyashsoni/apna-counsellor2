@@ -24,8 +24,9 @@ export default function MentorsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const mentors = useQuery(api.users.listMentors, {});
 
-  const filteredMentors = mentors?.filter(m => 
+  const filteredMentors = mentors?.filter((m: any) => 
     (m.name || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (m.headline || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
     (m.expertise || "").toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -66,7 +67,7 @@ export default function MentorsPage() {
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredMentors?.map((mentor) => (
+            {filteredMentors?.map((mentor: any) => (
               <motion.div
                 key={mentor._id}
                 initial={{ opacity: 0, scale: 0.95 }}
