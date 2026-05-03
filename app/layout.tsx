@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ["latin"], variable: '--font-inter' })
 const outfit = Outfit({ subsets: ["latin"], variable: '--font-outfit' })
 
 export const viewport: Viewport = {
-  themeColor: "#2563eb",
+  themeColor: "#6d28d9",
   colorScheme: "light dark",
 }
 
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     siteName: 'Apna Counsellor',
     images: [
       {
-        url: '/images/og-main-v2.png',
+        url: '/images/og-main.png',
         width: 1200,
         height: 630,
         alt: 'Apna Counsellor - Your Admission Partner',
@@ -50,6 +50,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     site: '@apnacounsellor',
     creator: '@apnacounsellor',
+    images: ['/images/og-main.png'],
   },
   verification: {
     google: "XiIvcBHSzEY9KT6NPb2TYpfz-KEgACNLUk_mb6qsd94",
