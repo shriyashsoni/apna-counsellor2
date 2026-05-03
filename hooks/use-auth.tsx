@@ -12,21 +12,39 @@ interface AuthContextType {
   isAuthenticated: boolean;
 }
 
-export function useAuth(): AuthContextType & { login: (provider?: string) => Promise<void>, logout: () => Promise<void> } {
+interface ExtendedUser extends User {
+  name?: string;
+  image?: string;
+}
+
+export function useAuth(): Omit<AuthContextType, 'user'> & { 
+  user: ExtendedUser | null;
+  login: (provider?: string) => Promise<void>;
+  logout: () => Promise<void>;
+} {
   const supabase = createClient()
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUser] = useState<ExtendedUser | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+
+  const mapUser = (supabaseUser: User | null): ExtendedUser | null => {
+    if (!supabaseUser) return null;
+    return {
+      ...supabaseUser,
+      name: supabaseUser.user_metadata?.full_name || supabaseUser.user_metadata?.name || supabaseUser.email?.split('@')[0],
+      image: supabaseUser.user_metadata?.avatar_url || supabaseUser.user_metadata?.picture,
+    };
+  };
 
   useEffect(() => {
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null)
+      setUser(mapUser(session?.user ?? null))
       setIsLoading(false)
     })
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
-        setUser(session?.user ?? null)
+        setUser(mapUser(session?.user ?? null))
         setIsLoading(false)
       }
     )
@@ -46,6 +64,7 @@ export function useAuth(): AuthContextType & { login: (provider?: string) => Pro
 
   const logout = async () => {
     await supabase.auth.signOut()
+    window.location.href = '/'
   }
 
   return {

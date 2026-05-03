@@ -28,6 +28,8 @@ CREATE TABLE public.profiles (
     interests JSONB,
     budget TEXT,
     preferred_location TEXT,
+    city TEXT,
+    target_year INTEGER,
     
     -- Mentor Profile Fields
     college TEXT,
@@ -191,7 +193,12 @@ CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
     INSERT INTO public.profiles (id, name, email, image)
-    VALUES (new.id, new.raw_user_meta_data->>'full_name', new.email, new.raw_user_meta_data->>'avatar_url');
+    VALUES (
+        new.id, 
+        COALESCE(new.raw_user_meta_data->>'full_name', new.raw_user_meta_data->>'name', split_part(new.email, '@', 1)), 
+        new.email, 
+        COALESCE(new.raw_user_meta_data->>'avatar_url', new.raw_user_meta_data->>'picture')
+    );
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
