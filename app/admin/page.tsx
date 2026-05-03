@@ -48,11 +48,14 @@ export default function AdminDashboard() {
     title: '', content: '', category: 'Engineering', excerpt: '', featuredImage: '', tags: '', seoTitle: '', seoDescription: ''
   })
   const [courseForm, setCourseForm] = useState({
-    title: '', description: '', price: '', category: 'Mentorship', level: 'beginner', duration: '', lessons: '', modules: [{ title: '', content: '' }]
+    title: '', description: '', price: '', category: 'Mentorship', level: 'beginner', duration: '', lessons: '', 
+    modules: [{ title: 'Module 1', lessons: [{ title: 'Lesson 1', type: 'video' }] }]
   })
   const [notifForm, setNotifForm] = useState({
     title: '', message: '', type: 'info', link: ''
   })
+
+  const [bookings, setBookings] = useState<any[]>([])
 
   const supabase = createClient()
 
@@ -64,6 +67,7 @@ export default function AdminDashboard() {
       const { data: collegeData } = await supabase.from('colleges').select('id, name, city, state').order('name')
       const { data: paymentData } = await supabase.from('payments').select('amount')
       const { data: appData } = await supabase.from('mentor_applications').select('*').eq('status', 'pending')
+      const { data: sessionData } = await supabase.from('sessions').select('*, profiles(name, email)').order('created_at', { ascending: false })
       
       const totalRevenue = paymentData?.reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0) || 0
 
@@ -71,12 +75,13 @@ export default function AdminDashboard() {
       setMentors(mentorData || [])
       setColleges(collegeData || [])
       setApplications(appData || [])
+      setBookings(sessionData || [])
       setStats({ 
         users: userData?.length || 0, 
         mentors: mentorData?.length || 0, 
         colleges: collegeData?.length || 0,
         revenue: totalRevenue,
-        sessions: 124, // Mock for now
+        sessions: sessionData?.length || 0,
         pendingMentors: appData?.length || 0
       })
     } catch (error) {
@@ -89,6 +94,30 @@ export default function AdminDashboard() {
   useEffect(() => {
     fetchData()
   }, [])
+
+  const handleCreateCourse = async () => {
+    if (!courseForm.title || !courseForm.price) return toast.error("Missing title or price")
+    setIsSubmitting(true)
+    try {
+      const { error } = await supabase.from('courses').insert({
+        title: courseForm.title,
+        description: courseForm.description,
+        price: Number(courseForm.price),
+        category: courseForm.category,
+        level: courseForm.level,
+        duration_hours: Number(courseForm.duration),
+        total_lessons: Number(courseForm.lessons),
+        curriculum: courseForm.modules,
+        slug: courseForm.title.toLowerCase().replace(/ /g, '-'),
+        is_published: true
+      })
+      if (error) throw error
+      toast.success("Course launched successfully!")
+      setView('dashboard')
+      fetchData()
+    } catch (e: any) { toast.error(e.message) }
+    finally { setIsSubmitting(false) }
+  }
 
   const handleCreateBlog = async () => {
     if (!blogForm.title || !blogForm.content) return toast.error("Missing fields")
@@ -149,6 +178,7 @@ export default function AdminDashboard() {
           { id: 'overview', label: 'Command Center', icon: LayoutDashboard },
           { id: 'users', label: 'Identity Hub', icon: Users },
           { id: 'mentors', label: 'Expert Network', icon: UserCheck },
+          { id: 'sessions', label: 'Global Sessions', icon: Phone },
           { id: 'content', label: 'Content Architect', icon: FilePlus },
           { id: 'roi', label: 'Institute ROI', icon: GraduationCap },
           { id: 'notifs', label: 'Notification Hub', icon: Bell },
@@ -439,6 +469,132 @@ export default function AdminDashboard() {
      </div>
   )
 
+  const RenderCourseCreator = () => (
+     <div className="max-w-5xl mx-auto space-y-12 pb-20">
+        <header className="flex justify-between items-center bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm sticky top-6 z-20">
+           <div className="flex items-center gap-4">
+              <Button variant="ghost" size="icon" onClick={() => setView('dashboard')} className="rounded-full bg-slate-50 h-10 w-10"><ArrowLeft className="h-4 w-4" /></Button>
+              <h1 className="text-xl font-black tracking-tighter">Course Architect</h1>
+           </div>
+           <div className="flex gap-3">
+              <Button onClick={handleCreateCourse} disabled={isSubmitting} className="rounded-xl px-8 font-black text-xs bg-purple-600 text-white shadow-lg shadow-purple-100">
+                 {isSubmitting ? <Loader2 className="animate-spin h-4 w-4" /> : "Launch Course"}
+              </Button>
+           </div>
+        </header>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+           <div className="lg:col-span-8 space-y-8">
+              <Card className="p-10 rounded-[3rem] border-slate-100 shadow-sm space-y-6">
+                 <div className="space-y-4">
+                    <label className="text-[10px] font-black uppercase text-slate-400">Course Title</label>
+                    <Input value={courseForm.title} onChange={e => setCourseForm({...courseForm, title: e.target.value})} placeholder="e.g. Master JoSAA Counseling" className="h-14 text-2xl font-black rounded-2xl" />
+                 </div>
+                 <div className="space-y-4">
+                    <label className="text-[10px] font-black uppercase text-slate-400">Description</label>
+                    <Textarea value={courseForm.description} onChange={e => setCourseForm({...courseForm, description: e.target.value})} placeholder="What is this course about?" className="min-h-[200px] rounded-2xl font-medium" />
+                 </div>
+              </Card>
+
+              <Card className="p-10 rounded-[3rem] border-slate-100 shadow-sm space-y-8">
+                 <div className="flex justify-between items-center">
+                    <h3 className="text-xl font-black">Curriculum Modules</h3>
+                    <Button variant="ghost" onClick={() => setCourseForm({...courseForm, modules: [...courseForm.modules, { title: 'New Module', lessons: [] }]})} className="text-purple-600 font-black">+ Add Module</Button>
+                 </div>
+                 <div className="space-y-4">
+                    {courseForm.modules.map((m, i) => (
+                       <div key={i} className="p-6 bg-slate-50 rounded-[2rem] border border-slate-100">
+                          <Input value={m.title} onChange={e => {
+                             const nm = [...courseForm.modules]; nm[i].title = e.target.value; setCourseForm({...courseForm, modules: nm});
+                          }} className="font-black mb-4 bg-transparent border-none focus-visible:ring-0 text-lg" />
+                          <div className="pl-6 border-l-2 border-purple-200 space-y-3">
+                             <p className="text-[10px] font-black uppercase text-slate-400 mb-2">Lessons</p>
+                             <Button variant="ghost" size="sm" className="h-8 text-[10px] uppercase font-black">+ Add Lesson</Button>
+                          </div>
+                       </div>
+                    ))}
+                 </div>
+              </Card>
+           </div>
+
+           <aside className="lg:col-span-4 space-y-6">
+              <Card className="p-8 rounded-[2.5rem] border-slate-100 shadow-sm space-y-6">
+                 <h4 className="text-sm font-black uppercase tracking-widest text-slate-400">Course Settings</h4>
+                 <div className="space-y-4">
+                    <div className="space-y-1">
+                       <label className="text-[10px] font-black text-slate-400 uppercase">Price (₹)</label>
+                       <Input value={courseForm.price} onChange={e => setCourseForm({...courseForm, price: e.target.value})} className="h-12 rounded-xl bg-slate-50 border-none font-black" />
+                    </div>
+                    <div className="space-y-1">
+                       <label className="text-[10px] font-black text-slate-400 uppercase">Duration (Hrs)</label>
+                       <Input value={courseForm.duration} onChange={e => setCourseForm({...courseForm, duration: e.target.value})} className="h-12 rounded-xl bg-slate-50 border-none font-black" />
+                    </div>
+                    <div className="space-y-1">
+                       <label className="text-[10px] font-black text-slate-400 uppercase">Total Lessons</label>
+                       <Input value={courseForm.lessons} onChange={e => setCourseForm({...courseForm, lessons: e.target.value})} className="h-12 rounded-xl bg-slate-50 border-none font-black" />
+                    </div>
+                    <div className="space-y-1">
+                       <label className="text-[10px] font-black text-slate-400 uppercase">Level</label>
+                       <Select value={courseForm.level} onValueChange={v => setCourseForm({...courseForm, level: v})}>
+                          <SelectTrigger className="h-12 rounded-xl bg-slate-50 border-none font-black">
+                             <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                             <SelectItem value="beginner">Beginner</SelectItem>
+                             <SelectItem value="intermediate">Intermediate</SelectItem>
+                             <SelectItem value="advanced">Advanced</SelectItem>
+                          </SelectContent>
+                       </Select>
+                    </div>
+                 </div>
+              </Card>
+           </aside>
+        </div>
+     </div>
+  )
+
+  const RenderBookings = () => (
+     <div className="space-y-8">
+        <div className="flex justify-between items-center">
+           <h2 className="text-2xl font-black flex items-center gap-3"><MonitorIcon className="h-7 w-7 text-purple-600" /> Global Sessions Monitor</h2>
+           <Badge className="bg-emerald-50 text-emerald-600 border-none font-black uppercase text-[10px] px-3 py-1">Real-time Sync Active</Badge>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+           {bookings.map(b => (
+              <Card key={b.id} className="p-8 rounded-[2.5rem] border-slate-100 shadow-sm bg-white hover:shadow-xl transition-all">
+                 <div className="flex justify-between items-start mb-6">
+                    <div className="h-12 w-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center">
+                       <Calendar className="h-6 w-6" />
+                    </div>
+                    <Badge variant={b.status === 'scheduled' ? 'default' : 'secondary'} className="rounded-lg font-black text-[10px]">
+                       {b.status?.toUpperCase() || 'SCHEDULED'}
+                    </Badge>
+                 </div>
+                 <div className="space-y-4">
+                    <div>
+                       <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Student</p>
+                       <p className="font-bold text-slate-900">{b.profiles?.name || 'Anonymous'}</p>
+                       <p className="text-xs text-slate-400 font-medium">{b.profiles?.email}</p>
+                    </div>
+                    <div>
+                       <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Schedule</p>
+                       <p className="text-sm font-black text-purple-600">{new Date(b.scheduled_at).toLocaleString()}</p>
+                    </div>
+                    <Button variant="outline" className="w-full rounded-xl h-10 font-black text-[10px] uppercase border-slate-100">View Meeting</Button>
+                 </div>
+              </Card>
+           ))}
+           {bookings.length === 0 && (
+              <Card className="col-span-full p-20 text-center rounded-[3rem] bg-slate-50 border-2 border-dashed border-slate-200">
+                 <Monitor className="h-12 w-12 text-slate-300 mx-auto mb-4" />
+                 <p className="text-slate-500 font-bold">No active consultancy sessions found.</p>
+              </Card>
+           )}
+        </div>
+     </div>
+  )
+
   const RenderMentorsHub = () => (
     <div className="space-y-12">
       <section className="space-y-6">
@@ -528,6 +684,7 @@ export default function AdminDashboard() {
   )
 
   if (view === 'blog-creator') return <AdminGuard><div className="bg-slate-50 min-h-screen p-6 md:p-12"><RenderBlogCreator /></div></AdminGuard>
+  if (view === 'course-creator') return <AdminGuard><div className="bg-slate-50 min-h-screen p-6 md:p-12"><RenderCourseCreator /></div></AdminGuard>
   if (view === 'notification-center') return <AdminGuard><div className="bg-slate-50 min-h-screen p-6 md:p-12"><div className="flex items-center gap-4 mb-12"><Button variant="ghost" size="icon" onClick={() => setView('dashboard')} className="rounded-full bg-white h-12 w-12 shadow-sm"><ArrowLeft /></Button><h1 className="text-3xl font-black tracking-tighter">Communications Center</h1></div><RenderNotificationHub /></div></AdminGuard>
 
   return (
@@ -565,6 +722,7 @@ export default function AdminDashboard() {
              {activeTab === 'overview' && <RenderDashboard />}
              {activeTab === 'users' && <RenderUsers />}
              {activeTab === 'mentors' && <RenderMentorsHub />}
+             {activeTab === 'sessions' && <RenderBookings />}
              {activeTab === 'content' && <RenderContentCreator />}
              {activeTab === 'notifs' && <RenderNotificationHub />}
              {activeTab === 'roi' && (

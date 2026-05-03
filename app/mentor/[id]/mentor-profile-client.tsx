@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/client"
 import { createRazorpayOrder, verifyRazorpayPayment } from "@/lib/actions/razorpay"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
+import { sendBookingConfirmation, sendAdminNotification } from "@/lib/actions/emails"
 
 import { 
   Star, 
@@ -109,7 +110,20 @@ export default function MentorProfileClient({
                 status: 'confirmed'
               }).eq('id', session.id)
               
-              toast.success("Session booked successfully!")
+              await sendBookingConfirmation(
+                currentUser.email,
+                initialMentor.name,
+                new Date(session.date).toLocaleDateString(),
+                session.time_slot || "TBD",
+                "https://meet.google.com/..." // This should come from session data
+              )
+
+              await sendAdminNotification(
+                "New Mentorship Booking",
+                `Student ${currentUser.name} (${currentUser.email}) just booked a session with ${initialMentor.name} for ₹${session.price || initialMentor.pricing || 499}.`
+              )
+              
+              toast.success("Session booked successfully! Check your email.")
               router.push("/dashboard")
             } else {
               toast.error("Verification failed")
