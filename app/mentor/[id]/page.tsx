@@ -29,13 +29,13 @@ export async function generateMetadata({ params }: MentorPageProps): Promise<Met
       title,
       description,
       type: 'profile',
-      images: mentor.image ? [mentor.image] : [`https://api.dicebear.com/7.x/avataaars/svg?seed=${mentor.name}`],
+      images: mentor.image ? [mentor.image] : ['https://apnacounsellor.in/images/real-mentor-preview.png'],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: mentor.image ? [mentor.image] : [`https://api.dicebear.com/7.x/avataaars/svg?seed=${mentor.name}`],
+      images: mentor.image ? [mentor.image] : ['https://apnacounsellor.in/images/real-mentor-preview.png'],
     }
   };
 }

@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: CollegePageProps): Promise<Me
     openGraph: {
       title,
       description,
-      images: college?.imageUrl ? [college.imageUrl] : ['https://apnacounsellor.in/images/og-college.png'],
+      images: college?.imageUrl ? [college.imageUrl] : ['https://apnacounsellor.in/images/real-college-preview.png'],
     },
     alternates: {
       canonical: `https://apnacounsellor.in/college/${params.id}`,

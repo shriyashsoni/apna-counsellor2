@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Apna Counsellor Blog - Expert Admission Guides',
     description: 'Get the latest insights on JEE, NEET, and MHT-CET admissions.',
-    images: ['/images/og-blog.png']
+    images: ['/images/real-site-preview.png']
   }
 };
 

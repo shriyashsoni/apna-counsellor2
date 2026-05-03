@@ -28,13 +28,13 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
       description: blog.excerpt,
       type: 'article',
       publishedTime: blog.created_at,
-      images: blog.featured_image ? [blog.featured_image] : ['/images/og-blog.png'],
+      images: blog.featured_image ? [blog.featured_image] : ['https://apnacounsellor.in/images/real-site-preview.png'],
     },
     twitter: {
       card: 'summary_large_image',
       title: blog.title,
       description: blog.excerpt,
-      images: blog.featured_image ? [blog.featured_image] : ['/images/og-blog.png'],
+      images: blog.featured_image ? [blog.featured_image] : ['https://apnacounsellor.in/images/real-site-preview.png'],
     }
   };
 }

@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     siteName: 'Apna Counsellor',
     images: [
       {
-        url: '/images/og-main.png',
+        url: '/images/real-site-preview.png',
         width: 1200,
         height: 630,
         alt: 'Apna Counsellor - Your Admission Partner',
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     site: '@apnacounsellor',
     creator: '@apnacounsellor',
-    images: ['/images/og-main.png'],
+    images: ['/images/real-site-preview.png'],
   },
   verification: {
     google: "XiIvcBHSzEY9KT6NPb2TYpfz-KEgACNLUk_mb6qsd94",
