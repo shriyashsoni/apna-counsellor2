@@ -21,6 +21,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { createClient } from "@/lib/supabase/client"
 import { toast } from "sonner"
 import Script from "next/script"
+import { createRazorpayOrder, verifyRazorpayPayment } from "@/lib/actions/razorpay"
 
 export default function BookCallPage() {
   return (
@@ -136,43 +137,69 @@ function BookingFlow() {
     setLoading(true)
     try {
       const { data: { user } } = await supabase.auth.getUser()
-      if (!user) throw new Error("Not authenticated")
+      if (!user) {
+        toast.error("Please login to continue")
+        return
+      }
 
-      // 1. Create order in backend
-      // const orderRes = await axios.post('/api/payments/create-razorpay-order', { ...bookingData, student_id: user.id })
-      // const order = orderRes.data
+      // 1. Create REAL order in backend
+      const order = await createRazorpayOrder({
+        amount: pricing.total,
+        currency: "INR",
+        notes: {
+          user_id: user.id,
+          mentor_id: bookingData.mentorId,
+          mentor_name: bookingData.mentorName,
+          duration: bookingData.duration.toString(),
+          date: bookingData.date,
+          time: bookingData.time,
+          type: "consultation_call"
+        }
+      })
       
-      // Mock order
-      const order = { id: "order_" + Math.random().toString(36).substr(2, 9), amount: pricing.total * 100 }
+      const keyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
+      if (!keyId) throw new Error("Razorpay Key ID is missing");
 
       const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        key: keyId,
         amount: order.amount,
-        currency: "INR",
+        currency: order.currency,
         name: "Apna Counsellor",
         description: `Consultation Call (${bookingData.duration} mins)`,
         order_id: order.id,
         handler: async function (response: any) {
-          // 2. Verify payment in backend
-          // const verifyRes = await axios.post('/api/payments/verify-payment', { ...response, booking_details: { ...bookingData, student_id: user.id } })
-          
-          // Mock verify
-          toast.success("Payment Successful! Booking confirmed.")
-          setStep(4)
+          try {
+            // 2. Verify payment in backend
+            const isVerified = await verifyRazorpayPayment({
+              orderId: response.razorpay_order_id,
+              paymentId: response.razorpay_payment_id,
+              signature: response.razorpay_signature,
+            })
+            
+            if (isVerified) {
+              toast.success("Payment Successful! Booking confirmed.")
+              setStep(4)
+            } else {
+              toast.error("Payment verification failed")
+            }
+          } catch (err) {
+            toast.error("Error verifying payment")
+          }
         },
         prefill: {
-          name: user.user_metadata?.full_name || "",
+          name: user.user_metadata?.full_name || user.email?.split('@')[0] || "",
           email: user.email || "",
         },
         theme: {
-          color: "#0F172A",
+          color: "#7c3aed",
         },
       }
 
       const rzp = new (window as any).Razorpay(options)
       rzp.open()
     } catch (error: any) {
-      toast.error(error.message || "Payment failed")
+      console.error("Payment Error:", error)
+      toast.error(error.message || "Payment initiation failed")
     } finally {
       setLoading(false)
     }
