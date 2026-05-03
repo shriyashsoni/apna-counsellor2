@@ -5,26 +5,35 @@ import { createClient } from '@/lib/supabase/server'
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get('code')
-  // if "next" is in search params, use it as the redirection URL
   const next = searchParams.get('next') ?? '/dashboard'
+  const error = searchParams.get('error')
+  const error_description = searchParams.get('error_description')
+
+  if (error) {
+    return NextResponse.redirect(`${origin}/auth/auth-code-error?error=${error}&error_description=${error_description}`)
+  }
 
   if (code) {
     const supabase = createClient()
-    const { error } = await supabase.auth.exchangeCodeForSession(code)
-    if (!error) {
-      const forwardedHost = request.headers.get('x-forwarded-host') // Hello, Vercel
+    const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
+    
+    if (!exchangeError) {
+      const forwardedHost = request.headers.get('x-forwarded-host')
       const isLocalEnv = process.env.NODE_ENV === 'development'
+      
       if (isLocalEnv) {
-        // we can skip the check on local env, or use a simplified check
         return NextResponse.redirect(`${origin}${next}`)
       } else if (forwardedHost) {
         return NextResponse.redirect(`https://${forwardedHost}${next}`)
       } else {
         return NextResponse.redirect(`${origin}${next}`)
       }
+    } else {
+      console.error('Auth exchange error:', exchangeError)
+      return NextResponse.redirect(`${origin}/auth/auth-code-error?error=exchange_error&error_description=${encodeURIComponent(exchangeError.message)}`)
     }
   }
 
-  // return the user to an error page with instructions
-  return NextResponse.redirect(`${origin}/auth/auth-code-error`)
+  // fallback for cases with no code and no error params
+  return NextResponse.redirect(`${origin}/auth/auth-code-error?error=no_code&error_description=No+authentication+code+was+provided+by+the+identity+provider.`)
 }
