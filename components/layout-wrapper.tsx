@@ -14,7 +14,7 @@ export default function LayoutWrapper({
   categorizedCounselling: any 
 }) {
   const pathname = usePathname()
-  const isDashboard = pathname?.startsWith("/dashboard")
+  const isDashboard = pathname?.startsWith("/dashboard") || pathname?.startsWith("/admin")
 
   return (
     <div className="flex min-h-screen flex-col">
