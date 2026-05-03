@@ -31,15 +31,20 @@ export async function updateSession(request: NextRequest) {
   // supabase.auth.getUser(). A simple mistake can make it very hard to debug
   // issues with users being logged out.
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
   const isAuthPage = request.nextUrl.pathname.startsWith('/login')
   const isAuthCallback = request.nextUrl.pathname.startsWith('/auth')
   const isPublicPage = ['/', '/about', '/contact', '/privacy-policy', '/terms', '/founder'].includes(request.nextUrl.pathname)
 
-  if (!user && !isAuthPage && !isAuthCallback && !isPublicPage) {
+  // Skip getUser check for auth callback to prevent double code exchange
+  if (isAuthCallback) {
+    return supabaseResponse
+  }
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user && !isAuthPage && !isPublicPage) {
     // No user, redirect to login for protected pages
     const url = request.nextUrl.clone()
     url.pathname = '/login'
