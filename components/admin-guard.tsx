@@ -38,12 +38,10 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
     )
   }
 
-  // Strict email check for admins
+  // Strict email check for admins - Only the two owner IDs allowed
   const isAdmin = user && (
     user.email === "apnacounsellor@gmail.com" || 
-    user.email === "sonishriyash@gmail.com" || 
-    (user as any).isAdmin === true || 
-    user.role === "admin"
+    user.email === "sonishriyash@gmail.com"
   );
 
   if (!user || !isAdmin) {
