@@ -52,8 +52,17 @@ export function useRazorpay() {
       })
 
       // 2. Configure checkout options
+      const keyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
+      
+      if (!keyId) {
+        console.error("RAZORPAY_KEY_ID is missing in the browser environment. Ensure NEXT_PUBLIC_RAZORPAY_KEY_ID is set in .env.local and Vercel.");
+        toast.error("Payment configuration error: Key missing");
+        setIsLoading(false);
+        return;
+      }
+
       const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        key: keyId,
         amount: order.amount,
         currency: order.currency,
         name: name,
