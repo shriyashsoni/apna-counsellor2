@@ -1,84 +1,64 @@
--- FINAL ADMIN DASHBOARD & PERMISSIONS SCHEMA
--- Run this in Supabase SQL Editor
+-- FINAL COMPREHENSIVE ADMIN SCHEMA
+-- RUN THIS IN SUPABASE SQL EDITOR TO FIX PERMISSIONS AND TABLES
 
--- 1. EXTENSIONS
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+-- 1. TABLES
 
--- 2. CORE TABLES (Ensuring they exist or updating them)
+-- Blogs Table
+CREATE TABLE IF NOT EXISTS public.blogs (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    title TEXT NOT NULL,
+    slug TEXT UNIQUE,
+    content TEXT,
+    excerpt TEXT,
+    image_url TEXT,
+    author_id UUID REFERENCES public.profiles(id),
+    category TEXT,
+    is_published BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
 
--- Profiles Role Constraint (if not already present)
-DO $$ BEGIN
-    ALTER TABLE public.profiles ADD CONSTRAINT role_check CHECK (role IN ('student', 'mentor', 'admin'));
-EXCEPTION
-    WHEN duplicate_object THEN null;
-END $$;
-
--- 3. ADMIN CONTENT TABLES
-
+-- Ensure Courses & Test Series exist with proper fields
 CREATE TABLE IF NOT EXISTS public.courses (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     title TEXT NOT NULL,
     description TEXT,
-    price DECIMAL(10, 2) NOT NULL,
+    price DECIMAL(10, 2) DEFAULT 0,
     image_url TEXT,
     instructor_id UUID REFERENCES public.profiles(id),
-    curriculum JSONB,
     is_published BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
 CREATE TABLE IF NOT EXISTS public.test_series (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     title TEXT NOT NULL,
     description TEXT,
-    price DECIMAL(10, 2) NOT NULL,
-    total_tests INTEGER,
-    subjects TEXT[],
+    price DECIMAL(10, 2) DEFAULT 0,
     is_published BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- System Health Tables
 CREATE TABLE IF NOT EXISTS public.system_logs (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    type TEXT CHECK (type IN ('issue', 'request', 'feedback')),
-    user_id UUID REFERENCES public.profiles(id),
+    type TEXT,
     title TEXT,
     description TEXT,
-    status TEXT DEFAULT 'open' CHECK (status IN ('open', 'in_progress', 'resolved', 'closed')),
-    priority TEXT DEFAULT 'low' CHECK (priority IN ('low', 'medium', 'high', 'critical')),
-    metadata JSONB,
+    status TEXT DEFAULT 'open',
+    priority TEXT DEFAULT 'low',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS public.system_settings (
-    key TEXT PRIMARY KEY,
-    value JSONB,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
+-- 2. ROBUST ADMIN CHECK FUNCTION
 
--- 4. STRICT PERMISSIONS (RLS POLICIES)
-
--- Enable RLS on all admin tables
-ALTER TABLE public.courses ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.test_series ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.system_logs ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.system_settings ENABLE ROW LEVEL SECURITY;
-
--- DROP OLD POLICIES IF THEY EXIST
-DROP POLICY IF EXISTS "Admins have full access to courses" ON public.courses;
-DROP POLICY IF EXISTS "Admins have full access to test_series" ON public.test_series;
-DROP POLICY IF EXISTS "Admins have full access to system_logs" ON public.system_logs;
-DROP POLICY IF EXISTS "Admins have full access to system_settings" ON public.system_settings;
-
--- DEFINE THE SUPER-ADMINS (ONLY THESE TWO EMAILS)
--- We use a function for cleaner policy management
 CREATE OR REPLACE FUNCTION public.is_super_admin()
 RETURNS BOOLEAN AS $$
 BEGIN
+  -- Check if the current authenticated user has one of the allowed emails
   RETURN (
     SELECT EXISTS (
-      SELECT 1 FROM public.profiles 
+      SELECT 1 FROM auth.users 
       WHERE id = auth.uid() 
       AND email IN ('sonishriyash@gmail.com', 'apnacounsellor@gmail.com')
     )
@@ -86,26 +66,56 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
--- APPLY STRICT POLICIES
-CREATE POLICY "Super-Admin Full Access - Courses" ON public.courses
-    FOR ALL USING (public.is_super_admin());
+-- 3. ENABLE RLS & APPLY POLICIES
 
-CREATE POLICY "Super-Admin Full Access - Test Series" ON public.test_series
-    FOR ALL USING (public.is_super_admin());
+ALTER TABLE public.blogs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.courses ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.test_series ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.colleges ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.system_logs ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Super-Admin Full Access - Logs" ON public.system_logs
-    FOR ALL USING (public.is_super_admin());
+-- CLEAR OLD POLICIES
+DO $$ 
+DECLARE 
+    r RECORD;
+BEGIN
+    FOR r IN (SELECT policyname, tablename FROM pg_policies WHERE schemaname = 'public' AND (tablename IN ('blogs', 'courses', 'test_series', 'colleges', 'profiles', 'system_logs'))) 
+    LOOP
+        EXECUTE 'DROP POLICY IF EXISTS ' || quote_ident(r.policyname) || ' ON public.' || quote_ident(r.tablename);
+    END LOOP;
+END $$;
 
-CREATE POLICY "Super-Admin Full Access - Settings" ON public.system_settings
-    FOR ALL USING (public.is_super_admin());
+-- ALL-POWERFUL POLICIES FOR SUPER-ADMINS
+CREATE POLICY "Super-Admin Full Access Blogs" ON public.blogs FOR ALL USING (public.is_super_admin());
+CREATE POLICY "Super-Admin Full Access Courses" ON public.courses FOR ALL USING (public.is_super_admin());
+CREATE POLICY "Super-Admin Full Access Test Series" ON public.test_series FOR ALL USING (public.is_super_admin());
+CREATE POLICY "Super-Admin Full Access Colleges" ON public.colleges FOR ALL USING (public.is_super_admin());
+CREATE POLICY "Super-Admin Full Access Profiles" ON public.profiles FOR ALL USING (public.is_super_admin());
+CREATE POLICY "Super-Admin Full Access Logs" ON public.system_logs FOR ALL USING (public.is_super_admin());
 
--- Also ensure only super-admins can update roles in profiles
-DROP POLICY IF EXISTS "Admins can update roles" ON public.profiles;
-CREATE POLICY "Super-Admins can update roles" ON public.profiles
-    FOR UPDATE USING (public.is_super_admin());
+-- PUBLIC READ PERMISSIONS (So users can see courses/blogs/colleges)
+CREATE POLICY "Public Read Blogs" ON public.blogs FOR SELECT USING (is_published = true);
+CREATE POLICY "Public Read Courses" ON public.courses FOR SELECT USING (is_published = true);
+CREATE POLICY "Public Read Colleges" ON public.colleges FOR SELECT USING (true);
+CREATE POLICY "Public Read Profiles" ON public.profiles FOR SELECT USING (true);
 
--- 5. INITIAL DATA
-INSERT INTO public.system_settings (key, value) VALUES 
-('storage_limits', '{"total_gb": 100, "used_gb": 12.5, "max_file_size_mb": 50}'),
-('user_limits', '{"max_mentors": 500, "max_students": 10000, "active_sessions_limit": 100}')
-ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
+-- 4. PROFILE TRIGGER (Make sure profiles stay in sync)
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO public.profiles (id, name, email, image, role)
+    VALUES (
+        new.id, 
+        COALESCE(new.raw_user_meta_data->>'full_name', new.raw_user_meta_data->>'name', split_part(new.email, '@', 1)), 
+        new.email, 
+        COALESCE(new.raw_user_meta_data->>'avatar_url', new.raw_user_meta_data->>'picture'),
+        CASE 
+          WHEN new.email IN ('sonishriyash@gmail.com', 'apnacounsellor@gmail.com') THEN 'admin'
+          ELSE 'student'
+        END
+    )
+    ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
