@@ -21,29 +21,42 @@ export async function createRazorpayOrder({
       throw new Error("Razorpay credentials not configured");
     }
 
-    const auth = Buffer.from(`${keyId}:${keySecret}`).toString("base64");
+    console.log("Creating Razorpay Order for amount:", amount);
     
-    const response = await fetch("https://api.razorpay.com/v1/orders", {
-      method: "POST",
-      headers: {
-        "Authorization": `Basic ${auth}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        amount: Math.round(amount * 100), // Convert to paise and ensure it's an integer
-        currency: currency,
-        receipt: receipt,
-        notes: notes
-      }),
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      console.error("Razorpay Error:", error);
-      throw new Error(`Razorpay Order Creation Failed: ${error.error?.description || "Unknown error"}`);
+    if (isNaN(amount) || amount <= 0) {
+      throw new Error(`Invalid amount: ${amount}`);
     }
 
-    return await response.json();
+    const auth = Buffer.from(`${keyId}:${keySecret}`).toString("base64");
+    
+    try {
+      const response = await fetch("https://api.razorpay.com/v1/orders", {
+        method: "POST",
+        headers: {
+          "Authorization": `Basic ${auth}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          amount: Math.round(Number(amount) * 100), 
+          currency: currency,
+          receipt: receipt,
+          notes: notes
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Razorpay API Error Response:", JSON.stringify(errorData, null, 2));
+        throw new Error(errorData.error?.description || "Razorpay API error");
+      }
+
+      const order = await response.json();
+      console.log("Razorpay Order Created Successfully:", order.id);
+      return order;
+    } catch (err: any) {
+      console.error("Fetch Error in createRazorpayOrder:", err);
+      throw err;
+    }
 }
 
 export async function verifyRazorpayPayment({ 
