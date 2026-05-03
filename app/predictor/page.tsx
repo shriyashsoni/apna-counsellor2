@@ -86,7 +86,7 @@ export default function PredictorPage() {
   };
 
   return (
-    <AuthGuard requireSubscription={true} message="The AI Predictor is a Premium tool. Unlock it to see your admission chances.">
+    <AuthGuard requireSubscription={false} message="Please login to access the College Predictor tool.">
       <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950 pt-20 pb-20">
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
