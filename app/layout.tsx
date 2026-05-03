@@ -17,11 +17,11 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: "Apna Counsellor - India's #1 College Admission & Counseling Platform",
+    default: "Apna Counsellor | India's #1 College Admission & Counseling Platform",
     template: "%s | Apna Counsellor"
   },
   description:
-    "Expert guidance for MHT CET, JEE (JoSAA), NEET, MBA & Law admissions. Thousands of college guides, cutoff analysis, and personalized mentorship for students.",
+    "Empowering students to secure seats in India's top colleges. Expert guidance for MHT-CET, JEE, NEET, and MBA admissions with AI-driven predictors and personalized mentorship.",
   keywords: [
     "Apna Counsellor", "college admission guide India", "MHT CET counseling 2025", 
     "JoSAA cutoff 2025", "NEET UG admission", "MBA college predictor", 
@@ -42,12 +42,14 @@ export const metadata: Metadata = {
     locale: 'en_IN',
     url: 'https://apnacounsellor.in',
     siteName: 'Apna Counsellor',
+    title: "Apna Counsellor | India's #1 Admission Partner",
+    description: "Join 50,000+ students navigating their dream college admissions with AI precision.",
     images: [
       {
         url: '/images/landing-preview-v3.png',
         width: 1200,
         height: 630,
-        alt: 'Apna Counsellor - Your Admission Partner',
+        alt: 'Apna Counsellor - India\'s #1 Admission Partner',
       },
     ],
   },

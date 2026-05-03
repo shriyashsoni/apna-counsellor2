@@ -19,8 +19,8 @@ export async function generateMetadata({ params }: MentorPageProps): Promise<Met
 
   if (!mentor) return;
 
-  const title = `${mentor.name} | Expert Mentor from ${mentor.college} | Apna Counsellor`;
-  const description = `Book a personalized mentorship session with ${mentor.name}. Expert in ${mentor.branch} from ${mentor.college}. Get guidance on admissions, cutoffs, and career strategy.`;
+  const title = `${mentor.name} | Expert Mentor from ${mentor.college}`;
+  const description = `Book a 1-on-1 session with ${mentor.name}. Expert guidance in ${mentor.branch} from ${mentor.college}. Solve your admission and career doubts today.`;
 
   return {
     title,
@@ -29,13 +29,13 @@ export async function generateMetadata({ params }: MentorPageProps): Promise<Met
       title,
       description,
       type: 'profile',
-      images: mentor.image ? [mentor.image] : ['https://apnacounsellor.in/images/real-mentor-preview.png'],
+      images: mentor.image ? [mentor.image] : ['/images/mentor-preview-v1.png'],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: mentor.image ? [mentor.image] : ['https://apnacounsellor.in/images/real-mentor-preview.png'],
+      images: mentor.image ? [mentor.image] : ['/images/mentor-preview-v1.png'],
     }
   };
 }

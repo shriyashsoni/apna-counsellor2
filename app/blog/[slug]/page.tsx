@@ -20,21 +20,24 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
 
   if (!blog) return;
 
+  const title = blog.title;
+  const description = blog.excerpt || blog.seo_description || `Read the latest insights on ${blog.title} at Apna Counsellor.`;
+
   return {
-    title: `${blog.seo_title || blog.title} | Apna Counsellor`,
-    description: blog.seo_description || blog.excerpt || blog.title,
+    title,
+    description,
     openGraph: {
-      title: blog.title,
-      description: blog.excerpt,
+      title,
+      description,
       type: 'article',
       publishedTime: blog.created_at,
-      images: blog.featured_image ? [blog.featured_image] : ['https://apnacounsellor.in/images/real-site-preview.png'],
+      images: blog.featured_image ? [blog.featured_image] : ['/images/blog-preview-v1.png'],
     },
     twitter: {
       card: 'summary_large_image',
-      title: blog.title,
-      description: blog.excerpt,
-      images: blog.featured_image ? [blog.featured_image] : ['https://apnacounsellor.in/images/real-site-preview.png'],
+      title,
+      description,
+      images: blog.featured_image ? [blog.featured_image] : ['/images/blog-preview-v1.png'],
     }
   };
 }

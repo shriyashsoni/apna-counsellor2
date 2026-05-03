@@ -18,19 +18,26 @@ export async function generateMetadata({ params }: CollegePageProps): Promise<Me
   
   const displayName = college ? college.name : params.id.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   
-  const title = `${displayName} | Admissions, Cutoffs, Fees & Placements 2026`;
+  const title = `${displayName} | Admissions, Cutoffs & Fees 2026`;
   const description = college 
-    ? `Detailed information about ${college.name} ${college.city ? `in ${college.city}` : ''}. Check latest cutoffs, NIRF rank ${college.nirfRank || ''}, fees structure, and placement statistics.`
-    : `Explore admission process, cutoff trends, and expert guidance for ${displayName}. Get 2026 insights and personalized counseling support at Apna Counsellor.`;
+    ? `Get complete details of ${college.name}, ${college.city}. Check latest MHT-CET/JEE cutoffs, placement stats, and campus insights for 2026 admissions.`
+    : `Explore admission process and cutoff trends for ${displayName}. Get expert counseling support at Apna Counsellor.`;
 
   return {
     title,
     description,
-    keywords: [displayName, 'college admission', 'cutoff 2026', 'placement stats', 'Madhya Pradesh colleges'],
+    keywords: [displayName, 'college admission', 'cutoff 2026', 'placement stats', college?.state || 'India'],
     openGraph: {
       title,
       description,
-      images: college?.imageUrl ? [college.imageUrl] : ['https://apnacounsellor.in/images/real-college-preview.png'],
+      type: 'website',
+      images: college?.imageUrl ? [college.imageUrl] : ['/images/college-preview-v1.png'],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: college?.imageUrl ? [college.imageUrl] : ['/images/college-preview-v1.png'],
     },
     alternates: {
       canonical: `https://apnacounsellor.in/college/${params.id}`,
