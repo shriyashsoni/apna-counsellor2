@@ -1,41 +1,37 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { auth } from "./auth";
 
 export const getProfile = query({
   args: {},
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) return null;
+    const userId = await auth.getUserId(ctx);
+    if (!userId) return null;
 
     // 1. Try finding by current userId (Convex ID)
     let profile = await ctx.db
       .query("profiles")
-      .withIndex("by_userId", (q) => q.eq("userId", identity.subject))
+      .withIndex("by_userId", (q) => q.eq("userId", userId))
       .unique();
     
     if (profile) return profile;
 
-    // 2. Fallback: Find by email
-    if (identity.email) {
+    // 2. Fallback: Find by email if user has email
+    const user = await ctx.db.get(userId);
+    if (user && user.email) {
       profile = await ctx.db
         .query("profiles")
-        .withIndex("by_email", (q) => q.eq("email", identity.email))
+        .withIndex("by_email", (q) => q.eq("email", user.email))
         .unique();
         
       if (profile) return profile;
     }
 
     // 3. Last Resort: Construct a "Virtual Profile" from the users table 
-    // (since some data might have been stored there during previous migrations)
-    const user = await ctx.db
-      .query("users")
-      .withIndex("by_email", (q) => q.eq("email", identity.email!))
-      .unique();
-
     if (user && user.onboardingComplete) {
       return {
         _id: user._id,
-        userId: identity.subject,
+        userId: userId,
         fullName: user.name || "User",
         phone: user.phone || "",
         city: user.city || "",
@@ -51,8 +47,6 @@ export const getProfile = query({
   },
 });
 
-
-
 export const createProfile = mutation({
   args: {
     fullName: v.string(),
@@ -65,31 +59,34 @@ export const createProfile = mutation({
     interestedStates: v.array(v.string()),
   },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await auth.getUserId(ctx);
+    if (!userId) throw new Error("Not authenticated");
+
+    const user = await ctx.db.get(userId);
 
     let existing = await ctx.db
       .query("profiles")
-      .withIndex("by_userId", (q) => q.eq("userId", identity.subject))
+      .withIndex("by_userId", (q) => q.eq("userId", userId))
       .unique();
 
-    if (!existing && identity.email) {
+    if (!existing && user?.email) {
       existing = await ctx.db
         .query("profiles")
-        .withIndex("by_email", (q) => q.eq("email", identity.email))
+        .withIndex("by_email", (q) => q.eq("email", user.email))
         .unique();
     }
-
 
     if (existing) {
       return await ctx.db.patch(existing._id, {
         ...args,
+        userId: userId, // Ensure userId is updated to the new Convex ID format
         onboarded: true,
       });
     }
 
     return await ctx.db.insert("profiles", {
-      userId: identity.subject,
+      userId: userId,
+      email: user?.email,
       ...args,
       onboarded: true,
     });

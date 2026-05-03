@@ -7,11 +7,21 @@ export const storeUser = mutation({
   handler: async (ctx) => {
     const userId = await auth.getUserId(ctx);
     if (!userId) {
-      throw new Error("Called storeUser without authentication");
+      return null;
     }
 
     const user = await ctx.db.get(userId);
-    if (!user) return null;
+    if (!user) {
+      return null;
+    }
+
+    // Initialize new user with default role if missing
+    if (!user.role) {
+      await ctx.db.patch(userId, { 
+        role: "student",
+        createdAt: new Date().toISOString(),
+      });
+    }
 
     return userId;
   },
@@ -20,51 +30,34 @@ export const storeUser = mutation({
 export const currentUser = query({
   args: {},
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) return null;
-
-    // 1. Try getting user ID from convex-auth session
-    let user = null;
     const userId = await auth.getUserId(ctx);
-    if (userId) {
-      user = await ctx.db.get(userId);
-    }
+    if (!userId) return null;
 
-    // 2. Fallback: Search by email if session lookup failed or returned no user
-    if (!user && identity.email) {
-      user = await ctx.db
-        .query("users")
-        .withIndex("by_email", (q) => q.eq("email", identity.email))
-        .unique();
-    }
+    const user = await ctx.db.get(userId);
+    if (!user) return null;
 
-    if (user) {
-      // Strict Admin Enforcement
-      const isAdmin = user.email === "apnacounsellor@gmail.com" || 
-                      user.email === "sonishriyash@gmail.com" || 
-                      user.role === "admin";
-      return { ...user, isAdmin };
-    }
-
-    return null;
+    // Strict Admin Enforcement
+    const isAdmin = user.email === "apnacounsellor@gmail.com" || 
+                    user.email === "sonishriyash@gmail.com" || 
+                    user.role === "admin";
+    
+    return { ...user, isAdmin };
   },
 });
 
 // Helper function for internal checks
 async function isAdminCheck(ctx: any) {
-  const identity = await ctx.auth.getUserIdentity();
-  if (!identity?.email) return false;
-  
-  if (identity.email === "apnacounsellor@gmail.com" || identity.email === "sonishriyash@gmail.com") {
-    return true;
-  }
+  const userId = await auth.getUserId(ctx);
+  if (!userId) return false;
 
-  const user = await ctx.db
-    .query("users")
-    .withIndex("by_email", (q) => q.eq("email", identity.email))
-    .unique();
+  const user = await ctx.db.get(userId);
+  if (!user) return false;
   
-  return user?.role === "admin";
+  return (
+    user.email === "apnacounsellor@gmail.com" || 
+    user.email === "sonishriyash@gmail.com" || 
+    user.role === "admin"
+  );
 }
 
 export const checkAdmin = query({

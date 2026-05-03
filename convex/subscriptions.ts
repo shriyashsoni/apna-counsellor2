@@ -3,13 +3,14 @@ import { v } from "convex/values";
 import { auth } from "./auth";
 
 export const getActive = query({
-  args: { userId: v.string() },
-  handler: async (ctx, args) => {
-    if (!args.userId) return null;
+  args: {},
+  handler: async (ctx) => {
+    const userId = await auth.getUserId(ctx);
+    if (!userId) return null;
     
     return await ctx.db
       .query("subscriptions")
-      .withIndex("by_user", (q) => q.eq("userId", args.userId))
+      .withIndex("by_user", (q) => q.eq("userId", userId))
       .filter((q) => q.eq(q.field("status"), "active"))
       .unique();
   },

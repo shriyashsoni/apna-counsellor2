@@ -1,5 +1,6 @@
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
+import { auth } from "./auth";
 
 export const listByMentor = query({
   args: { mentorId: v.string() },
@@ -43,19 +44,25 @@ export const listPostedSessions = query({
 
 export const createSession = mutation({
   args: {
-    mentorId: v.string(),
-    mentorName: v.string(),
-    studentId: v.string(),
-    studentName: v.string(),
     date: v.string(),
     timeSlot: v.string(),
     price: v.number(),
     topic: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
+    const userId = await auth.getUserId(ctx);
+    if (!userId) throw new Error("Not authenticated");
+
+    const user = await ctx.db.get(userId);
+    if (!user || user.role !== "mentor") {
+      throw new Error("Only mentors can create sessions");
+    }
+
     return await ctx.db.insert("sessions", {
       ...args,
-      status: "booked",
+      mentorId: userId,
+      mentorName: user.name || "Mentor",
+      status: "available", // Changed from "booked" to "available" as this is creating a slot
       createdAt: new Date().toISOString(),
     });
   },
@@ -66,16 +73,22 @@ export const bookSession = mutation({
   args: {
     mentorId: v.string(),
     mentorName: v.string(),
-    studentId: v.string(),
-    studentName: v.string(),
     date: v.string(),
     timeSlot: v.string(),
     price: v.number(),
     topic: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
+    const userId = await auth.getUserId(ctx);
+    if (!userId) throw new Error("Not authenticated");
+
+    const user = await ctx.db.get(userId);
+    if (!user) throw new Error("User not found");
+
     return await ctx.db.insert("sessions", {
       ...args,
+      studentId: userId,
+      studentName: user.name || "Student",
       status: "booked",
       createdAt: new Date().toISOString(),
     });
