@@ -2,10 +2,10 @@
 
 import { useState } from "react"
 import { createClient } from "@/lib/supabase/client"
-import { createRazorpayOrder, verifyRazorpayPayment } from "@/lib/actions/razorpay"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { sendBookingConfirmation, sendAdminNotification } from "@/lib/actions/emails"
+import { useRazorpay } from "@/hooks/use-razorpay"
 
 import { 
   Star, 
@@ -40,18 +40,8 @@ export default function MentorProfileClient({
   currentUser: any 
 }) {
   const router = useRouter()
-  const [isBooking, setIsBooking] = useState(false)
   const supabase = createClient()
-
-  const loadRazorpay = () => {
-    return new Promise((resolve) => {
-      const script = document.createElement("script")
-      script.src = "https://checkout.razorpay.com/v1/checkout.js"
-      script.onload = () => resolve(true)
-      script.onerror = () => resolve(false)
-      document.body.appendChild(script)
-    })
-  }
+  const { initiatePayment, isLoading: isBooking } = useRazorpay()
 
   const handleBook = async (session: any) => {
     if (currentUser === null) {
@@ -60,93 +50,40 @@ export default function MentorProfileClient({
       return
     }
 
-    setIsBooking(true)
-    const res = await loadRazorpay()
+    const amount = session.price || initialMentor.pricing || 499
 
-    if (!res) {
-      toast.error("Failed to load payment gateway")
-      setIsBooking(false)
-      return
-    }
+    await initiatePayment({
+      amount,
+      name: "Apna Counsellor",
+      description: `Mentorship session with ${initialMentor.name}`,
+      prefill: {
+        name: currentUser.name,
+        email: currentUser.email,
+      },
+      metadata: {
+        user_id: currentUser.id,
+        mentor_id: initialMentor.id,
+        session_id: session.id,
+        type: "mentorship_session",
+        date: session.date,
+        time: session.time_slot
+      },
+      onSuccess: async (response) => {
+        // Immediate UI feedback, while webhook handles the source of truth
+        toast.success("Booking confirmed! Redirecting to dashboard...")
+        
+        // We still do a quick update here for speed, but webhook is the backup
+        await supabase.from('sessions').update({
+          student_id: currentUser.id,
+          student_name: currentUser.name || "Student",
+          status: 'confirmed'
+        }).eq('id', session.id)
 
-    try {
-      const order = await createRazorpayOrder({
-        amount: session.price || initialMentor.pricing || 499,
-        currency: "INR",
-        receipt: `receipt_${session.id}`,
-      })
-
-      const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-        amount: order.amount,
-        currency: order.currency,
-        name: "Apna Counsellor",
-        description: `Booking session with ${initialMentor.name}`,
-        order_id: order.id,
-        handler: async (response: any) => {
-          try {
-            const isVerified = await verifyRazorpayPayment({
-              orderId: response.razorpay_order_id,
-              paymentId: response.razorpay_payment_id,
-              signature: response.razorpay_signature,
-            })
-
-            if (isVerified) {
-              await supabase.from('payments').insert({
-                payment_id: response.razorpay_payment_id,
-                order_id: response.razorpay_order_id,
-                signature: response.razorpay_signature,
-                amount: session.price || initialMentor.pricing || 499,
-                status: "captured",
-                user_id: currentUser.id,
-                mentor_id: initialMentor.id,
-                session_id: session.id,
-                type: "mentorship_session"
-              })
-
-              await supabase.from('sessions').update({
-                student_id: currentUser.id,
-                student_name: currentUser.name || "Student",
-                status: 'confirmed'
-              }).eq('id', session.id)
-              
-              await sendBookingConfirmation(
-                currentUser.email,
-                initialMentor.name,
-                new Date(session.date).toLocaleDateString(),
-                session.time_slot || "TBD",
-                "https://meet.google.com/..." // This should come from session data
-              )
-
-              await sendAdminNotification(
-                "New Mentorship Booking",
-                `Student ${currentUser.name} (${currentUser.email}) just booked a session with ${initialMentor.name} for ₹${session.price || initialMentor.pricing || 499}.`
-              )
-              
-              toast.success("Session booked successfully! Check your email.")
-              router.push("/dashboard")
-            } else {
-              toast.error("Verification failed")
-            }
-          } catch (err) {
-            toast.error("Booking error")
-          }
-        },
-        prefill: {
-          name: currentUser.name,
-          email: currentUser.email,
-        },
-        theme: { color: "#6d28d9" },
+        router.push("/dashboard")
       }
-
-      const paymentObject = new (window as any).Razorpay(options)
-      paymentObject.open()
-    } catch (error) {
-      toast.error("Payment initiation failed")
-    } finally {
-      setIsBooking(false)
-    }
+    })
   }
+
 
   return (
     <div className="min-h-screen bg-slate-50/50 pt-24 pb-20">

@@ -1,8 +1,19 @@
 "use server"
 
 import crypto from "crypto"
+import { supabaseAdmin } from "@/lib/supabase/admin"
 
-export async function createRazorpayOrder({ amount, currency, receipt }: { amount: number, currency: string, receipt?: string }) {
+export async function createRazorpayOrder({ 
+  amount, 
+  currency = "INR", 
+  receipt,
+  notes 
+}: { 
+  amount: number, 
+  currency?: string, 
+  receipt?: string,
+  notes?: Record<string, string>
+}) {
     const keyId = process.env.RAZORPAY_KEY_ID;
     const keySecret = process.env.RAZORPAY_KEY_SECRET;
 
@@ -19,21 +30,31 @@ export async function createRazorpayOrder({ amount, currency, receipt }: { amoun
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        amount: amount * 100, // Convert to paise
+        amount: Math.round(amount * 100), // Convert to paise and ensure it's an integer
         currency: currency,
         receipt: receipt,
+        notes: notes
       }),
     });
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(`Razorpay Order Creation Failed: ${error.error.description}`);
+      console.error("Razorpay Error:", error);
+      throw new Error(`Razorpay Order Creation Failed: ${error.error?.description || "Unknown error"}`);
     }
 
     return await response.json();
 }
 
-export async function verifyRazorpayPayment({ orderId, paymentId, signature }: { orderId: string, paymentId: string, signature: string }) {
+export async function verifyRazorpayPayment({ 
+  orderId, 
+  paymentId, 
+  signature 
+}: { 
+  orderId: string, 
+  paymentId: string, 
+  signature: string 
+}) {
     const secret = process.env.RAZORPAY_KEY_SECRET;
     if (!secret) throw new Error("Razorpay secret not configured");
 
@@ -43,3 +64,4 @@ export async function verifyRazorpayPayment({ orderId, paymentId, signature }: {
 
     return generatedSignature === signature;
 }
+

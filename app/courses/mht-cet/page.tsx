@@ -155,16 +155,15 @@ export default function MHTCETCoursePage() {
             </p>
             <div className="max-w-xs mx-auto">
               <Link
-                href="https://pages.razorpay.com/pl_QX3SVcl6JWTzXx/view"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/pay/mht-cet-2025"
                 className="w-full"
               >
-                <Button className="w-full animated-gradient text-white hover:text-white mb-3">
-                  Buy Now
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                <Button className="w-full h-16 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-black text-xl shadow-xl shadow-purple-100 transition-all">
+                  Enroll Now
+                  <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
+
               <p className="text-center text-sm text-gray-500 mt-2">Secure payment via Razorpay</p>
             </div>
           </div>
