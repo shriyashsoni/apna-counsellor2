@@ -32,6 +32,11 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/',
   },
+  icons: {
+    icon: '/icon.png',
+    shortcut: '/icon.png',
+    apple: '/icon.png',
+  },
   openGraph: {
     type: 'website',
     locale: 'en_IN',
@@ -39,7 +44,7 @@ export const metadata: Metadata = {
     siteName: 'Apna Counsellor',
     images: [
       {
-        url: '/images/real-site-preview.png',
+        url: '/images/landing-preview-v3.png',
         width: 1200,
         height: 630,
         alt: 'Apna Counsellor - Your Admission Partner',
@@ -50,7 +55,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     site: '@apnacounsellor',
     creator: '@apnacounsellor',
-    images: ['/images/real-site-preview.png'],
+    images: ['/images/landing-preview-v3.png'],
   },
   verification: {
     google: "XiIvcBHSzEY9KT6NPb2TYpfz-KEgACNLUk_mb6qsd94",

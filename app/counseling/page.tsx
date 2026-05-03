@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Apna Counsellor - Global Counseling Directory',
     description: 'Every major counseling portal in India explained with data-driven insights.',
-    images: ['/images/real-site-preview.png']
+    images: ['/images/counseling-preview-v3.png']
   }
 };
 
