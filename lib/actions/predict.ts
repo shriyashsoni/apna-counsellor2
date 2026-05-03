@@ -37,8 +37,18 @@ export async function predictColleges(args: {
     collegeQuery = collegeQuery.ilike("name", `%${args.exam}%`)
   }
 
-  const { data: colleges, error } = await collegeQuery.limit(500)
+  const { data: colleges, error } = await collegeQuery.limit(100)
   if (error || !colleges) return []
+
+  // Try fetching from ranks table if colleges don't have cutoffs
+  const collegeIds = colleges.map(c => c.id)
+  const { data: rankRecords } = await supabase
+    .from("ranks")
+    .select("*")
+    .in("college_id", collegeIds)
+    .eq("category", args.category)
+    .lte("closing_rank", rank * 1.5) // Buffer
+    .gte("closing_rank", rank * 0.5)
 
   const results: any[] = []
 
@@ -48,41 +58,53 @@ export async function predictColleges(args: {
     }
 
     const cutoffs = (c.cutoffs as any) || {};
+    const collegeRanks = rankRecords?.filter(r => r.college_id === c.id) || [];
+
+    // Check embedded cutoffs
+    let match = false;
     for (const [branch, data] of Object.entries(cutoffs)) {
-      const branchName = branch;
       const branchData = data as any;
+      const catCutoff = branchData[args.category] || branchData["General"] || 0;
 
-      if (args.preferredBranches && args.preferredBranches.length > 0 && !args.preferredBranches.includes(branchName)) {
-        continue;
-      }
-
-      // Get cutoff for category or fallback to General
-      const catCutoff = branchData[args.category] || branchData["General"] || 99999;
-
-      if (rank <= catCutoff) {
-        // Probability calculation formula
-        const prob = Math.min(95, Math.max(30, Math.floor(100 - (rank / Math.max(catCutoff, 1)) * 60)));
-        
+      if (catCutoff > 0 && rank <= catCutoff) {
+        const prob = Math.min(95, Math.max(30, Math.floor(100 - (rank / catCutoff) * 60)));
         results.push({
-          id: c.college_id || c.id,
+          id: c.id,
           name: c.name,
-          shortName: c.short_name || c.name,
           state: c.state,
           type: c.type,
-          branch: branchName,
+          branch: branch,
           cutoffRank: catCutoff,
-          yourRank: rank,
           probability: prob,
-          annualFee: c.annual_fee,
           avgPackage: c.avg_package,
-          nirfRank: c.nirf_rank || 999,
+          nirfRank: c.nirf_rank,
         });
-        break; 
+        match = true;
+        break;
+      }
+    }
+
+    // Check ranks table fallback
+    if (!match && collegeRanks.length > 0) {
+      const bestRank = collegeRanks.sort((a, b) => a.closing_rank - b.closing_rank)[0];
+      if (rank <= bestRank.closing_rank) {
+        const prob = Math.min(95, Math.max(30, Math.floor(100 - (rank / bestRank.closing_rank) * 60)));
+        results.push({
+          id: c.id,
+          name: c.name,
+          state: c.state,
+          type: c.type,
+          branch: bestRank.course_name,
+          cutoffRank: bestRank.closing_rank,
+          probability: prob,
+          avgPackage: c.avg_package,
+          nirfRank: c.nirf_rank,
+        });
       }
     }
   }
 
   return results
-    .sort((a, b) => b.probability - a.probability || a.nirfRank - b.nirfRank)
-    .slice(0, 15);
+    .sort((a, b) => b.probability - a.probability)
+    .slice(0, 20);
 }

@@ -3,6 +3,7 @@ export async function predictAI(args: {
   rank: number;
   category: string;
   homeState?: string;
+  preferredBranches?: string[];
 }) {
   const apiKey = process.env.NEXT_PUBLIC_GROQ_API_KEY || process.env.GROQ_API_KEY;
   if (!apiKey) {
@@ -11,25 +12,27 @@ export async function predictAI(args: {
   }
 
   const prompt = `
-    You are an expert Indian college admission counselor. 
-    Based on the following student details, predict the top 10 best colleges and branches they might get:
+    You are an expert Indian college admission counselor with deep knowledge of JoSAA, CSAB, MHT-CET, WBJEE, COMEDK, and State DTE counselings.
+    Based on the following student details, predict the top 15 best-fit colleges and branches they might get:
     - Exam: ${args.exam}
-    - Rank: ${args.rank}
+    - Score/Rank: ${args.rank}
     - Category: ${args.category}
     - Home State: ${args.homeState || "Not Specified"}
+    - Preferred Branches: ${args.preferredBranches?.join(", ") || "Any"}
     
-    Return the results as a JSON array of objects with the following fields:
+    Consider Home State Quota (HS) vs Other State Quota (OS) logic. 
+    For JEE Mains, consider NITs, IIITs, and GFTIs. 
+    For MHT-CET, consider top private and government colleges in Maharashtra.
+    
+    Return the results as a JSON object with a key "colleges" containing an array of objects with these fields:
     - name: Full college name
-    - shortName: Short name or abbreviation
-    - branch: Recommended engineering/medical branch
-    - probability: Number from 30-95 representing admission chance
-    - state: State of the college
-    - type: Government or Private
-    - annualFee: Estimated annual fee in INR (e.g. "₹2.5L")
-    - avgPackage: Estimated average package (e.g. "₹12 LPA")
-    - nirfRank: Approximate NIRF rank
-    
-    Only return the JSON array, no other text.
+    - branch: Recommended branch
+    - probability: Percentage chance (40-98)
+    - state: College state
+    - type: Government/Private
+    - avgPackage: e.g., "₹12 LPA"
+    - nirfRank: Approximate NIRF rank (if applicable)
+    - reason: Brief 1-sentence reason why this is a good match
   `;
 
   try {
