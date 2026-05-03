@@ -1,8 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { useMutation, useQuery } from "convex/react"
-import { api } from "@/convex/_generated/api"
+import { createClient } from "@/lib/supabase/client"
+import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { 
@@ -26,9 +26,21 @@ import { toast } from "sonner"
 
 export default function MentorRegisterPage() {
   const router = useRouter()
-  // Clerk removed to unblock local host
-  const dbUser = useQuery(api.users.currentUser, {})
-  const updateUser = useMutation(api.users.updateUser)
+  const [dbUser, setDbUser] = useState<any>(undefined)
+  const supabase = createClient()
+
+  useEffect(() => {
+    async function loadUser() {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single()
+        setDbUser(profile ? { ...user, ...profile } : user)
+      } else {
+        setDbUser(null)
+      }
+    }
+    loadUser()
+  }, [])
 
   const [step, setStep] = useState(1)
   const [loading, setLoading] = useState(false)
@@ -54,22 +66,24 @@ export default function MentorRegisterPage() {
     try {
       const skillsArray = form.skills.split(',').map(s => s.trim()).filter(Boolean)
       
-      await updateUser({
-        id: dbUser._id,
-        data: {
+      const { error } = await supabase
+        .from('profiles')
+        .update({
           role: "mentor",
           college: form.college,
           branch: form.branch,
           year: form.year,
           headline: form.headline,
-          bio: form.bio,
+          about: form.bio,
           skills: skillsArray,
           pricing: parseInt(form.pricing),
           linkedin: form.linkedin,
           verified: false, // Admin approval required
-          onboardingCompleted: true,
-        }
-      })
+          onboarding_complete: true,
+        })
+        .eq('id', dbUser.id)
+      
+      if (error) throw error
       
       toast.success("Registration submitted!", {
         description: "An admin will review your profile within 24 hours.",

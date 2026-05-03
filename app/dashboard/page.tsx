@@ -1,7 +1,7 @@
 "use client"
 
-import { useQuery } from "convex/react"
-import { api } from "@/convex/_generated/api"
+import { createClient } from "@/lib/supabase/client"
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { 
   User, 
@@ -43,22 +43,39 @@ import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
 import { UserNav } from "@/components/user-nav"
 import { useRouter } from "next/navigation"
-import { useEffect } from "react"
 
 
 
 export default function DashboardPage() {
   const router = useRouter()
-  const profile = useQuery(api.profiles.getProfile, {})
-  const user = useQuery(api.users.currentUser, {})
+  const [profile, setProfile] = useState<any>(undefined)
+  const [user, setUser] = useState<any>(undefined)
+  const supabase = createClient()
 
   useEffect(() => {
-    if (user === null) {
-      router.push("/login")
-    } else if (user && profile === null) {
-      router.push("/onboarding")
+    async function loadData() {
+      const { data: { user: authUser } } = await supabase.auth.getUser()
+      if (!authUser) {
+        router.push("/login")
+        return
+      }
+      
+      // Get profile with metadata from user
+      const { data: profileData } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', authUser.id)
+        .single()
+
+      if (!profileData) {
+        router.push("/onboarding")
+      } else {
+        setProfile(profileData)
+        setUser({ ...authUser, role: profileData.role || 'student' })
+      }
     }
-  }, [user, profile, router])
+    loadData()
+  }, [router])
 
   if (user === undefined || profile === undefined) return (
     <div className="h-screen flex flex-col items-center justify-center gap-4 bg-slate-50 dark:bg-slate-950">
@@ -67,7 +84,7 @@ export default function DashboardPage() {
     </div>
   )
   
-  if (!user || profile === null) return null;
+  if (!user || !profile) return null;
 
   // Admin Dashboard View
   if (user.role === "admin") {
@@ -80,7 +97,19 @@ export default function DashboardPage() {
 
 
 function AdminDashboard({ user }: { user: any }) {
-  const stats = useQuery(api.diagnostics.getCounts)
+  const [stats, setStats] = useState<any>(null)
+  const supabase = createClient()
+
+  useEffect(() => {
+    async function fetchStats() {
+      const { count: users } = await supabase.from('profiles').select('*', { count: 'exact', head: true })
+      const { count: colleges } = await supabase.from('colleges').select('*', { count: 'exact', head: true })
+      const { count: mentors } = await supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'mentor')
+      
+      setStats({ users, colleges, mentors, revenue: 0 })
+    }
+    fetchStats()
+  }, [])
 
   const adminStats = [
     { label: "Total Students", value: stats?.users || 0, icon: User, color: "text-blue-500", trend: "+12%" },
@@ -165,8 +194,20 @@ function AdminDashboard({ user }: { user: any }) {
 }
 
 function StudentDashboard({ profile, user }: { profile: any, user: any }) {
-  const subscription = useQuery(api.subscriptions.getActive, { userId: user?._id ?? "" })
-  const sessions = useQuery(api.sessions.listByStudent, { studentId: user?._id ?? "" })
+  const [subscription, setSubscription] = useState<any>(null)
+  const [sessions, setSessions] = useState<any[]>([])
+  const supabase = createClient()
+
+  useEffect(() => {
+    async function fetchData() {
+      const { data: sub } = await supabase.from('payments').select('*').eq('user_id', user.id).eq('status', 'captured').single()
+      const { data: sess } = await supabase.from('sessions').select('*').eq('student_id', user.id)
+      setSubscription(sub)
+      setSessions(sess || [])
+    }
+    fetchData()
+  }, [user.id])
+
   const isPro = !!subscription;
 
   const getRecommendedPortals = () => {

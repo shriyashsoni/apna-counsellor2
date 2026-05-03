@@ -1,7 +1,6 @@
 "use client"
 
-import { useConvexAuth, useQuery } from "convex/react"
-import { api } from "@/convex/_generated/api"
+import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { Loader2, Lock } from "lucide-react"
@@ -19,19 +18,44 @@ export function AuthGuard({
   requireSubscription = false,
   message = "Please login to access this premium tool."
 }: AuthGuardProps) {
-  const { isAuthenticated, isLoading } = useConvexAuth()
-  const user = useQuery(api.users.currentUser)
-  const subscription = useQuery(api.subscriptions.getActive, user?._id ? { userId: user._id } : "skip")
-  const router = useRouter()
+  const [session, setSession] = useState<any>(undefined)
+  const [profile, setProfile] = useState<any>(undefined)
+  const [subscription, setSubscription] = useState<any>(undefined)
   const [isClient, setIsClient] = useState(false)
+  const supabase = createClient()
+  const router = useRouter()
 
   useEffect(() => {
     setIsClient(true)
-  }, [])
+    async function checkAuth() {
+      const { data: { session: currentSession } } = await supabase.auth.getSession()
+      setSession(currentSession)
 
-  const isDataLoading = (isAuthenticated && user === undefined) || (isAuthenticated && requireSubscription && subscription === undefined);
+      if (currentSession?.user) {
+        const { data: profileData } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', currentSession.user.id)
+          .single()
+        setProfile(profileData)
 
-  if (!isClient || isLoading || isDataLoading) {
+        if (requireSubscription) {
+          const { data: subData } = await supabase
+            .from('subscriptions')
+            .select('*')
+            .eq('user_id', currentSession.user.id)
+            .eq('status', 'active')
+            .single()
+          setSubscription(subData)
+        }
+      }
+    }
+    checkAuth()
+  }, [requireSubscription])
+
+  const isLoading = session === undefined || (session && profile === undefined) || (session && requireSubscription && subscription === undefined)
+
+  if (!isClient || isLoading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -40,7 +64,7 @@ export function AuthGuard({
     )
   }
 
-  if (!isAuthenticated) {
+  if (!session) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[500px] p-8 text-center bg-white dark:bg-slate-900 rounded-[2.5rem] border-2 border-dashed border-slate-100 dark:border-slate-800">
         <div className="h-20 w-20 rounded-full bg-primary/10 flex items-center justify-center mb-6">

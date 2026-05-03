@@ -19,7 +19,7 @@ export default function PrivacyPolicyPage() {
     },
     {
       title: "Third-Party Services",
-      content: "We use Convex for database management, Clerk/Convex-Auth for authentication, and Razorpay for payment processing. Each service has its own privacy standards."
+      content: "We use Supabase for database management and authentication, and Razorpay for payment processing. Each service has its own privacy standards."
     }
   ]
 

@@ -1,13 +1,33 @@
 "use client"
 
-import { useQuery } from "convex/react"
-import { api } from "@/convex/_generated/api"
+import { createClient } from "@/lib/supabase/client"
+import { useState, useEffect } from "react"
 import { Loader2, ShieldAlert, Lock } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
 export function AdminGuard({ children }: { children: React.ReactNode }) {
-  const user = useQuery(api.users.currentUser)
+  const [user, setUser] = useState<any>(undefined)
+  const supabase = createClient()
+
+  useEffect(() => {
+    async function checkAdmin() {
+      const { data: { user: authUser } } = await supabase.auth.getUser()
+      if (!authUser) {
+        setUser(null)
+        return
+      }
+
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', authUser.id)
+        .single()
+      
+      setUser(profile ? { ...authUser, ...profile } : null)
+    }
+    checkAdmin()
+  }, [])
 
   if (user === undefined) {
     return (

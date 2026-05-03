@@ -1,7 +1,7 @@
 "use client"
 
-import { useQuery, useMutation } from "convex/react"
-import { api } from "@/convex/_generated/api"
+import { createClient } from "@/lib/supabase/client"
+import { useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { 
@@ -26,14 +26,17 @@ import { toast } from "sonner"
 
 export default function MentorBookingPage() {
   const params = useParams()
-  const mentorId = params.id as any
+  const mentorId = params.id as string
   const router = useRouter()
   
   const [selectedDate, setSelectedDate] = useState<string>("")
   const [selectedSlot, setSelectedSlot] = useState<string>("")
+  const [mentor, setMentor] = useState<any>(undefined)
+  const supabase = createClient()
 
-  const mentorsData = useQuery(api.users.listMentors, {})
-  const mentor: any = mentorsData?.find((m: any) => m._id === mentorId)
+  useEffect(() => {
+    supabase.from("profiles").select("*").eq("id", mentorId).single().then(({ data }) => setMentor(data));
+  }, [mentorId]);
   
   const handleBooking = () => {
     if (!selectedSlot) {

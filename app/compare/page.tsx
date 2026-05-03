@@ -1,8 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useQuery } from "convex/react"
-import { api } from "@/convex/_generated/api"
+import { createClient } from "@/lib/supabase/client"
 import { motion, AnimatePresence } from "framer-motion"
 import { 
   Plus, 
@@ -48,11 +47,30 @@ export default function ComparePage() {
   }, [search]);
 
   // Use the optimized list query instead of the crashing predict query
-  const searchResults = useQuery(api.colleges.list, { search: debouncedSearch });
-  const comparedColleges = useQuery(api.colleges.getByIds, { ids: selectedIds });
+  const [searchResults, setSearchResults] = useState<any[] | undefined>(undefined);
+  const [comparedColleges, setComparedColleges] = useState<any[]>([]);
+  const supabase = createClient();
+
+  // Search colleges
+  useEffect(() => {
+    if (!debouncedSearch) {
+      setSearchResults([]);
+      return;
+    }
+    supabase.from("colleges").select("*").ilike("name", `%${debouncedSearch}%`).limit(10).then(({ data }) => setSearchResults(data || []));
+  }, [debouncedSearch]);
+
+  // Fetch compared colleges
+  useEffect(() => {
+    if (selectedIds.length > 0) {
+      supabase.from("colleges").select("*").in("id", selectedIds).then(({ data }) => setComparedColleges(data || []));
+    } else {
+      setComparedColleges([]);
+    }
+  }, [selectedIds]);
 
   const toggleSelect = (id: any) => {
-    const cid = typeof id === 'string' ? id : id._id || id.id;
+    const cid = typeof id === 'string' ? id : id.id;
     if (selectedIds.includes(cid)) {
       setSelectedIds(selectedIds.filter(i => i !== cid))
     } else if (selectedIds.length < 4) {
@@ -107,10 +125,10 @@ export default function ComparePage() {
                  ) : (
                    searchResults.map((c: any) => (
                      <button
-                       key={c._id}
-                       onClick={() => toggleSelect(c._id)}
+                       key={c.id}
+                       onClick={() => toggleSelect(c.id)}
                        className={`p-6 rounded-[2rem] text-left transition-all ${
-                         selectedIds.includes(c._id)
+                         selectedIds.includes(c.id)
                            ? "bg-primary text-white shadow-xl shadow-primary/30"
                            : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-100 dark:border-slate-800"
                        }`}
@@ -142,11 +160,11 @@ export default function ComparePage() {
                               </div>
                            </th>
                            {comparedColleges.map((c: any) => (
-                              <th key={c._id} className="p-10 border-b border-slate-50 dark:border-slate-800 min-w-[200px]">
+                              <th key={c.id} className="p-10 border-b border-slate-50 dark:border-slate-800 min-w-[200px]">
                                  <div className="space-y-4">
                                     <div className="flex justify-between items-start">
                                        <h3 className="text-2xl font-black text-slate-900 dark:text-white leading-tight">{c.name}</h3>
-                                       <button onClick={() => toggleSelect(c._id)} className="p-2 hover:bg-slate-100 rounded-full text-slate-400 transition-colors">
+                                       <button onClick={() => toggleSelect(c.id)} className="p-2 hover:bg-slate-100 rounded-full text-slate-400 transition-colors">
                                           <X className="h-5 w-5" />
                                        </button>
                                     </div>
@@ -170,7 +188,7 @@ export default function ComparePage() {
                                  </div>
                               </td>
                               {comparedColleges.map((c: any) => (
-                                 <td key={c._id} className="p-8 font-black text-lg text-slate-700 dark:text-slate-300">
+                                 <td key={c.id} className="p-8 font-black text-lg text-slate-700 dark:text-slate-300">
                                     {metric.fmt(c[metric.key])}
                                  </td>
                               ))}
@@ -181,8 +199,8 @@ export default function ComparePage() {
                               <span className="font-black text-slate-400 text-xs uppercase tracking-widest">Actions</span>
                            </td>
                            {comparedColleges.map((c: any) => (
-                              <td key={c._id} className="p-8">
-                                 <Link href={`/counselling/${c._id}`}>
+                              <td key={c.id} className="p-8">
+                                 <Link href={`/college/${c.id}`}>
                                     <Button className="w-full rounded-2xl font-black h-14 gap-2">
                                        View Details <ChevronRight className="h-4 w-4" />
                                     </Button>

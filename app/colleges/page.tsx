@@ -1,8 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useQuery } from "convex/react"
-import { api } from "@/convex/_generated/api"
+import { createClient } from "@/lib/supabase/client"
 import { motion, AnimatePresence } from "framer-motion"
 import { 
   Search, 
@@ -59,13 +58,35 @@ function CollegesList() {
     return () => clearTimeout(handler);
   }, [searchTerm]);
 
-  const colleges = useQuery(api.colleges.list, {
-    search: debouncedSearchTerm,
-    category: selectedCategory,
-    state: selectedState,
-    ranking: selectedRanking,
-    tier: selectedTier
-  });
+  const [colleges, setColleges] = useState<any[] | undefined>(undefined);
+  const supabase = createClient();
+
+  useEffect(() => {
+    async function fetchColleges() {
+      let query = supabase.from("colleges").select("*");
+
+      if (debouncedSearchTerm) {
+        query = query.ilike("name", `%${debouncedSearchTerm}%`);
+      }
+      
+      if (selectedState !== "All") {
+        query = query.eq("state", selectedState);
+      }
+
+      // Add a limit to prevent massive payload
+      query = query.limit(50);
+
+      const { data, error } = await query;
+      if (error) {
+        console.error("Error fetching colleges:", error);
+        setColleges([]);
+      } else {
+        setColleges(data || []);
+      }
+    }
+
+    fetchColleges();
+  }, [debouncedSearchTerm, selectedCategory, selectedState, selectedRanking, selectedTier]);
 
   const container = {
     hidden: { opacity: 0 },
@@ -241,7 +262,7 @@ function CollegesList() {
                   const finalId = nameSlug;
 
                   return (
-                  <motion.div key={college._id || finalId} variants={item}>
+                  <motion.div key={college.id || finalId} variants={item}>
                     <Link href={`/college/${finalId}`}>
                       <Card className="h-full border-none rounded-[1.5rem] md:rounded-[2.5rem] shadow-sm bg-white dark:bg-slate-900 group hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-300 overflow-hidden">
                         <CardContent className="p-5 md:p-8">

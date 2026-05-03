@@ -1,6 +1,5 @@
 import { Metadata } from 'next';
-import { api } from '@/convex/_generated/api';
-import { fetchQuery } from 'convex/nextjs';
+import { createClient } from '@/lib/supabase/server';
 import RelatedLinks from '@/components/seo/RelatedLinks';
 import { notFound } from 'next/navigation';
 
@@ -12,11 +11,17 @@ interface CutoffPageProps {
 }
 
 export async function generateMetadata({ params }: CutoffPageProps): Promise<Metadata> {
-  const college = await fetchQuery(api.colleges.getById, { id: params.collegeId as any });
+  const supabase = createClient();
+  const { data: college } = await supabase
+    .from('colleges')
+    .select('*')
+    .eq('id', params.collegeId)
+    .single();
+
   if (!college) return { title: 'College Not Found' };
 
   const courseName = decodeURIComponent(params.course);
-  const title = `${college.shortName || college.name} ${courseName} Cutoff 2025 | Previous Year Opening & Closing Ranks`;
+  const title = `${college.short_name || college.name} ${courseName} Cutoff 2025 | Previous Year Opening & Closing Ranks`;
   const description = `Check detailed cutoff ranks for ${courseName} at ${college.name}. Compare opening and closing ranks for General, OBC, SC, ST, and EWS categories. Plan your ${college.state} counseling strategy.`;
 
   return {
@@ -29,7 +34,13 @@ export async function generateMetadata({ params }: CutoffPageProps): Promise<Met
 }
 
 export default async function CutoffDetailPage({ params }: CutoffPageProps) {
-  const college = await fetchQuery(api.colleges.getById, { id: params.collegeId as any });
+  const supabase = createClient();
+  const { data: college } = await supabase
+    .from('colleges')
+    .select('*')
+    .eq('id', params.collegeId)
+    .single();
+
   if (!college) notFound();
 
   const courseName = decodeURIComponent(params.course);

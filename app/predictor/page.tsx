@@ -1,8 +1,9 @@
 "use client"
 
-import { useState } from "react"
-import { useQuery, useAction } from "convex/react"
-import { api } from "@/convex/_generated/api"
+import { useState, useEffect } from "react"
+import { createClient } from "@/lib/supabase/client"
+import { predictAI } from "@/lib/ai"
+import { predictColleges } from "@/lib/actions/predict"
 import { motion, AnimatePresence } from "framer-motion"
 import { 
   Sparkles, 
@@ -30,7 +31,7 @@ const EXAMS = ['JEE Advanced', 'JEE Mains', 'MHT-CET', 'COMEDK', 'AKTU', 'BITSAT
 const CATEGORIES = ['General', 'OBC', 'SC', 'ST', 'EWS'];
 
 export default function PredictorPage() {
-  const counselings = useQuery(api.counselings.list);
+  const [counselings, setCounselings] = useState<any[]>([]);
   const [selectedCounseling, setSelectedCounseling] = useState<any>(null);
   const [exam, setExam] = useState('');
   const [rank, setRank] = useState('');
@@ -39,16 +40,12 @@ export default function PredictorPage() {
   const [isPredicting, setIsPredicting] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [aiResults, setAiResults] = useState<any[] | null>(null);
+  const [dbResults, setDbResults] = useState<any[] | null>(null);
+  const supabase = createClient();
 
-  const predictAI = useAction(api.ai.predictAI);
-
-  // Convex Query for prediction (data-based)
-  const dbResults = useQuery(api.colleges.predict, showResults ? {
-    exam: selectedCounseling?.name || exam,
-    rank: rank ? parseInt(rank.replace(/,/g, "")) : undefined,
-    percentile: percentile ? parseFloat(percentile) : undefined,
-    category,
-  } : "skip");
+  useEffect(() => {
+    supabase.from("counselings").select("*").then(({ data }) => setCounselings(data || []));
+  }, []);
 
   const results = aiResults || dbResults;
 
@@ -57,10 +54,21 @@ export default function PredictorPage() {
     if (!rank && !percentile) return;
     setIsPredicting(true);
     setAiResults(null);
+    setDbResults(null);
     
     try {
+      // 1. Try DB Prediction first (more accurate data)
+      const dataResults = await predictColleges({
+        exam: selectedCounseling?.name || exam,
+        rank: rank ? parseInt(rank.replace(/,/g, "")) : undefined,
+        percentile: percentile ? parseFloat(percentile) : undefined,
+        category,
+      });
+      setDbResults(dataResults);
+
+      // 2. Try AI Prediction in parallel or as enhancement
       const aiResponse = await predictAI({
-        exam,
+        exam: selectedCounseling?.name || exam,
         rank: rank ? parseInt(rank) : 0,
         category,
       });
@@ -70,8 +78,8 @@ export default function PredictorPage() {
       }
       setShowResults(true);
     } catch (error) {
-      console.error("AI Prediction failed:", error);
-      setShowResults(true); // Fallback to DB
+      console.error("Prediction failed:", error);
+      setShowResults(true); 
     } finally {
       setIsPredicting(false);
     }
@@ -135,18 +143,18 @@ export default function PredictorPage() {
                           .filter(c => c.name.toLowerCase().includes(exam.toLowerCase()))
                           .map((c: any) => (
                             <button
-                              key={c._id}
+                              key={c.id}
                               onClick={() => setSelectedCounseling(c)}
                               className={`p-4 rounded-2xl font-bold text-[10px] sm:text-xs text-left transition-all border-2 flex items-center gap-3 ${
-                                selectedCounseling?._id === c._id 
+                                selectedCounseling?.id === c.id 
                                   ? "bg-primary border-primary text-white shadow-lg shadow-primary/30" 
                                   : "bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-primary/50"
                               }`}
                             >
                               <div className={`h-8 w-8 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                                selectedCounseling?._id === c._id ? "bg-white/20" : "bg-primary/5"
+                                selectedCounseling?.id === c.id ? "bg-white/20" : "bg-primary/5"
                               }`}>
-                                <GraduationCap className={`h-4 w-4 ${selectedCounseling?._id === c._id ? "text-white" : "text-primary"}`} />
+                                <GraduationCap className={`h-4 w-4 ${selectedCounseling?.id === c.id ? "text-white" : "text-primary"}`} />
                               </div>
                               <span className="line-clamp-2 leading-tight">{c.name}</span>
                             </button>

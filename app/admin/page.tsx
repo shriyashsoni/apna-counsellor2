@@ -1,7 +1,7 @@
 "use client"
 
-import { useQuery, useMutation } from "convex/react"
-import { api } from "@/convex/_generated/api"
+import { createClient } from "@/lib/supabase/client"
+import { useState, useEffect } from "react"
 import { AdminGuard } from "@/components/admin-guard"
 import { 
   Users, 
@@ -26,12 +26,39 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Image from "next/image"
 
 export default function AdminDashboard() {
-  const users = useQuery(api.users.listAll, {})
-  const mentors = useQuery(api.users.listMentors, {})
-  const stats = useQuery(api.diagnostics.getCounts)
-  const payments = useQuery(api.payments.listRecent, {})
+  const [users, setUsers] = useState<any[] | undefined>(undefined)
+  const [mentors, setMentors] = useState<any[] | undefined>(undefined)
+  const [stats, setStats] = useState<any | undefined>(undefined)
+  const [payments, setPayments] = useState<any[] | undefined>(undefined)
+  const [isRefreshing, setIsRefreshing] = useState(false)
+  
+  const supabase = createClient()
 
-  const approveMentor = useMutation(api.users.updateUser)
+  const fetchData = async () => {
+    setIsRefreshing(true)
+    const { data: userData } = await supabase.from('profiles').select('*')
+    const { data: mentorData } = await supabase.from('profiles').select('*').eq('role', 'mentor')
+    const { data: paymentData } = await supabase.from('payments').select('*').order('created_at', { ascending: false }).limit(10)
+    
+    const { count: userCount } = await supabase.from('profiles').select('*', { count: 'exact', head: true })
+    const { count: collegeCount } = await supabase.from('colleges').select('*', { count: 'exact', head: true })
+    const { count: mentorCount } = await supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'mentor')
+
+    setUsers(userData || [])
+    setMentors(mentorData || [])
+    setPayments(paymentData || [])
+    setStats({ users: userCount, colleges: collegeCount, mentors: mentorCount, revenue: 0 })
+    setIsRefreshing(false)
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const approveMentor = async (id: string) => {
+    const { error } = await supabase.from('profiles').update({ approved: true }).eq('id', id)
+    if (!error) fetchData()
+  }
 
   const isLoading = users === undefined || mentors === undefined || stats === undefined
   const pendingMentors = mentors?.filter(m => !m.approved) || []
@@ -138,7 +165,7 @@ export default function AdminDashboard() {
                         </thead>
                         <tbody className="divide-y divide-slate-800">
                           {pendingMentors.map((mentor) => (
-                            <tr key={mentor._id} className="hover:bg-slate-950/50 transition-colors">
+                            <tr key={mentor.id} className="hover:bg-slate-950/50 transition-colors">
                               <td className="px-10 py-6">
                                 <div className="flex items-center gap-4">
                                   <div className="relative h-12 w-12 rounded-2xl overflow-hidden bg-slate-800">
@@ -172,7 +199,7 @@ export default function AdminDashboard() {
                                 </Button>
                                 <Button 
                                   size="sm" 
-                                  onClick={() => approveMentor({ id: mentor._id, data: { approved: true } })}
+                                  onClick={() => approveMentor(mentor.id)}
                                   className="h-10 px-6 rounded-xl font-black bg-emerald-500 text-white hover:bg-emerald-600 shadow-lg shadow-emerald-500/20"
                                 >
                                   Approve

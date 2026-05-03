@@ -1,8 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import { useQuery, useMutation, useAction } from "convex/react"
-import { api } from "@/convex/_generated/api"
+import { createClient } from "@/lib/supabase/client"
+import { useEffect } from "react"
+import { createRazorpayOrder, verifyRazorpayPayment } from "@/lib/actions/razorpay"
 import { useParams, useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 
@@ -32,19 +33,36 @@ import { toast } from "sonner"
 export default function MentorProfilePage() {
   const params = useParams()
   const router = useRouter()
-  // Clerk removed to unblock local host
-  const mentorId = params.id as any
+  const mentorId = params.id as string
   
-  const mentor = useQuery(api.users.getById, { id: mentorId })
-  const sessions = useQuery(api.sessions.listPostedSessions, { mentorId })
-  const dbUser = useQuery(api.users.currentUser, {})
-  const bookSession = useMutation(api.sessions.bookSession)
-
-  const createOrder = useAction(api.razorpay.createOrder)
-  const verifyPayment = useAction(api.razorpay.verifyPayment)
-  const savePayment = useMutation(api.payments.savePayment)
-
+  const [mentor, setMentor] = useState<any>(undefined)
+  const [sessions, setSessions] = useState<any[] | undefined>(undefined)
+  const [dbUser, setDbUser] = useState<any>(undefined)
   const [isBooking, setIsBooking] = useState(false)
+  const supabase = createClient()
+
+  useEffect(() => {
+    async function loadData() {
+      // Load mentor
+      const { data: mentorData } = await supabase.from('profiles').select('*').eq('id', mentorId).single()
+      setMentor(mentorData)
+
+      // Load sessions (assuming 'sessions' table exists and has available slots)
+      // I'll assume we query sessions where status is 'available' or similar.
+      const { data: sessionData } = await supabase.from('sessions').select('*').eq('mentor_id', mentorId).eq('status', 'available')
+      setSessions(sessionData || [])
+
+      // Load current user
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single()
+        setDbUser(profile ? { ...user, ...profile } : user)
+      } else {
+        setDbUser(null)
+      }
+    }
+    loadData()
+  }, [mentorId])
 
   if (!mentor) return (
     <div className="min-h-screen flex items-center justify-center">
@@ -75,7 +93,7 @@ export default function MentorProfilePage() {
       return
     }
 
-    const session = sessions?.find(s => s._id === sessionId)
+    const session = sessions?.find(s => s.id === sessionId)
     if (!session) return
 
     setIsBooking(true)
@@ -89,7 +107,7 @@ export default function MentorProfilePage() {
 
     try {
       // 1. Create Order on Backend
-      const order = await createOrder({
+      const order = await createRazorpayOrder({
         amount: session.price || mentor.pricing || 499,
         currency: "INR",
         receipt: `receipt_${sessionId}`,
@@ -106,7 +124,7 @@ export default function MentorProfilePage() {
         handler: async (response: any) => {
           try {
             // 3. Verify Payment on Backend
-            const isVerified = await verifyPayment({
+            const isVerified = await verifyRazorpayPayment({
               orderId: response.razorpay_order_id,
               paymentId: response.razorpay_payment_id,
               signature: response.razorpay_signature,
@@ -114,27 +132,28 @@ export default function MentorProfilePage() {
 
             if (isVerified) {
               // 4. Save Payment and Book Session
-              await savePayment({
-                paymentId: response.razorpay_payment_id,
-                orderId: response.razorpay_order_id,
+              await supabase.from('payments').insert({
+                payment_id: response.razorpay_payment_id,
+                order_id: response.razorpay_order_id,
                 signature: response.razorpay_signature,
                 amount: session.price || mentor.pricing || 499,
                 currency: "INR",
-                status: "success",
-                userId: dbUser._id,
-                mentorId: mentor._id,
-                sessionId: session._id,
+                status: "captured",
+                user_id: dbUser.id,
+                mentor_id: mentor.id,
+                session_id: session.id,
                 type: "mentorship_session"
               })
 
-              await bookSession({
-                mentorId: mentor._id,
-                mentorName: mentor.name || "Mentor",
-                studentId: dbUser._id,
-                studentName: dbUser.name || "Student",
+              await supabase.from('sessions').insert({
+                student_id: dbUser.id,
+                mentor_id: mentor.id,
+                student_name: dbUser.name || "Student",
+                mentor_name: mentor.name || "Mentor",
                 date: session.date || new Date().toISOString(),
-                timeSlot: session.timeSlot || "TBD",
+                time_slot: session.time_slot || "TBD",
                 price: session.price || mentor.pricing || 499,
+                status: 'confirmed'
               })
               
               toast.success("Payment Successful! Session booked.")
@@ -284,7 +303,7 @@ export default function MentorProfilePage() {
                     </div>
                   ) : (
                     sessions.map((session: any) => (
-                      <motion.div key={session._id} whileHover={{ y: -5 }}>
+                      <motion.div key={session.id} whileHover={{ y: -5 }}>
                         <Card className="border-none rounded-[2.5rem] bg-white dark:bg-slate-900 shadow-lg hover:shadow-primary/10 transition-all overflow-hidden border border-slate-100 dark:border-slate-800">
                            <CardContent className="p-8">
                               <div className="flex justify-between items-start mb-6">
@@ -301,7 +320,7 @@ export default function MentorProfilePage() {
                                  <Badge className="bg-primary/10 text-primary border-none rounded-lg px-3 py-1 font-black">₹{session.price || mentor.pricing || 499}</Badge>
                               </div>
                               <Button 
-                                onClick={() => handleBook(session._id)}
+                                onClick={() => handleBook(session.id)}
                                 disabled={isBooking}
                                 className="w-full h-14 rounded-2xl font-black text-lg shadow-xl shadow-primary/20 gap-2"
                               >

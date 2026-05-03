@@ -1,6 +1,5 @@
 import { Metadata } from 'next';
-import { api } from '@/convex/_generated/api';
-import { fetchQuery } from 'convex/nextjs';
+import { createClient } from '@/lib/supabase/server';
 import RelatedLinks from '@/components/seo/RelatedLinks';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
@@ -13,12 +12,13 @@ interface ComparePageProps {
 }
 
 export async function generateMetadata({ params }: ComparePageProps): Promise<Metadata> {
-  const c1 = await fetchQuery(api.colleges.getById, { id: params.college1 as any });
-  const c2 = await fetchQuery(api.colleges.getById, { id: params.college2 as any });
+  const supabase = createClient();
+  const { data: c1 } = await supabase.from('colleges').select('*').eq('id', params.college1).single();
+  const { data: c2 } = await supabase.from('colleges').select('*').eq('id', params.college2).single();
   
   if (!c1 || !c2) return { title: 'Comparison Not Found' };
 
-  const title = `${c1.shortName || c1.name} vs ${c2.shortName || c2.name} Comparison | Placements, Fees & Cutoffs 2025`;
+  const title = `${c1.short_name || c1.name} vs ${c2.short_name || c2.name} Comparison | Placements, Fees & Cutoffs 2025`;
   const description = `Detailed comparison between ${c1.name} and ${c2.name}. Compare NIRF ranks, average packages, fees structure, and admission cutoffs to make the right choice.`;
 
   return {
@@ -31,31 +31,32 @@ export async function generateMetadata({ params }: ComparePageProps): Promise<Me
 }
 
 export default async function CollegeComparePage({ params }: ComparePageProps) {
-  const c1 = await fetchQuery(api.colleges.getById, { id: params.college1 as any });
-  const c2 = await fetchQuery(api.colleges.getById, { id: params.college2 as any });
+  const supabase = createClient();
+  const { data: c1 } = await supabase.from('colleges').select('*').eq('id', params.college1).single();
+  const { data: c2 } = await supabase.from('colleges').select('*').eq('id', params.college2).single();
 
   if (!c1 || !c2) notFound();
 
   const comparisonData = [
-    { label: 'NIRF Rank', val1: c1.nirfRank || 'N/A', val2: c2.nirfRank || 'N/A' },
+    { label: 'NIRF Rank', val1: c1.nirf_rank || 'N/A', val2: c2.nirf_rank || 'N/A' },
     { label: 'City', val1: c1.city, val2: c2.city },
     { label: 'Type', val1: c1.type, val2: c2.type },
-    { label: 'Average Package', val1: c1.avgPackage || 'N/A', val2: c2.avgPackage || 'N/A' },
-    { label: 'Annual Fee', val1: c1.annualFee || 'N/A', val2: c2.annualFee || 'N/A' },
+    { label: 'Average Package', val1: c1.avg_package || 'N/A', val2: c2.avg_package || 'N/A' },
+    { label: 'Annual Fee', val1: c1.annual_fee || 'N/A', val2: c2.annual_fee || 'N/A' },
     { label: 'Tier', val1: c1.tier || 'N/A', val2: c2.tier || 'N/A' },
   ];
 
   return (
     <main className="max-w-7xl mx-auto px-4 py-20">
       <h1 className="text-4xl md:text-6xl font-black text-center mb-16 text-slate-900 leading-tight">
-        {c1.shortName || 'College 1'} <span className="text-blue-600">vs</span> {c2.shortName || 'College 2'}
+        {c1.short_name || 'College 1'} <span className="text-blue-600">vs</span> {c2.short_name || 'College 2'}
       </h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-20">
         {[c1, c2].map((college, idx) => (
           <div key={idx} className="bg-white border rounded-[3rem] p-8 shadow-sm hover:shadow-xl transition-all">
             <div className="relative h-48 w-full rounded-2xl overflow-hidden mb-6">
-              <Image src={college.imageUrl || '/images/college-placeholder.jpg'} alt={college.name} fill className="object-cover" />
+              <Image src={college.image_url || '/images/college-placeholder.jpg'} alt={college.name} fill className="object-cover" />
             </div>
             <h2 className="text-2xl font-bold mb-2">{college.name}</h2>
             <p className="text-slate-500 mb-4">{college.city}, {college.state}</p>

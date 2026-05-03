@@ -4,8 +4,6 @@ const nextConfig = {
   poweredByHeader: false,
   typescript: {
     // Allow production builds to succeed even when there are TypeScript errors.
-    // The Convex client returns loosely-typed data which triggers implicit-any
-    // errors on map/filter callbacks. Runtime behaviour is unaffected.
     ignoreBuildErrors: true,
   },
   eslint: {

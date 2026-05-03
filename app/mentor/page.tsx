@@ -1,7 +1,7 @@
 "use client"
 
-import { useQuery, useMutation } from "convex/react"
-import { api } from "@/convex/_generated/api"
+import { createClient } from "@/lib/supabase/client"
+import { useState, useEffect } from "react"
 import { MentorGuard } from "@/components/mentor-guard"
 import { motion } from "framer-motion"
 import { 
@@ -20,12 +20,40 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 
 export default function MentorPortal() {
-  const user = useQuery(api.users.currentUser, {})
-  const sessions = useQuery(api.sessions.listByMentor, { mentorId: user?._id || "" })
+  const [user, setUser] = useState<any>(undefined)
+  const [sessions, setSessions] = useState<any[] | undefined>(undefined)
+  const supabase = createClient()
+
+  useEffect(() => {
+    async function loadData() {
+      const { data: { user: authUser } } = await supabase.auth.getUser()
+      if (!authUser) {
+        setUser(null)
+        return
+      }
+
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', authUser.id)
+        .single()
+      
+      setUser(profile ? { ...authUser, ...profile } : authUser)
+
+      const { data: sessionData } = await supabase
+        .from('sessions')
+        .select('*')
+        .eq('mentor_id', authUser.id)
+        .order('date', { ascending: true })
+      
+      setSessions(sessionData || [])
+    }
+    loadData()
+  }, [])
   
   const stats = [
-    { label: "Total Sessions", value: user?.sessionsCount || 0, icon: Calendar, color: "blue" },
-    { label: "Active Bookings", value: sessions?.filter(s => s.status === "booked").length || 0, icon: Users, color: "purple" },
+    { label: "Total Sessions", value: user?.sessions_count || 0, icon: Calendar, color: "blue" },
+    { label: "Active Bookings", value: sessions?.filter(s => s.status === "booked" || s.status === "confirmed").length || 0, icon: Users, color: "purple" },
     { label: "Total Earnings", value: `₹${user?.earnings || 0}`, icon: IndianRupee, color: "emerald" },
     { label: "Rating", value: user?.rating || "5.0", icon: TrendingUp, color: "orange" },
   ]
@@ -41,7 +69,7 @@ export default function MentorPortal() {
               <div className="flex items-center gap-3 mb-2">
                 <Badge className="bg-primary/10 text-primary border-none font-black text-[10px] uppercase tracking-widest px-3">Verified Mentor</Badge>
                 <span className="text-slate-400 font-bold text-xs">•</span>
-                <span className="text-slate-400 font-bold text-xs">Joined {new Date(user?._creationTime || Date.now()).toLocaleDateString()}</span>
+                <span className="text-slate-400 font-bold text-xs">Joined {new Date(user?.created_at || Date.now()).toLocaleDateString()}</span>
               </div>
               <h1 className="text-4xl font-black tracking-tight text-slate-900 dark:text-white flex items-center gap-4">
                 Welcome back, {user?.name?.split(' ')[0]} 👋
@@ -101,7 +129,7 @@ export default function MentorPortal() {
                 ) : (
                   <div className="space-y-4">
                     {sessions.map((session: any) => (
-                      <div key={session._id} className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-800/50 flex items-center justify-between group hover:bg-primary/5 transition-colors">
+                      <div key={session.id} className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-800/50 flex items-center justify-between group hover:bg-primary/5 transition-colors">
                         <div className="flex items-center gap-4">
                           <div className="h-12 w-12 rounded-2xl bg-white dark:bg-slate-900 flex items-center justify-center shadow-sm">
                             <User className="h-6 w-6 text-slate-400" />

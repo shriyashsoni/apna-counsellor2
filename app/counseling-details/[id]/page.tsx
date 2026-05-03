@@ -1,6 +1,5 @@
 import { Metadata } from 'next';
-import { api } from '@/convex/_generated/api';
-import { fetchQuery } from 'convex/nextjs';
+import { createClient } from '@/lib/supabase/server';
 import RelatedLinks from '@/components/seo/RelatedLinks';
 import Script from 'next/script';
 import { notFound } from 'next/navigation';
@@ -12,7 +11,13 @@ interface CounselingPageProps {
 }
 
 export async function generateMetadata({ params }: CounselingPageProps): Promise<Metadata> {
-  const counseling = await fetchQuery(api.counselings.getById, { id: params.id as any });
+  const supabase = createClient();
+  const { data: counseling } = await supabase
+    .from('counselings')
+    .select('*')
+    .eq('id', params.id)
+    .single();
+
   if (!counseling) return { title: 'Counseling Not Found' };
 
   const title = `${counseling.name} 2025 | Registration, Dates & Step-by-Step Guide`;
@@ -29,7 +34,12 @@ export async function generateMetadata({ params }: CounselingPageProps): Promise
 }
 
 export default async function CounselingDetailPage({ params }: CounselingPageProps) {
-  const counseling = await fetchQuery(api.counselings.getById, { id: params.id as any });
+  const supabase = createClient();
+  const { data: counseling } = await supabase
+    .from('counselings')
+    .select('*')
+    .eq('id', params.id)
+    .single();
 
   if (!counseling) notFound();
 

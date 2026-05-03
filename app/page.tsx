@@ -11,8 +11,6 @@ import { PartnershipCarousel } from "@/components/partnership-carousel"
 import { AIToolsSection } from "@/components/ai-tools-section"
 import { HowItWorks } from "@/components/how-it-works"
 import { ResourceDirectory } from "@/components/resource-directory"
-import { useQuery } from "convex/react"
-import { api } from "@/convex/_generated/api"
 import { motion } from "framer-motion"
 
 export default function Home() {

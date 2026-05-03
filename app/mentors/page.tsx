@@ -1,8 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { useQuery } from "convex/react"
-import { api } from "@/convex/_generated/api"
+import { createClient } from "@/lib/supabase/client"
+import { useEffect } from "react"
 import { motion } from "framer-motion"
 import { 
   User, 
@@ -22,12 +22,17 @@ import Link from "next/link"
 
 export default function MentorsPage() {
   const [searchTerm, setSearchTerm] = useState("");
-  const mentors = useQuery(api.users.listMentors, {});
+  const [mentors, setMentors] = useState<any[] | undefined>(undefined);
+  const supabase = createClient();
+
+  useEffect(() => {
+    supabase.from("profiles").select("*").eq("role", "mentor").then(({ data }) => setMentors(data || []));
+  }, []);
 
   const filteredMentors = mentors?.filter((m: any) => 
     (m.name || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
     (m.headline || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (m.expertise || "").toLowerCase().includes(searchTerm.toLowerCase())
+    (m.about || "").toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -69,7 +74,7 @@ export default function MentorsPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredMentors?.map((mentor: any) => (
               <motion.div
-                key={mentor._id}
+                key={mentor.id}
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 whileHover={{ y: -5 }}
@@ -104,12 +109,12 @@ export default function MentorsPage() {
                     </div>
 
                     <div className="flex flex-col gap-3">
-                      <Link href={`/mentor/${mentor._id}`} className="w-full">
+                      <Link href={`/mentor/${mentor.id}`} className="w-full">
                         <Button className="w-full h-14 rounded-2xl bg-primary hover:bg-primary/90 font-black text-lg shadow-lg shadow-primary/10">
                           Book a Session
                         </Button>
                       </Link>
-                      <Link href={`/mentor/${mentor._id}`} className="w-full">
+                      <Link href={`/mentor/${mentor.id}`} className="w-full">
                         <Button variant="ghost" className="w-full h-12 rounded-xl font-bold text-slate-400 hover:text-primary">
                           View Profile <ChevronRight className="ml-2 h-4 w-4" />
                         </Button>

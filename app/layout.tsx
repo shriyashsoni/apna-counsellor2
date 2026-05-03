@@ -3,10 +3,8 @@ import type { Metadata, Viewport } from "next"
 import { Inter, Outfit } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { ConvexClientProvider } from "@/components/convex-client-provider"
 import { getCategorizedCounselling, type CategorizedCounselling } from "@/lib/counselling"
 import LayoutWrapper from "@/components/layout-wrapper"
-import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server"
 import Script from 'next/script'
 
 const inter = Inter({ subsets: ["latin"], variable: '--font-inter' })
@@ -130,15 +128,11 @@ export default async function RootLayout({
         ></script>
       </head>
       <body className={inter.className}>
-        <ConvexAuthNextjsServerProvider>
-          <ConvexClientProvider>
-            <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-              <LayoutWrapper categorizedCounselling={categorizedCounselling}>
-                {children}
-              </LayoutWrapper>
-            </ThemeProvider>
-          </ConvexClientProvider>
-        </ConvexAuthNextjsServerProvider>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+          <LayoutWrapper categorizedCounselling={categorizedCounselling}>
+            {children}
+          </LayoutWrapper>
+        </ThemeProvider>
       </body>
     </html>
   )

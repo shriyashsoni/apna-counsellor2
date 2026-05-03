@@ -1,6 +1,5 @@
 import { Metadata } from 'next';
-import { api } from '@/convex/_generated/api';
-import { fetchQuery } from 'convex/nextjs';
+import { createClient } from '@/lib/supabase/server';
 import RelatedLinks from '@/components/seo/RelatedLinks';
 import Script from 'next/script';
 import Image from 'next/image';
@@ -14,7 +13,8 @@ interface CollegePageProps {
 }
 
 export async function generateMetadata({ params }: CollegePageProps): Promise<Metadata> {
-  const college = await fetchQuery(api.colleges.getById, { id: params.id });
+  const supabase = await createClient();
+  const { data: college } = await supabase.from('colleges').select('*').eq('college_id', params.id).single();
   
   const displayName = college ? college.name : params.id.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   
@@ -39,7 +39,8 @@ export async function generateMetadata({ params }: CollegePageProps): Promise<Me
 }
 
 export default async function CollegeDetailPage({ params }: CollegePageProps) {
-  const collegeData = await fetchQuery(api.colleges.getById, { id: params.id });
+  const supabase = await createClient();
+  const { data: collegeData } = await supabase.from('colleges').select('*').eq('college_id', params.id).single();
 
   const detectState = () => {
     const slug = params.id.toLowerCase();
@@ -119,13 +120,13 @@ export default async function CollegeDetailPage({ params }: CollegePageProps) {
             <div className="max-w-5xl">
               <div className="flex flex-wrap gap-3 mb-8">
                 <div className="px-5 py-2 rounded-2xl bg-blue-600 text-white text-xs font-black uppercase tracking-widest shadow-lg">
-                  RANK {college.nirfRank}
+                  RANK {college.nirf_rank || 'N/A'}
                 </div>
                 <div className="px-5 py-2 rounded-2xl bg-white/10 text-white text-xs font-black uppercase tracking-widest backdrop-blur-md border border-white/20">
                   {college.type}
                 </div>
                 <div className="px-5 py-2 rounded-2xl bg-emerald-500 text-white text-xs font-black uppercase tracking-widest shadow-lg">
-                  {college.tier}
+                  {college.tier || 'Standard'}
                 </div>
               </div>
               <h1 className="text-6xl md:text-8xl font-black text-white mb-6 leading-[0.9] tracking-tighter drop-shadow-2xl">
@@ -156,9 +157,9 @@ export default async function CollegeDetailPage({ params }: CollegePageProps) {
           <div className="lg:col-span-8 space-y-16">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
-                { label: 'Avg Package', value: college.avgPackage, color: 'text-emerald-600' },
-                { label: 'Annual Fee', value: college.annualFee, color: 'text-blue-600' },
-                { label: 'AI Score', value: `${college.aiScore}/100`, color: 'text-purple-600' },
+                { label: 'Avg Package', value: college.avg_package, color: 'text-emerald-600' },
+                { label: 'Annual Fee', value: college.annual_fee, color: 'text-blue-600' },
+                { label: 'AI Score', value: `${college.ai_score || 0}/100`, color: 'text-purple-600' },
                 { label: 'Placement', value: '85%+', color: 'text-orange-600' },
               ].map((stat, i) => (
                 <div key={i} className="bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-200 dark:border-slate-800 shadow-sm">

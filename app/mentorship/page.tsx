@@ -1,8 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { useQuery } from "convex/react"
-import { api } from "@/convex/_generated/api"
+import { createClient } from "@/lib/supabase/client"
+import { useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { 
   Search, 
@@ -28,11 +28,29 @@ const SKILLS = ['JEE Advanced', 'JEE Mains', 'MHT-CET', 'COMEDK', 'Programming',
 export default function MentorshipPage() {
   const [search, setSearch] = useState('')
   const [selectedSkill, setSelectedSkill] = useState('')
+  const [mentors, setMentors] = useState<any[] | undefined>(undefined);
+  const supabase = createClient();
 
-  const mentors = useQuery(api.users.listMentors, { 
-    search: search || undefined, 
-    skill: selectedSkill || undefined 
-  });
+  useEffect(() => {
+    async function fetchMentors() {
+      let query = supabase.from("profiles").select("*").eq("role", "mentor");
+      
+      if (search) {
+        query = query.ilike("name", `%${search}%`);
+      }
+      
+      const { data } = await query;
+      
+      // Client-side skill filtering since it's an array/jsonb
+      let filtered = data || [];
+      if (selectedSkill) {
+        filtered = filtered.filter(m => m.skills?.includes(selectedSkill));
+      }
+      
+      setMentors(filtered);
+    }
+    fetchMentors();
+  }, [search, selectedSkill]);
 
   return (
     <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950 pt-24 pb-20">
@@ -144,7 +162,7 @@ export default function MentorshipPage() {
                   ) : (
                     mentors.map((mentor: any, i: number) => (
                       <motion.div
-                        key={mentor._id}
+                        key={mentor.id}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: i * 0.05 }}
@@ -197,7 +215,7 @@ export default function MentorshipPage() {
                                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Pricing</p>
                                        <p className="text-lg font-black text-slate-900 dark:text-white">₹{mentor.pricing || 499}<span className="text-sm font-bold text-slate-400">/session</span></p>
                                     </div>
-                                    <Link href={`/mentor/${mentor._id}`}>
+                                    <Link href={`/mentor/${mentor.id}`}>
                                        <Button className="rounded-2xl font-black gap-2 shadow-lg shadow-primary/20">
                                           View Profile <ArrowRight className="h-4 w-4" />
                                        </Button>

@@ -1,8 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { useMutation, useQuery } from "convex/react"
-import { api } from "@/convex/_generated/api"
+import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
@@ -30,7 +29,7 @@ export default function OnboardingPage() {
     interestedStates: [] as string[],
   })
   
-  const createProfile = useMutation(api.profiles.createProfile)
+  const supabase = createClient()
   const router = useRouter()
 
   const handleNext = () => setStep(s => s + 1)
@@ -38,11 +37,30 @@ export default function OnboardingPage() {
 
   const handleSubmit = async () => {
     try {
-      await createProfile({
-        ...formData,
-        targetYear: Number(formData.targetYear),
-        rank: formData.rank ? Number(formData.rank) : undefined,
-      })
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) {
+        router.push("/login")
+        return
+      }
+
+      const { error } = await supabase
+        .from('profiles')
+        .upsert({
+          id: user.id,
+          name: formData.fullName,
+          email: user.email,
+          phone: formData.phone,
+          city: formData.city,
+          exam: formData.examType,
+          target_year: formData.targetYear,
+          rank: formData.rank,
+          category: formData.category,
+          interested_states: formData.interestedStates,
+          onboarding_complete: true,
+          role: 'student'
+        })
+      
+      if (error) throw error
       router.push("/dashboard")
     } catch (error) {
       console.error("Failed to create profile", error)

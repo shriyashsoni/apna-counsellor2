@@ -1,16 +1,37 @@
 "use client"
 
-import { useQuery } from "convex/react"
-import { api } from "@/convex/_generated/api"
+import { createClient } from "@/lib/supabase/client"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { User, Bell, Shield, CreditCard, Laptop } from "lucide-react"
 
 export default function SettingsPage() {
-  const user = useQuery(api.users.currentUser, {})
+  const [user, setUser] = useState<any>(undefined)
+  const supabase = createClient()
 
-  if (!user) return null
+  useEffect(() => {
+    async function loadUser() {
+      const { data: { user: authUser } } = await supabase.auth.getUser()
+      if (!authUser) {
+        setUser(null)
+        return
+      }
+
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', authUser.id)
+        .single()
+      
+      setUser(profile ? { ...authUser, ...profile } : authUser)
+    }
+    loadUser()
+  }, [])
+
+  if (user === undefined) return null
+  if (user === null) return <div>Please login to access settings.</div>
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">

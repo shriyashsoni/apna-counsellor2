@@ -1,58 +1,61 @@
-import { useAuthActions } from "@convex-dev/auth/react";
-import { useQuery, useConvexAuth } from "convex/react";
-import { api } from "@/convex/_generated/api";
+"use client"
 
-interface User {
-  _id: string;
-  name: string;
-  email: string;
-  image?: string;
-  role: string;
-}
+import { useEffect, useState } from "react"
+import { createClient } from "@/lib/supabase/client"
+import { User } from "@supabase/supabase-js"
 
 interface AuthContextType {
   user: User | null;
-  signIn: (provider: string) => Promise<void>;
+  signIn: (provider?: string) => Promise<void>;
   signOut: () => Promise<void>;
   isLoading: boolean;
   isAuthenticated: boolean;
 }
 
 export function useAuth(): AuthContextType & { login: (provider?: string) => Promise<void>, logout: () => Promise<void> } {
-  const authActions = useAuthActions();
-  const convexAuth = useConvexAuth();
-  
-  const signIn = authActions?.signIn;
-  const signOut = authActions?.signOut;
-  const isAuthenticated = convexAuth?.isAuthenticated || false;
-  const isAuthLoading = convexAuth?.isLoading || false;
+  const supabase = createClient()
+  const [user, setUser] = useState<User | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
-  const user = useQuery(api.users.currentUser, isAuthenticated ? {} : "skip");
-  
-  const login = async (provider: string = "google") => {
-    if (signIn) {
-      await signIn(provider, { redirectTo: "/dashboard" });
-    } else {
-      console.error("signIn function is not available");
-    }
-  };
+  useEffect(() => {
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null)
+      setIsLoading(false)
+    })
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user ?? null)
+        setIsLoading(false)
+      }
+    )
+
+    return () => subscription.unsubscribe()
+  }, [supabase.auth])
+
+  const login = async (provider: any = "google") => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider,
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    })
+    if (error) throw error
+  }
 
   const logout = async () => {
-    if (signOut) {
-      await signOut();
-    } else {
-      console.error("signOut function is not available");
-    }
-  };
+    await supabase.auth.signOut()
+  }
 
   return {
-    user: user as any,
+    user,
     signIn: login,
     signOut: logout,
     login,
     logout,
-    isLoading: isAuthLoading || (isAuthenticated && user === undefined),
-    isAuthenticated: isAuthenticated
+    isLoading,
+    isAuthenticated: !!user,
   };
 }
 
