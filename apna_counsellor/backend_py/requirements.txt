@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+supabase
+razorpay
+pydantic
+python-dotenv
+httpx
+apscheduler
+sendgrid
+twilio
