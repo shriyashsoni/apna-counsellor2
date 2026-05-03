@@ -1,61 +1,74 @@
--- FINAL COMPREHENSIVE ADMIN SCHEMA
--- RUN THIS IN SUPABASE SQL EDITOR TO FIX PERMISSIONS AND TABLES
+-- DEPTH SCHEMA FOR COURSES, BLOGS & TEST SERIES
+-- RUN THIS IN SUPABASE SQL EDITOR
 
--- 1. TABLES
-
--- Blogs Table
-CREATE TABLE IF NOT EXISTS public.blogs (
+-- 1. COURSES (Advanced)
+CREATE TABLE IF NOT EXISTS public.courses (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     title TEXT NOT NULL,
     slug TEXT UNIQUE,
-    content TEXT,
-    excerpt TEXT,
+    description TEXT,
+    long_description TEXT, -- Rich HTML or Markdown
+    price DECIMAL(10, 2) DEFAULT 0,
+    sale_price DECIMAL(10, 2),
     image_url TEXT,
-    author_id UUID REFERENCES public.profiles(id),
+    video_preview_url TEXT,
     category TEXT,
+    level TEXT CHECK (level IN ('beginner', 'intermediate', 'advanced')),
+    duration_hours INTEGER,
+    total_lessons INTEGER,
+    benefits TEXT[], -- Array of "What you will learn"
+    requirements TEXT[],
+    curriculum JSONB, -- Array of modules: {title: string, lessons: {title: string, duration: string, type: 'video'|'pdf'}}
     is_published BOOLEAN DEFAULT FALSE,
+    instructor_id UUID REFERENCES public.profiles(id),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Ensure Courses & Test Series exist with proper fields
-CREATE TABLE IF NOT EXISTS public.courses (
+-- 2. BLOGS (Advanced)
+CREATE TABLE IF NOT EXISTS public.blogs (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     title TEXT NOT NULL,
-    description TEXT,
-    price DECIMAL(10, 2) DEFAULT 0,
-    image_url TEXT,
-    instructor_id UUID REFERENCES public.profiles(id),
+    slug TEXT UNIQUE,
+    content TEXT, -- Rich content
+    excerpt TEXT,
+    featured_image TEXT,
+    category TEXT,
+    tags TEXT[],
+    seo_title TEXT,
+    seo_description TEXT,
     is_published BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+    author_id UUID REFERENCES public.profiles(id),
+    read_time_minutes INTEGER DEFAULT 5,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- 3. TEST SERIES (Advanced)
 CREATE TABLE IF NOT EXISTS public.test_series (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     title TEXT NOT NULL,
+    slug TEXT UNIQUE,
     description TEXT,
+    category TEXT, -- e.g. MHT CET, JEE, NEET
+    image_url TEXT,
     price DECIMAL(10, 2) DEFAULT 0,
+    features TEXT[], -- e.g. "Detailed Solutions", "All India Rank"
+    total_tests INTEGER,
+    template_type TEXT DEFAULT 'standard', -- Different UI templates for students
+    test_list JSONB, -- Array of {name: string, duration: number, marks: number, link: string}
     is_published BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- System Health Tables
-CREATE TABLE IF NOT EXISTS public.system_logs (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    type TEXT,
-    title TEXT,
-    description TEXT,
-    status TEXT DEFAULT 'open',
-    priority TEXT DEFAULT 'low',
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
-
--- 2. ROBUST ADMIN CHECK FUNCTION
+-- 4. RE-APPLY POLICIES (Full Power to Owners)
+ALTER TABLE public.courses ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.blogs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.test_series ENABLE ROW LEVEL SECURITY;
 
 CREATE OR REPLACE FUNCTION public.is_super_admin()
 RETURNS BOOLEAN AS $$
 BEGIN
-  -- Check if the current authenticated user has one of the allowed emails
   RETURN (
     SELECT EXISTS (
       SELECT 1 FROM auth.users 
@@ -66,56 +79,19 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
--- 3. ENABLE RLS & APPLY POLICIES
-
-ALTER TABLE public.blogs ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.courses ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.test_series ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.colleges ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.system_logs ENABLE ROW LEVEL SECURITY;
-
--- CLEAR OLD POLICIES
+-- Drop and recreate policies
 DO $$ 
-DECLARE 
-    r RECORD;
+DECLARE r RECORD;
 BEGIN
-    FOR r IN (SELECT policyname, tablename FROM pg_policies WHERE schemaname = 'public' AND (tablename IN ('blogs', 'courses', 'test_series', 'colleges', 'profiles', 'system_logs'))) 
-    LOOP
+    FOR r IN (SELECT policyname, tablename FROM pg_policies WHERE schemaname = 'public' AND tablename IN ('blogs', 'courses', 'test_series')) LOOP
         EXECUTE 'DROP POLICY IF EXISTS ' || quote_ident(r.policyname) || ' ON public.' || quote_ident(r.tablename);
     END LOOP;
 END $$;
 
--- ALL-POWERFUL POLICIES FOR SUPER-ADMINS
-CREATE POLICY "Super-Admin Full Access Blogs" ON public.blogs FOR ALL USING (public.is_super_admin());
-CREATE POLICY "Super-Admin Full Access Courses" ON public.courses FOR ALL USING (public.is_super_admin());
-CREATE POLICY "Super-Admin Full Access Test Series" ON public.test_series FOR ALL USING (public.is_super_admin());
-CREATE POLICY "Super-Admin Full Access Colleges" ON public.colleges FOR ALL USING (public.is_super_admin());
-CREATE POLICY "Super-Admin Full Access Profiles" ON public.profiles FOR ALL USING (public.is_super_admin());
-CREATE POLICY "Super-Admin Full Access Logs" ON public.system_logs FOR ALL USING (public.is_super_admin());
+CREATE POLICY "Super-Admin All Courses" ON public.courses FOR ALL USING (public.is_super_admin());
+CREATE POLICY "Super-Admin All Blogs" ON public.blogs FOR ALL USING (public.is_super_admin());
+CREATE POLICY "Super-Admin All Test Series" ON public.test_series FOR ALL USING (public.is_super_admin());
 
--- PUBLIC READ PERMISSIONS (So users can see courses/blogs/colleges)
-CREATE POLICY "Public Read Blogs" ON public.blogs FOR SELECT USING (is_published = true);
 CREATE POLICY "Public Read Courses" ON public.courses FOR SELECT USING (is_published = true);
-CREATE POLICY "Public Read Colleges" ON public.colleges FOR SELECT USING (true);
-CREATE POLICY "Public Read Profiles" ON public.profiles FOR SELECT USING (true);
-
--- 4. PROFILE TRIGGER (Make sure profiles stay in sync)
-CREATE OR REPLACE FUNCTION public.handle_new_user()
-RETURNS TRIGGER AS $$
-BEGIN
-    INSERT INTO public.profiles (id, name, email, image, role)
-    VALUES (
-        new.id, 
-        COALESCE(new.raw_user_meta_data->>'full_name', new.raw_user_meta_data->>'name', split_part(new.email, '@', 1)), 
-        new.email, 
-        COALESCE(new.raw_user_meta_data->>'avatar_url', new.raw_user_meta_data->>'picture'),
-        CASE 
-          WHEN new.email IN ('sonishriyash@gmail.com', 'apnacounsellor@gmail.com') THEN 'admin'
-          ELSE 'student'
-        END
-    )
-    ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email;
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+CREATE POLICY "Public Read Blogs" ON public.blogs FOR SELECT USING (is_published = true);
+CREATE POLICY "Public Read Test Series" ON public.test_series FOR SELECT USING (is_published = true);
