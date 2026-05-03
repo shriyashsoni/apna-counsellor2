@@ -140,14 +140,25 @@ export default function AdminDashboard() {
     if (!notifForm.title || !notifForm.message) return toast.error("Missing message")
     setIsSubmitting(true)
     try {
-      // Logic for mass notification (saving to notifications table)
+      // 1. Save to Supabase Notifications Table
       const { error } = await supabase.from('notifications').insert({
         ...notifForm,
         target_group: 'all',
         is_read: false
       })
       if (error) throw error
-      toast.success("Notification sent to all users!")
+
+      // 2. Automated Email Broadcast
+      const { sendBroadCastEmail } = await import('@/lib/actions/emails')
+      const userEmails = users.map(u => u.email).filter(Boolean)
+      
+      if (userEmails.length > 0) {
+        await sendBroadCastEmail(userEmails, notifForm.title, notifForm.message, notifForm.link)
+        toast.success(`Notification sent to ${userEmails.length} users via Email!`)
+      } else {
+        toast.success("Notification posted to dashboard!")
+      }
+      
       setView('dashboard')
     } catch (e: any) { toast.error(e.message) }
     finally { setIsSubmitting(false) }

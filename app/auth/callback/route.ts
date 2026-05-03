@@ -18,6 +18,19 @@ export async function GET(request: Request) {
     const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
     
     if (!exchangeError) {
+      const { data: { user } } = await supabase.auth.getUser()
+      
+      if (user) {
+        // Check if this is a new user (created in the last 60 seconds)
+        const isNewUser = new Date(user.created_at).getTime() > Date.now() - 60000
+        
+        if (isNewUser) {
+          const { sendWelcomeEmail } = await import('@/lib/actions/emails')
+          const name = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0]
+          await sendWelcomeEmail(user.email!, name)
+        }
+      }
+
       const forwardedHost = request.headers.get('x-forwarded-host')
       const isLocalEnv = process.env.NODE_ENV === 'development'
       
