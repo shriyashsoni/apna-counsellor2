@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     "engineering admission expert", "CAP rounds help", "top colleges in India",
     "college comparison", "rank predictor 2025"
   ],
-  metadataBase: new URL('https://apnacounsellor.in'),
+  metadataBase: new URL('https://www.apnacounsellor.in'),
   alternates: {
     canonical: '/',
   },
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_IN',
-    url: 'https://apnacounsellor.in',
+    url: 'https://www.apnacounsellor.in',
     siteName: 'Apna Counsellor',
     title: "Apna Counsellor | India's #1 Admission Partner",
     description: "Join 50,000+ students navigating their dream college admissions with AI precision.",
@@ -80,8 +80,8 @@ export default async function RootLayout({
     "@context": "https://schema.org",
     "@type": "EducationalOrganization",
     "name": "Apna Counsellor",
-    "url": "https://apnacounsellor.in",
-    "logo": "https://apnacounsellor.in/images/apna-counsellor-logo.png",
+    "url": "https://www.apnacounsellor.in",
+    "logo": "https://www.apnacounsellor.in/images/apna-counsellor-logo.png",
     "description": "Leading Indian platform for college admissions and counseling guidance. We provide data-driven insights for engineering, medical, and management courses.",
     "address": {
       "@type": "PostalAddress",
@@ -108,10 +108,10 @@ export default async function RootLayout({
   const searchSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "url": "https://apnacounsellor.in",
+    "url": "https://www.apnacounsellor.in",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://apnacounsellor.in/search?q={search_term_string}",
+      "target": "https://www.apnacounsellor.in/search?q={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   };

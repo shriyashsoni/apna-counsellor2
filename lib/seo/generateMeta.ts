@@ -25,8 +25,8 @@ export function generateCounselingMeta({
     description = description.substring(0, 155 - suffix.length) + suffix;
   }
 
-  const url = `https://apnacounsellor.in/${slug}`;
-  const ogImage = `https://apnacounsellor.in/og/${slug}.png`;
+  const url = `https://www.apnacounsellor.in/${slug}`;
+  const ogImage = `https://www.apnacounsellor.in/og/${slug}.png`;
 
   return {
     title,

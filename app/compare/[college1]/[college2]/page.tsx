@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: ComparePageProps): Promise<Me
     title,
     description,
     alternates: {
-      canonical: `https://apnacounsellor.in/compare/${params.college1}/${params.college2}`,
+      canonical: `https://www.apnacounsellor.in/compare/${params.college1}/${params.college2}`,
     },
   };
 }

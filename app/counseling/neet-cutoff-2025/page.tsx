@@ -61,9 +61,9 @@ export default function NEETCutoffPage() {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://apnacounsellor.in" },
-      { "@type": "ListItem", "position": 2, "name": "Counseling", "item": "https://apnacounsellor.in/counseling" },
-      { "@type": "ListItem", "position": 3, "name": "NEET Cutoff 2025", "item": "https://apnacounsellor.in/counseling/neet-cutoff-2025" }
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.apnacounsellor.in" },
+      { "@type": "ListItem", "position": 2, "name": "Counseling", "item": "https://www.apnacounsellor.in/counseling" },
+      { "@type": "ListItem", "position": 3, "name": "NEET Cutoff 2025", "item": "https://www.apnacounsellor.in/counseling/neet-cutoff-2025" }
     ]
   };
 

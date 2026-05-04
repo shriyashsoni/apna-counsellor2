@@ -61,9 +61,9 @@ export default function PTUCounselingPage() {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://apnacounsellor.in" },
-      { "@type": "ListItem", "position": 2, "name": "Counseling", "item": "https://apnacounsellor.in/counseling" },
-      { "@type": "ListItem", "position": 3, "name": "PTU Counseling", "item": "https://apnacounsellor.in/counseling/ptu-counseling" }
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.apnacounsellor.in" },
+      { "@type": "ListItem", "position": 2, "name": "Counseling", "item": "https://www.apnacounsellor.in/counseling" },
+      { "@type": "ListItem", "position": 3, "name": "PTU Counseling", "item": "https://www.apnacounsellor.in/counseling/ptu-counseling" }
     ]
   };
 

@@ -61,9 +61,9 @@ export default function NEETRankvsCollegePage() {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://apnacounsellor.in" },
-      { "@type": "ListItem", "position": 2, "name": "Counseling", "item": "https://apnacounsellor.in/counseling" },
-      { "@type": "ListItem", "position": 3, "name": "NEET Rank vs College", "item": "https://apnacounsellor.in/counseling/neet-rank-vs-college" }
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.apnacounsellor.in" },
+      { "@type": "ListItem", "position": 2, "name": "Counseling", "item": "https://www.apnacounsellor.in/counseling" },
+      { "@type": "ListItem", "position": 3, "name": "NEET Rank vs College", "item": "https://www.apnacounsellor.in/counseling/neet-rank-vs-college" }
     ]
   };
 

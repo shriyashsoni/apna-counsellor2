@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: CounselingPageProps): Promise
     description,
     keywords: [counseling.name, counseling.exam || '', 'counseling process', 'admission guide 2025'],
     alternates: {
-      canonical: `https://apnacounsellor.in/counseling-details/${params.id}`,
+      canonical: `https://www.apnacounsellor.in/counseling-details/${params.id}`,
     },
   };
 }

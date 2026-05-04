@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: CutoffPageProps): Promise<Met
     title,
     description,
     alternates: {
-      canonical: `https://apnacounsellor.in/cutoff/${params.collegeId}/${params.course}`,
+      canonical: `https://www.apnacounsellor.in/cutoff/${params.collegeId}/${params.course}`,
     },
   };
 }

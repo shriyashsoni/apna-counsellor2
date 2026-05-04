@@ -61,9 +61,9 @@ export default function IIMSelectionCriteriaPage() {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://apnacounsellor.in" },
-      { "@type": "ListItem", "position": 2, "name": "Counseling", "item": "https://apnacounsellor.in/counseling" },
-      { "@type": "ListItem", "position": 3, "name": "IIM Selection Criteria", "item": "https://apnacounsellor.in/counseling/iim-selection-criteria" }
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.apnacounsellor.in" },
+      { "@type": "ListItem", "position": 2, "name": "Counseling", "item": "https://www.apnacounsellor.in/counseling" },
+      { "@type": "ListItem", "position": 3, "name": "IIM Selection Criteria", "item": "https://www.apnacounsellor.in/counseling/iim-selection-criteria" }
     ]
   };
 

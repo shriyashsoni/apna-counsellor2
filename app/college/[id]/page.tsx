@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: CollegePageProps): Promise<Me
       images: college?.imageUrl ? [college.imageUrl] : ['/images/college-preview-v1.png'],
     },
     alternates: {
-      canonical: `https://apnacounsellor.in/college/${params.id}`,
+      canonical: `https://www.apnacounsellor.in/college/${params.id}`,
     },
   };
 }
@@ -102,7 +102,7 @@ export default async function CollegeDetailPage({ params }: CollegePageProps) {
           "name": college.name,
           "alternateName": college.shortName,
           "description": college.description || `Leading ${college.type} institute located in ${college.city}, ${college.state}.`,
-          "url": college.website !== '#' ? college.website : `https://apnacounsellor.in/college/${params.id}`,
+          "url": college.website !== '#' ? college.website : `https://www.apnacounsellor.in/college/${params.id}`,
           "logo": college.imageUrl,
           "address": {
             "@type": "PostalAddress",

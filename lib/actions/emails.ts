@@ -3,7 +3,7 @@
 import { resend } from "@/lib/resend"
 
 const FROM_EMAIL = "onboarding@resend.dev"; // User should change this once they verify domain
-const SITE_URL = "https://apnacounsellor.in";
+const SITE_URL = "https://www.apnacounsellor.in";
 const LOGO_URL = `${SITE_URL}/images/apna-counsellor-logo.png`;
 
 /**
