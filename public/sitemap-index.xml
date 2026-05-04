@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Core Sitemaps -->
   <sitemap>
     <loc>https://www.apnacounsellor.in/sitemap-0.xml</loc>
   </sitemap>
   <sitemap>
+    <loc>https://www.apnacounsellor.in/sitemap-blogs.xml</loc>
+  </sitemap>
+  <sitemap>
     <loc>https://www.apnacounsellor.in/sitemap-counseling.xml</loc>
   </sitemap>
+
+  <!-- College Sitemaps (Partitioned) -->
   <sitemap>
     <loc>https://www.apnacounsellor.in/sitemap-colleges-1.xml</loc>
   </sitemap>
@@ -24,10 +30,18 @@
   <sitemap>
     <loc>https://www.apnacounsellor.in/sitemap-colleges-6.xml</loc>
   </sitemap>
+
+  <!-- Cutoff Sitemaps (Partitioned for 150k URLs) -->
   <sitemap>
-    <loc>https://www.apnacounsellor.in/sitemap-cutoffs.xml</loc>
+    <loc>https://www.apnacounsellor.in/sitemap-cutoffs-1.xml</loc>
   </sitemap>
   <sitemap>
-    <loc>https://www.apnacounsellor.in/sitemap-blogs.xml</loc>
+    <loc>https://www.apnacounsellor.in/sitemap-cutoffs-2.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.apnacounsellor.in/sitemap-cutoffs-3.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.apnacounsellor.in/sitemap-cutoffs-4.xml</loc>
   </sitemap>
 </sitemapindex>

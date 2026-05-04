@@ -2,6 +2,13 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function updateSession(request: NextRequest) {
+  // Force WWW redirect for canonical consistency and to prevent "Sitemap is HTML" errors
+  if (request.nextUrl.hostname === 'apnacounsellor.in') {
+    const url = request.nextUrl.clone()
+    url.hostname = 'www.apnacounsellor.in'
+    return NextResponse.redirect(url, 301)
+  }
+
   let supabaseResponse = NextResponse.next({
     request,
   })
