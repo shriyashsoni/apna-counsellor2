@@ -27,8 +27,7 @@ module.exports = {
       { userAgent: "*", disallow: "/admin/" },
     ],
     additionalSitemaps: [
-      "https://www.apnacounsellor.in/sitemap.xml",
-      "https://www.apnacounsellor.in/sitemap-0.xml",
+      // Only add specific partitions if they are not already in the main index
     ],
   },
 }
