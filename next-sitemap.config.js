@@ -1,12 +1,10 @@
 module.exports = {
-  siteUrl: "https://apnacounsellor.in",
+  siteUrl: "https://www.apnacounsellor.in",
   generateRobotsTxt: true,
   sitemapSize: 5000,
   changefreq: "weekly",
   priority: 0.9,
   additionalPaths: async (config) => {
-    // In a real scenario, fetch all 150,000 slugs from Convex/DB
-    // For now, we return the known core paths
     const corePaths = [
       'counseling/josaa-counseling',
       'counseling/mht-cet-counseling',
@@ -16,7 +14,7 @@ module.exports = {
     ];
     
     return corePaths.map((slug) => ({
-      loc: `https://apnacounsellor.in/${slug}`,
+      loc: `https://www.apnacounsellor.in/${slug}`,
       changefreq: "weekly",
       priority: 0.9,
       lastmod: new Date().toISOString(),
@@ -29,9 +27,8 @@ module.exports = {
       { userAgent: "*", disallow: "/admin/" },
     ],
     additionalSitemaps: [
-      "https://apnacounsellor.in/sitemap-colleges.xml",
-      "https://apnacounsellor.in/sitemap-counseling.xml",
-      "https://apnacounsellor.in/sitemap-blogs.xml",
+      "https://www.apnacounsellor.in/sitemap.xml",
+      "https://www.apnacounsellor.in/sitemap-0.xml",
     ],
   },
 }
