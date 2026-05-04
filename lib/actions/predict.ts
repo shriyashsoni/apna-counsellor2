@@ -33,8 +33,8 @@ export async function predictColleges(args: {
   if (counseling) {
     collegeQuery = collegeQuery.eq("counseling_id", counseling.id)
   } else {
-    // Fallback to name search
-    collegeQuery = collegeQuery.ilike("name", `%${args.exam}%`)
+    // Better fallback: search for exam name in college name or description
+    collegeQuery = collegeQuery.or(`name.ilike.%${args.exam}%,location.ilike.%${args.exam}%`)
   }
 
   const { data: colleges, error } = await collegeQuery.limit(100)

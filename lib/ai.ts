@@ -21,6 +21,16 @@ export async function predictAI(args: {
     - Preferred Branches: ${args.preferredBranches?.join(", ") || "Any"}
     
     Consider Home State Quota (HS) vs Other State Quota (OS) logic. 
+    Use these 2024 REFERENCE Ranks for calibration:
+    - IIT Bombay CSE: ~60 (Open)
+    - NIT Trichy CSE: ~1000 (Open), ~350 (OBC)
+    - NIT Surathkal CSE: ~1400 (Open)
+    - VJTI Mumbai CSE (MHT-CET): ~100 Rank
+    - COEP Pune CSE (MHT-CET): ~150 Rank
+    - IIIT Allahabad IT: ~5000 (Open)
+    - Lower NITs (Agartala, Srinagar) CSE: ~20k-30k (Open)
+    - Top Private (MIT Manipal, VIT Vellore) CSE: ~5k-15k Rank
+    
     For JEE Mains, consider NITs, IIITs, and GFTIs. 
     For MHT-CET, consider top private and government colleges in Maharashtra.
     

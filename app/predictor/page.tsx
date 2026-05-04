@@ -308,86 +308,154 @@ export default function PredictorPage() {
                       <p className="text-slate-500 font-bold text-sm">{selectedCounseling?.name} · {category} · {homeState || 'Any State'}</p>
                     </div>
                   </div>
-                </div>
-
-                {/* Result List */}
+                </div>                {/* Result List */}
                 <div className="grid md:grid-cols-2 gap-6">
-                  {results === undefined ? (
+                  {isPredicting ? (
                     <div className="col-span-full py-20 text-center space-y-4">
                        <div className="h-16 w-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
                        <p className="font-black text-xl text-slate-900">Consulting AI Advisor...</p>
                     </div>
-                  ) : !results || results.length === 0 ? (
+                  ) : (!dbResults || dbResults.length === 0) && (!aiResults || aiResults.length === 0) ? (
                     <Card className="col-span-full p-20 text-center rounded-[3rem] border-dashed border-2 border-slate-200 dark:border-slate-800 bg-white/50">
                        <AlertCircle className="h-20 w-20 text-slate-200 mx-auto mb-6" />
                        <h3 className="text-3xl font-black mb-4">No Matches Found</h3>
-                       <p className="text-slate-500 font-medium max-w-sm mx-auto">This rank might be too high for the selected filters. Try broadening your branch preferences.</p>
+                       <p className="text-slate-500 font-medium max-w-sm mx-auto">This rank might be too high for the selected filters. Try broadening your branch preferences or checking another counseling.</p>
                     </Card>
                   ) : (
-                    results.map((item: any, i: number) => (
-                      <motion.div
-                        key={i}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: i * 0.05 }}
-                      >
-                        <Card className="border-none rounded-[2.5rem] shadow-sm bg-white dark:bg-slate-900 hover:shadow-2xl hover:shadow-primary/5 transition-all group overflow-hidden border border-slate-50 dark:border-slate-800">
-                          <CardContent className="p-8">
-                            <div className="flex justify-between items-start mb-6">
-                              <div className="flex-1">
-                                <Badge className="bg-emerald-500/10 text-emerald-600 border-none px-3 py-1 rounded-lg font-black text-[10px] mb-3 uppercase tracking-widest">
-                                  {item.probability}% Probability
-                                </Badge>
-                                <h3 className="text-2xl font-black text-slate-900 dark:text-white group-hover:text-primary transition-colors leading-tight">{item.name}</h3>
-                                <div className="flex items-center gap-2 mt-3 text-slate-500 font-bold text-sm">
-                                  <MapPin className="h-4 w-4" /> {item.state} · {item.type}
+                    <>
+                      {/* DB Results */}
+                      {dbResults?.map((item: any, i: number) => (
+                        <motion.div
+                          key={`db-${i}`}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: i * 0.05 }}
+                        >
+                          <Card className="border-none rounded-[2.5rem] shadow-sm bg-white dark:bg-slate-900 hover:shadow-2xl hover:shadow-primary/5 transition-all group overflow-hidden border-2 border-emerald-500/20">
+                            <CardContent className="p-8">
+                              <div className="flex justify-between items-start mb-6">
+                                <div className="flex-1">
+                                  <div className="flex items-center gap-2 mb-3">
+                                    <Badge className="bg-emerald-500 text-white border-none px-3 py-1 rounded-lg font-black text-[10px] uppercase tracking-widest">
+                                      <CheckCircle2 className="h-3 w-3 mr-1" /> Verified Data
+                                    </Badge>
+                                    <Badge variant="outline" className="border-emerald-200 text-emerald-600 px-3 py-1 rounded-lg font-black text-[10px]">
+                                      {item.probability}% Chance
+                                    </Badge>
+                                  </div>
+                                  <h3 className="text-2xl font-black text-slate-900 dark:text-white group-hover:text-primary transition-colors leading-tight">{item.name}</h3>
+                                  <div className="flex items-center gap-2 mt-3 text-slate-500 font-bold text-sm">
+                                    <MapPin className="h-4 w-4" /> {item.state} · {item.type}
+                                  </div>
+                                </div>
+                                <div className="h-12 w-12 rounded-2xl bg-slate-50 dark:bg-slate-800 flex flex-col items-center justify-center border border-slate-100 dark:border-slate-700">
+                                  <span className="text-[10px] font-black text-slate-400 leading-none">NIRF</span>
+                                  <span className="text-lg font-black leading-none mt-1">{item.nirfRank || '#?'}</span>
                                 </div>
                               </div>
-                              <div className="h-12 w-12 rounded-2xl bg-slate-50 dark:bg-slate-800 flex flex-col items-center justify-center border border-slate-100 dark:border-slate-700">
-                                <span className="text-[10px] font-black text-slate-400 leading-none">NIRF</span>
-                                <span className="text-lg font-black leading-none mt-1">{item.nirfRank || '#?'}</span>
+                              
+                              <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-800/50 flex items-center gap-5 border border-slate-100 dark:border-slate-800 mb-6">
+                                 <div className="h-12 w-12 rounded-2xl bg-white dark:bg-slate-900 flex items-center justify-center text-primary shadow-sm border border-slate-100 dark:border-slate-700">
+                                    <GraduationCap className="h-6 w-6" />
+                                 </div>
+                                 <div>
+                                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1.5">Branch</p>
+                                    <p className="text-lg font-black text-slate-900 dark:text-white leading-none">{item.branch}</p>
+                                 </div>
                               </div>
-                            </div>
-                            
-                            <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-800/50 flex items-center gap-5 border border-slate-100 dark:border-slate-800 mb-6">
-                               <div className="h-12 w-12 rounded-2xl bg-white dark:bg-slate-900 flex items-center justify-center text-primary shadow-sm border border-slate-100 dark:border-slate-700">
-                                  <GraduationCap className="h-6 w-6" />
-                               </div>
-                               <div>
-                                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1.5">Recommended Branch</p>
-                                  <p className="text-lg font-black text-slate-900 dark:text-white leading-none">{item.branch}</p>
-                               </div>
-                            </div>
 
-                            {item.reason && (
-                              <p className="text-xs font-medium text-slate-500 bg-primary/5 p-4 rounded-2xl mb-6 italic border border-primary/10">
-                                " {item.reason} "
-                              </p>
-                            )}
-
-                            <div className="flex items-center justify-between pt-6 border-t border-slate-50 dark:border-slate-800">
-                              <div className="flex gap-6">
-                                <div>
-                                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Avg Package</p>
-                                  <p className="font-black text-slate-900 dark:text-white">{item.avgPackage}</p>
+                              <div className="flex items-center justify-between pt-6 border-t border-slate-50 dark:border-slate-800">
+                                <div className="flex gap-6">
+                                  <div>
+                                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Avg Package</p>
+                                    <p className="font-black text-slate-900 dark:text-white">{item.avgPackage || '₹8-12 LPA'}</p>
+                                  </div>
+                                  <div>
+                                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Fee/Year</p>
+                                    <p className="font-black text-slate-900 dark:text-white">{item.annualFee || '₹2.5L'}</p>
+                                  </div>
                                 </div>
-                                <div>
-                                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Fee/Year</p>
-                                  <p className="font-black text-slate-900 dark:text-white">{item.annualFee || '₹2.5L'}</p>
+                                <Button size="sm" className="rounded-xl font-black gap-2 h-10 px-5 shadow-lg shadow-primary/10">
+                                  Details <ArrowRight className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        </motion.div>
+                      ))}
+
+                      {/* AI Results */}
+                      {aiResults?.map((item: any, i: number) => (
+                        <motion.div
+                          key={`ai-${i}`}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: (dbResults?.length || 0 + i) * 0.05 }}
+                        >
+                          <Card className="border-none rounded-[2.5rem] shadow-sm bg-white dark:bg-slate-900 hover:shadow-2xl hover:shadow-primary/5 transition-all group overflow-hidden border border-slate-50 dark:border-slate-800">
+                            <CardContent className="p-8">
+                              <div className="flex justify-between items-start mb-6">
+                                <div className="flex-1">
+                                  <div className="flex items-center gap-2 mb-3">
+                                    <Badge className="bg-primary/10 text-primary border-none px-3 py-1 rounded-lg font-black text-[10px] uppercase tracking-widest">
+                                      <Sparkles className="h-3 w-3 mr-1" /> AI Predicted
+                                    </Badge>
+                                    <Badge variant="outline" className="border-primary/20 text-primary px-3 py-1 rounded-lg font-black text-[10px]">
+                                      {item.probability}% Chance
+                                    </Badge>
+                                  </div>
+                                  <h3 className="text-2xl font-black text-slate-900 dark:text-white group-hover:text-primary transition-colors leading-tight">{item.name}</h3>
+                                  <div className="flex items-center gap-2 mt-3 text-slate-500 font-bold text-sm">
+                                    <MapPin className="h-4 w-4" /> {item.state} · {item.type}
+                                  </div>
+                                </div>
+                                <div className="h-12 w-12 rounded-2xl bg-slate-50 dark:bg-slate-800 flex flex-col items-center justify-center border border-slate-100 dark:border-slate-700">
+                                  <span className="text-[10px] font-black text-slate-400 leading-none">NIRF</span>
+                                  <span className="text-lg font-black leading-none mt-1">{item.nirfRank || '#?'}</span>
                                 </div>
                               </div>
-                              <Button size="sm" className="rounded-xl font-black gap-2 h-10 px-5 shadow-lg shadow-primary/10">
-                                Details <ArrowRight className="h-4 w-4" />
-                              </Button>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </motion.div>
-                    ))
+                              
+                              <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-800/50 flex items-center gap-5 border border-slate-100 dark:border-slate-800 mb-6">
+                                 <div className="h-12 w-12 rounded-2xl bg-white dark:bg-slate-900 flex items-center justify-center text-primary shadow-sm border border-slate-100 dark:border-slate-700">
+                                    <GraduationCap className="h-6 w-6" />
+                                 </div>
+                                 <div>
+                                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1.5">Recommended Branch</p>
+                                    <p className="text-lg font-black text-slate-900 dark:text-white leading-none">{item.branch}</p>
+                                 </div>
+                              </div>
+
+                              {item.reason && (
+                                <p className="text-xs font-medium text-slate-500 bg-primary/5 p-4 rounded-2xl mb-6 italic border border-primary/10">
+                                  " {item.reason} "
+                                </p>
+                              )}
+
+                              <div className="flex items-center justify-between pt-6 border-t border-slate-50 dark:border-slate-800">
+                                <div className="flex gap-6">
+                                  <div>
+                                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Avg Package</p>
+                                    <p className="font-black text-slate-900 dark:text-white">{item.avgPackage}</p>
+                                  </div>
+                                  <div>
+                                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Fee/Year</p>
+                                    <p className="font-black text-slate-900 dark:text-white">{item.annualFee || '₹2.5L'}</p>
+                                  </div>
+                                </div>
+                                <Button size="sm" className="rounded-xl font-black gap-2 h-10 px-5 shadow-lg shadow-primary/10">
+                                  Details <ArrowRight className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        </motion.div>
+                      ))}
+                    </>
                   )}
                 </div>
 
                 <div className="p-10 rounded-[3rem] bg-slate-900 text-white text-center relative overflow-hidden">
+en">
                    <div className="relative z-10">
                       <div className="flex items-center justify-center gap-2 text-emerald-400 font-black mb-4">
                         <CheckCircle2 className="h-6 w-6" />
