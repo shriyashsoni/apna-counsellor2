@@ -33,7 +33,10 @@ export async function updateSession(request: NextRequest) {
 
   const isAuthPage = request.nextUrl.pathname.startsWith('/login')
   const isAuthCallback = request.nextUrl.pathname.startsWith('/auth')
-  const isPublicPage = ['/', '/about', '/contact', '/privacy-policy', '/terms', '/founder'].includes(request.nextUrl.pathname)
+  const isPublicPage = [
+    '/', '/about', '/contact', '/privacy-policy', '/terms', '/founder', '/pricing', '/predictor', '/colleges',
+    '/sitemap.xml', '/sitemap-index.xml', '/robots.txt', '/ads.txt'
+  ].some(path => request.nextUrl.pathname === path || request.nextUrl.pathname.startsWith('/sitemap-'))
 
   // Skip getUser check for auth callback to prevent double code exchange
   if (isAuthCallback) {

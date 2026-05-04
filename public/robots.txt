@@ -1,20 +1,10 @@
-# *
 User-agent: *
 Allow: /
-
-# *
-User-agent: *
 Disallow: /api/
-
-# *
-User-agent: *
 Disallow: /admin/
 
 # Host
-Host: https://apnacounsellor.in
+Host: https://www.apnacounsellor.in
 
 # Sitemaps
-Sitemap: https://apnacounsellor.in/sitemap.xml
-Sitemap: https://apnacounsellor.in/sitemap-colleges.xml
-Sitemap: https://apnacounsellor.in/sitemap-counseling.xml
-Sitemap: https://apnacounsellor.in/sitemap-blogs.xml
+Sitemap: https://www.apnacounsellor.in/sitemap.xml
