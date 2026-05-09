@@ -67,7 +67,7 @@ export default function AdminDashboard() {
       const { data: collegeData } = await supabase.from('colleges').select('id, name, city, state').order('name')
       const { data: paymentData } = await supabase.from('payments').select('amount')
       const { data: appData } = await supabase.from('mentor_applications').select('*').eq('status', 'pending')
-      const { data: sessionData } = await supabase.from('sessions').select('*, profiles(name, email)').order('created_at', { ascending: false })
+      const { data: sessionData } = await supabase.from('sessions').select('*, profiles!sessions_student_id_fkey(name, email)').order('created_at', { ascending: false })
       
       const totalRevenue = paymentData?.reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0) || 0
 

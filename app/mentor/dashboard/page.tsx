@@ -33,7 +33,8 @@ export default async function MentorDashboard() {
     .select('*, profiles!sessions_student_id_fkey(name, email)')
     .eq('mentor_id', user.id)
     .eq('status', 'confirmed')
-    .order('scheduled_at', { ascending: true })
+    .order('date', { ascending: true })
+    .order('time_slot', { ascending: true })
 
   // Fetch payments for completed sessions only
   const { data: completedSessions } = await supabase

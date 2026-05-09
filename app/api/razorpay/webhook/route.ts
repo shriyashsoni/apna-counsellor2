@@ -79,9 +79,9 @@ export async function POST(req: Request) {
               const { data: sessionData } = await supabaseAdmin.from('sessions').select('*').eq('id', notes.session_id).single()
               
               if (sessionData) {
-                // Construct ISO strings for Google
-                // Assuming sessionData.date is YYYY-MM-DD and notes.time is HH:MM
-                const startTime = new Date(`${sessionData.date}T${notes.time || '10:00'}:00`).toISOString()
+                // Extract start time from slot (e.g., "10:00 - 11:00" -> "10:00")
+                const timePart = (notes.time || sessionData.time_slot || '10:00').split(' ')[0]
+                const startTime = new Date(`${sessionData.date}T${timePart}:00`).toISOString()
                 const endTime = new Date(new Date(startTime).getTime() + 45 * 60000).toISOString() // 45 mins
 
                 const event = await createMeetEvent(mentorData.google_refresh_token, {
@@ -159,7 +159,8 @@ export async function POST(req: Request) {
         await supabaseAdmin.from('notifications').insert({
           title: "Payment Webhook Error",
           message: `Critical error processing payment for order ${event.payload?.order?.entity?.id}: ${error.message}`,
-          type: 'error'
+          type: 'error',
+          target_group: 'admin'
         })
       } catch (notifyErr) {
         console.error("Failed to log error notification:", notifyErr)
