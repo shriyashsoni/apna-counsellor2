@@ -43,6 +43,13 @@ export default function OnboardingPage() {
         return
       }
 
+      // Get existing profile to preserve role
+      const { data: existingProfile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', user.id)
+        .single()
+
       const { error } = await supabase
         .from('profiles')
         .upsert({
@@ -57,7 +64,7 @@ export default function OnboardingPage() {
           category: formData.category,
           interested_states: formData.interestedStates,
           onboarding_complete: true,
-          role: 'student'
+          role: existingProfile?.role || 'student' // Preserve existing role or default to student
         })
       
       if (error) throw error
