@@ -11,7 +11,6 @@ export async function approveMentorAction(appId: string, userId: string, email: 
       .from('profiles')
       .update({ 
         role: 'mentor',
-        verified: true,
         onboarding_complete: true
       })
       .eq('id', userId)
@@ -35,6 +34,43 @@ export async function approveMentorAction(appId: string, userId: string, email: 
     return { success: true }
   } catch (error: any) {
     console.error("Server Action Error (approveMentor):", error)
+    return { success: false, error: error.message }
+  }
+}
+
+export async function suspendMentorAction(userId: string, suspend: boolean) {
+  try {
+    const { error } = await supabaseAdmin
+      .from('profiles')
+      .update({ 
+        role: suspend ? 'suspended_mentor' : 'mentor'
+      })
+      .eq('id', userId)
+
+    if (error) throw error
+
+    revalidatePath('/admin')
+    return { success: true }
+  } catch (error: any) {
+    return { success: false, error: error.message }
+  }
+}
+
+export async function deleteMentorAction(userId: string) {
+  try {
+    // Downgrade to student instead of deleting profile entirely to preserve auth
+    const { error } = await supabaseAdmin
+      .from('profiles')
+      .update({ 
+        role: 'student'
+      })
+      .eq('id', userId)
+
+    if (error) throw error
+
+    revalidatePath('/admin')
+    return { success: true }
+  } catch (error: any) {
     return { success: false, error: error.message }
   }
 }

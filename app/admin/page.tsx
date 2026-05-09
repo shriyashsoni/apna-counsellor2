@@ -25,7 +25,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue 
 } from "@/components/ui/select"
 import Image from "next/image"
-import { approveMentorAction } from "@/lib/actions/admin"
+import { approveMentorAction, suspendMentorAction, deleteMentorAction } from "@/lib/actions/admin"
 
 type EditorView = 'dashboard' | 'course-creator' | 'blog-creator' | 'test-creator' | 'roi-manager' | 'notification-center' | 'identity-manager';
 
@@ -64,7 +64,7 @@ export default function AdminDashboard() {
     setIsLoading(true)
     try {
       const { data: userData } = await supabase.from('profiles').select('*').order('created_at', { ascending: false })
-      const { data: mentorData } = await supabase.from('profiles').select('*').eq('role', 'mentor')
+      const { data: mentorData } = await supabase.from('profiles').select('*').in('role', ['mentor', 'suspended_mentor'])
       const { data: collegeData } = await supabase.from('colleges').select('id, name, city, state').order('name')
       const { data: paymentData } = await supabase.from('payments').select('amount')
       const { data: appData } = await supabase.from('mentor_applications').select('*, profiles(email)').eq('status', 'pending')
@@ -205,6 +205,31 @@ export default function AdminDashboard() {
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  const handleSuspendMentor = async (userId: string, currentRole: string) => {
+    setIsSubmitting(true)
+    try {
+      const result = await suspendMentorAction(userId, currentRole === 'mentor')
+      if (result.success) {
+        toast.success(currentRole === 'mentor' ? "Mentor suspended" : "Mentor unsuspended")
+        await fetchData()
+      } else throw new Error(result.error)
+    } catch (e: any) { toast.error(e.message) }
+    finally { setIsSubmitting(false) }
+  }
+
+  const handleDeleteMentor = async (userId: string) => {
+    if (!confirm("Are you sure you want to revoke mentor access? This will downgrade them to a student.")) return
+    setIsSubmitting(true)
+    try {
+      const result = await deleteMentorAction(userId)
+      if (result.success) {
+        toast.success("Mentor access revoked")
+        await fetchData()
+      } else throw new Error(result.error)
+    } catch (e: any) { toast.error(e.message) }
+    finally { setIsSubmitting(false) }
   }
 
   const SidebarContent = () => (
@@ -723,7 +748,24 @@ export default function AdminDashboard() {
                     ₹{m.pricing || 499}
                   </td>
                   <td className="px-8 py-6">
-                    <Button variant="ghost" size="sm" className="font-black text-xs text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl">Revoke</Button>
+                    <div className="flex gap-2">
+                       <Button 
+                         variant="ghost" 
+                         size="sm" 
+                         onClick={() => handleSuspendMentor(m.id, m.role)}
+                         className={`font-black text-[10px] uppercase rounded-xl ${m.role === 'suspended_mentor' ? 'text-emerald-600 hover:bg-emerald-50' : 'text-orange-500 hover:bg-orange-50'}`}
+                       >
+                         {m.role === 'suspended_mentor' ? 'Unsuspend' : 'Suspend'}
+                       </Button>
+                       <Button 
+                         variant="ghost" 
+                         size="sm" 
+                         onClick={() => handleDeleteMentor(m.id)}
+                         className="font-black text-[10px] uppercase text-red-500 hover:bg-red-50 rounded-xl"
+                       >
+                         Revoke
+                       </Button>
+                    </div>
                   </td>
                 </tr>
               ))}
