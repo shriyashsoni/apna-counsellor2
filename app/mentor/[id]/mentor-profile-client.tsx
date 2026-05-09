@@ -33,10 +33,12 @@ import { toast } from "sonner"
 export default function MentorProfileClient({ 
   initialMentor, 
   initialSessions, 
+  initialReviews = [],
   currentUser 
 }: { 
   initialMentor: any, 
   initialSessions: any[], 
+  initialReviews: any[],
   currentUser: any 
 }) {
   const router = useRouter()
@@ -107,10 +109,15 @@ export default function MentorProfileClient({
                   <div className="space-y-4 flex-1">
                      <div className="flex flex-wrap items-center justify-center md:justify-start gap-3">
                         <h1 className="text-4xl font-black tracking-tight text-slate-900">{initialMentor.name}</h1>
-                        <Badge className="bg-emerald-500/10 text-emerald-600 border-none px-3 py-1 rounded-full flex gap-1 font-bold">
-                           <ShieldCheck className="h-4 w-4" /> Verified Expert
-                        </Badge>
-                     </div>
+                         <Badge className="bg-emerald-500/10 text-emerald-600 border-none px-3 py-1 rounded-full flex gap-1 font-bold">
+                            <ShieldCheck className="h-4 w-4" /> Verified Expert
+                         </Badge>
+                         <div className="flex items-center gap-1.5 px-3 py-1 bg-amber-50 rounded-full">
+                            <Star className="h-4 w-4 text-amber-500 fill-amber-500" />
+                            <span className="text-sm font-black text-amber-700">{initialMentor.rating?.toFixed(1) || '5.0'}</span>
+                            <span className="text-[10px] font-bold text-amber-600/60">({initialMentor.reviews_count || 0})</span>
+                         </div>
+                      </div>
                      <p className="text-xl font-bold text-purple-600">{initialMentor.headline || 'Expert Career Mentor'}</p>
                      <div className="flex flex-wrap justify-center md:justify-start gap-6 text-slate-500 font-bold">
                         <div className="flex items-center gap-2">
@@ -127,20 +134,50 @@ export default function MentorProfileClient({
             </section>
 
             <Tabs defaultValue="about" className="w-full">
-               <TabsList className="bg-white border border-slate-100 rounded-2xl h-14 p-1 mb-8 w-full md:w-auto flex">
-                  <TabsTrigger value="about" className="flex-1 md:px-8 rounded-xl font-black text-sm">About Mentor</TabsTrigger>
-                  <TabsTrigger value="experience" className="flex-1 md:px-8 rounded-xl font-black text-sm">Experience</TabsTrigger>
-               </TabsList>
+                <TabsList className="bg-white border border-slate-100 rounded-2xl h-14 p-1 mb-8 w-full md:w-auto flex">
+                   <TabsTrigger value="about" className="flex-1 md:px-8 rounded-xl font-black text-sm">About Mentor</TabsTrigger>
+                   <TabsTrigger value="reviews" className="flex-1 md:px-8 rounded-xl font-black text-sm">Reviews ({initialReviews.length})</TabsTrigger>
+                </TabsList>
                <TabsContent value="about" className="space-y-8">
-                  <Card className="border-none rounded-[2.5rem] bg-white p-8 shadow-sm">
-                     <h3 className="text-xl font-black mb-6 flex items-center gap-3">
-                        <Info className="h-6 w-6 text-purple-600" /> Why book this session?
-                     </h3>
-                     <p className="text-slate-600 font-medium leading-relaxed whitespace-pre-line">
-                        {initialMentor.bio || "No biography provided."}
-                     </p>
-                  </Card>
-               </TabsContent>
+                   <Card className="border-none rounded-[2.5rem] bg-white p-8 shadow-sm">
+                      <h3 className="text-xl font-black mb-6 flex items-center gap-3">
+                         <Info className="h-6 w-6 text-purple-600" /> Why book this session?
+                      </h3>
+                      <p className="text-slate-600 font-medium leading-relaxed whitespace-pre-line">
+                         {initialMentor.about || initialMentor.bio || "No biography provided."}
+                      </p>
+                   </Card>
+                </TabsContent>
+                <TabsContent value="reviews" className="space-y-6">
+                   {initialReviews.length === 0 ? (
+                      <Card className="border-none rounded-[2.5rem] bg-white p-12 text-center shadow-sm">
+                         <Star className="h-12 w-12 text-slate-100 mx-auto mb-4" />
+                         <p className="text-slate-400 font-bold">No reviews yet. Be the first!</p>
+                      </Card>
+                   ) : (
+                      initialReviews.map((r, i) => (
+                         <Card key={i} className="border-none rounded-[2rem] bg-white p-6 shadow-sm border border-slate-50">
+                            <div className="flex justify-between items-start mb-4">
+                               <div className="flex items-center gap-3">
+                                  <div className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center font-black text-slate-400">
+                                     {r.reviewer_name?.charAt(0) || 'S'}
+                                  </div>
+                                  <div>
+                                     <p className="font-bold text-sm">{r.reviewer_name || 'Anonymous Student'}</p>
+                                     <p className="text-[10px] text-slate-400 font-medium">{new Date(r.created_at).toLocaleDateString()}</p>
+                                  </div>
+                               </div>
+                               <div className="flex gap-0.5">
+                                  {[1, 2, 3, 4, 5].map(star => (
+                                     <Star key={star} className={`h-3 w-3 ${star <= r.rating ? 'fill-amber-400 text-amber-400' : 'text-slate-100'}`} />
+                                  ))}
+                               </div>
+                            </div>
+                            <p className="text-sm text-slate-600 font-medium leading-relaxed italic">"{r.comment}"</p>
+                         </Card>
+                      ))
+                   )}
+                </TabsContent>
             </Tabs>
 
             <section>

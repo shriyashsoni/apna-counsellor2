@@ -65,6 +65,12 @@ export default async function MentorProfilePage({ params }: MentorPageProps) {
     sessions = await filterSessionsByAvailability(mentor.google_refresh_token, sessions)
   }
 
+  const { data: reviews } = await supabase
+    .from('reviews')
+    .select('*')
+    .eq('mentor_id', params.id)
+    .order('created_at', { ascending: false })
+
   const { data: { user } } = await supabase.auth.getUser()
   let dbUser = null
   if (user) {
@@ -76,6 +82,7 @@ export default async function MentorProfilePage({ params }: MentorPageProps) {
     <MentorProfileClient 
       initialMentor={mentor} 
       initialSessions={sessions || []} 
+      initialReviews={reviews || []}
       currentUser={dbUser} 
     />
   )
