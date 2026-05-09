@@ -54,6 +54,7 @@ export default function MentorRegisterPage() {
     skills: "",
     pricing: "499",
     linkedin: "",
+    counseling_type: [] as string[],
   })
 
   const handleNext = () => setStep(step + 1)
@@ -101,6 +102,7 @@ export default function MentorRegisterPage() {
           branch: form.branch,
           bio: form.bio,
           skills: skillsArray,
+          counseling_type: form.counseling_type,
           status: 'pending'
         })
 
@@ -121,6 +123,7 @@ export default function MentorRegisterPage() {
           skills: skillsArray,
           pricing: parseInt(form.pricing) || 499,
           linkedin: form.linkedin,
+          counseling_type: form.counseling_type,
           onboarding_complete: true,
         })
         .eq('id', dbUser.id)
@@ -244,6 +247,30 @@ export default function MentorRegisterPage() {
                             value={form.year}
                             onChange={(e) => setForm({...form, year: e.target.value})}
                           />
+                       </div>
+                       <div className="space-y-2 col-span-full">
+                          <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Counseling Expertise (Select multiple)</label>
+                          <div className="flex flex-wrap gap-2 pt-2">
+                             {["JoSAA", "MHT-CET", "CSAB", "JAC Delhi", "COMEDK", "Other"].map((type) => (
+                                <button
+                                  key={type}
+                                  onClick={() => {
+                                    const current = form.counseling_type;
+                                    const next = current.includes(type) 
+                                      ? current.filter(t => t !== type)
+                                      : [...current, type];
+                                    setForm({...form, counseling_type: next});
+                                  }}
+                                  className={`px-6 py-3 rounded-xl font-bold text-sm transition-all ${
+                                    form.counseling_type.includes(type)
+                                      ? "bg-primary text-white shadow-lg shadow-primary/20"
+                                      : "bg-slate-100 dark:bg-slate-800 text-slate-500 hover:bg-slate-200"
+                                  }`}
+                                >
+                                  {type}
+                                </button>
+                             ))}
+                          </div>
                        </div>
                     </div>
 

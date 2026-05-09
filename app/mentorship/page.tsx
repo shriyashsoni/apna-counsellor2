@@ -24,10 +24,12 @@ import Link from "next/link"
 import Image from "next/image"
 
 const SKILLS = ['JEE Advanced', 'JEE Mains', 'MHT-CET', 'COMEDK', 'Programming', 'Career Guidance'];
+const COUNSELING_TYPES = ['JoSAA', 'MHT-CET', 'CSAB', 'JAC Delhi', 'COMEDK'];
 
 export default function MentorshipPage() {
   const [search, setSearch] = useState('')
   const [selectedSkill, setSelectedSkill] = useState('')
+  const [selectedType, setSelectedType] = useState('')
   const [mentors, setMentors] = useState<any[] | undefined>(undefined);
   const supabase = createClient();
 
@@ -41,16 +43,19 @@ export default function MentorshipPage() {
       
       const { data } = await query;
       
-      // Client-side skill filtering since it's an array/jsonb
+      // Client-side filtering
       let filtered = data || [];
       if (selectedSkill) {
         filtered = filtered.filter(m => m.skills?.includes(selectedSkill));
+      }
+      if (selectedType) {
+        filtered = filtered.filter(m => m.counseling_type?.includes(selectedType));
       }
       
       setMentors(filtered);
     }
     fetchMentors();
-  }, [search, selectedSkill]);
+  }, [search, selectedSkill, selectedType]);
 
   return (
     <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950 pt-24 pb-20">
@@ -116,6 +121,26 @@ export default function MentorshipPage() {
                         >
                           {skill}
                           {selectedSkill === skill && <CheckCircle2 className="h-4 w-4" />}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-4">Counseling Type</h3>
+                    <div className="flex flex-wrap lg:flex-col gap-2">
+                      {COUNSELING_TYPES.map((type) => (
+                        <button
+                          key={type}
+                          onClick={() => setSelectedType(selectedType === type ? '' : type)}
+                          className={`flex items-center justify-between px-4 py-3 rounded-xl font-bold text-sm transition-all text-left ${
+                            selectedType === type 
+                              ? "bg-primary text-white shadow-lg shadow-primary/20" 
+                              : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-100 dark:border-slate-800"
+                          }`}
+                        >
+                          {type}
+                          {selectedType === type && <CheckCircle2 className="h-4 w-4" />}
                         </button>
                       ))}
                     </div>
@@ -203,7 +228,12 @@ export default function MentorshipPage() {
                                  </div>
 
                                  <div className="flex flex-wrap gap-2">
-                                    {mentor.skills?.slice(0, 3).map((skill: string) => (
+                                    {mentor.counseling_type?.map((type: string) => (
+                                       <Badge key={type} className="rounded-lg px-2 py-0.5 text-[10px] font-black bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 border-none">
+                                          {type}
+                                       </Badge>
+                                    ))}
+                                    {mentor.skills?.slice(0, 2).map((skill: string) => (
                                        <Badge key={skill} variant="secondary" className="rounded-lg px-2 py-0.5 text-[10px] font-black bg-slate-50 dark:bg-slate-800 text-slate-500 border-none">
                                           {skill}
                                        </Badge>
