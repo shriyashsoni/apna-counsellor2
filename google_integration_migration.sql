@@ -31,3 +31,37 @@ DROP TRIGGER IF EXISTS on_review_inserted ON public.reviews;
 CREATE TRIGGER on_review_inserted
     AFTER INSERT ON public.reviews
     FOR EACH ROW EXECUTE PROCEDURE public.update_mentor_stats();
+
+-- 5. Create Mentor Applications Table
+CREATE TABLE IF NOT EXISTS public.mentor_applications (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE,
+    name TEXT NOT NULL,
+    college TEXT NOT NULL,
+    branch TEXT NOT NULL,
+    bio TEXT,
+    skills TEXT[],
+    status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Enable RLS
+ALTER TABLE public.mentor_applications ENABLE ROW LEVEL SECURITY;
+
+-- Policies
+DROP POLICY IF EXISTS "Users Create Own Applications" ON public.mentor_applications;
+CREATE POLICY "Users Create Own Applications" ON public.mentor_applications 
+    FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users View Own Applications" ON public.mentor_applications;
+CREATE POLICY "Users View Own Applications" ON public.mentor_applications 
+    FOR SELECT USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Admins View All Applications" ON public.mentor_applications;
+CREATE POLICY "Admins View All Applications" ON public.mentor_applications 
+    FOR ALL USING (
+        EXISTS (
+            SELECT 1 FROM public.profiles 
+            WHERE id = auth.uid() AND role = 'admin'
+        )
+    );
