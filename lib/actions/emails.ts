@@ -174,3 +174,30 @@ export async function sendMentorApprovalEmail(to: string, name: string) {
     html: getBrandedLayout(content, `Congratulations ${name}, your mentor application is approved!`)
   });
 }
+export async function sendMentorBookingNotification(to: string, studentName: string, date: string, time: string, link: string) {
+  const content = `
+    <h2 style="margin: 0 0 20px 0; font-size: 28px; font-weight: 900; color: #1e293b;">New Session Booked! 🚀</h2>
+    <p style="margin: 0 0 35px 0; font-size: 16px; line-height: 26px; color: #475569; font-weight: 500;">Hello Expert! A student has just booked a consultancy session with you. Here are the details of your upcoming call.</p>
+    
+    <div style="background-color: #f5f3ff; border: 2px solid #ddd6fe; border-radius: 20px; padding: 30px; margin-bottom: 40px;">
+      <p style="margin: 0 0 10px 0; font-size: 14px; font-weight: 800; color: #6d28d9; text-transform: uppercase;">Session Details</p>
+      <p style="margin: 0 0 10px 0; font-size: 18px; font-weight: 800; color: #1e293b;">👤 Student: ${studentName}</p>
+      <p style="margin: 0 0 10px 0; font-size: 18px; font-weight: 800; color: #1e293b;">📅 Date: ${date}</p>
+      <p style="margin: 0 0 10px 0; font-size: 18px; font-weight: 800; color: #1e293b;">⏰ Time: ${time}</p>
+    </div>
+
+    <div style="margin-bottom: 40px;">
+      <a href="${link}" style="display: inline-block; background-color: #6d28d9; color: #ffffff; font-weight: 800; font-size: 14px; padding: 18px 30px; text-decoration: none; border-radius: 14px; margin-right: 10px;">View in Dashboard</a>
+      <a href="${link}" style="display: inline-block; background-color: #f1f5f9; color: #1e293b; font-weight: 800; font-size: 14px; padding: 18px 30px; text-decoration: none; border-radius: 14px;">Google Meet Link</a>
+    </div>
+
+    <p style="margin: 0; font-size: 14px; color: #94a3b8; font-weight: 600; font-style: italic;">Note: Your earnings (70% of booking fee) will be updated in your wallet after the session is completed.</p>
+  `;
+  
+  return resend.emails.send({
+    from: `Apna Counsellor <${FROM_EMAIL}>`,
+    to: [to],
+    subject: `New Booking: ${studentName} x Apna Counsellor`,
+    html: getBrandedLayout(content, `New session booked by ${studentName} for ${date}.`)
+  });
+}

@@ -67,7 +67,7 @@ export async function POST(req: Request) {
 
         // Fetch user and mentor data
         const { data: userData } = await supabaseAdmin.from('profiles').select('name, email').eq('id', notes.user_id).single()
-        const { data: mentorData } = await supabaseAdmin.from('profiles').select('name, google_refresh_token').eq('id', notes.mentor_id).single()
+        const { data: mentorData } = await supabaseAdmin.from('profiles').select('name, email, google_refresh_token').eq('id', notes.mentor_id).single()
 
         if (userData && mentorData) {
           let meetingLink = "https://meet.google.com/apna-counsellor"; // Fallback
@@ -114,6 +114,25 @@ export async function POST(req: Request) {
             notes.time || 'TBD',
             meetingLink
           )
+
+          // 4. Notify Mentor
+          if (mentorData.email) {
+            await sendMentorBookingNotification(
+              mentorData.email,
+              userData.name,
+              notes.date || 'TBD',
+              notes.time || 'TBD',
+              meetingLink
+            )
+          }
+
+          // Add in-app notification for mentor
+          await supabaseAdmin.from('notifications').insert({
+            user_id: notes.mentor_id,
+            title: "New Session Booked",
+            message: `Student ${userData.name} has booked a session for ${notes.date || 'TBD'} at ${notes.time || 'TBD'}.`,
+            type: 'success'
+          })
 
           await sendAdminNotification(
             "New Mentorship Booking",

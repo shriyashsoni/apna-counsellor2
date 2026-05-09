@@ -93,6 +93,12 @@ export default function DashboardPage() {
     return <AdminDashboard user={user} />
   }
 
+  // Mentor Redirect
+  if (user.role === "mentor") {
+    router.push("/mentor/dashboard")
+    return null
+  }
+
   // Student Dashboard View
   return <StudentDashboard profile={profile} user={user} />
 }

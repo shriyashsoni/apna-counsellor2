@@ -53,7 +53,7 @@ export default async function MentorDashboard() {
     .eq('status', 'captured')
     .in('session_id', completedSessionIds)
 
-  const totalEarnings = payments?.reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0) || 0
+  const totalEarnings = payments?.reduce((acc, curr) => acc + (Number(curr.amount) * 0.7 || 0), 0) || 0
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col lg:flex-row">
@@ -104,6 +104,10 @@ export default async function MentorDashboard() {
           </div>
           
           <div className="flex gap-4">
+             <Button variant="outline" size="icon" className="rounded-2xl h-14 w-14 border-slate-200 relative">
+                <Bell className="h-5 w-5 text-slate-400" />
+                <div className="absolute top-4 right-4 h-2 w-2 bg-red-500 rounded-full border-2 border-white" />
+             </Button>
              <Button variant="outline" className="rounded-2xl h-14 px-8 font-black border-slate-200">
                 <Settings className="mr-2 h-5 w-5 text-slate-400" /> Account
              </Button>
@@ -112,7 +116,7 @@ export default async function MentorDashboard() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {[
-            { label: "My Earnings", value: `₹${totalEarnings.toLocaleString()}`, icon: DollarSign, color: "text-emerald-600", bg: "bg-emerald-50" },
+            { label: "My Earnings (70%)", value: `₹${totalEarnings.toLocaleString()}`, icon: DollarSign, color: "text-emerald-600", bg: "bg-emerald-50" },
             { label: "Booked Calls", value: sessions?.length || 0, icon: Users, color: "text-purple-600", bg: "bg-purple-50" },
             { label: "My Rating", value: profile.rating || "4.9", icon: Star, color: "text-amber-500", bg: "bg-amber-50" },
             { 
