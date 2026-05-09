@@ -2,7 +2,7 @@
 
 import { resend } from "@/lib/resend"
 
-const FROM_EMAIL = "onboarding@resend.dev"; // User should change this once they verify domain
+const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev";
 const SITE_URL = "https://www.apnacounsellor.in";
 const LOGO_URL = `${SITE_URL}/images/apna-counsellor-logo.png`;
 

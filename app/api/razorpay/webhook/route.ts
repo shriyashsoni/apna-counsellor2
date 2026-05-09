@@ -31,6 +31,7 @@ export async function POST(req: Request) {
     const order = payload.order.entity
     const payment = payload.payment.entity
     const { notes } = order
+    console.log("🔔 Processing order.paid event for order:", order.id, "Notes:", notes)
 
     try {
       // 1. Record the payment
@@ -151,7 +152,19 @@ export async function POST(req: Request) {
 
       return NextResponse.json({ received: true })
     } catch (error: any) {
-      console.error('Webhook processing error:', error)
+      console.error('❌ Webhook processing error:', error)
+      
+      // Notify admin about the failure
+      try {
+        await supabaseAdmin.from('notifications').insert({
+          title: "Payment Webhook Error",
+          message: `Critical error processing payment for order ${event.payload?.order?.entity?.id}: ${error.message}`,
+          type: 'error'
+        })
+      } catch (notifyErr) {
+        console.error("Failed to log error notification:", notifyErr)
+      }
+
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
   }
