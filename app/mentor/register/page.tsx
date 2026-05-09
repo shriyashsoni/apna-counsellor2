@@ -60,7 +60,10 @@ export default function MentorRegisterPage() {
   const handleBack = () => setStep(step - 1)
 
   const handleSubmit = async () => {
-    if (!dbUser) return
+    if (!dbUser) {
+      toast.error("User session not found. Please login again.")
+      return
+    }
     
     setLoading(true)
     try {
@@ -71,7 +74,7 @@ export default function MentorRegisterPage() {
         .from('mentor_applications')
         .insert({
           user_id: dbUser.id,
-          name: dbUser.name || "Unknown",
+          name: dbUser.name || dbUser.user_metadata?.full_name || dbUser.email || "Unknown",
           college: form.college,
           branch: form.branch,
           bio: form.bio,
@@ -91,7 +94,7 @@ export default function MentorRegisterPage() {
           headline: form.headline,
           about: form.bio,
           skills: skillsArray,
-          pricing: parseInt(form.pricing),
+          pricing: parseInt(form.pricing) || 499,
           linkedin: form.linkedin,
           onboarding_complete: true,
         })
@@ -103,8 +106,9 @@ export default function MentorRegisterPage() {
         description: "An admin will review your profile within 24 hours.",
       })
       router.push("/dashboard")
-    } catch (e) {
-      toast.error("Registration failed. Please try again.")
+    } catch (e: any) {
+      console.error("Registration Error Detail:", e)
+      toast.error(`Registration failed: ${e.message || "Please try again"}`)
     } finally {
       setLoading(false)
     }
