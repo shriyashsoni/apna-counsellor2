@@ -25,6 +25,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue 
 } from "@/components/ui/select"
 import Image from "next/image"
+import { approveMentorAction } from "@/lib/actions/admin"
 
 type EditorView = 'dashboard' | 'course-creator' | 'blog-creator' | 'test-creator' | 'roi-manager' | 'notification-center' | 'identity-manager';
 
@@ -187,19 +188,22 @@ export default function AdminDashboard() {
   }
 
   const approveMentorWithEmail = async (appId: string, userId: string, email: string, name: string) => {
+    setIsSubmitting(true)
     try {
-      const { approveMentorAction } = await import('@/lib/actions/admin')
+      console.log("Approving mentor:", { appId, userId, email, name })
       const result = await approveMentorAction(appId, userId, email, name)
       
       if (result.success) {
         toast.success(`Mentor approved and notification sent to ${email}`)
-        fetchData()
+        await fetchData()
       } else {
         throw new Error(result.error)
       }
     } catch (e: any) {
       console.error("Approval Action Error:", e)
       toast.error(`Failed to approve: ${e.message}`)
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -667,7 +671,13 @@ export default function AdminDashboard() {
                     <p className="text-xs font-bold text-slate-500 line-clamp-3 italic">"{app.bio || 'No bio provided'}"</p>
                  </div>
                  <div className="flex gap-3">
-                    <Button onClick={() => approveMentorWithEmail(app.id, app.user_id, app.profiles?.email, app.name)} className="flex-1 rounded-xl h-12 bg-purple-600 font-black text-xs text-white">Approve Expert</Button>
+                    <Button 
+                      onClick={() => approveMentorWithEmail(app.id, app.user_id, app.profiles?.email, app.name)} 
+                      disabled={isSubmitting}
+                      className="flex-1 rounded-xl h-12 bg-purple-600 font-black text-xs text-white"
+                    >
+                      {isSubmitting ? <Loader2 className="animate-spin h-4 w-4" /> : "Approve Expert"}
+                    </Button>
                     <Button variant="ghost" className="rounded-xl h-12 px-5 text-red-500 font-black text-xs hover:bg-red-50">Decline</Button>
                  </div>
               </Card>
