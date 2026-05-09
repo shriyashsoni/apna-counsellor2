@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache"
 import { 
   Calendar, Clock, Users, DollarSign, Star, Video, 
   ChevronRight, ArrowLeft, Settings, Bell, LayoutDashboard,
-  ShieldCheck, MessageCircle
+  ShieldCheck, MessageCircle, LayoutGrid
 } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -79,6 +79,12 @@ export default async function MentorDashboard() {
             <Button variant="ghost" className="w-full justify-start gap-4 px-5 py-6 rounded-2xl text-slate-500 hover:text-slate-900 hover:bg-slate-50">
               <Calendar className="h-5 w-5" />
               <span className="font-bold">My Availability</span>
+            </Button>
+          </Link>
+          <Link href="/mentor/services">
+            <Button variant="ghost" className="w-full justify-start gap-4 px-5 py-6 rounded-2xl text-slate-500 hover:text-slate-900 hover:bg-slate-50">
+              <LayoutGrid className="h-5 w-5" />
+              <span className="font-bold">My Services</span>
             </Button>
           </Link>
         </nav>
