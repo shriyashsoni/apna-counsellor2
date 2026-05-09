@@ -149,3 +149,28 @@ export async function sendAdminNotification(subject: string, message: string) {
     html: getBrandedLayout(content, subject)
   });
 }
+export async function sendMentorApprovalEmail(to: string, name: string) {
+  const content = `
+    <h2 style="margin: 0 0 20px 0; font-size: 28px; font-weight: 900; color: #1e293b;">Welcome as a Mentor! 🎓</h2>
+    <p style="margin: 0 0 25px 0; font-size: 16px; line-height: 26px; color: #475569; font-weight: 500;">Hi ${name},</p>
+    <p style="margin: 0 0 35px 0; font-size: 16px; line-height: 26px; color: #475569; font-weight: 500;">Congratulations! Your mentor application for Apna Counsellor has been <strong>approved</strong>. You are now officially part of our expert network helping students find their dream colleges.</p>
+    
+    <div style="background-color: #ecfdf5; border-radius: 20px; padding: 30px; margin-bottom: 40px; border: 1px solid #10b981;">
+      <h3 style="margin: 0 0 15px 0; font-size: 14px; font-weight: 800; color: #059669; text-transform: uppercase;">Your Next Steps</h3>
+      <ul style="margin: 0; padding: 0; list-style: none;">
+        <li style="margin-bottom: 12px; font-size: 15px; font-weight: 600; color: #065f46;">✅ Access your Mentor Dashboard</li>
+        <li style="margin-bottom: 12px; font-size: 15px; font-weight: 600; color: #065f46;">⏰ Set your availability slots</li>
+        <li style="margin-bottom: 0; font-size: 15px; font-weight: 600; color: #065f46;">🔗 Link your Google Calendar for Auto-Meet links</li>
+      </ul>
+    </div>
+
+    <a href="${SITE_URL}/mentor/dashboard" style="display: inline-block; background-color: #059669; color: #ffffff; font-weight: 800; font-size: 16px; padding: 20px 40px; text-decoration: none; border-radius: 16px; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2);">Go to Mentor Dashboard</a>
+  `;
+  
+  return resend.emails.send({
+    from: `Apna Counsellor <${FROM_EMAIL}>`,
+    to: [to],
+    subject: `Approved: You are now a Mentor at Apna Counsellor!`,
+    html: getBrandedLayout(content, `Congratulations ${name}, your mentor application is approved!`)
+  });
+}

@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
+import { revalidatePath } from "next/cache"
 import { 
   Calendar, Clock, Users, DollarSign, Star, Video, 
   ChevronRight, ArrowLeft, Settings, Bell, LayoutDashboard,
@@ -184,8 +185,7 @@ export default async function MentorDashboard() {
                                     'use server'
                                     const sb = createClient()
                                     await sb.from('sessions').update({ status: 'completed' }).eq('id', s.id)
-                                    // Optional: Update mentor earnings in profile too
-                                    // For now just refresh
+                                    revalidatePath('/mentor/dashboard')
                                  }}>
                                     <Button type="submit" variant="outline" className="rounded-xl h-12 px-6 font-black border-emerald-200 text-emerald-600 hover:bg-emerald-50">
                                        Mark Done

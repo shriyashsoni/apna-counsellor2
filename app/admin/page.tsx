@@ -66,7 +66,7 @@ export default function AdminDashboard() {
       const { data: mentorData } = await supabase.from('profiles').select('*').eq('role', 'mentor')
       const { data: collegeData } = await supabase.from('colleges').select('id, name, city, state').order('name')
       const { data: paymentData } = await supabase.from('payments').select('amount')
-      const { data: appData } = await supabase.from('mentor_applications').select('*').eq('status', 'pending')
+      const { data: appData } = await supabase.from('mentor_applications').select('*, profiles(email)').eq('status', 'pending')
       const { data: sessionData } = await supabase.from('sessions').select('*, profiles!sessions_student_id_fkey(name, email)').order('created_at', { ascending: false })
       
       const totalRevenue = paymentData?.reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0) || 0
@@ -178,6 +178,19 @@ export default function AdminDashboard() {
     } catch (e) { 
       console.error("Approval Error:", e)
       toast.error("Approval failed") 
+    }
+  }
+
+  const approveMentorWithEmail = async (appId: string, userId: string, email: string, name: string) => {
+    try {
+      await approveMentor(appId, userId)
+      const { sendMentorApprovalEmail } = await import('@/lib/actions/emails')
+      if (email) {
+        await sendMentorApprovalEmail(email, name)
+        toast.success(`Approval email sent to ${email}`)
+      }
+    } catch (e) {
+      console.error("Email Error:", e)
     }
   }
 
@@ -645,7 +658,7 @@ export default function AdminDashboard() {
                     <p className="text-xs font-bold text-slate-500 line-clamp-3 italic">"{app.bio || 'No bio provided'}"</p>
                  </div>
                  <div className="flex gap-3">
-                    <Button onClick={() => approveMentor(app.id, app.user_id)} className="flex-1 rounded-xl h-12 bg-purple-600 font-black text-xs text-white">Approve Expert</Button>
+                    <Button onClick={() => approveMentorWithEmail(app.id, app.user_id, app.profiles?.email, app.name)} className="flex-1 rounded-xl h-12 bg-purple-600 font-black text-xs text-white">Approve Expert</Button>
                     <Button variant="ghost" className="rounded-xl h-12 px-5 text-red-500 font-black text-xs hover:bg-red-50">Decline</Button>
                  </div>
               </Card>
