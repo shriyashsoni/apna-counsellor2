@@ -167,31 +167,39 @@ export default function AdminDashboard() {
 
   const approveMentor = async (appId: string, userId: string) => {
     try {
-      await supabase.from('profiles').update({ 
+      const { error: profileError } = await supabase.from('profiles').update({ 
         role: 'mentor',
         verified: true,
         onboarding_complete: true
       }).eq('id', userId)
       
-      await supabase.from('mentor_applications').update({ status: 'approved' }).eq('id', appId)
-      toast.success("Mentor approved!")
+      if (profileError) throw profileError
+
+      const { error: appError } = await supabase.from('mentor_applications').update({ status: 'approved' }).eq('id', appId)
+      if (appError) throw appError
+
+      toast.success("Mentor approved and profile updated!")
       fetchData()
-    } catch (e) { 
+    } catch (e: any) { 
       console.error("Approval Error:", e)
-      toast.error("Approval failed") 
+      toast.error(`Approval failed: ${e.message || "Permissions error"}`) 
     }
   }
 
   const approveMentorWithEmail = async (appId: string, userId: string, email: string, name: string) => {
     try {
-      await approveMentor(appId, userId)
-      const { sendMentorApprovalEmail } = await import('@/lib/actions/emails')
-      if (email) {
-        await sendMentorApprovalEmail(email, name)
-        toast.success(`Approval email sent to ${email}`)
+      const { approveMentorAction } = await import('@/lib/actions/admin')
+      const result = await approveMentorAction(appId, userId, email, name)
+      
+      if (result.success) {
+        toast.success(`Mentor approved and notification sent to ${email}`)
+        fetchData()
+      } else {
+        throw new Error(result.error)
       }
-    } catch (e) {
-      console.error("Email Error:", e)
+    } catch (e: any) {
+      console.error("Approval Action Error:", e)
+      toast.error(`Failed to approve: ${e.message}`)
     }
   }
 
