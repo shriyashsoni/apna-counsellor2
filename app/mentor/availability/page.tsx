@@ -73,9 +73,54 @@ export default function MentorAvailabilityPage() {
 
     if (error) {
       toast.error("Failed to save availability")
-    } else {
-      toast.success("Availability saved successfully!")
+      setLoading(false)
+      return
     }
+
+    // Now generate session slots for the next 7 days based on this availability
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+
+      const slots = availability
+      const sessionsToCreate = []
+      
+      for (let i = 0; i < 7; i++) {
+        const date = new Date()
+        date.setDate(date.getDate() + i)
+        const dayName = date.toLocaleDateString('en-US', { weekday: 'short' }).toLowerCase()
+        
+        const daySlots = slots.filter(s => s.day_of_week === dayName)
+        
+        for (const slot of daySlots) {
+          sessionsToCreate.push({
+            mentor_id: user.id,
+            mentor_name: user.user_metadata?.full_name || "Expert",
+            date: date.toISOString().split('T')[0],
+            time_slot: `${slot.start_time} - ${slot.end_time}`,
+            status: 'available',
+            price: 499 // Default price
+          })
+        }
+      }
+
+      // Clear future available sessions and replace with new ones
+      await supabase.from('sessions')
+        .delete()
+        .eq('mentor_id', user.id)
+        .eq('status', 'available')
+        .gte('date', new Date().toISOString().split('T')[0])
+
+      if (sessionsToCreate.length > 0) {
+        await supabase.from('sessions').insert(sessionsToCreate)
+      }
+
+      toast.success("Availability and session slots updated!")
+    } catch (err) {
+      console.error("Error generating sessions:", err)
+      toast.error("Availability saved, but session generation failed")
+    }
+    
     setLoading(false)
   }
 
