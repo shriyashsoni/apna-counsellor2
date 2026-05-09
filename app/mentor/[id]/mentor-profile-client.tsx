@@ -118,7 +118,14 @@ export default function MentorProfileClient({
                             <span className="text-[10px] font-bold text-amber-600/60">({initialMentor.reviews_count || 0})</span>
                          </div>
                       </div>
-                     <p className="text-xl font-bold text-purple-600">{initialMentor.headline || 'Expert Career Mentor'}</p>
+                     <p className="text-xl font-bold text-purple-600">{initialMentor.headline || initialMentor.expertise || 'Expert Career Mentor'}</p>
+                     <div className="flex flex-wrap justify-center md:justify-start gap-2 mb-4">
+                        {initialMentor.counseling_type?.map((type: string) => (
+                           <Badge key={type} className="bg-primary/10 text-primary border-none font-bold">
+                              {type}
+                           </Badge>
+                        ))}
+                     </div>
                      <div className="flex flex-wrap justify-center md:justify-start gap-6 text-slate-500 font-bold">
                         <div className="flex items-center gap-2">
                            <GraduationCap className="h-5 w-5 text-slate-400" />
@@ -196,7 +203,15 @@ export default function MentorProfileClient({
                                <div className="space-y-1">
                                   <div className="flex items-center gap-2 text-purple-600">
                                      <Calendar className="h-5 w-5" />
-                                     <span className="font-black">{new Date(session.date).toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'short' })}</span>
+                                     <span className="font-black">
+                                        {(() => {
+                                           try {
+                                              return new Date(session.date).toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'short' });
+                                           } catch (e) {
+                                              return String(session.date);
+                                           }
+                                        })()}
+                                     </span>
                                   </div>
                                   <div className="flex items-center gap-2 text-slate-400 font-bold text-sm">
                                      <Clock className="h-4 w-4" />

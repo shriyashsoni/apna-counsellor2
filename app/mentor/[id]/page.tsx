@@ -12,10 +12,12 @@ interface MentorPageProps {
 
 export async function generateMetadata({ params }: MentorPageProps): Promise<Metadata | undefined> {
   const supabase = createClient()
+  const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(params.id)
+
   const { data: mentor } = await supabase
     .from('profiles')
     .select('*')
-    .eq('id', params.id)
+    .or(`id.eq.${isUuid ? params.id : '00000000-0000-0000-0000-000000000000'},slug.eq.${params.id}`)
     .single()
 
   if (!mentor) return;
@@ -44,10 +46,12 @@ export async function generateMetadata({ params }: MentorPageProps): Promise<Met
 export default async function MentorProfilePage({ params }: MentorPageProps) {
   const supabase = createClient()
   
+  const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(params.id)
+
   const { data: mentor } = await supabase
     .from('profiles')
     .select('*')
-    .eq('id', params.id)
+    .or(`id.eq.${isUuid ? params.id : '00000000-0000-0000-0000-000000000000'},slug.eq.${params.id}`)
     .single()
 
   if (!mentor) notFound()
