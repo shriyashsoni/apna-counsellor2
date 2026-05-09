@@ -2,7 +2,7 @@
 
 import { createClient } from "@/lib/supabase/client"
 import { useState, useEffect } from "react"
-import { AdminGuard } from "@/components/admin-guard"
+
 import { 
   Users, UserCheck, BarChart3, Activity, Database, DollarSign, ShieldCheck,
   Search, Check, X, Phone, Loader2, AlertCircle, Plus, BookOpen, FileText,
@@ -813,13 +813,12 @@ export default function AdminDashboard() {
     </div>
   )
 
-  if (view === 'blog-creator') return <AdminGuard><div className="bg-slate-50 min-h-screen p-6 md:p-12"><RenderBlogCreator /></div></AdminGuard>
-  if (view === 'course-creator') return <AdminGuard><div className="bg-slate-50 min-h-screen p-6 md:p-12"><RenderCourseCreator /></div></AdminGuard>
-  if (view === 'notification-center') return <AdminGuard><div className="bg-slate-50 min-h-screen p-6 md:p-12"><div className="flex items-center gap-4 mb-12"><Button variant="ghost" size="icon" onClick={() => setView('dashboard')} className="rounded-full bg-white h-12 w-12 shadow-sm"><ArrowLeft /></Button><h1 className="text-3xl font-black tracking-tighter">Communications Center</h1></div><RenderNotificationHub /></div></AdminGuard>
+  if (view === 'blog-creator') return <div className="bg-slate-50 min-h-screen p-6 md:p-12"><RenderBlogCreator /></div>
+  if (view === 'course-creator') return <div className="bg-slate-50 min-h-screen p-6 md:p-12"><RenderCourseCreator /></div>
+  if (view === 'notification-center') return <div className="bg-slate-50 min-h-screen p-6 md:p-12"><div className="flex items-center gap-4 mb-12"><Button variant="ghost" size="icon" onClick={() => setView('dashboard')} className="rounded-full bg-white h-12 w-12 shadow-sm"><ArrowLeft /></Button><h1 className="text-3xl font-black tracking-tighter">Communications Center</h1></div><RenderNotificationHub /></div>
 
   return (
-    <AdminGuard>
-      <div className="min-h-screen bg-slate-50 text-black font-sans flex flex-col lg:flex-row">
+    <div className="min-h-screen bg-slate-50 text-black font-sans flex flex-col lg:flex-row">
         
         {/* Sidebar */}
         <aside className="w-80 border-r border-slate-200 bg-white hidden lg:flex flex-col p-8 fixed h-full z-10">
@@ -882,7 +881,7 @@ export default function AdminDashboard() {
 
         </main>
       </div>
-    </AdminGuard>
+    </div>
   )
 }
 

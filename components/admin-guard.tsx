@@ -24,7 +24,7 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
         .eq('id', authUser.id)
         .single()
       
-      setUser(profile ? { ...authUser, ...profile } : null)
+      setUser({ authUser, profile })
     }
     checkAdmin()
   }, [])
@@ -39,12 +39,13 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
   }
 
   // Strict email check for admins - Only the two owner IDs allowed
-  const isAdmin = user && (
-    user.email === "apnacounsellor@gmail.com" || 
-    user.email === "sonishriyash@gmail.com"
+  // We check authUser directly in case RLS blocks the profile fetch
+  const isAdmin = user?.authUser && (
+    user.authUser.email === "apnacounsellor@gmail.com" || 
+    user.authUser.email === "sonishriyash@gmail.com"
   );
 
-  if (!user || !isAdmin) {
+  if (!user?.authUser || !isAdmin) {
     return (
       <div className="h-screen flex flex-col items-center justify-center p-8 text-center bg-slate-950 text-white">
         <div className="h-24 w-24 rounded-full bg-red-500/10 flex items-center justify-center mb-8 border border-red-500/20">
