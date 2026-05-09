@@ -11,7 +11,8 @@ export async function approveMentorAction(appId: string, userId: string, email: 
       .from('profiles')
       .update({ 
         role: 'mentor',
-        onboarding_complete: true
+        onboarding_complete: true,
+        is_visible: true
       })
       .eq('id', userId)
 
@@ -63,6 +64,24 @@ export async function deleteMentorAction(userId: string) {
       .from('profiles')
       .update({ 
         role: 'student'
+      })
+      .eq('id', userId)
+
+    if (error) throw error
+
+    revalidatePath('/admin')
+    return { success: true }
+  } catch (error: any) {
+    return { success: false, error: error.message }
+  }
+}
+
+export async function toggleMentorVisibilityAction(userId: string, isVisible: boolean) {
+  try {
+    const { error } = await supabaseAdmin
+      .from('profiles')
+      .update({ 
+        is_visible: isVisible
       })
       .eq('id', userId)
 

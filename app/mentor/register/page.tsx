@@ -125,6 +125,7 @@ export default function MentorRegisterPage() {
           linkedin: form.linkedin,
           counseling_type: form.counseling_type,
           onboarding_complete: true,
+          slug: (dbUser.name || dbUser.user_metadata?.full_name || "mentor").toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + Math.random().toString(36).substring(2, 5),
         })
         .eq('id', dbUser.id)
       

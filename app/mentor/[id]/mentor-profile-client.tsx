@@ -34,11 +34,13 @@ export default function MentorProfileClient({
   initialMentor, 
   initialSessions, 
   initialReviews = [],
+  initialServices = [],
   currentUser 
 }: { 
   initialMentor: any, 
   initialSessions: any[], 
   initialReviews: any[],
+  initialServices: any[],
   currentUser: any 
 }) {
   const router = useRouter()
@@ -143,6 +145,7 @@ export default function MentorProfileClient({
             <Tabs defaultValue="about" className="w-full">
                 <TabsList className="bg-white border border-slate-100 rounded-2xl h-14 p-1 mb-8 w-full md:w-auto flex">
                    <TabsTrigger value="about" className="flex-1 md:px-8 rounded-xl font-black text-sm">About Mentor</TabsTrigger>
+                   <TabsTrigger value="services" className="flex-1 md:px-8 rounded-xl font-black text-sm">Services ({initialServices.length})</TabsTrigger>
                    <TabsTrigger value="reviews" className="flex-1 md:px-8 rounded-xl font-black text-sm">Reviews ({initialReviews.length})</TabsTrigger>
                 </TabsList>
                <TabsContent value="about" className="space-y-8">
@@ -154,6 +157,39 @@ export default function MentorProfileClient({
                          {initialMentor.about || initialMentor.bio || "No biography provided."}
                       </p>
                    </Card>
+                </TabsContent>
+                <TabsContent value="services" className="space-y-6">
+                   {initialServices.length === 0 ? (
+                      <Card className="border-none rounded-[2.5rem] bg-white p-12 text-center shadow-sm">
+                         <Zap className="h-12 w-12 text-slate-100 mx-auto mb-4" />
+                         <p className="text-slate-400 font-bold">No custom services listed yet.</p>
+                      </Card>
+                   ) : (
+                      <div className="grid md:grid-cols-2 gap-6">
+                         {initialServices.map((service, i) => (
+                            <Card key={i} className="border-none rounded-[2rem] bg-white p-8 shadow-sm border border-slate-50 relative overflow-hidden group">
+                               <div className="relative z-10 space-y-4">
+                                  <div className="flex justify-between items-start">
+                                     <h4 className="text-xl font-black text-slate-900">{service.title}</h4>
+                                     <Badge className="bg-emerald-50 text-emerald-600 border-none font-bold">₹{service.price}</Badge>
+                                  </div>
+                                  <p className="text-sm text-slate-500 font-medium leading-relaxed">{service.description}</p>
+                                  <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-widest text-slate-400">
+                                     <div className="flex items-center gap-1">
+                                        <Clock className="h-3 w-3" /> {service.duration_minutes} mins
+                                     </div>
+                                     <div className="flex items-center gap-1">
+                                        <Video className="h-3 w-3" /> 1-on-1 Video
+                                     </div>
+                                  </div>
+                                  <Button className="w-full h-12 rounded-xl font-black text-sm bg-slate-900 text-white hover:bg-slate-800">
+                                     Book Service
+                                  </Button>
+                               </div>
+                            </Card>
+                         ))}
+                      </div>
+                   )}
                 </TabsContent>
                 <TabsContent value="reviews" className="space-y-6">
                    {initialReviews.length === 0 ? (

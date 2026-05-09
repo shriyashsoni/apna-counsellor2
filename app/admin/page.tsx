@@ -25,7 +25,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue 
 } from "@/components/ui/select"
 import Image from "next/image"
-import { approveMentorAction, suspendMentorAction, deleteMentorAction } from "@/lib/actions/admin"
+import { approveMentorAction, suspendMentorAction, deleteMentorAction, toggleMentorVisibilityAction } from "@/lib/actions/admin"
 
 type EditorView = 'dashboard' | 'course-creator' | 'blog-creator' | 'test-creator' | 'roi-manager' | 'notification-center' | 'identity-manager';
 
@@ -64,10 +64,10 @@ export default function AdminDashboard() {
     setIsLoading(true)
     try {
       const { data: userData } = await supabase.from('profiles').select('*').order('created_at', { ascending: false })
-      const { data: mentorData } = await supabase.from('profiles').select('*').in('role', ['mentor', 'suspended_mentor'])
+      const { data: mentorData } = await supabase.from('profiles').select('*, is_visible').in('role', ['mentor', 'suspended_mentor'])
       const { data: collegeData } = await supabase.from('colleges').select('id, name, city, state').order('name')
       const { data: paymentData } = await supabase.from('payments').select('amount')
-      const { data: appData, error: appError } = await supabase.from('mentor_applications').select('*, profiles!user_id(email)').eq('status', 'pending')
+      const { data: appData, error: appError } = await supabase.from('mentor_applications').select('*, profiles(email)').eq('status', 'pending')
       if (appError) console.error("Applications Fetch Error:", appError)
       const { data: sessionData } = await supabase.from('sessions').select('*, profiles!sessions_student_id_fkey(name, email)').order('created_at', { ascending: false })
       
@@ -227,6 +227,18 @@ export default function AdminDashboard() {
       const result = await deleteMentorAction(userId)
       if (result.success) {
         toast.success("Mentor access revoked")
+        await fetchData()
+      } else throw new Error(result.error)
+    } catch (e: any) { toast.error(e.message) }
+    finally { setIsSubmitting(false) }
+  }
+
+  const handleToggleVisibility = async (userId: string, currentVisibility: boolean) => {
+    setIsSubmitting(true)
+    try {
+      const result = await toggleMentorVisibilityAction(userId, !currentVisibility)
+      if (result.success) {
+        toast.success(!currentVisibility ? "Mentor is now visible" : "Mentor is now hidden")
         await fetchData()
       } else throw new Error(result.error)
     } catch (e: any) { toast.error(e.message) }
@@ -726,6 +738,7 @@ export default function AdminDashboard() {
                 <th className="px-8 py-5 text-[10px] font-black uppercase text-slate-400">Expert</th>
                 <th className="px-8 py-5 text-[10px] font-black uppercase text-slate-400">Stats</th>
                 <th className="px-8 py-5 text-[10px] font-black uppercase text-slate-400">Pricing</th>
+                <th className="px-8 py-5 text-[10px] font-black uppercase text-slate-400">Status</th>
                 <th className="px-8 py-5 text-[10px] font-black uppercase text-slate-400">Actions</th>
               </tr>
             </thead>
@@ -759,7 +772,20 @@ export default function AdminDashboard() {
                     ₹{m.pricing || 499}
                   </td>
                   <td className="px-8 py-6">
+                    <Badge className={`rounded-lg px-2 py-0.5 border-none font-black text-[10px] ${m.is_visible ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-400'}`}>
+                      {m.is_visible ? 'VISIBLE' : 'HIDDEN'}
+                    </Badge>
+                  </td>
+                  <td className="px-8 py-6">
                     <div className="flex gap-2">
+                       <Button 
+                         variant="ghost" 
+                         size="sm" 
+                         onClick={() => handleToggleVisibility(m.id, m.is_visible)}
+                         className={`font-black text-[10px] uppercase rounded-xl ${m.is_visible ? 'text-slate-500 hover:bg-slate-50' : 'text-emerald-600 hover:bg-emerald-50'}`}
+                       >
+                         {m.is_visible ? 'Hide' : 'Show'}
+                       </Button>
                        <Button 
                          variant="ghost" 
                          size="sm" 

@@ -59,7 +59,7 @@ export default async function MentorProfilePage({ params }: MentorPageProps) {
   const { data: sessionsData } = await supabase
     .from('sessions')
     .select('*')
-    .eq('mentor_id', params.id)
+    .eq('mentor_id', mentor.id)
     .eq('status', 'available')
 
   let sessions = sessionsData || []
@@ -72,8 +72,14 @@ export default async function MentorProfilePage({ params }: MentorPageProps) {
   const { data: reviews } = await supabase
     .from('reviews')
     .select('*')
-    .eq('mentor_id', params.id)
+    .eq('mentor_id', mentor.id)
     .order('created_at', { ascending: false })
+
+  const { data: services } = await supabase
+    .from('mentor_services')
+    .select('*')
+    .eq('mentor_id', mentor.id)
+    .eq('is_active', true)
 
   const { data: { user } } = await supabase.auth.getUser()
   let dbUser = null
@@ -87,6 +93,7 @@ export default async function MentorProfilePage({ params }: MentorPageProps) {
       initialMentor={mentor} 
       initialSessions={sessions || []} 
       initialReviews={reviews || []}
+      initialServices={services || []}
       currentUser={dbUser} 
     />
   )

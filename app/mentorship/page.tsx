@@ -35,7 +35,7 @@ export default function MentorshipPage() {
 
   useEffect(() => {
     async function fetchMentors() {
-      let query = supabase.from("profiles").select("*").eq("role", "mentor");
+      let query = supabase.from("profiles").select("*").eq("role", "mentor").eq("is_visible", true);
       
       if (search) {
         query = query.ilike("name", `%${search}%`);
@@ -245,7 +245,7 @@ export default function MentorshipPage() {
                                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Pricing</p>
                                        <p className="text-lg font-black text-slate-900 dark:text-white">₹{mentor.pricing || 499}<span className="text-sm font-bold text-slate-400">/session</span></p>
                                     </div>
-                                    <Link href={`/mentor/${mentor.id}`}>
+                                    <Link href={`/mentor/${mentor.slug || mentor.id}`}>
                                        <Button className="rounded-2xl font-black gap-2 shadow-lg shadow-primary/20">
                                           View Profile <ArrowRight className="h-4 w-4" />
                                        </Button>
