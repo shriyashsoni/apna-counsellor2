@@ -66,10 +66,25 @@ export default function MentorRegisterPage() {
     try {
       const skillsArray = form.skills.split(',').map(s => s.trim()).filter(Boolean)
       
-      const { error } = await supabase
+      // 1. Insert into mentor_applications for admin review
+      const { error: appError } = await supabase
+        .from('mentor_applications')
+        .insert({
+          user_id: dbUser.id,
+          name: dbUser.name || "Unknown",
+          college: form.college,
+          branch: form.branch,
+          bio: form.bio,
+          skills: skillsArray,
+          status: 'pending'
+        })
+
+      if (appError) throw appError
+
+      // 2. Update profile state
+      const { error: profileError } = await supabase
         .from('profiles')
         .update({
-          role: "mentor",
           college: form.college,
           branch: form.branch,
           year: form.year,
@@ -78,12 +93,11 @@ export default function MentorRegisterPage() {
           skills: skillsArray,
           pricing: parseInt(form.pricing),
           linkedin: form.linkedin,
-          verified: false, // Admin approval required
           onboarding_complete: true,
         })
         .eq('id', dbUser.id)
       
-      if (error) throw error
+      if (profileError) throw profileError
       
       toast.success("Registration submitted!", {
         description: "An admin will review your profile within 24 hours.",

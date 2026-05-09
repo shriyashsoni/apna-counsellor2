@@ -166,11 +166,19 @@ export default function AdminDashboard() {
 
   const approveMentor = async (appId: string, userId: string) => {
     try {
-      await supabase.from('profiles').update({ role: 'mentor' }).eq('id', userId)
+      await supabase.from('profiles').update({ 
+        role: 'mentor',
+        verified: true,
+        onboarding_complete: true
+      }).eq('id', userId)
+      
       await supabase.from('mentor_applications').update({ status: 'approved' }).eq('id', appId)
       toast.success("Mentor approved!")
       fetchData()
-    } catch (e) { toast.error("Approval failed") }
+    } catch (e) { 
+      console.error("Approval Error:", e)
+      toast.error("Approval failed") 
+    }
   }
 
   const SidebarContent = () => (
