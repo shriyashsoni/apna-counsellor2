@@ -67,7 +67,8 @@ export default function AdminDashboard() {
       const { data: mentorData } = await supabase.from('profiles').select('*').in('role', ['mentor', 'suspended_mentor'])
       const { data: collegeData } = await supabase.from('colleges').select('id, name, city, state').order('name')
       const { data: paymentData } = await supabase.from('payments').select('amount')
-      const { data: appData } = await supabase.from('mentor_applications').select('*, profiles(email)').eq('status', 'pending')
+      const { data: appData, error: appError } = await supabase.from('mentor_applications').select('*, profiles!user_id(email)').eq('status', 'pending')
+      if (appError) console.error("Applications Fetch Error:", appError)
       const { data: sessionData } = await supabase.from('sessions').select('*, profiles!sessions_student_id_fkey(name, email)').order('created_at', { ascending: false })
       
       const totalRevenue = paymentData?.reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0) || 0
@@ -685,10 +686,15 @@ export default function AdminDashboard() {
                        <div className="h-12 w-12 rounded-2xl bg-purple-100 text-purple-600 flex items-center justify-center font-black">
                           {app.name?.charAt(0)}
                        </div>
-                       <div>
-                          <h4 className="font-black text-lg">{app.name}</h4>
-                          <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">{app.college} · {app.branch}</p>
-                       </div>
+                        <div>
+                           <h4 className="font-black text-lg">{app.name}</h4>
+                           <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">{app.college} · {app.branch}</p>
+                           <div className="flex flex-wrap gap-1 mt-1">
+                              {app.counseling_type?.map((type: string) => (
+                                <Badge key={type} className="bg-purple-50 text-purple-600 border-none text-[8px] px-1.5 py-0">{type}</Badge>
+                              ))}
+                           </div>
+                        </div>
                     </div>
                     <Badge className="bg-orange-50 text-orange-600 border-none font-black text-[10px]">NEW</Badge>
                  </div>
@@ -731,9 +737,14 @@ export default function AdminDashboard() {
                       <div className="h-10 w-10 rounded-xl bg-purple-50 flex items-center justify-center text-purple-600 font-black overflow-hidden relative">
                          {m.image ? <Image src={m.image} alt={m.name} fill className="object-cover" /> : m.name?.charAt(0)}
                       </div>
-                      <div>
+                       <div>
                         <p className="font-bold text-slate-900">{m.name}</p>
                         <p className="text-xs text-slate-400 font-bold">{m.college}</p>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                           {m.counseling_type?.map((type: string) => (
+                              <Badge key={type} className="bg-purple-50 text-purple-600 border-none text-[8px] px-1.5 py-0">{type}</Badge>
+                           ))}
+                        </div>
                       </div>
                     </div>
                   </td>
