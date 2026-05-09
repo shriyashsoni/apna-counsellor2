@@ -65,8 +65,10 @@ export default function MentorRegisterPage() {
       return
     }
     
+    console.log("Mentor Registration: Starting submission process...")
     setLoading(true)
     try {
+      console.log("Mentor Registration: Checking for existing profile for ID:", dbUser.id)
       // 0. Ensure profile exists to avoid foreign key errors in mentor_applications
       const { data: existingProfile, error: checkError } = await supabase
         .from('profiles')
@@ -74,18 +76,31 @@ export default function MentorRegisterPage() {
         .eq('id', dbUser.id)
         .maybeSingle()
       
+      if (checkError) {
+        console.error("Mentor Registration: Profile check error:", checkError)
+        throw checkError
+      }
+
       if (!existingProfile) {
+        console.log("Mentor Registration: Profile not found, creating new profile...")
         const { error: createError } = await supabase.from('profiles').insert({
           id: dbUser.id,
-          name: dbUser.user_metadata?.full_name || dbUser.email?.split('@')[0] || "User",
+          name: dbUser.name || dbUser.user_metadata?.full_name || dbUser.email?.split('@')[0] || "User",
           email: dbUser.email,
           role: 'student',
           onboarding_complete: false
         })
-        if (createError) throw createError
+        if (createError) {
+          console.error("Mentor Registration: Profile creation error:", createError)
+          throw createError
+        }
+        console.log("Mentor Registration: Profile created successfully.")
+      } else {
+        console.log("Mentor Registration: Profile already exists.")
       }
 
       const skillsArray = form.skills.split(',').map(s => s.trim()).filter(Boolean)
+      console.log("Mentor Registration: Inserting application into mentor_applications table...")
       
       // 1. Insert into mentor_applications for admin review
       const { error: appError } = await supabase
@@ -100,8 +115,13 @@ export default function MentorRegisterPage() {
           status: 'pending'
         })
 
-      if (appError) throw appError
+      if (appError) {
+        console.error("Mentor Registration: Application insertion error:", appError)
+        throw appError
+      }
+      console.log("Mentor Registration: Application inserted successfully.")
 
+      console.log("Mentor Registration: Updating profiles table with mentor details...")
       // 2. Update profile state
       const { error: profileError } = await supabase
         .from('profiles')
@@ -118,11 +138,16 @@ export default function MentorRegisterPage() {
         })
         .eq('id', dbUser.id)
       
-      if (profileError) throw profileError
+      if (profileError) {
+        console.error("Mentor Registration: Profile update error:", profileError)
+        throw profileError
+      }
+      console.log("Mentor Registration: Profile updated successfully.")
       
       toast.success("Registration submitted!", {
         description: "An admin will review your profile within 24 hours.",
       })
+      console.log("Mentor Registration: Success! Redirecting to dashboard...")
       router.push("/dashboard")
     } catch (e: any) {
       console.error("Full Registration Error:", e)
