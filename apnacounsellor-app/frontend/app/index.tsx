@@ -17,7 +17,7 @@ export default function Welcome() {
   if (loading) {
     return (
       <View style={s.loadingContainer}>
-        <Image source={require('../assets/images/logo.png')} style={s.loadingLogo} resizeMode="contain" />
+        <Image source={require('../assets/images/logo.jpg')} style={s.loadingLogo} resizeMode="contain" />
       </View>
     );
   }
@@ -28,7 +28,7 @@ export default function Welcome() {
         {/* Hero Section with Logo */}
         <View style={s.heroSection}>
           <View style={s.logoWrapper}>
-            <Image source={require('../assets/images/logo.png')} style={s.logo} resizeMode="contain" />
+            <Image source={require('../assets/images/logo.jpg')} style={s.logo} resizeMode="contain" />
           </View>
           <Text style={s.tagline}>India's #1 AI-Powered{"\n"}Engineering Counseling Platform</Text>
         </View>

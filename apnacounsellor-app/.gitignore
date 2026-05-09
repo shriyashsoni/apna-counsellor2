@@ -88,3 +88,8 @@ credentials.json
 *.pem
 *.key
 .credentials
+
+# Backups and temporary files
+.git_backup/
+.emergent/
+

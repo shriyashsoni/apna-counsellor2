@@ -48,4 +48,9 @@ __pycache__/
 *.pem
 *.key
 service-account.json
-credentials.json
+credentials.json
+
+# Mobile/Expo cache
+.metro-cache/
+.expo/
+*.jks

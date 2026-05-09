@@ -11,8 +11,7 @@ from urllib.parse import urljoin, urlparse
 from datetime import datetime, timezone, timedelta
 from pydantic import BaseModel
 from typing import List, Optional
-from convex_client import convex_query, convex_mutation, clean_user
-from emergentintegrations.llm.chat import LlmChat, UserMessage
+from supabase_client import supabase, supabase_query, supabase_upsert, clean_user
 import razorpay
 import hmac, hashlib
 from urllib.parse import urljoin, urlparse
@@ -54,33 +53,33 @@ async def get_current_user(request: Request):
     if token.startswith("Bearer "): token = token[7:]
     if not token: raise HTTPException(401, "Not authenticated")
     try:
+        # Verify with Supabase Auth or decrypt JWT
+        # For simplicity, we'll verify against the profiles table
         payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
         if payload.get("type") != "access": raise HTTPException(401, "Invalid token")
-        user = await convex_query("users:getByEmail", {"email": payload["email"]})
+        
+        result = supabase.table("profiles").select("*").eq("email", payload["email"]).execute()
+        user = result.data[0] if result.data else None
+        
         if not user: raise HTTPException(401, "User not found")
         if user.get("blocked"): raise HTTPException(403, "Your account has been blocked. Contact support.")
-        user["id"] = user["_id"]
         return user
     except jwt.ExpiredSignatureError: raise HTTPException(401, "Token expired")
     except jwt.InvalidTokenError: raise HTTPException(401, "Invalid token")
 
 @app.on_event("startup")
 async def startup():
-    logger.info("Apna Counselor started (Convex backend)")
+    logger.info("Apna Counselor started (Supabase backend)")
     # Ensure admin exists
     try:
-        existing = await convex_query("users:getByEmail", {"email": ADMIN_EMAIL})
+        result = supabase.table("profiles").select("*").eq("email", ADMIN_EMAIL).execute()
+        existing = result.data[0] if result.data else None
         if not existing:
-            await convex_mutation("users:createUser", {
-                "name": "Apna Counsellor Admin", "email": ADMIN_EMAIL,
-                "passwordHash": hash_password(ADMIN_PASSWORD),
-                "role": "admin", "phone": "",
-                "verified": True, "profileComplete": True,
-                "createdAt": datetime.now(timezone.utc).isoformat(),
-            })
-            logger.info(f"Admin created: {ADMIN_EMAIL}")
+            # Note: In Supabase, users should be created via auth.signUp
+            # This is a fallback/seeding logic for profiles
+            logger.info(f"Admin profile check: {ADMIN_EMAIL} not found. Please register via Auth.")
     except Exception as e:
-        logger.warning(f"Admin seed: {e}")
+        logger.warning(f"Admin seed check: {e}")
 
 # ── Models ──────────────────────────────────────────────
 class RegisterInput(BaseModel):
@@ -489,29 +488,51 @@ async def join_batch(bid: str, user: dict = Depends(get_current_user)):
 async def ai_chat(body: ChatInput, user: dict = Depends(get_current_user)):
     sid = body.session_id or str(uuid.uuid4())
     ts = datetime.now(timezone.utc).isoformat()
-    await convex_mutation("chatHistory:addMessage", {
-        "sessionId": sid, "userId": user["_id"], "role": "user",
+    
+    # Store user message in Supabase
+    supabase.table("chat_history").insert({
+        "session_id": sid, "user_id": user["id"], "role": "user",
         "content": body.message, "timestamp": ts
-    })
+    }).execute()
+
     ctx = f"Student: {user.get('name', 'Unknown')}"
     if user.get("exam"): ctx += f", Exam: {user['exam']}"
     if user.get("interests"): ctx += f", Interests: {', '.join(user.get('interests', []))}"
+    
     sys_msg = f"You are Apna Counsellor AI - an expert educational counselor for Indian engineering students. Help ONLY with engineering college admissions through: JoSAA (JEE Main/Advanced), MHT-CET (Maharashtra), COMEDK (Karnataka), MPDTE (Madhya Pradesh). Provide guidance on college selection, cutoffs, branch choices, placements, and career options. Be concise, specific, encouraging. Student: {ctx}. Keep responses under 200 words. Focus only on engineering - do not discuss medical/NEET/law/MBA."
-    history = await convex_query("chatHistory:listBySession", {"sessionId": sid})
+
+    # Get history from Supabase
+    history_res = supabase.table("chat_history").select("*").eq("session_id", sid).order("timestamp", desc=False).execute()
+    history = history_res.data or []
+
+    messages = [{"role": "system", "content": sys_msg}]
+    for msg in history:
+        messages.append({"role": msg["role"], "content": msg["content"]})
+
     try:
-        chat = LlmChat(api_key=EMERGENT_LLM_KEY, session_id=f"ac_{sid}", system_message=sys_msg)
-        chat.with_model("anthropic", "claude-sonnet-4-5-20250929")
-        for msg in (history or [])[:-1]:
-            if msg["role"] == "user":
-                await chat.send_message(UserMessage(text=msg["content"]))
-        response = await chat.send_message(UserMessage(text=body.message))
+        async with httpx.AsyncClient() as client:
+            resp = await client.post(
+                "https://api.groq.com/openai/v1/chat/completions",
+                headers={"Authorization": f"Bearer {os.environ.get('GROQ_API_KEY')}"},
+                json={
+                    "model": "llama3-8b-8192",
+                    "messages": messages,
+                    "temperature": 0.5
+                },
+                timeout=30
+            )
+            data = resp.json()
+            response = data["choices"][0]["message"]["content"]
     except Exception as e:
         logger.error(f"AI error: {e}")
         response = "I'm here to help! Could you rephrase your question?"
-    await convex_mutation("chatHistory:addMessage", {
-        "sessionId": sid, "userId": user["_id"], "role": "assistant",
+
+    # Store assistant response in Supabase
+    supabase.table("chat_history").insert({
+        "session_id": sid, "user_id": user["id"], "role": "assistant",
         "content": response, "timestamp": datetime.now(timezone.utc).isoformat()
-    })
+    }).execute()
+
     return {"response": response, "session_id": sid}
 
 def serialize_college(c: dict) -> dict:
@@ -565,33 +586,57 @@ async def get_college(college_id: str):
 
 @api.post("/colleges/predict")
 async def predict_colleges(body: PredictInput, user: dict = Depends(get_current_user)):
-    rank = body.rank or 0
-    percentile = body.percentile or 0
-    if body.exam.upper() == "JEE MAINS" and percentile > 0:
-        rank = max(1, int((100 - percentile) * 12000))
-    elif body.exam.upper() == "JEE ADVANCED" and rank == 0:
-        rank = 50000
-    colleges = await convex_query("colleges:list", {})
-    results = []
-    for c in (colleges or []):
-        cutoffs = c.get("cutoffs") or {}
-        for branch, data in (cutoffs.items() if isinstance(cutoffs, dict) else []):
-            if body.preferred_branches and branch not in body.preferred_branches: continue
-            cat_cutoff = data.get(body.category, data.get("General", 99999)) if isinstance(data, dict) else 99999
-            if rank <= cat_cutoff:
-                prob = min(95, max(30, int(100 - (rank / max(cat_cutoff, 1)) * 60)))
-                sc = serialize_college(c)
-                results.append({
-                    "college_id": sc["id"], "name": sc["name"],
-                    "short_name": sc["short_name"], "state": sc["state"],
-                    "type": sc["type"], "branch": branch,
-                    "cutoff_rank": cat_cutoff, "your_rank": rank, "probability": prob,
-                    "annual_fee": sc["annual_fee"], "avg_package": sc["avg_package"],
-                    "nirf_rank": sc["nirf_rank"]
-                })
-                break
-    results.sort(key=lambda x: (-x["probability"], x.get("nirf_rank", 999)))
-    return results[:15]
+    apiKey = os.environ.get("GROQ_API_KEY")
+    if not apiKey:
+        raise HTTPException(500, "AI service not configured")
+
+    prompt = f"""
+    You are an expert Indian college admission counselor with deep knowledge of JoSAA, CSAB, MHT-CET, WBJEE, COMEDK, and State DTE counselings.
+    Based on the following student details, predict the top 15 best-fit colleges and branches they might get:
+    - Exam: {body.exam}
+    - Score/Rank: {body.rank or body.percentile}
+    - Category: {body.category}
+    - Preferred Branches: {", ".join(body.preferred_branches) if body.preferred_branches else "Any"}
+    
+    Consider Home State Quota (HS) vs Other State Quota (OS) logic. 
+    Use 2024 REFERENCE Ranks for calibration.
+    
+    Return the results as a JSON object with a key "colleges" containing an array of objects with these fields:
+    - name: Full college name
+    - branch: Recommended branch
+    - probability: Percentage chance (40-98)
+    - state: College state
+    - type: Government/Private
+    - avgPackage: e.g., "₹12 LPA"
+    - nirfRank: Approximate NIRF rank
+    - reason: Brief 1-sentence reason why this is a good match
+    """
+
+    try:
+        async with httpx.AsyncClient() as client:
+            resp = await client.post(
+                "https://api.groq.com/openai/v1/chat/completions",
+                headers={"Authorization": f"Bearer {apiKey}"},
+                json={
+                    "model": "llama3-8b-8192",
+                    "messages": [{"role": "user", "content": prompt}],
+                    "temperature": 0.5,
+                    "response_format": {"type": "json_object"}
+                },
+                timeout=30
+            )
+            data = resp.json()
+            content = data["choices"][0]["message"]["content"]
+            import json
+            parsed = json.loads(content)
+            results = parsed.get("colleges", [])
+            
+            # Map results to include college_id if possible by searching our database
+            # For simplicity, we'll return the AI results directly as per website logic
+            return results
+    except Exception as e:
+        logger.error(f"AI prediction error: {e}")
+        raise HTTPException(500, "Prediction failed")
 
 @api.post("/colleges/compare")
 async def compare_colleges(body: CompareInput):

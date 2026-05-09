@@ -43,6 +43,8 @@ import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
 import { UserNav } from "@/components/user-nav"
 import { useRouter } from "next/navigation"
+import { ReviewModal } from "@/components/review-modal"
+import { Video, Star as StarIcon } from "lucide-react"
 
 
 
@@ -198,6 +200,7 @@ function StudentDashboard({ profile, user }: { profile: any, user: any }) {
   const [sessions, setSessions] = useState<any[]>([])
   const [mentors, setMentors] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [selectedSession, setSelectedSession] = useState<any>(null)
   const supabase = createClient()
 
   useEffect(() => {
@@ -399,16 +402,51 @@ function StudentDashboard({ profile, user }: { profile: any, user: any }) {
                        <div className="h-12 w-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-500">
                          <Calendar className="h-6 w-6" />
                        </div>
-                       <Badge className="bg-emerald-500 text-white border-none text-[10px] font-black uppercase tracking-widest px-3 py-1">Confirmed</Badge>
+                       <Badge className={`border-none text-[10px] font-black uppercase tracking-widest px-3 py-1 ${
+                         s.status === 'completed' ? 'bg-slate-100 text-slate-500' : 'bg-emerald-500 text-white'
+                       }`}>
+                         {s.status}
+                       </Badge>
                      </div>
                      <h3 className="font-black text-xl text-slate-900 dark:text-white mb-2 line-clamp-1">{s.title || "Consultation Session"}</h3>
                      <p className="text-sm text-slate-500 mb-8 font-medium">with {s.mentor_name}</p>
-                     <div className="flex items-center gap-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                       <div className="flex items-center gap-2"><Clock className="h-4 w-4 text-primary" /> {s.time_slot}</div>
-                       <div className="flex items-center gap-2"><Calendar className="h-4 w-4 text-primary" /> {s.date}</div>
+                     
+                     <div className="flex flex-col gap-4 mb-8">
+                       <div className="flex items-center gap-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                         <div className="flex items-center gap-2"><Clock className="h-4 w-4 text-primary" /> {s.time_slot}</div>
+                         <div className="flex items-center gap-2"><Calendar className="h-4 w-4 text-primary" /> {s.date}</div>
+                       </div>
+
+                       {s.status === 'confirmed' && s.meeting_link && (
+                         <a href={s.meeting_link} target="_blank" rel="noopener noreferrer">
+                           <Button className="w-full h-12 rounded-xl bg-primary text-white font-black text-xs gap-2">
+                             <Video className="h-4 w-4" /> Join Google Meet
+                           </Button>
+                         </a>
+                       )}
+
+                       {s.status === 'completed' && (
+                         <Button 
+                           variant="outline" 
+                           onClick={() => setSelectedSession(s)}
+                           className="w-full h-12 rounded-xl border-amber-200 text-amber-600 font-black text-xs gap-2 hover:bg-amber-50"
+                         >
+                           <StarIcon className="h-4 w-4" /> Review Session
+                         </Button>
+                       )}
                      </div>
                    </Card>
                  ))}
+                 
+                 {selectedSession && (
+                   <ReviewModal 
+                     isOpen={!!selectedSession}
+                     onClose={() => setSelectedSession(null)}
+                     mentorId={selectedSession.mentor_id}
+                     mentorName={selectedSession.mentor_name}
+                     sessionId={selectedSession.id}
+                   />
+                 )}
                </div>
              )}
            </section>

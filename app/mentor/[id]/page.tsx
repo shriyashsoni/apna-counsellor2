@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { createClient } from "@/lib/supabase/server"
 import { notFound } from "next/navigation"
 import MentorProfileClient from "./mentor-profile-client"
+import { filterSessionsByAvailability } from "@/lib/google-calendar"
 
 interface MentorPageProps {
   params: {
@@ -51,11 +52,18 @@ export default async function MentorProfilePage({ params }: MentorPageProps) {
 
   if (!mentor) notFound()
 
-  const { data: sessions } = await supabase
+  const { data: sessionsData } = await supabase
     .from('sessions')
     .select('*')
     .eq('mentor_id', params.id)
     .eq('status', 'available')
+
+  let sessions = sessionsData || []
+
+  // Filter sessions by Google Calendar availability if linked
+  if (mentor.google_refresh_token && sessions.length > 0) {
+    sessions = await filterSessionsByAvailability(mentor.google_refresh_token, sessions)
+  }
 
   const { data: { user } } = await supabase.auth.getUser()
   let dbUser = null

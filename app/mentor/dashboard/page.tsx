@@ -35,11 +35,21 @@ export default async function MentorDashboard() {
     .eq('status', 'confirmed')
     .order('scheduled_at', { ascending: true })
 
+  // Fetch payments for completed sessions only
+  const { data: completedSessions } = await supabase
+    .from('sessions')
+    .select('id')
+    .eq('mentor_id', user.id)
+    .eq('status', 'completed')
+
+  const completedSessionIds = completedSessions?.map(s => s.id) || []
+
   const { data: payments } = await supabase
     .from('payments')
     .select('amount')
     .eq('mentor_id', user.id)
     .eq('status', 'captured')
+    .in('session_id', completedSessionIds)
 
   const totalEarnings = payments?.reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0) || 0
 
@@ -98,19 +108,36 @@ export default async function MentorDashboard() {
           </div>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {[
             { label: "My Earnings", value: `₹${totalEarnings.toLocaleString()}`, icon: DollarSign, color: "text-emerald-600", bg: "bg-emerald-50" },
             { label: "Booked Calls", value: sessions?.length || 0, icon: Users, color: "text-purple-600", bg: "bg-purple-50" },
             { label: "My Rating", value: profile.rating || "4.9", icon: Star, color: "text-amber-500", bg: "bg-amber-50" },
+            { 
+              label: "Calendar Sync", 
+              value: profile.google_refresh_token ? "Linked" : "Not Linked", 
+              icon: Calendar, 
+              color: profile.google_refresh_token ? "text-emerald-600" : "text-slate-400", 
+              bg: profile.google_refresh_token ? "bg-emerald-50" : "bg-slate-100",
+              action: !profile.google_refresh_token && (
+                <Link href="/api/auth/google/link">
+                  <Button variant="link" className="p-0 h-auto text-[10px] font-black uppercase text-purple-600">Link Now</Button>
+                </Link>
+              )
+            },
           ].map((stat, i) => (
-            <Card key={i} className="bg-white border-none rounded-[2.5rem] shadow-sm">
+            <Card key={i} className="bg-white border-none rounded-[2.5rem] shadow-sm relative overflow-hidden">
               <CardContent className="p-8">
                 <div className={`p-4 rounded-2xl w-fit mb-6 ${stat.bg} ${stat.color}`}>
                   <stat.icon className="h-6 w-6" />
                 </div>
-                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{stat.label}</p>
-                <p className="text-3xl font-black text-slate-900">{stat.value}</p>
+                <div className="flex justify-between items-end">
+                  <div>
+                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{stat.label}</p>
+                    <p className="text-3xl font-black text-slate-900">{stat.value}</p>
+                  </div>
+                  {stat.action}
+                </div>
               </CardContent>
             </Card>
           ))}
@@ -147,12 +174,25 @@ export default async function MentorDashboard() {
                                 </div>
                              </div>
                              <div className="flex gap-3 w-full md:w-auto">
-                                <Button className="flex-1 md:flex-none rounded-xl h-12 px-6 font-black bg-purple-600 text-white shadow-lg shadow-purple-100">
-                                   <Video className="mr-2 h-4 w-4" /> Join Call
-                                </Button>
-                                <Button variant="ghost" className="rounded-xl h-12 w-12 bg-slate-50 text-slate-400">
-                                   <MessageCircle className="h-5 w-5" />
-                                </Button>
+                                 <a href={s.meeting_link || '#'} target="_blank" rel="noopener noreferrer" className={!s.meeting_link ? 'pointer-events-none opacity-50' : ''}>
+                                    <Button className="flex-1 md:flex-none rounded-xl h-12 px-6 font-black bg-purple-600 text-white shadow-lg shadow-purple-100">
+                                       <Video className="mr-2 h-4 w-4" /> Join Call
+                                    </Button>
+                                 </a>
+                                 <form action={async () => {
+                                    'use server'
+                                    const sb = createClient()
+                                    await sb.from('sessions').update({ status: 'completed' }).eq('id', s.id)
+                                    // Optional: Update mentor earnings in profile too
+                                    // For now just refresh
+                                 }}>
+                                    <Button type="submit" variant="outline" className="rounded-xl h-12 px-6 font-black border-emerald-200 text-emerald-600 hover:bg-emerald-50">
+                                       Mark Done
+                                    </Button>
+                                 </form>
+                                 <Button variant="ghost" className="rounded-xl h-12 w-12 bg-slate-50 text-slate-400">
+                                    <MessageCircle className="h-5 w-5" />
+                                 </Button>
                              </div>
                           </div>
                        </Card>

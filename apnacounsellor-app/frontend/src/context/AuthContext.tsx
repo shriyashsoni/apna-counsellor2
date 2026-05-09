@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { apiCall } from '../utils/api';
+import { supabase } from '../lib/supabase';
+import { Session } from '@supabase/supabase-js';
 
 type User = {
   id: string;
@@ -12,6 +12,7 @@ type User = {
 
 type AuthContextType = {
   user: User | null;
+  session: Session | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string, role: string) => Promise<void>;
@@ -22,6 +23,7 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
+  session: null,
   loading: true,
   login: async () => {},
   register: async () => {},
@@ -32,60 +34,76 @@ const AuthContext = createContext<AuthContextType>({
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    checkAuth();
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      if (session) fetchProfile(session.user.id);
+      setLoading(false);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      if (session) {
+        fetchProfile(session.user.id);
+      } else {
+        setUser(null);
+      }
+      setLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
-  async function checkAuth() {
+  async function fetchProfile(userId: string) {
     try {
-      const token = await AsyncStorage.getItem('access_token');
-      if (token) {
-        const data = await apiCall('/auth/me');
-        setUser(data.user);
-      }
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+      
+      if (error) throw error;
+      setUser(data);
     } catch (e) {
-      await AsyncStorage.removeItem('access_token');
-      await AsyncStorage.removeItem('user');
-    } finally {
-      setLoading(false);
+      console.error('Error fetching profile:', e);
     }
   }
 
   async function loginFn(email: string, password: string) {
-    const data = await apiCall('/auth/login', {
-      method: 'POST',
-      body: JSON.stringify({ email, password }),
-    });
-    await AsyncStorage.setItem('access_token', data.access_token);
-    setUser(data.user);
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) throw error;
   }
 
   async function registerFn(name: string, email: string, password: string, role: string) {
-    const data = await apiCall('/auth/register', {
-      method: 'POST',
-      body: JSON.stringify({ name, email, password, role }),
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          full_name: name,
+          role: role,
+        },
+      },
     });
-    await AsyncStorage.setItem('access_token', data.access_token);
-    setUser(data.user);
+    if (error) throw error;
   }
 
   async function logoutFn() {
-    await AsyncStorage.removeItem('access_token');
-    await AsyncStorage.removeItem('user');
-    setUser(null);
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
   }
 
   async function refreshUser() {
-    try {
-      const data = await apiCall('/auth/me');
-      setUser(data.user);
-    } catch (e) {}
+    if (session?.user.id) {
+      await fetchProfile(session.user.id);
+    }
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, login: loginFn, register: registerFn, logout: logoutFn, refreshUser, setUser }}>
+    <AuthContext.Provider value={{ user, session, loading, login: loginFn, register: registerFn, logout: logoutFn, refreshUser, setUser }}>
       {children}
     </AuthContext.Provider>
   );

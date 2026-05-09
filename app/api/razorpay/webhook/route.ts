@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import crypto from 'crypto'
 import { supabaseAdmin } from '@/lib/supabase/admin'
 import { sendBookingConfirmation, sendAdminNotification } from '@/lib/actions/emails'
+import { createMeetEvent } from '@/lib/google-calendar'
 
 export async function POST(req: Request) {
   const body = await req.text()
@@ -63,17 +64,54 @@ export async function POST(req: Request) {
         
         if (sessionError) throw sessionError
 
-        // Fetch user and mentor names for email
+        // Fetch user and mentor data
         const { data: userData } = await supabaseAdmin.from('profiles').select('name, email').eq('id', notes.user_id).single()
-        const { data: mentorData } = await supabaseAdmin.from('profiles').select('name').eq('id', notes.mentor_id).single()
+        const { data: mentorData } = await supabaseAdmin.from('profiles').select('name, google_refresh_token').eq('id', notes.mentor_id).single()
 
         if (userData && mentorData) {
+          let meetingLink = "https://meet.google.com/apna-counsellor"; // Fallback
+
+          // 3. Create Google Meet link if mentor has linked calendar
+          if (mentorData.google_refresh_token) {
+            try {
+              // Get session details for the event
+              const { data: sessionData } = await supabaseAdmin.from('sessions').select('*').eq('id', notes.session_id).single()
+              
+              if (sessionData) {
+                // Construct ISO strings for Google
+                // Assuming sessionData.date is YYYY-MM-DD and notes.time is HH:MM
+                const startTime = new Date(`${sessionData.date}T${notes.time || '10:00'}:00`).toISOString()
+                const endTime = new Date(new Date(startTime).getTime() + 45 * 60000).toISOString() // 45 mins
+
+                const event = await createMeetEvent(mentorData.google_refresh_token, {
+                  summary: `Counselling Session: ${userData.name} with ${mentorData.name}`,
+                  description: `One-on-one counselling session booked via Apna Counsellor.\nStudent: ${userData.name}\nTopic: ${sessionData.topic || 'General Consultation'}`,
+                  startTime,
+                  endTime,
+                  attendeeEmail: userData.email
+                })
+
+                if (event.hangoutLink) {
+                  meetingLink = event.hangoutLink
+                  
+                  // Update session with the actual meeting link
+                  await supabaseAdmin.from('sessions').update({ 
+                    meeting_link: meetingLink,
+                    google_event_id: event.id
+                  }).eq('id', notes.session_id)
+                }
+              }
+            } catch (googleError) {
+              console.error("Failed to create Google Meet event:", googleError)
+            }
+          }
+
           await sendBookingConfirmation(
             userData.email,
             mentorData.name,
             notes.date || 'TBD',
             notes.time || 'TBD',
-            "https://meet.google.com/..." // Should be dynamic
+            meetingLink
           )
 
           await sendAdminNotification(
