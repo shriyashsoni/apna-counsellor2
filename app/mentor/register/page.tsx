@@ -67,6 +67,24 @@ export default function MentorRegisterPage() {
     
     setLoading(true)
     try {
+      // 0. Ensure profile exists to avoid foreign key errors in mentor_applications
+      const { data: existingProfile, error: checkError } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('id', dbUser.id)
+        .maybeSingle()
+      
+      if (!existingProfile) {
+        const { error: createError } = await supabase.from('profiles').insert({
+          id: dbUser.id,
+          name: dbUser.user_metadata?.full_name || dbUser.email?.split('@')[0] || "User",
+          email: dbUser.email,
+          role: 'student',
+          onboarding_complete: false
+        })
+        if (createError) throw createError
+      }
+
       const skillsArray = form.skills.split(',').map(s => s.trim()).filter(Boolean)
       
       // 1. Insert into mentor_applications for admin review
@@ -107,8 +125,11 @@ export default function MentorRegisterPage() {
       })
       router.push("/dashboard")
     } catch (e: any) {
-      console.error("Registration Error Detail:", e)
-      toast.error(`Registration failed: ${e.message || "Please try again"}`)
+      console.error("Full Registration Error:", e)
+      // Extract specific error details if available
+      const errorMessage = e.details || e.message || "Please try again"
+      const errorCode = e.code ? ` (Error: ${e.code})` : ""
+      toast.error(`Registration failed: ${errorMessage}${errorCode}`)
     } finally {
       setLoading(false)
     }
