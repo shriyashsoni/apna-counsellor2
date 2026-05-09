@@ -4,6 +4,18 @@
 -- 1. Update Profiles Table
 ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS google_refresh_token TEXT;
 ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS google_calendar_id TEXT;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS college TEXT;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS branch TEXT;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS year TEXT;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS headline TEXT;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS about TEXT;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS skills JSONB;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS pricing NUMERIC DEFAULT 499;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS linkedin TEXT;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS onboarding_complete BOOLEAN DEFAULT FALSE;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS rating NUMERIC DEFAULT 0;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS reviews_count INTEGER DEFAULT 0;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS earnings NUMERIC DEFAULT 0;
 
 -- 2. Update Sessions Table
 ALTER TABLE public.sessions ADD COLUMN IF NOT EXISTS meeting_link TEXT;
