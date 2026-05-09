@@ -84,8 +84,9 @@ export default function AdminDashboard() {
         sessions: sessionData?.length || 0,
         pendingMentors: appData?.length || 0
       })
-    } catch (error) {
+    } catch (error: any) {
       console.error("Admin Error:", error)
+      toast.error(`Sync Failed: ${error.message || "Please check your admin permissions"}`)
     } finally {
       setIsLoading(false)
     }

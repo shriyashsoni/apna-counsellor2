@@ -1,4 +1,4 @@
-"use client"
+ "use client"
 
 import { useState } from "react"
 import { createClient } from "@/lib/supabase/client"
@@ -59,30 +59,26 @@ export default function MentorRegisterPage() {
   const handleNext = () => setStep(step + 1)
   const handleBack = () => setStep(step - 1)
 
+  const [submitted, setSubmitted] = useState(false)
+
   const handleSubmit = async () => {
     if (!dbUser) {
       toast.error("User session not found. Please login again.")
       return
     }
     
-    console.log("Mentor Registration: Starting submission process...")
     setLoading(true)
     try {
-      console.log("Mentor Registration: Checking for existing profile for ID:", dbUser.id)
       // 0. Ensure profile exists to avoid foreign key errors in mentor_applications
       const { data: existingProfile, error: checkError } = await supabase
         .from('profiles')
-        .select('id')
+        .select('id, role')
         .eq('id', dbUser.id)
         .maybeSingle()
       
-      if (checkError) {
-        console.error("Mentor Registration: Profile check error:", checkError)
-        throw checkError
-      }
+      if (checkError) throw checkError
 
       if (!existingProfile) {
-        console.log("Mentor Registration: Profile not found, creating new profile...")
         const { error: createError } = await supabase.from('profiles').insert({
           id: dbUser.id,
           name: dbUser.name || dbUser.user_metadata?.full_name || dbUser.email?.split('@')[0] || "User",
@@ -90,17 +86,10 @@ export default function MentorRegisterPage() {
           role: 'student',
           onboarding_complete: false
         })
-        if (createError) {
-          console.error("Mentor Registration: Profile creation error:", createError)
-          throw createError
-        }
-        console.log("Mentor Registration: Profile created successfully.")
-      } else {
-        console.log("Mentor Registration: Profile already exists.")
+        if (createError) throw createError
       }
 
       const skillsArray = form.skills.split(',').map(s => s.trim()).filter(Boolean)
-      console.log("Mentor Registration: Inserting application into mentor_applications table...")
       
       // 1. Insert into mentor_applications for admin review
       const { error: appError } = await supabase
@@ -116,12 +105,10 @@ export default function MentorRegisterPage() {
         })
 
       if (appError) {
-        console.error("Mentor Registration: Application insertion error:", appError)
+        console.error("Application insertion error:", appError)
         throw appError
       }
-      console.log("Mentor Registration: Application inserted successfully.")
 
-      console.log("Mentor Registration: Updating profiles table with mentor details...")
       // 2. Update profile state
       const { error: profileError } = await supabase
         .from('profiles')
@@ -138,23 +125,21 @@ export default function MentorRegisterPage() {
         })
         .eq('id', dbUser.id)
       
-      if (profileError) {
-        console.error("Mentor Registration: Profile update error:", profileError)
-        throw profileError
-      }
-      console.log("Mentor Registration: Profile updated successfully.")
+      if (profileError) throw profileError
       
-      toast.success("Registration submitted!", {
-        description: "An admin will review your profile within 24 hours.",
+      setSubmitted(true)
+      toast.success("Application Sent Successfully!", {
+        description: "Our team will review your profile and notify you via email.",
       })
-      console.log("Mentor Registration: Success! Redirecting to dashboard...")
-      router.push("/dashboard")
+      
+      // Small delay then redirect
+      setTimeout(() => {
+        router.push("/dashboard")
+      }, 3000)
     } catch (e: any) {
       console.error("Full Registration Error:", e)
-      // Extract specific error details if available
       const errorMessage = e.details || e.message || "Please try again"
-      const errorCode = e.code ? ` (Error: ${e.code})` : ""
-      toast.error(`Registration failed: ${errorMessage}${errorCode}`)
+      toast.error(`Registration failed: ${errorMessage}`)
     } finally {
       setLoading(false)
     }
@@ -199,7 +184,27 @@ export default function MentorRegisterPage() {
            <CardContent className="p-8 md:p-16">
               
               <AnimatePresence mode="wait">
-                {step === 1 && (
+                {submitted ? (
+                  <motion.div
+                    key="success"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="text-center py-12 space-y-6"
+                  >
+                    <div className="h-24 w-24 bg-emerald-100 dark:bg-emerald-500/10 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-emerald-500/20">
+                      <CheckCircle2 className="h-12 w-12" />
+                    </div>
+                    <h2 className="text-4xl font-black tracking-tight">Application Received!</h2>
+                    <p className="text-slate-500 font-medium max-w-sm mx-auto leading-relaxed">
+                      Your profile has been sent to our admin team for verification. We&apos;ll notify you at <b>{dbUser?.email}</b> once approved.
+                    </p>
+                    <div className="pt-8">
+                       <Button onClick={() => router.push("/dashboard")} className="rounded-2xl h-14 px-10 font-black">
+                          Go to Dashboard
+                       </Button>
+                    </div>
+                  </motion.div>
+                ) : step === 1 && (
                   <motion.div 
                     key="step1"
                     initial={{ opacity: 0, x: 20 }}

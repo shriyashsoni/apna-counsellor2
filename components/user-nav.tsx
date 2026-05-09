@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useAuth } from "@/hooks/use-auth"
-import { LogOut, User, Settings, CreditCard, Sparkles, LayoutDashboard } from "lucide-react"
+import { LogOut, User, Settings, CreditCard, Sparkles, LayoutDashboard, ShieldCheck } from "lucide-react"
 
 export function UserNav() {
   const { user, logout, login, isLoading } = useAuth()
@@ -59,6 +59,14 @@ export function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
+          {user && (user.email === "apnacounsellor@gmail.com" || user.email === "sonishriyash@gmail.com") && (
+            <DropdownMenuItem asChild>
+              <Link href="/admin" className="flex items-center cursor-pointer py-2.5 text-purple-600 font-bold">
+                <ShieldCheck className="mr-2 h-4 w-4" />
+                <span>Admin Portal</span>
+              </Link>
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem asChild>
             <Link href="/dashboard" className="flex items-center cursor-pointer py-2.5">
               <LayoutDashboard className="mr-2 h-4 w-4" />
