@@ -477,7 +477,6 @@ export default function PredictorPage() {
                 </div>
 
                 <div className="p-10 rounded-[3rem] bg-slate-900 text-white text-center relative overflow-hidden">
-en">
                    <div className="relative z-10">
                       <div className="flex items-center justify-center gap-2 text-emerald-400 font-black mb-4">
                         <CheckCircle2 className="h-6 w-6" />

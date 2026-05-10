@@ -217,12 +217,13 @@ function StudentDashboard({ profile, user }: { profile: any, user: any }) {
       setIsLoading(true)
       try {
         const [subRes, sessRes, mentorRes] = await Promise.all([
-          supabase.from('payments').select('*').eq('user_id', user.id).eq('status', 'captured').maybeSingle(),
+          supabase.from('payments').select('*').eq('user_id', user.id).eq('status', 'captured'),
           supabase.from('sessions').select('*').eq('student_id', user.id).order('date', { ascending: true }),
-          supabase.from('profiles').select('*').eq('role', 'mentor').limit(4)
+          supabase.from('profiles').select('*').eq('role', 'mentor').eq('is_visible', true).limit(4)
         ])
         
-        setSubscription(subRes.data)
+        // Use the most recent successful payment as subscription indicator
+        setSubscription(subRes.data && subRes.data.length > 0 ? subRes.data[0] : null)
         setSessions(sessRes.data || [])
         setMentors(mentorRes.data || [])
       } catch (err) {

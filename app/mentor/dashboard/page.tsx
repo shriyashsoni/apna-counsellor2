@@ -125,7 +125,7 @@ export default async function MentorDashboard() {
       <main className="flex-1 lg:ml-80 p-6 md:p-12 min-h-screen">
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-8">
           <div>
-            <h1 className="text-3xl md:text-5xl font-black tracking-tighter mb-2 text-slate-900">Welcome Back, {profile?.name?.split(' ')[0] || 'Expert'}!</h1>
+            <h1 className="text-3xl md:text-5xl font-black tracking-tighter mb-2 text-slate-900">Welcome Back, {profile?.name?.split(' ')?.[0] || 'Expert'}!</h1>
             <Badge className="bg-emerald-50 text-emerald-600 border-none font-black text-[10px] uppercase px-3">Session Sync Active</Badge>
           </div>
           

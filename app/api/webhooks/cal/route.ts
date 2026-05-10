@@ -38,7 +38,8 @@ export async function POST(req: Request) {
         user, 
         id: bookingId,
         eventTypeId,
-        paymentStatus
+        paymentStatus,
+        metadata: bookingMetadata
       } = payload
 
       // Extract user info
@@ -50,42 +51,70 @@ export async function POST(req: Request) {
         .from('profiles')
         .select('id, name')
         .or(`cal_link.ilike.%${user.username}%,email.eq.${user.email}`)
-        .single()
+        .maybeSingle()
 
       // Find student by email
       const { data: student } = await supabase
         .from('profiles')
         .select('id')
         .eq('email', studentEmail)
-        .single()
+        .maybeSingle()
 
-      // Upsert into sessions table
+      // 1. Check for an existing "paid_unscheduled" session to merge
+      let existingSession = null;
+      if (student?.id && mentor?.id) {
+        const { data: sess } = await supabase
+          .from('sessions')
+          .select('id')
+          .eq('student_id', student.id)
+          .eq('mentor_id', mentor.id)
+          .eq('status', 'paid_unscheduled')
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .maybeSingle();
+        existingSession = sess;
+      }
+
       const sessionStatus = triggerEvent === "BOOKING_PAID" || !paymentStatus ? 'confirmed' : 'pending_payment'
       
-      const { error } = await supabase.from('sessions').upsert({
+      const sessionData = {
         student_id: student?.id || null,
         mentor_id: mentor?.id || null,
         student_name: studentName,
         mentor_name: mentor?.name || user.name,
         date: startTime.split('T')[0],
         scheduled_at: startTime,
-        time_slot: new Date(startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        time_slot: new Date(startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }),
         meeting_link: payload.metadata?.videoCallUrl || payload.location || null,
         status: sessionStatus,
-        title: `Cal.com Booking #${bookingId}`,
-        description: `Event Type ID: ${eventTypeId}`
-      }, { onConflict: 'title' })
+        title: `Mentorship: ${studentName}`,
+        description: `Cal.com Booking #${bookingId}`,
+        payment_id: bookingMetadata?.paymentId || null
+      }
 
-      if (error) console.error("Error syncing session from webhook:", error)
+      let res;
+      if (existingSession) {
+        // Update existing session
+        res = await supabase
+          .from('sessions')
+          .update(sessionData)
+          .eq('id', existingSession.id)
+      } else {
+        // Insert new session
+        res = await supabase
+          .from('sessions')
+          .upsert(sessionData, { onConflict: 'description' }) // description contains the unique Booking ID
+      }
+
+      if (res.error) console.error("Error syncing session from webhook:", res.error)
     }
 
     if (triggerEvent === "BOOKING_CANCELLED") {
-      // Handle cancellation
       const { id: bookingId } = payload
       await supabase
         .from('sessions')
         .update({ status: 'cancelled' })
-        .ilike('title', `%#${bookingId}%`)
+        .ilike('description', `%#${bookingId}%`)
     }
 
     return NextResponse.json({ success: true })

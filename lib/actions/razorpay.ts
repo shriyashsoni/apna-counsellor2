@@ -102,6 +102,10 @@ export async function verifyRazorpayPayment({
 
         // Also create a pending session record for tracking
         if (notes.type === 'mentorship' || notes.type === 'consultancy') {
+          const sessionTitle = notes.type === 'consultancy' 
+            ? `Consultancy: ${notes.exam_type || 'General'}` 
+            : `Mentorship: ${notes.full_name || 'Expert Session'}`;
+            
           await supabaseAdmin
             .from('sessions')
             .upsert({
@@ -109,14 +113,16 @@ export async function verifyRazorpayPayment({
               mentor_id: notes.mentor_id,
               student_name: notes.full_name || 'Student',
               status: 'paid_unscheduled',
-              title: notes.type === 'consultancy' ? `Consultancy: ${notes.exam_type || 'General'}` : `Mentorship: ${notes.full_name || 'Session'}`,
-              description: `Paid session awaiting scheduling on Cal.com. Payment ID: ${paymentId}`,
-              date: new Date().toISOString().split('T')[0], // Placeholder
-              time_slot: 'To be scheduled'
-            }, { onConflict: 'description' }); // Use description as a unique marker for this payment
+              title: sessionTitle,
+              description: `Paid via Razorpay. Order: ${orderId}`,
+              date: new Date().toISOString().split('T')[0],
+              time_slot: 'Awaiting Schedule',
+              payment_id: paymentId,
+              amount: Number(amount) || 0
+            }, { onConflict: 'payment_id' }); // Use payment_id which should be unique
         }
       } catch (dbErr) {
-        console.error("Failed to update DB after payment:", dbErr);
+        console.error("Critical: Failed to update DB after payment:", dbErr);
       }
     }
 
