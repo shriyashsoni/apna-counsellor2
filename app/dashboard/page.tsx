@@ -392,20 +392,46 @@ function StudentDashboard({ profile, user }: { profile: any, user: any }) {
                  </div>
                  <h2 className="text-3xl font-black tracking-tight">Your Schedule</h2>
                </div>
-               <Link href="/sessions" className="text-primary text-sm font-bold hover:underline">Manage All</Link>
+               <Link href="/mentorship" className="text-primary text-sm font-bold hover:underline">Book More</Link>
              </div>
-             {sessions.length === 0 ? (
+
+             {/* Unscheduled Paid Sessions */}
+             {sessions.filter(s => s.status === 'paid_unscheduled').length > 0 && (
+               <div className="mb-10 space-y-4">
+                 <h3 className="text-xs font-black uppercase tracking-widest text-primary px-4 mb-4">Action Required: Complete Scheduling</h3>
+                 {sessions.filter(s => s.status === 'paid_unscheduled').map((s) => (
+                   <Card key={s.id} className="border-none rounded-[2.5rem] shadow-lg bg-white dark:bg-slate-900 p-8 border-l-4 border-l-primary flex flex-col md:flex-row justify-between items-center gap-6">
+                     <div className="flex items-center gap-6">
+                       <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
+                         <Clock className="h-8 w-8 animate-pulse" />
+                       </div>
+                       <div>
+                         <h4 className="font-black text-xl">{s.title || "Consultancy Session"}</h4>
+                         <p className="text-sm text-slate-500 font-medium">with {s.mentor_name || "Expert Mentor"}</p>
+                       </div>
+                     </div>
+                     <Link href="/book-call">
+                       <Button className="rounded-xl h-12 px-8 font-black bg-primary text-white shadow-xl shadow-primary/20">
+                         Pick Date & Time <ArrowRight className="ml-2 h-4 w-4" />
+                       </Button>
+                     </Link>
+                   </Card>
+                 ))}
+               </div>
+             )}
+
+             {sessions.filter(s => s.status !== 'paid_unscheduled').length === 0 ? (
                <Card className="border-none rounded-[3rem] p-12 text-center bg-white dark:bg-slate-900 border border-dashed border-slate-200 dark:border-slate-800">
                   <Clock className="h-16 w-16 text-slate-200 mx-auto mb-6" />
-                  <h3 className="text-xl font-bold mb-2">No Sessions Booked</h3>
+                  <h3 className="text-xl font-bold mb-2">No Sessions Scheduled</h3>
                   <p className="text-slate-500 font-medium mb-8">Book a 1-on-1 session with our experts to plan your strategy.</p>
                   <Link href="/mentorship">
                     <Button variant="outline" className="rounded-2xl h-12 px-8 font-black border-primary text-primary hover:bg-primary hover:text-white">Book Expert Session</Button>
                   </Link>
                </Card>
              ) : (
-               <div className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide">
-                 {sessions.map((s) => (
+                 <div className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide">
+                   {sessions.filter((s: any) => s.status !== 'paid_unscheduled').map((s: any) => (
                    <Card key={s.id} className="min-w-[320px] border-none rounded-[3rem] shadow-sm bg-white dark:bg-slate-900 p-8 border border-slate-100 dark:border-slate-800 hover:shadow-xl transition-all">
                      <div className="flex justify-between items-start mb-6">
                        <div className="h-12 w-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-500">
