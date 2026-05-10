@@ -73,21 +73,29 @@ export function UserNav() {
               <span>Dashboard</span>
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer py-2.5">
-            <User className="mr-2 h-4 w-4" />
-            <span>Profile Settings</span>
+          <DropdownMenuItem asChild>
+            <Link href="/onboarding" className="flex items-center cursor-pointer py-2.5">
+              <User className="mr-2 h-4 w-4" />
+              <span>Profile Settings</span>
+            </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer py-2.5">
-            <CreditCard className="mr-2 h-4 w-4" />
-            <span>My Applications</span>
+          <DropdownMenuItem asChild>
+            <Link href="/dashboard" className="flex items-center cursor-pointer py-2.5">
+              <CreditCard className="mr-2 h-4 w-4" />
+              <span>My Applications</span>
+            </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer py-2.5 text-primary font-medium">
-            <Sparkles className="mr-2 h-4 w-4" />
-            <span>AI Dashboard</span>
+          <DropdownMenuItem asChild>
+            <Link href="/chat" className="flex items-center cursor-pointer py-2.5 text-purple-600 font-bold">
+              <Sparkles className="mr-2 h-4 w-4" />
+              <span>AI Dashboard</span>
+            </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer py-2.5">
-            <Settings className="mr-2 h-4 w-4" />
-            <span>Settings</span>
+          <DropdownMenuItem asChild>
+            <Link href="/settings" className="flex items-center cursor-pointer py-2.5">
+              <Settings className="mr-2 h-4 w-4" />
+              <span>Settings</span>
+            </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
