@@ -14,7 +14,8 @@ import Image from "next/image"
 
 export default async function MentorDashboard() {
   const supabase = createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const { data: authData } = await supabase.auth.getUser()
+  const user = authData?.user
 
   if (!user) redirect("/login")
 
@@ -22,7 +23,7 @@ export default async function MentorDashboard() {
     .from('profiles')
     .select('*')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
 
   // Allow access if role is mentor/admin OR if onboarding is complete
   if (!profile || (profile.role !== 'mentor' && profile.role !== 'admin' && !profile.onboarding_complete)) {
@@ -37,7 +38,7 @@ export default async function MentorDashboard() {
   try {
     const { data: allSessions, error: sessError } = await supabase
       .from('sessions')
-      .select('*, profiles:student_id(name, email)')
+      .select('*, student_profile:profiles!student_id(name, email)') // Explicit join
       .eq('mentor_id', user.id)
       .order('created_at', { ascending: false })
     
@@ -49,11 +50,13 @@ export default async function MentorDashboard() {
         .eq('mentor_id', user.id)
         .order('created_at', { ascending: false })
       
-      sessions = fallbackData?.filter(s => s.status === 'confirmed' || s.status === 'completed') || []
-      unscheduledSessions = fallbackData?.filter(s => s.status === 'paid_unscheduled') || []
+      const filtered = fallbackData || []
+      sessions = filtered.filter(s => s.status === 'confirmed' || s.status === 'completed')
+      unscheduledSessions = filtered.filter(s => s.status === 'paid_unscheduled')
     } else {
-      sessions = allSessions?.filter(s => s.status === 'confirmed' || s.status === 'completed') || []
-      unscheduledSessions = allSessions?.filter(s => s.status === 'paid_unscheduled') || []
+      const filtered = allSessions || []
+      sessions = filtered.filter(s => s.status === 'confirmed' || s.status === 'completed')
+      unscheduledSessions = filtered.filter(s => s.status === 'paid_unscheduled')
     }
   } catch (err) {
     console.error("Dashboard sessions error:", err)
@@ -241,8 +244,8 @@ export default async function MentorDashboard() {
                                        <p className="text-[10px] font-black text-purple-600 uppercase tracking-widest">Upcoming Session</p>
                                        {s.status === 'completed' && <Badge className="bg-emerald-50 text-emerald-600 border-none text-[8px]">Completed</Badge>}
                                      </div>
-                                     <h4 className="text-xl font-black">{s.profiles?.name || s.student_name || 'Student'}</h4>
-                                     <p className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-widest">{s.profiles?.email || 'No email'}</p>
+                                     <h4 className="text-xl font-black">{ (Array.isArray(s.student_profile) ? s.student_profile[0]?.name : s.student_profile?.name) || s.student_name || 'Student' }</h4>
+                                     <p className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-widest">{ (Array.isArray(s.student_profile) ? s.student_profile[0]?.email : s.student_profile?.email) || 'No email' }</p>
                                       <div className="flex items-center gap-4 mt-1 text-sm font-bold text-slate-400">
                                         <div className="flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" /> {s.scheduled_at ? new Date(s.scheduled_at).toLocaleDateString() : (s.date || 'No Date')}</div>
                                         <div className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" /> {s.scheduled_at ? new Date(s.scheduled_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : (s.time_slot || 'No Time')}</div>

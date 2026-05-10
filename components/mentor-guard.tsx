@@ -12,7 +12,8 @@ export function MentorGuard({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     async function checkMentor() {
-      const { data: { user: authUser } } = await supabase.auth.getUser()
+      const { data: authData } = await supabase.auth.getUser()
+      const authUser = authData?.user
       if (!authUser) {
         setUser(null)
         return
@@ -22,7 +23,7 @@ export function MentorGuard({ children }: { children: React.ReactNode }) {
         .from('profiles')
         .select('*')
         .eq('id', authUser.id)
-        .single()
+        .maybeSingle()
       
       setUser(profile ? { ...authUser, ...profile } : null)
     }

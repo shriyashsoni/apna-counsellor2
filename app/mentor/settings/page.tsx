@@ -40,7 +40,8 @@ export default function MentorSettingsPage() {
 
   useEffect(() => {
     async function loadProfile() {
-      const { data: { user } } = await supabase.auth.getUser()
+      const { data: authData } = await supabase.auth.getUser()
+      const user = authData?.user
       if (!user) {
         router.push("/login")
         return
@@ -50,7 +51,7 @@ export default function MentorSettingsPage() {
         .from('profiles')
         .select('*')
         .eq('id', user.id)
-        .single()
+        .maybeSingle()
       
       if (data) {
         setProfile(data)
@@ -62,7 +63,8 @@ export default function MentorSettingsPage() {
 
   const handleSave = async () => {
     setSaving(true)
-    const { data: { user } } = await supabase.auth.getUser()
+    const { data: authData } = await supabase.auth.getUser()
+    const user = authData?.user
     if (!user) return
 
     const cleanedCalLink = profile.cal_link?.replace("https://cal.com/", "").replace("http://cal.com/", "").replace(/\/$/, "");

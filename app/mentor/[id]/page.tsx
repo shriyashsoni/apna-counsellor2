@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: MentorPageProps): Promise<Met
       .from('profiles')
       .select('*')
       .or(`id.eq.${isUuid ? params.id : '00000000-0000-0000-0000-000000000000'},slug.eq.${params.id}`)
-      .single()
+      .maybeSingle()
 
     if (!mentor) return;
 
@@ -59,7 +59,7 @@ export default async function MentorProfilePage({ params }: MentorPageProps) {
     .from('profiles')
     .select('*')
     .or(`id.eq.${isUuid ? params.id : '00000000-0000-0000-0000-000000000000'},slug.eq.${params.id}`)
-    .single()
+    .maybeSingle()
 
   if (!mentor) notFound()
 
@@ -101,11 +101,12 @@ export default async function MentorProfilePage({ params }: MentorPageProps) {
     console.error("Data fetch error on mentor profile:", err)
   }
 
-  const { data: { user } } = await supabase.auth.getUser()
+  const { data: authData } = await supabase.auth.getUser()
+  const user = authData?.user
   let dbUser = null
   if (user) {
     try {
-      const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single()
+      const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).maybeSingle()
       dbUser = profile ? { ...user, ...profile } : user
     } catch (e) {
       dbUser = user

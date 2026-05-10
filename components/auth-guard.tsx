@@ -28,7 +28,8 @@ export function AuthGuard({
   useEffect(() => {
     setIsClient(true)
     async function checkAuth() {
-      const { data: { session: currentSession } } = await supabase.auth.getSession()
+      const { data: authData } = await supabase.auth.getSession()
+      const currentSession = authData?.session
       setSession(currentSession)
 
       if (currentSession?.user) {
@@ -36,7 +37,7 @@ export function AuthGuard({
           .from('profiles')
           .select('*')
           .eq('id', currentSession.user.id)
-          .single()
+          .maybeSingle()
         setProfile(profileData)
 
         if (requireSubscription) {
@@ -45,7 +46,7 @@ export function AuthGuard({
             .select('*')
             .eq('user_id', currentSession.user.id)
             .eq('status', 'active')
-            .single()
+            .maybeSingle()
           setSubscription(subData)
         }
       }

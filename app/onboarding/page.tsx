@@ -41,7 +41,8 @@ export default function OnboardingPage() {
     setIsSubmitting(true)
     
     try {
-      const { data: { user } } = await supabase.auth.getUser()
+      const { data: authData } = await supabase.auth.getUser()
+      const user = authData?.user
       if (!user) {
         window.location.href = "/login"
         return

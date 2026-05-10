@@ -43,7 +43,8 @@ export default function SettingsPage() {
 
   useEffect(() => {
     async function loadUser() {
-      const { data: { user: authUser } } = await supabase.auth.getUser()
+      const { data: authData } = await supabase.auth.getUser()
+      const authUser = authData?.user
       if (!authUser) {
         setLoading(false)
         return
@@ -53,7 +54,7 @@ export default function SettingsPage() {
         .from('profiles')
         .select('*')
         .eq('id', authUser.id)
-        .single()
+        .maybeSingle()
       
       const fullUser = profile ? { ...authUser, ...profile } : authUser
       setUser(fullUser)

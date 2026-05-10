@@ -56,7 +56,8 @@ export default function DashboardPage() {
 
   useEffect(() => {
     async function loadData() {
-      const { data: { user: authUser } } = await supabase.auth.getUser()
+      const { data: authData } = await supabase.auth.getUser()
+      const authUser = authData?.user
       if (!authUser) {
         router.push("/login")
         return

@@ -32,9 +32,10 @@ export default function MentorRegisterPage() {
 
   useEffect(() => {
     async function loadUser() {
-      const { data: { user } } = await supabase.auth.getUser()
+      const { data: authData } = await supabase.auth.getUser()
+      const user = authData?.user
       if (user) {
-        const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single()
+        const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).maybeSingle()
         setDbUser(profile ? { ...user, ...profile } : user)
       } else {
         setDbUser(null)
