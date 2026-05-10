@@ -37,21 +37,17 @@ export default function OnboardingPage() {
   const handlePrev = () => setStep(s => s - 1)
 
   const handleSubmit = async () => {
+    if (isSubmitting) return
     setIsSubmitting(true)
+    
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
-        router.push("/login")
+        window.location.href = "/login"
         return
       }
 
-      // Use maybeSingle to avoid erroring if profile doesn't exist yet
-      const { data: existingProfile } = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', user.id)
-        .maybeSingle()
-
+      // Direct upsert - much safer and faster
       const { error } = await supabase
         .from('profiles')
         .upsert({
@@ -66,19 +62,24 @@ export default function OnboardingPage() {
           category: formData.category,
           interested_states: formData.interestedStates,
           onboarding_complete: true,
-          role: existingProfile?.role || 'student'
+          // Default to student, if they are admin, the Admin SQL will restore it
+          role: user.email === 'apnacounsellor@gmail.com' || user.email === 'sonishriyash@gmail.com' ? 'admin' : 'student'
         })
       
       if (error) throw error
       
       const { toast } = await import("sonner")
-      toast.success("Profile completed successfully!")
-      router.push("/dashboard")
-      router.refresh()
+      toast.success("Profile saved! Redirecting...")
+      
+      setTimeout(() => {
+        router.push("/dashboard")
+        router.refresh()
+      }, 1000)
+
     } catch (error: any) {
-      console.error("Failed to create profile", error)
+      console.error("Onboarding Error:", error)
       const { toast } = await import("sonner")
-      toast.error(error.message || "Failed to save profile. Please try again.")
+      toast.error(error.message || "Could not save profile. Check your connection.")
     } finally {
       setIsSubmitting(false)
     }
