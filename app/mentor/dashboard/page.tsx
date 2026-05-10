@@ -193,10 +193,10 @@ export default async function MentorDashboard() {
                                 <div>
                                    <p className="text-[10px] font-black text-purple-600 uppercase tracking-widest mb-1">Upcoming Session</p>
                                    <h4 className="text-xl font-black">{s.profiles?.name || 'Student'}</h4>
-                                   <div className="flex items-center gap-4 mt-1 text-sm font-bold text-slate-400">
-                                      <div className="flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" /> {new Date(s.scheduled_at).toLocaleDateString()}</div>
-                                      <div className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" /> {new Date(s.scheduled_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
-                                   </div>
+                                    <div className="flex items-center gap-4 mt-1 text-sm font-bold text-slate-400">
+                                      <div className="flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" /> {s.scheduled_at ? new Date(s.scheduled_at).toLocaleDateString() : (s.date || 'No Date')}</div>
+                                      <div className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" /> {s.scheduled_at ? new Date(s.scheduled_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : (s.time_slot || 'No Time')}</div>
+                                    </div>
                                 </div>
                              </div>
                              <div className="flex gap-3 w-full md:w-auto">

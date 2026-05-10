@@ -68,7 +68,9 @@ export async function POST(req: Request) {
         student_name: studentName,
         mentor_name: mentor?.name || user.name,
         date: startTime.split('T')[0],
+        scheduled_at: startTime,
         time_slot: new Date(startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        meeting_link: payload.metadata?.videoCallUrl || payload.location || null,
         status: sessionStatus,
         title: `Cal.com Booking #${bookingId}`,
         description: `Event Type ID: ${eventTypeId}`
