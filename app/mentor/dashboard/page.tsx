@@ -31,13 +31,32 @@ export default async function MentorDashboard() {
   // Fetch upcoming sessions for this mentor
   let sessions = []
   try {
-    const { data: sessionsData } = await supabase
+    // Simpler query to avoid relationship ambiguity
+    const { data: sessionsData, error: sessError } = await supabase
       .from('sessions')
-      .select('*, profiles:student_id(name, email)') // Use generic relationship
+      .select(`
+        *,
+        student:student_id (
+          name,
+          email
+        )
+      `)
       .eq('mentor_id', user.id)
       .eq('status', 'confirmed')
       .order('date', { ascending: true })
-    sessions = sessionsData || []
+    
+    if (sessError) {
+      console.error("Session fetch error:", sessError)
+      // Fallback to even simpler query if the join fails
+      const { data: fallbackData } = await supabase
+        .from('sessions')
+        .select('*')
+        .eq('mentor_id', user.id)
+        .eq('status', 'confirmed')
+      sessions = fallbackData || []
+    } else {
+      sessions = sessionsData || []
+    }
   } catch (err) {
     console.error("Dashboard sessions error:", err)
   }
@@ -104,10 +123,10 @@ export default async function MentorDashboard() {
         <div className="mt-auto p-6 rounded-3xl bg-slate-50 border border-slate-100">
           <div className="flex items-center gap-3">
              <div className="h-10 w-10 rounded-xl bg-purple-100 flex items-center justify-center font-black text-purple-600">
-                {profile.name?.charAt(0)}
+                {profile?.name?.[0] || 'M'}
              </div>
              <div>
-                <p className="text-xs font-black text-slate-900 line-clamp-1">{profile.name}</p>
+                <p className="text-xs font-black text-slate-900 line-clamp-1">{profile?.name || 'Mentor'}</p>
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Verified Expert</p>
              </div>
           </div>
@@ -192,7 +211,7 @@ export default async function MentorDashboard() {
                                 </div>
                                 <div>
                                    <p className="text-[10px] font-black text-purple-600 uppercase tracking-widest mb-1">Upcoming Session</p>
-                                   <h4 className="text-xl font-black">{s.profiles?.name || 'Student'}</h4>
+                                   <h4 className="text-xl font-black">{(s.student as any)?.name || s.student_name || 'Student'}</h4>
                                     <div className="flex items-center gap-4 mt-1 text-sm font-bold text-slate-400">
                                       <div className="flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" /> {s.scheduled_at ? new Date(s.scheduled_at).toLocaleDateString() : (s.date || 'No Date')}</div>
                                       <div className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" /> {s.scheduled_at ? new Date(s.scheduled_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : (s.time_slot || 'No Time')}</div>
