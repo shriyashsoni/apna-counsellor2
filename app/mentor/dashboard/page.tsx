@@ -29,31 +29,43 @@ export default async function MentorDashboard() {
   }
 
   // Fetch upcoming sessions for this mentor
-  const { data: sessions } = await supabase
-    .from('sessions')
-    .select('*, profiles!sessions_student_id_fkey(name, email)')
-    .eq('mentor_id', user.id)
-    .eq('status', 'confirmed')
-    .order('date', { ascending: true })
-    .order('time_slot', { ascending: true })
+  let sessions = []
+  try {
+    const { data: sessionsData } = await supabase
+      .from('sessions')
+      .select('*, profiles:student_id(name, email)') // Use generic relationship
+      .eq('mentor_id', user.id)
+      .eq('status', 'confirmed')
+      .order('date', { ascending: true })
+    sessions = sessionsData || []
+  } catch (err) {
+    console.error("Dashboard sessions error:", err)
+  }
 
   // Fetch payments for completed sessions only
-  const { data: completedSessions } = await supabase
-    .from('sessions')
-    .select('id')
-    .eq('mentor_id', user.id)
-    .eq('status', 'completed')
+  let totalEarnings = 0
+  try {
+    const { data: completedSessions } = await supabase
+      .from('sessions')
+      .select('id')
+      .eq('mentor_id', user.id)
+      .eq('status', 'completed')
 
-  const completedSessionIds = completedSessions?.map(s => s.id) || []
+    const completedSessionIds = completedSessions?.map(s => s.id) || []
 
-  const { data: payments } = await supabase
-    .from('payments')
-    .select('amount')
-    .eq('mentor_id', user.id)
-    .eq('status', 'captured')
-    .in('session_id', completedSessionIds)
+    if (completedSessionIds.length > 0) {
+      const { data: payments } = await supabase
+        .from('payments')
+        .select('amount')
+        .eq('mentor_id', user.id)
+        .eq('status', 'captured')
+        .in('session_id', completedSessionIds)
 
-  const totalEarnings = payments?.reduce((acc, curr) => acc + (Number(curr.amount) * 0.7 || 0), 0) || 0
+      totalEarnings = payments?.reduce((acc, curr) => acc + (Number(curr.amount) * 0.7 || 0), 0) || 0
+    }
+  } catch (err) {
+    console.error("Dashboard earnings error:", err)
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col lg:flex-row">
