@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Sparkles, ArrowRight, ArrowLeft, GraduationCap, MapPin, Search } from "lucide-react"
+import { Sparkles, ArrowRight, ArrowLeft, GraduationCap, MapPin, Search, Loader2 } from "lucide-react"
 
 const states = [
   "Maharashtra", "Madhya Pradesh", "Delhi", "Uttar Pradesh", "Rajasthan", 
@@ -28,6 +28,7 @@ export default function OnboardingPage() {
     category: "General",
     interestedStates: [] as string[],
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
   
   const supabase = createClient()
   const router = useRouter()
@@ -36,6 +37,7 @@ export default function OnboardingPage() {
   const handlePrev = () => setStep(s => s - 1)
 
   const handleSubmit = async () => {
+    setIsSubmitting(true)
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
@@ -43,12 +45,12 @@ export default function OnboardingPage() {
         return
       }
 
-      // Get existing profile to preserve role
+      // Use maybeSingle to avoid erroring if profile doesn't exist yet
       const { data: existingProfile } = await supabase
         .from('profiles')
         .select('role')
         .eq('id', user.id)
-        .single()
+        .maybeSingle()
 
       const { error } = await supabase
         .from('profiles')
@@ -64,13 +66,21 @@ export default function OnboardingPage() {
           category: formData.category,
           interested_states: formData.interestedStates,
           onboarding_complete: true,
-          role: existingProfile?.role || 'student' // Preserve existing role or default to student
+          role: existingProfile?.role || 'student'
         })
       
       if (error) throw error
+      
+      const { toast } = await import("sonner")
+      toast.success("Profile completed successfully!")
       router.push("/dashboard")
-    } catch (error) {
+      router.refresh()
+    } catch (error: any) {
       console.error("Failed to create profile", error)
+      const { toast } = await import("sonner")
+      toast.error(error.message || "Failed to save profile. Please try again.")
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -230,8 +240,20 @@ export default function OnboardingPage() {
                 <Button variant="outline" onClick={handlePrev} className="flex-1 h-12 rounded-xl font-bold">
                   <ArrowLeft className="mr-2 h-5 w-5" /> Back
                 </Button>
-                <Button onClick={handleSubmit} className="flex-2 h-12 rounded-xl text-lg font-bold">
-                  Finish Profile <Sparkles className="ml-2 h-5 w-5" />
+                <Button 
+                  onClick={handleSubmit} 
+                  disabled={isSubmitting}
+                  className="flex-2 h-12 rounded-xl text-lg font-bold"
+                >
+                  {isSubmitting ? (
+                    <span className="flex items-center gap-2">
+                      Saving... <Loader2 className="animate-spin h-5 w-5" />
+                    </span>
+                  ) : (
+                    <span className="flex items-center gap-2">
+                      Finish Profile <Sparkles className="h-5 w-5" />
+                    </span>
+                  )}
                 </Button>
               </div>
             </motion.div>
