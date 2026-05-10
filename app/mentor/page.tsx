@@ -135,14 +135,16 @@ export default function MentorPortal() {
                             <User className="h-6 w-6 text-slate-400" />
                           </div>
                           <div>
-                            <h4 className="font-bold text-slate-900 dark:text-white">{session.studentName}</h4>
-                            <p className="text-xs text-slate-400 font-medium">{session.date} • {session.timeSlot}</p>
+                            <h4 className="font-bold text-slate-900 dark:text-white">{session.student_name || 'Student'}</h4>
+                            <p className="text-xs text-slate-400 font-medium">{session.date} • {session.time_slot}</p>
                           </div>
                         </div>
-                        <div className="flex items-center gap-3">
-                          <Badge className="bg-emerald-500/10 text-emerald-600 border-none font-bold uppercase text-[9px] px-3">{session.status}</Badge>
-                          <Button size="sm" className="rounded-xl font-bold h-9 bg-white text-primary hover:bg-primary hover:text-white border border-primary/20">Launch Session</Button>
-                        </div>
+                          <div className="flex items-center gap-3">
+                            <Badge className="bg-emerald-500/10 text-emerald-600 border-none font-bold uppercase text-[9px] px-3">{session.status}</Badge>
+                            <a href={session.meeting_link || '#'} target="_blank" rel="noopener noreferrer" className={!session.meeting_link ? 'pointer-events-none opacity-50' : ''}>
+                              <Button size="sm" className="rounded-xl font-bold h-9 bg-white text-primary hover:bg-primary hover:text-white border border-primary/20">Launch Session</Button>
+                            </a>
+                          </div>
                       </div>
                     ))}
                   </div>
