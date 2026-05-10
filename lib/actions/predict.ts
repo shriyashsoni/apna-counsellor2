@@ -26,8 +26,9 @@ export async function predictColleges(args: {
   
   const { data: counseling } = await supabase
     .from("counselings")
-    .select("id")
-    .eq("name", args.exam)
+    .select("id, name")
+    .or(`name.ilike.%${args.exam}%,exam.ilike.%${args.exam}%`)
+    .limit(1)
     .single()
 
   if (counseling) {
@@ -37,7 +38,7 @@ export async function predictColleges(args: {
     collegeQuery = collegeQuery.or(`name.ilike.%${args.exam}%,location.ilike.%${args.exam}%`)
   }
 
-  const { data: colleges, error } = await collegeQuery.limit(100)
+  const { data: colleges, error } = await collegeQuery.limit(200)
   if (error || !colleges) return []
 
   // Try fetching from ranks table if colleges don't have cutoffs
@@ -47,8 +48,8 @@ export async function predictColleges(args: {
     .select("*")
     .in("college_id", collegeIds)
     .eq("category", args.category)
-    .lte("closing_rank", rank * 1.5) // Buffer
-    .gte("closing_rank", rank * 0.5)
+    .gte("closing_rank", rank) // All colleges where student can get admission
+    .order("closing_rank", { ascending: true })
 
   const results: any[] = []
 
@@ -67,7 +68,8 @@ export async function predictColleges(args: {
       const catCutoff = branchData[args.category] || branchData["General"] || 0;
 
       if (catCutoff > 0 && rank <= catCutoff) {
-        const prob = Math.min(95, Math.max(30, Math.floor(100 - (rank / catCutoff) * 60)));
+        // Higher probability if rank is much lower than cutoff
+        const prob = Math.min(99, Math.max(30, Math.floor(100 - (rank / catCutoff) * 60)));
         results.push({
           id: c.id,
           name: c.name,
@@ -86,9 +88,9 @@ export async function predictColleges(args: {
 
     // Check ranks table fallback
     if (!match && collegeRanks.length > 0) {
-      const bestRank = collegeRanks.sort((a, b) => a.closing_rank - b.closing_rank)[0];
+      const bestRank = collegeRanks[0]; // Already sorted by closing_rank ASC
       if (rank <= bestRank.closing_rank) {
-        const prob = Math.min(95, Math.max(30, Math.floor(100 - (rank / bestRank.closing_rank) * 60)));
+        const prob = Math.min(99, Math.max(30, Math.floor(100 - (rank / bestRank.closing_rank) * 60)));
         results.push({
           id: c.id,
           name: c.name,
@@ -106,5 +108,5 @@ export async function predictColleges(args: {
 
   return results
     .sort((a, b) => b.probability - a.probability)
-    .slice(0, 20);
+    .slice(0, 30);
 }

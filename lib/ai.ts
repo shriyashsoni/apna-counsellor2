@@ -5,69 +5,75 @@ export async function predictAI(args: {
   homeState?: string;
   preferredBranches?: string[];
 }) {
-  const apiKey = process.env.NEXT_PUBLIC_GROQ_API_KEY || process.env.GROQ_API_KEY;
+  const apiKey = process.env.GOOGLE_AI_API_KEY || process.env.NEXT_PUBLIC_GOOGLE_AI_API_KEY || process.env.GROQ_API_KEY;
   if (!apiKey) {
-    console.warn("GROQ_API_KEY not set");
+    console.warn("AI API Key not set");
     return null;
   }
 
   const prompt = `
-    You are an expert Indian college admission counselor with deep knowledge of JoSAA, CSAB, MHT-CET, WBJEE, COMEDK, and State DTE counselings.
-    Based on the following student details, predict the top 15 best-fit colleges and branches they might get:
+    You are an elite Indian college admission counselor with access to 2024-2025 cutoff data for JoSAA, CSAB, MHT-CET, WBJEE, COMEDK, and State DTE counselings.
+    Based on the following student details, predict the top 15-20 best-fit colleges and branches:
     - Exam: ${args.exam}
     - Score/Rank: ${args.rank}
     - Category: ${args.category}
     - Home State: ${args.homeState || "Not Specified"}
-    - Preferred Branches: ${args.preferredBranches?.join(", ") || "Any"}
+    - Preferred Branches: ${args.preferredBranches?.join(", ") || "Any Engineering Branch"}
     
-    Consider Home State Quota (HS) vs Other State Quota (OS) logic. 
-    Use these 2024 REFERENCE Ranks for calibration:
-    - IIT Bombay CSE: ~60 (Open)
-    - NIT Trichy CSE: ~1000 (Open), ~350 (OBC)
-    - NIT Surathkal CSE: ~1400 (Open)
-    - VJTI Mumbai CSE (MHT-CET): ~100 Rank
-    - COEP Pune CSE (MHT-CET): ~150 Rank
-    - IIIT Allahabad IT: ~5000 (Open)
-    - Lower NITs (Agartala, Srinagar) CSE: ~20k-30k (Open)
-    - Top Private (MIT Manipal, VIT Vellore) CSE: ~5k-15k Rank
+    Logic Requirements:
+    1. HS (Home State) vs OS (Other State) Quota analysis.
+    2. Category Reservation impact (OBC/SC/ST/EWS/PWD).
+    3. Historical 2024 Rank Shifts (e.g., CSE cutoffs moving 10-15%).
+    4. Consider NIRF ranking and placement records.
     
-    For JEE Mains, consider NITs, IIITs, and GFTIs. 
-    For MHT-CET, consider top private and government colleges in Maharashtra.
+    Reference Benchmarks:
+    - IIT Bombay CSE: < 60 (Gen)
+    - NIT Trichy CSE: < 1500 (Gen)
+    - VJTI/COEP (MHT-CET): < 200 Rank
+    - Top Private (BITS/VIT): Competitive ranks
     
-    Return the results as a JSON object with a key "colleges" containing an array of objects with these fields:
-    - name: Full college name
-    - branch: Recommended branch
-    - probability: Percentage chance (40-98)
-    - state: College state
-    - type: Government/Private
-    - avgPackage: e.g., "₹12 LPA"
-    - nirfRank: Approximate NIRF rank (if applicable)
-    - reason: Brief 1-sentence reason why this is a good match
+    Return EXACTLY a JSON object with a "colleges" key. Each college object must have:
+    - name (Full name)
+    - branch (Specific branch)
+    - probability (40-99 as integer)
+    - state (Location)
+    - type (Government/Private/IIT/NIT)
+    - avgPackage (e.g., "₹15 LPA")
+    - nirfRank (Number or null)
+    - reason (1 sentence explaining the fit)
   `;
 
   try {
-    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "llama3-8b-8192",
-        messages: [{ role: "user", content: prompt }],
-        temperature: 0.5,
-        response_format: { type: "json_object" }
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: {
+          temperature: 0.4,
+          topK: 40,
+          topP: 0.95,
+          maxOutputTokens: 2048,
+          responseMimeType: "application/json",
+        }
       }),
     });
 
-    if (!response.ok) return null;
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("Gemini API Error:", errorData);
+      return null;
+    }
 
     const data = await response.json();
-    const content = data.choices[0].message.content;
+    const content = data.candidates[0].content.parts[0].text;
     const parsed = JSON.parse(content);
     
-    if (Array.isArray(parsed)) return parsed;
-    if (parsed.colleges && Array.isArray(parsed.colleges)) return parsed.colleges;
+    if (parsed.colleges && Array.isArray(parsed.colleges)) {
+      return parsed.colleges;
+    }
     
     const firstArray = Object.values(parsed).find(v => Array.isArray(v));
     return (firstArray as any[]) || [];

@@ -107,9 +107,12 @@ export default function MHTCETCollegePredictorPage() {
         </div>
       </section>
 
-      <div className="my-12 text-center">
-        <a href="/contact" className="inline-block bg-blue-600 text-white px-8 py-4 rounded-full font-bold hover:bg-blue-700 transition-all shadow-md">
-          Consult an Expert for Free
+      <div className="my-12 flex flex-col sm:flex-row justify-center gap-4">
+        <a href="/predictor?exam=MHT-CET" className="inline-block bg-primary text-white px-8 py-4 rounded-full font-bold hover:bg-primary/90 transition-all shadow-md">
+          Start MHT-CET Predictor
+        </a>
+        <a href="/contact" className="inline-block bg-white text-slate-900 border border-slate-200 px-8 py-4 rounded-full font-bold hover:bg-slate-50 transition-all">
+          Consult an Expert
         </a>
       </div>
 

@@ -55,7 +55,21 @@ export default function PredictorPage() {
   const supabase = createClient();
 
   useEffect(() => {
-    supabase.from("counselings").select("*").then(({ data }) => setCounselings(data || []));
+    supabase.from("counselings").select("*").then(({ data }) => {
+      setCounselings(data || []);
+      
+      // Handle query parameters (e.g., ?exam=MHT-CET)
+      const params = new URLSearchParams(window.location.search);
+      const examParam = params.get('exam');
+      if (examParam && data) {
+        const found = data.find((c: any) => 
+          c.name.toLowerCase().includes(examParam.toLowerCase()) || 
+          c.exam?.toLowerCase().includes(examParam.toLowerCase())
+        );
+        if (found) setSelectedCounseling(found);
+        else setExam(examParam);
+      }
+    });
   }, []);
 
   const results = aiResults || dbResults;
@@ -130,8 +144,8 @@ export default function PredictorPage() {
             </div>
           </div>
           <div className="flex gap-2">
-            <Badge className="bg-emerald-500/10 text-emerald-600 border-none px-4 py-2 rounded-xl font-black uppercase tracking-widest text-[10px]">
-              <Sparkles className="h-3 w-3 mr-2" /> Powered by Groq Llama 3
+            <Badge className="bg-blue-500/10 text-blue-600 border-none px-4 py-2 rounded-xl font-black uppercase tracking-widest text-[10px]">
+              <Sparkles className="h-3 w-3 mr-2" /> Powered by Gemini 1.5 Flash
             </Badge>
           </div>
         </div>
@@ -242,12 +256,12 @@ export default function PredictorPage() {
                       {isPredicting ? (
                         <>
                           <div className="h-6 w-6 border-4 border-white border-t-transparent rounded-full animate-spin" />
-                          Processing 1.3L+ Records...
+                          Analyzing 1.3L+ College Records...
                         </>
                       ) : (
                         <>
-                          <Sparkles className="h-6 w-6" />
-                          Predict My Colleges
+                          <Search className="h-6 w-6" />
+                          Show My Colleges List
                         </>
                       )}
                     </Button>
@@ -304,8 +318,8 @@ export default function PredictorPage() {
                       <ArrowLeft className="h-5 w-5" />
                     </Button>
                     <div>
-                      <h2 className="text-3xl font-black">Predictions for Rank {rank || (percentile + '%')}</h2>
-                      <p className="text-slate-500 font-bold text-sm">{selectedCounseling?.name} · {category} · {homeState || 'Any State'}</p>
+                      <h2 className="text-3xl font-black">Your College List for Rank {rank || percentile}</h2>
+                      <p className="text-slate-500 font-bold text-sm">{selectedCounseling?.name || exam} · {category} · {homeState || 'All India'}</p>
                     </div>
                   </div>
                 </div>                {/* Result List */}
