@@ -76,12 +76,16 @@ export default function MentorPortal() {
               </h1>
             </div>
             <div className="flex gap-3">
-              <Button variant="outline" className="rounded-2xl h-12 px-6 font-bold gap-2">
-                <Settings className="h-4 w-4" /> Edit Profile
-              </Button>
-              <Button className="rounded-2xl h-12 px-8 font-black shadow-xl shadow-primary/20 gap-2">
-                <Calendar className="h-4 w-4" /> Set Availability
-              </Button>
+              <Link href="/mentor/settings">
+                <Button variant="outline" className="rounded-2xl h-12 px-6 font-bold gap-2">
+                  <Settings className="h-4 w-4" /> Edit Profile
+                </Button>
+              </Link>
+              <Link href="/mentor/availability">
+                <Button className="rounded-2xl h-12 px-8 font-black shadow-xl shadow-primary/20 gap-2">
+                  <Calendar className="h-4 w-4" /> Set Availability
+                </Button>
+              </Link>
             </div>
           </div>
 

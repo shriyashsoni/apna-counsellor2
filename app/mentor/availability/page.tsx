@@ -16,6 +16,8 @@ import { Card, CardContent } from "@/components/ui/card"
 import { createClient } from "@/lib/supabase/client"
 import { toast } from "sonner"
 import { AuthGuard } from "@/components/auth-guard"
+import Link from "next/link"
+import { Badge } from "@/components/ui/badge"
 
 const DAYS = [
   { id: 'mon', label: 'Monday' },
@@ -134,9 +136,46 @@ export default function MentorAvailabilityPage() {
               <h1 className="text-4xl font-black tracking-tighter mb-2">My <span className="text-primary">Availability.</span></h1>
               <p className="text-slate-500 font-medium">Set the times you are available for consultation calls.</p>
             </div>
-            <Button onClick={saveAvailability} disabled={loading} className="rounded-2xl h-14 px-8 font-black gap-2 shadow-xl shadow-primary/20">
-              {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <><Save className="h-5 w-5" /> Save Changes</>}
-            </Button>
+            <div className="flex gap-4">
+              <Link href="/mentor/settings">
+                <Button variant="outline" className="rounded-2xl h-14 px-8 font-black gap-2">
+                   Settings
+                </Button>
+              </Link>
+              <Button onClick={saveAvailability} disabled={loading} className="rounded-2xl h-14 px-8 font-black gap-2 shadow-xl shadow-primary/20">
+                {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <><Save className="h-5 w-5" /> Save Changes</>}
+              </Button>
+            </div>
+          </div>
+
+          {/* Cal.com Banner */}
+          <Card className="border-none rounded-[2.5rem] bg-gradient-to-br from-slate-900 to-slate-800 text-white p-10 mb-12 shadow-2xl relative overflow-hidden group">
+            <div className="relative z-10">
+               <Badge className="bg-primary text-white border-none mb-4 px-3 py-1 font-black text-[10px] uppercase tracking-widest">Recommended</Badge>
+               <h2 className="text-3xl font-black mb-4">Professional Booking via Cal.com</h2>
+               <p className="text-slate-400 font-medium mb-8 max-w-lg leading-relaxed">
+                  We recommend using Cal.com for professional scheduling. Connect your account to automatically sync meetings and join links.
+               </p>
+               <div className="flex gap-4">
+                  <Link href="/mentor/settings">
+                    <Button className="rounded-xl h-12 px-8 font-black bg-white text-slate-900 hover:bg-slate-50">
+                       Setup Integration
+                    </Button>
+                  </Link>
+                  <a href="https://cal.com/signup" target="_blank" rel="noopener noreferrer">
+                    <Button variant="ghost" className="rounded-xl h-12 px-8 font-bold text-white hover:bg-white/10">
+                       Create Cal.com Account
+                    </Button>
+                  </a>
+               </div>
+            </div>
+            <Calendar className="absolute -bottom-10 -right-10 h-48 w-48 text-white/5 rotate-12 group-hover:scale-110 transition-transform duration-1000" />
+          </Card>
+
+          <div className="flex items-center gap-4 mb-8">
+             <div className="h-px flex-1 bg-slate-200" />
+             <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Or manage manual slots</span>
+             <div className="h-px flex-1 bg-slate-200" />
           </div>
 
           <div className="grid gap-6">
