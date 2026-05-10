@@ -56,36 +56,53 @@ export default async function MentorProfilePage({ params }: MentorPageProps) {
 
   if (!mentor) notFound()
 
-  const { data: sessionsData } = await supabase
-    .from('sessions')
-    .select('*')
-    .eq('mentor_id', mentor.id)
-    .eq('status', 'available')
+  let sessions = []
+  let reviews = []
+  let services = []
 
-  let sessions = sessionsData || []
+  try {
+    const { data: sessionsData } = await supabase
+      .from('sessions')
+      .select('*')
+      .eq('mentor_id', mentor.id)
+      .eq('status', 'available')
+    sessions = sessionsData || []
 
-  // Filter sessions by Google Calendar availability if linked
-  if (mentor.google_refresh_token && sessions.length > 0) {
-    sessions = await filterSessionsByAvailability(mentor.google_refresh_token, sessions)
+    // Filter sessions by Google Calendar availability if linked
+    if (mentor.google_refresh_token && sessions.length > 0) {
+      try {
+        sessions = await filterSessionsByAvailability(mentor.google_refresh_token, sessions)
+      } catch (e) {
+        console.error("Calendar filter failed:", e)
+      }
+    }
+
+    const { data: reviewsData } = await supabase
+      .from('reviews')
+      .select('*')
+      .eq('mentor_id', mentor.id)
+      .order('created_at', { ascending: false })
+    reviews = reviewsData || []
+
+    const { data: servicesData } = await supabase
+      .from('mentor_services')
+      .select('*')
+      .eq('mentor_id', mentor.id)
+      .eq('is_active', true)
+    services = servicesData || []
+  } catch (err) {
+    console.error("Data fetch error on mentor profile:", err)
   }
-
-  const { data: reviews } = await supabase
-    .from('reviews')
-    .select('*')
-    .eq('mentor_id', mentor.id)
-    .order('created_at', { ascending: false })
-
-  const { data: services } = await supabase
-    .from('mentor_services')
-    .select('*')
-    .eq('mentor_id', mentor.id)
-    .eq('is_active', true)
 
   const { data: { user } } = await supabase.auth.getUser()
   let dbUser = null
   if (user) {
-    const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single()
-    dbUser = profile ? { ...user, ...profile } : user
+    try {
+      const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single()
+      dbUser = profile ? { ...user, ...profile } : user
+    } catch (e) {
+      dbUser = user
+    }
   }
 
   return (
