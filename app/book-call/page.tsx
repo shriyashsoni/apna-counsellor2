@@ -155,7 +155,7 @@ function BookingFlow() {
                  </div>
                  <Card className="border-none rounded-[3rem] bg-white shadow-2xl overflow-hidden min-h-[650px] border border-slate-100 relative">
                     <iframe 
-                      src={`https://cal.com/${selectedMentor.cal_link}?embed=true`}
+                      src={`https://cal.com/${selectedMentor.cal_link?.replace("https://cal.com/", "").replace("http://cal.com/", "").replace(/\/$/, "")}?embed=true`}
                       className="w-full h-[650px] border-none"
                       title="Booking Calendar"
                     />

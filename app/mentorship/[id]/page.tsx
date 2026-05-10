@@ -358,7 +358,7 @@ export default function MentorBookingPage() {
                          <div className={`${!isPaid ? 'opacity-40 grayscale pointer-events-none' : ''} transition-all duration-500`}>
                             {mentor.cal_link && (
                               <Cal
-                                calLink={mentor.cal_link}
+                                calLink={mentor.cal_link.replace("https://cal.com/", "").replace("http://cal.com/", "").replace(/\/$/, "")}
                                 style={{width:"100%",height:"400px",overflow:"scroll"}}
                                 config={{
                                   layout: 'month_view',

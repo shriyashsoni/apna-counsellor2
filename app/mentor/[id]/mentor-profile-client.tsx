@@ -267,7 +267,7 @@ export default function MentorProfileClient({
                         
                         <div className={`${!isPaid ? 'opacity-30 grayscale blur-sm pointer-events-none' : ''} transition-all duration-700 h-[600px]`}>
                            <iframe 
-                             src={`https://cal.com/${initialMentor.cal_link}?embed=true`}
+                             src={`https://cal.com/${initialMentor.cal_link?.replace("https://cal.com/", "").replace("http://cal.com/", "").replace(/\/$/, "")}?embed=true`}
                              className="w-full h-full border-none"
                              title="Booking Calendar"
                            />

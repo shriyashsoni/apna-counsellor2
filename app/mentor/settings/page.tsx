@@ -65,6 +65,8 @@ export default function MentorSettingsPage() {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return
 
+    const cleanedCalLink = profile.cal_link?.replace("https://cal.com/", "").replace("http://cal.com/", "").replace(/\/$/, "");
+
     const { error } = await supabase
       .from('profiles')
       .update({
@@ -74,7 +76,7 @@ export default function MentorSettingsPage() {
         branch: profile.branch,
         pricing: parseInt(profile.pricing),
         image: profile.image,
-        cal_link: profile.cal_link,
+        cal_link: cleanedCalLink,
       })
       .eq('id', user.id)
 

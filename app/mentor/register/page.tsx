@@ -119,7 +119,7 @@ export default function MentorRegisterPage() {
           skills: skillsArray,
           pricing: parseInt(form.pricing) || 499,
           linkedin: form.linkedin,
-          cal_link: form.cal_link,
+          cal_link: form.cal_link?.replace("https://cal.com/", "").replace("http://cal.com/", "").replace(/\/$/, ""),
           counseling_type: form.counseling_type,
           onboarding_complete: true,
           slug: (dbUser.name || dbUser.user_metadata?.full_name || "mentor").toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + Math.random().toString(36).substring(2, 5),
