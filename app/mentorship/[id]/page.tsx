@@ -24,6 +24,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { useState } from "react"
 import { toast } from "sonner"
+import Script from "next/script"
 import Cal from "@calcom/embed-react"
 import { verifyRazorpayPayment } from "@/lib/actions/razorpay"
 
@@ -201,7 +202,8 @@ export default function MentorBookingPage() {
   const slots = ["10:00 AM", "11:30 AM", "02:00 PM", "04:30 PM", "06:00 PM"]
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pb-20">
+    <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950 pt-24 pb-20">
+      <Script src="https://checkout.razorpay.com/v1/checkout.js" />
       <div className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
         <div className="container mx-auto px-4 py-12">
           <Link href="/mentorship">

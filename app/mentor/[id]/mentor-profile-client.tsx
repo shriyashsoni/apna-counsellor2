@@ -48,6 +48,7 @@ export default function MentorProfileClient({
 }) {
   const router = useRouter()
   const supabase = createClient()
+  const { initiatePayment } = useRazorpay()
   const [isPaid, setIsPaid] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
 
