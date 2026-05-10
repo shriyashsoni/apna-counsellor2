@@ -116,17 +116,25 @@ export default function MentorProfileClient({
                          </Badge>
                          <div className="flex items-center gap-1.5 px-3 py-1 bg-amber-50 rounded-full">
                             <Star className="h-4 w-4 text-amber-500 fill-amber-500" />
-                            <span className="text-sm font-black text-amber-700">{initialMentor.rating?.toFixed(1) || '5.0'}</span>
+                            <span className="text-sm font-black text-amber-700">
+                              {typeof initialMentor.rating === 'number' ? initialMentor.rating.toFixed(1) : (Number(initialMentor.rating) || 5.0).toFixed(1)}
+                            </span>
                             <span className="text-[10px] font-bold text-amber-600/60">({initialMentor.reviews_count || 0})</span>
                          </div>
                       </div>
                      <p className="text-xl font-bold text-purple-600">{initialMentor.headline || initialMentor.expertise || 'Expert Career Mentor'}</p>
-                     <div className="flex flex-wrap justify-center md:justify-start gap-2 mb-4">
-                        {initialMentor.counseling_type?.map((type: string) => (
-                           <Badge key={type} className="bg-primary/10 text-primary border-none font-bold">
-                              {type}
-                           </Badge>
-                        ))}
+                      <div className="flex flex-wrap justify-center md:justify-start gap-2 mb-4">
+                        {Array.isArray(initialMentor.counseling_type) ? (
+                          initialMentor.counseling_type.map((type: string) => (
+                            <Badge key={type} className="bg-primary/10 text-primary border-none font-bold">
+                                {type}
+                            </Badge>
+                          ))
+                        ) : initialMentor.counseling_type ? (
+                          <Badge className="bg-primary/10 text-primary border-none font-bold">
+                            {initialMentor.counseling_type}
+                          </Badge>
+                        ) : null}
                      </div>
                      <div className="flex flex-wrap justify-center md:justify-start gap-6 text-slate-500 font-bold">
                         <div className="flex items-center gap-2">
