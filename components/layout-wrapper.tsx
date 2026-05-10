@@ -5,6 +5,7 @@ import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import BackgroundAnimation from "@/components/background-animation"
 import { AIChatbot } from "@/components/ai/chatbot"
+import { Toaster } from "sonner"
 
 export default function LayoutWrapper({ 
   children, 
@@ -23,6 +24,7 @@ export default function LayoutWrapper({
       <main className="flex-1">{children}</main>
       {!isDashboard && <Footer />}
       <AIChatbot />
+      <Toaster position="top-center" richColors />
     </div>
   )
 }
