@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import { useRouter } from "next/navigation"
 import { 
   Calendar as CalendarIcon, 
   Clock, 
@@ -11,7 +12,12 @@ import {
   CheckCircle2,
   CreditCard,
   AlertCircle,
-  Loader2
+  Loader2,
+  Sparkles,
+  User,
+  ArrowLeft,
+  ArrowRight,
+  Zap
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -22,7 +28,7 @@ import { Input } from "@/components/ui/input"
 import { createClient } from "@/lib/supabase/client"
 import { toast } from "sonner"
 import Script from "next/script"
-import { createRazorpayOrder, verifyRazorpayPayment } from "@/lib/actions/razorpay"
+import { verifyRazorpayPayment } from "@/lib/actions/razorpay"
 
 export default function BookCallPage() {
   return (
@@ -427,4 +433,4 @@ function BookingFlow() {
   )
 }
 
-import { Sparkles, User, ArrowLeft, ArrowRight } from "lucide-react"
+

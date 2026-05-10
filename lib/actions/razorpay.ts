@@ -82,11 +82,11 @@ export async function verifyRazorpayPayment({
     const isValid = generatedSignature === signature;
 
     if (isValid && amount && notes) {
-      // Save payment to database
+      // Save payment to database using upsert to avoid duplicates from webhook
       try {
-        await supabaseAdmin
+        const { error: payError } = await supabaseAdmin
           .from('payments')
-          .insert({
+          .upsert({
             order_id: orderId,
             payment_id: paymentId,
             amount: amount,
@@ -96,10 +96,27 @@ export async function verifyRazorpayPayment({
             service_id: notes.service_id,
             type: notes.type || 'mentorship',
             metadata: notes
-          });
+          }, { onConflict: 'payment_id' });
+
+        if (payError) console.error("Payment upsert error:", payError);
+
+        // Also create a pending session record for tracking
+        if (notes.type === 'mentorship' || notes.type === 'consultancy') {
+          await supabaseAdmin
+            .from('sessions')
+            .upsert({
+              student_id: notes.user_id,
+              mentor_id: notes.mentor_id,
+              student_name: notes.full_name || 'Student',
+              status: 'paid_unscheduled',
+              title: notes.type === 'consultancy' ? `Consultancy: ${notes.exam_type || 'General'}` : `Mentorship: ${notes.full_name || 'Session'}`,
+              description: `Paid session awaiting scheduling on Cal.com. Payment ID: ${paymentId}`,
+              date: new Date().toISOString().split('T')[0], // Placeholder
+              time_slot: 'To be scheduled'
+            }, { onConflict: 'description' }); // Use description as a unique marker for this payment
+        }
       } catch (dbErr) {
-        console.error("Failed to save payment to DB:", dbErr);
-        // We still return true because the payment was technically valid according to Razorpay
+        console.error("Failed to update DB after payment:", dbErr);
       }
     }
 

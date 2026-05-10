@@ -124,7 +124,8 @@ export default function MentorBookingPage() {
             user_id: user.id,
             mentor_id: mentor.id,
             service_id: selectedService.id,
-            type: 'mentorship'
+            type: 'mentorship',
+            full_name: user.user_metadata?.full_name || user.email?.split('@')[0]
           }
         })
       })
@@ -150,7 +151,8 @@ export default function MentorBookingPage() {
                 user_id: user.id,
                 mentor_id: mentor.id,
                 service_id: selectedService.id,
-                type: 'mentorship'
+                type: 'mentorship',
+                full_name: user.user_metadata?.full_name || user.email?.split('@')[0]
               }
             })
 

@@ -72,7 +72,8 @@ export default function MentorProfileClient({
         metadata: {
           user_id: currentUser.id,
           mentor_id: initialMentor.id,
-          type: 'mentorship'
+          type: 'mentorship',
+          full_name: currentUser.name || currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0]
         },
         onSuccess: () => {
           setIsPaid(true)
