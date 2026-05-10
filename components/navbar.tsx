@@ -9,6 +9,7 @@ import { Menu, X, ChevronDown, Phone } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { UserNav } from "@/components/user-nav"
+import NotificationInbox from "@/components/notification-inbox"
 import { motion } from "framer-motion"
 
 interface NavbarProps {
@@ -165,6 +166,7 @@ const Navbar = ({ categorizedCounselling }: NavbarProps) => {
         <div className="hidden md:flex items-center space-x-2">
           <ThemeToggle />
           <div className="h-5 w-[1px] bg-slate-200 dark:bg-slate-800 mx-1" />
+          <NotificationInbox />
           <UserNav />
           <motion.div whileHover={{ scale: 1.02 }} transition={{ type: "spring", stiffness: 400, damping: 10 }}>
             <Link href="/book-call">
@@ -246,7 +248,10 @@ const Navbar = ({ categorizedCounselling }: NavbarProps) => {
             <div className="pt-4 space-y-3 border-t border-slate-100 dark:border-slate-800 px-4 flex flex-col gap-2">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-slate-500">Account</span>
-                <UserNav />
+                <div className="flex items-center gap-3">
+                  <NotificationInbox />
+                  <UserNav />
+                </div>
               </div>
               <Link href="/book-call" className="w-full block" onClick={() => setIsMenuOpen(false)}>
                 <Button className="w-full h-11 rounded-xl font-bold text-sm">

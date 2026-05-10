@@ -1,8 +1,7 @@
 "use server"
 
-import { resend } from "@/lib/resend"
+import { novu } from "@/lib/novu"
 
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev";
 const SITE_URL = "https://www.apnacounsellor.in";
 const LOGO_URL = `${SITE_URL}/images/apna-counsellor-logo.png`;
 
@@ -78,11 +77,14 @@ export async function sendWelcomeEmail(to: string, name: string) {
     <a href="${SITE_URL}/dashboard" style="display: inline-block; background-color: #6d28d9; color: #ffffff; font-weight: 800; font-size: 16px; padding: 20px 40px; text-decoration: none; border-radius: 16px; box-shadow: 0 10px 20px rgba(109, 40, 217, 0.2);">Go to Dashboard</a>
   `;
   
-  return resend.emails.send({
-    from: `Apna Counsellor <${FROM_EMAIL}>`,
-    to: [to],
-    subject: `Welcome to Apna Counsellor, ${name}!`,
-    html: getBrandedLayout(content, `Welcome to India's #1 Admission Partner, ${name}!`)
+  return novu.trigger('welcome-email', {
+    to: {
+      subscriberId: to,
+      email: to
+    },
+    payload: {
+      name: name
+    }
   });
 }
 
@@ -105,11 +107,17 @@ export async function sendBookingConfirmation(to: string, mentorName: string, da
     <p style="margin: 0; font-size: 14px; color: #94a3b8; font-weight: 600; font-style: italic;">Note: Please make sure to join 5 minutes early with a stable internet connection.</p>
   `;
   
-  return resend.emails.send({
-    from: `Apna Counsellor <${FROM_EMAIL}>`,
-    to: [to],
-    subject: `Booking Confirmed: ${mentorName} x Apna Counsellor`,
-    html: getBrandedLayout(content, `Your session with ${mentorName} is confirmed for ${date}.`)
+  return novu.trigger('booking-confirmation', {
+    to: {
+      subscriberId: to,
+      email: to
+    },
+    payload: {
+      mentorName,
+      date,
+      time,
+      link
+    }
   });
 }
 
@@ -124,11 +132,13 @@ export async function sendBroadCastEmail(to: string[], title: string, message: s
     ` : ''}
   `;
 
-  return resend.emails.send({
-    from: `Apna Counsellor <${FROM_EMAIL}>`,
-    to: to,
-    subject: `Update: ${title}`,
-    html: getBrandedLayout(content, title)
+  return novu.trigger('broadcast-email', {
+    to: to.map(email => ({ subscriberId: email, email })),
+    payload: {
+      title,
+      message,
+      actionLink
+    }
   });
 }
 
@@ -142,11 +152,12 @@ export async function sendAdminNotification(subject: string, message: string) {
     </div>
   `;
   
-  return resend.emails.send({
-    from: `System Alert <${FROM_EMAIL}>`,
-    to: ADMIN_EMAILS,
-    subject: `[ADMIN] ${subject}`,
-    html: getBrandedLayout(content, subject)
+  return novu.trigger('admin-notification', {
+    to: ADMIN_EMAILS.map(email => ({ subscriberId: email, email })),
+    payload: {
+      subject,
+      message
+    }
   });
 }
 export async function sendMentorApprovalEmail(to: string, name: string) {
@@ -167,11 +178,14 @@ export async function sendMentorApprovalEmail(to: string, name: string) {
     <a href="${SITE_URL}/mentor/dashboard" style="display: inline-block; background-color: #059669; color: #ffffff; font-weight: 800; font-size: 16px; padding: 20px 40px; text-decoration: none; border-radius: 16px; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2);">Go to Mentor Dashboard</a>
   `;
   
-  return resend.emails.send({
-    from: `Apna Counsellor <${FROM_EMAIL}>`,
-    to: [to],
-    subject: `Approved: You are now a Mentor at Apna Counsellor!`,
-    html: getBrandedLayout(content, `Congratulations ${name}, your mentor application is approved!`)
+  return novu.trigger('mentor-approval', {
+    to: {
+      subscriberId: to,
+      email: to
+    },
+    payload: {
+      name
+    }
   });
 }
 export async function sendMentorBookingNotification(to: string, studentName: string, date: string, time: string, link: string) {
@@ -194,10 +208,16 @@ export async function sendMentorBookingNotification(to: string, studentName: str
     <p style="margin: 0; font-size: 14px; color: #94a3b8; font-weight: 600; font-style: italic;">Note: Your earnings (70% of booking fee) will be updated in your wallet after the session is completed.</p>
   `;
   
-  return resend.emails.send({
-    from: `Apna Counsellor <${FROM_EMAIL}>`,
-    to: [to],
-    subject: `New Booking: ${studentName} x Apna Counsellor`,
-    html: getBrandedLayout(content, `New session booked by ${studentName} for ${date}.`)
+  return novu.trigger('mentor-booking-notification', {
+    to: {
+      subscriberId: to,
+      email: to
+    },
+    payload: {
+      studentName,
+      date,
+      time,
+      link
+    }
   });
 }
