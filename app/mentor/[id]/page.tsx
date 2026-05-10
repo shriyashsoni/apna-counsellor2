@@ -14,33 +14,40 @@ export async function generateMetadata({ params }: MentorPageProps): Promise<Met
   const supabase = createClient()
   const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(params.id)
 
-  const { data: mentor } = await supabase
-    .from('profiles')
-    .select('*')
-    .or(`id.eq.${isUuid ? params.id : '00000000-0000-0000-0000-000000000000'},slug.eq.${params.id}`)
-    .single()
+  try {
+    const { data: mentor } = await supabase
+      .from('profiles')
+      .select('*')
+      .or(`id.eq.${isUuid ? params.id : '00000000-0000-0000-0000-000000000000'},slug.eq.${params.id}`)
+      .single()
 
-  if (!mentor) return;
+    if (!mentor) return;
 
-  const title = `${mentor.name} | Expert Mentor from ${mentor.college}`;
-  const description = `Book a 1-on-1 session with ${mentor.name}. Expert guidance in ${mentor.branch} from ${mentor.college}. Solve your admission and career doubts today.`;
+    const title = `${mentor.name} | Expert Mentor from ${mentor.college}`;
+    const description = `Book a 1-on-1 session with ${mentor.name}. Expert guidance in ${mentor.branch} from ${mentor.college}. Solve your admission and career doubts today.`;
 
-  return {
-    title,
-    description,
-    openGraph: {
+    return {
       title,
       description,
-      type: 'profile',
-      images: mentor.image ? [mentor.image] : ['/images/mentor-preview-v1.png'],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-      images: mentor.image ? [mentor.image] : ['/images/mentor-preview-v1.png'],
+      openGraph: {
+        title,
+        description,
+        type: 'profile',
+        images: mentor.image ? [mentor.image] : ['/images/mentor-preview-v1.png'],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title,
+        description,
+        images: mentor.image ? [mentor.image] : ['/images/mentor-preview-v1.png'],
+      }
+    };
+  } catch (e) {
+    return {
+      title: 'Mentor Profile | Apna Counsellor',
+      description: 'Connect with expert mentors for college admission guidance.'
     }
-  };
+  }
 }
 
 export default async function MentorProfilePage({ params }: MentorPageProps) {
