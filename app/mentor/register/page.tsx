@@ -15,7 +15,8 @@ import {
   Sparkles,
   ShieldCheck,
   Briefcase,
-  Banknote
+  Banknote,
+  Globe
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -54,6 +55,7 @@ export default function MentorRegisterPage() {
     skills: "",
     pricing: "499",
     linkedin: "",
+    cal_link: "",
     counseling_type: [] as string[],
   })
 
@@ -70,7 +72,6 @@ export default function MentorRegisterPage() {
     
     setLoading(true)
     try {
-      // 0. Ensure profile exists to avoid foreign key errors in mentor_applications
       const { data: existingProfile, error: checkError } = await supabase
         .from('profiles')
         .select('id, role')
@@ -92,7 +93,6 @@ export default function MentorRegisterPage() {
 
       const skillsArray = form.skills.split(',').map(s => s.trim()).filter(Boolean)
       
-      // 1. Insert into mentor_applications for admin review
       const { error: appError } = await supabase
         .from('mentor_applications')
         .insert({
@@ -106,12 +106,8 @@ export default function MentorRegisterPage() {
           status: 'pending'
         })
 
-      if (appError) {
-        console.error("Application insertion error:", appError)
-        throw appError
-      }
+      if (appError) throw appError
 
-      // 2. Update profile state
       const { error: profileError } = await supabase
         .from('profiles')
         .update({
@@ -123,6 +119,7 @@ export default function MentorRegisterPage() {
           skills: skillsArray,
           pricing: parseInt(form.pricing) || 499,
           linkedin: form.linkedin,
+          cal_link: form.cal_link,
           counseling_type: form.counseling_type,
           onboarding_complete: true,
           slug: (dbUser.name || dbUser.user_metadata?.full_name || "mentor").toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + Math.random().toString(36).substring(2, 5),
@@ -132,18 +129,14 @@ export default function MentorRegisterPage() {
       if (profileError) throw profileError
       
       setSubmitted(true)
-      toast.success("Application Sent Successfully!", {
-        description: "Our team will review your profile and notify you via email.",
-      })
+      toast.success("Application Sent Successfully!")
       
-      // Small delay then redirect
       setTimeout(() => {
         router.push("/dashboard")
       }, 3000)
     } catch (e: any) {
       console.error("Full Registration Error:", e)
-      const errorMessage = e.details || e.message || "Please try again"
-      toast.error(`Registration failed: ${errorMessage}`)
+      toast.error(`Registration failed: ${e.message}`)
     } finally {
       setLoading(false)
     }
@@ -152,14 +145,13 @@ export default function MentorRegisterPage() {
   const steps = [
     { id: 1, title: "Academic Background", icon: <GraduationCap className="h-6 w-6" /> },
     { id: 2, title: "Mentor Profile", icon: <User className="h-6 w-6" /> },
-    { id: 3, title: "Pricing & Socials", icon: <Banknote className="h-6 w-6" /> },
+    { id: 3, title: "Pricing & Integration", icon: <Banknote className="h-6 w-6" /> },
   ]
 
   return (
     <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950 pt-24 pb-20">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Progress Tracker */}
         <div className="mb-12">
            <div className="flex justify-between items-center mb-8 px-4">
               {steps.map((s) => (
@@ -184,7 +176,7 @@ export default function MentorRegisterPage() {
            </div>
         </div>
 
-        <Card className="border-none rounded-[3rem] shadow-2xl shadow-slate-200/50 dark:shadow-none bg-white dark:bg-slate-900 overflow-hidden">
+        <Card className="border-none rounded-[3rem] shadow-2xl bg-white dark:bg-slate-900 overflow-hidden">
            <CardContent className="p-8 md:p-16">
               
               <AnimatePresence mode="wait">
@@ -208,7 +200,7 @@ export default function MentorRegisterPage() {
                        </Button>
                     </div>
                   </motion.div>
-                ) : step === 1 && (
+                ) : step === 1 ? (
                   <motion.div 
                     key="step1"
                     initial={{ opacity: 0, x: 20 }}
@@ -279,9 +271,7 @@ export default function MentorRegisterPage() {
                        Next Step <ArrowRight className="h-5 w-5" />
                     </Button>
                   </motion.div>
-                )}
-
-                {step === 2 && (
+                ) : step === 2 ? (
                   <motion.div 
                     key="step2"
                     initial={{ opacity: 0, x: 20 }}
@@ -333,9 +323,7 @@ export default function MentorRegisterPage() {
                        </Button>
                     </div>
                   </motion.div>
-                )}
-
-                {step === 3 && (
+                ) : (
                   <motion.div 
                     key="step3"
                     initial={{ opacity: 0, x: 20 }}
@@ -354,25 +342,43 @@ export default function MentorRegisterPage() {
                           <div className="relative">
                              <span className="absolute left-4 top-1/2 -translate-y-1/2 font-black text-slate-400 text-xl">₹</span>
                              <Input 
-                               type="number"
-                               placeholder="499" 
-                               className="h-16 pl-10 rounded-xl font-black text-2xl bg-slate-50 dark:bg-slate-950"
-                               value={form.pricing}
-                               onChange={(e) => setForm({...form, pricing: e.target.value})}
+                                type="number"
+                                placeholder="499" 
+                                className="h-16 pl-10 rounded-xl font-black text-2xl bg-slate-50 dark:bg-slate-950"
+                                value={form.pricing}
+                                onChange={(e) => setForm({...form, pricing: e.target.value})}
                              />
                           </div>
                           <p className="text-xs font-bold text-slate-400">Platform fee of 15% applies.</p>
                        </div>
-                       <div className="space-y-2">
-                          <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">LinkedIn Profile URL</label>
-                          <div className="relative">
-                             <Linkedin className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
-                             <Input 
-                               placeholder="linkedin.com/in/yourname" 
-                               className="h-14 pl-12 rounded-xl font-bold bg-slate-50 dark:bg-slate-950"
-                               value={form.linkedin}
-                               onChange={(e) => setForm({...form, linkedin: e.target.value})}
-                             />
+                       
+                       <div className="grid md:grid-cols-2 gap-6 pt-4 border-t border-slate-100">
+                          <div className="space-y-2">
+                             <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">LinkedIn Profile</label>
+                             <div className="relative">
+                                <Linkedin className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
+                                <Input 
+                                  placeholder="linkedin.com/in/..." 
+                                  className="h-14 pl-12 rounded-xl font-bold bg-slate-50 dark:bg-slate-950"
+                                  value={form.linkedin}
+                                  onChange={(e) => setForm({...form, linkedin: e.target.value})}
+                                />
+                             </div>
+                          </div>
+                          <div className="space-y-2">
+                             <div className="flex items-center justify-between">
+                                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Cal.com Link</label>
+                                <a href="https://cal.com/signup" target="_blank" rel="noopener noreferrer" className="text-[9px] font-bold text-primary hover:underline">Get Link</a>
+                             </div>
+                             <div className="relative">
+                                <Globe className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
+                                <Input 
+                                  placeholder="username/30min" 
+                                  className="h-14 pl-12 rounded-xl font-bold bg-slate-50 dark:bg-slate-950"
+                                  value={form.cal_link}
+                                  onChange={(e) => setForm({...form, cal_link: e.target.value})}
+                                />
+                             </div>
                           </div>
                        </div>
                     </div>
@@ -381,9 +387,9 @@ export default function MentorRegisterPage() {
                        <div className="flex gap-4">
                           <ShieldCheck className="h-8 w-8 text-amber-500 shrink-0" />
                           <div>
-                             <h4 className="font-black text-amber-700 dark:text-amber-400">Verification Pending</h4>
+                             <h4 className="font-black text-amber-700 dark:text-amber-400">Verification Process</h4>
                              <p className="text-xs font-medium text-slate-600 dark:text-slate-400 leading-relaxed">
-                               After submission, our team will verify your credentials. Once approved, your profile will be live for students to book.
+                                Our team will verify your credentials within 24-48 hours. Once approved, your profile will be live for direct student bookings.
                              </p>
                           </div>
                        </div>
