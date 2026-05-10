@@ -57,12 +57,11 @@ export default function OnboardingPage() {
           phone: formData.phone,
           city: formData.city,
           exam: formData.examType,
-          target_year: formData.targetYear,
+          target_year: parseInt(formData.targetYear) || 2026,
           rank: formData.rank,
           category: formData.category,
           interested_states: formData.interestedStates,
           onboarding_complete: true,
-          // Default to student, if they are admin, the Admin SQL will restore it
           role: user.email === 'apnacounsellor@gmail.com' || user.email === 'sonishriyash@gmail.com' ? 'admin' : 'student'
         })
       
