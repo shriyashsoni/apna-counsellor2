@@ -13,6 +13,7 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.92.0",
     "@auth/core": "^0.37.4",
+    "@calcom/embed-react": "^1.5.3",
     "@emotion/is-prop-valid": "latest",
     "@heyputer/puter.js": "^2.2.15",
     "@radix-ui/react-accordion": "^1.0.4",

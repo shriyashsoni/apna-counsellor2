@@ -140,14 +140,14 @@ export default async function MentorDashboard() {
             { label: "Booked Calls", value: sessions?.length || 0, icon: Users, color: "text-purple-600", bg: "bg-purple-50" },
             { label: "My Rating", value: profile.rating || "4.9", icon: Star, color: "text-amber-500", bg: "bg-amber-50" },
             { 
-              label: "Calendar Sync", 
-              value: profile.google_refresh_token ? "Linked" : "Not Linked", 
+              label: "Booking Sync", 
+              value: profile.cal_link ? "Active" : "Disabled", 
               icon: Calendar, 
-              color: profile.google_refresh_token ? "text-emerald-600" : "text-slate-400", 
-              bg: profile.google_refresh_token ? "bg-emerald-50" : "bg-slate-100",
-              action: !profile.google_refresh_token && (
-                <Link href="/api/auth/google/link">
-                  <Button variant="link" className="p-0 h-auto text-[10px] font-black uppercase text-purple-600">Link Now</Button>
+              color: profile.cal_link ? "text-emerald-600" : "text-slate-400", 
+              bg: profile.cal_link ? "bg-emerald-50" : "bg-slate-100",
+              action: !profile.cal_link && (
+                <Link href="/mentor/settings">
+                  <Button variant="link" className="p-0 h-auto text-[10px] font-black uppercase text-purple-600">Setup Now</Button>
                 </Link>
               )
             },

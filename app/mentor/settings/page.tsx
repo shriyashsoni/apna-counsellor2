@@ -34,7 +34,8 @@ export default function MentorSettingsPage() {
     college: "",
     branch: "",
     pricing: 499,
-    image: ""
+    image: "",
+    cal_link: ""
   })
 
   useEffect(() => {
@@ -73,6 +74,7 @@ export default function MentorSettingsPage() {
         branch: profile.branch,
         pricing: parseInt(profile.pricing),
         image: profile.image,
+        cal_link: profile.cal_link,
       })
       .eq('id', user.id)
 
@@ -176,6 +178,24 @@ export default function MentorSettingsPage() {
                       placeholder="Share your expertise and how you can help students..."
                       className="rounded-2xl border-slate-100 font-medium leading-relaxed p-4"
                     />
+                  </div>
+
+                  <div className="space-y-4 pt-4 border-t border-slate-100">
+                    <div className="flex items-center justify-between">
+                       <Label className="font-black text-xs uppercase tracking-widest text-slate-400 flex items-center gap-2">
+                          Booking Integration (Cal.com)
+                       </Label>
+                       <a href="https://cal.com/signup" target="_blank" rel="noopener noreferrer" className="text-[10px] font-bold text-primary hover:underline">Get Free Cal.com Link</a>
+                    </div>
+                    <div className="space-y-2">
+                       <Input 
+                         value={profile.cal_link || ''} 
+                         onChange={(e) => setProfile({...profile, cal_link: e.target.value})}
+                         placeholder="shriyash-soni/30min"
+                         className="rounded-xl h-12 border-slate-100 font-bold"
+                       />
+                       <p className="text-[10px] text-slate-400 font-medium">Enter your Cal.com username/slug (e.g. "shriyash-soni/30min") to enable instant bookings.</p>
+                    </div>
                   </div>
 
                   <div className="space-y-2 max-w-xs">

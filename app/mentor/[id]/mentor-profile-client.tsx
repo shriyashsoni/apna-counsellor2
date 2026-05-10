@@ -21,8 +21,11 @@ import {
   CalendarCheck2,
   Sparkles,
   Zap,
-  Info
+  Info,
+  Globe
 } from "lucide-react"
+import { getCalApi } from "@calcom/embed-react";
+import { useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -47,45 +50,21 @@ export default function MentorProfileClient({
   const supabase = createClient()
   const { initiatePayment, isLoading: isBooking } = useRazorpay()
 
+  useEffect(() => {
+    (async function () {
+      const cal = await getCalApi();
+      cal("ui", {
+        theme: "light",
+        styles: { branding: { brandColor: "#6366f1" } },
+        hideEventTypeDetails: false,
+        layout: "month_view",
+      });
+    })();
+  }, []);
+
   const handleBook = async (session: any) => {
-    if (currentUser === null) {
-      toast.error("Please login to book a session")
-      router.push("/login")
-      return
-    }
-
-    const amount = session.price || initialMentor.pricing || 499
-
-    await initiatePayment({
-      amount,
-      name: "Apna Counsellor",
-      description: `Mentorship session with ${initialMentor.name}`,
-      prefill: {
-        name: currentUser.name,
-        email: currentUser.email,
-      },
-      metadata: {
-        user_id: currentUser.id,
-        mentor_id: initialMentor.id,
-        session_id: session.id,
-        type: "mentorship_session",
-        date: session.date,
-        time: session.time_slot
-      },
-      onSuccess: async (response) => {
-        // Immediate UI feedback, while webhook handles the source of truth
-        toast.success("Booking confirmed! Redirecting to dashboard...")
-        
-        // We still do a quick update here for speed, but webhook is the backup
-        await supabase.from('sessions').update({
-          student_id: currentUser.id,
-          student_name: currentUser.name || "Student",
-          status: 'confirmed'
-        }).eq('id', session.id)
-
-        router.push("/dashboard")
-      }
-    })
+    // Legacy handleBook kept for fallback or services, but Cal.com will handle most
+    toast.info("Redirecting to secure booking...")
   }
 
 
@@ -231,47 +210,30 @@ export default function MentorProfileClient({
                 </TabsContent>
             </Tabs>
 
-            <section>
-               <h3 className="text-2xl font-black mb-6 flex items-center gap-3"><CalendarCheck2 className="h-7 w-7 text-purple-600" /> Available Time Slots</h3>
-               <div className="grid sm:grid-cols-2 gap-6">
-                  {initialSessions.length === 0 ? (
-                    <div className="col-span-full p-12 text-center rounded-[2.5rem] bg-white border-2 border-dashed border-slate-200">
-                       <Clock className="h-12 w-12 text-slate-300 mx-auto mb-4" />
-                       <h4 className="text-lg font-black text-slate-900">No slots posted yet</h4>
+            <section className="scroll-mt-24" id="booking">
+               <h3 className="text-2xl font-black mb-6 flex items-center gap-3"><CalendarCheck2 className="h-7 w-7 text-purple-600" /> Book a Consultation</h3>
+               {initialMentor.cal_link ? (
+                 <Card className="border-none rounded-[3rem] bg-white shadow-xl overflow-hidden min-h-[600px] border border-slate-100">
+                    <div className="p-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
+                       <div className="flex items-center gap-2">
+                          <div className="h-2 w-2 bg-emerald-500 rounded-full animate-pulse" />
+                          <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Live Availability</span>
+                       </div>
+                       <Badge variant="outline" className="text-[10px] border-slate-200">Powered by Cal.com</Badge>
                     </div>
-                  ) : (
-                    initialSessions.map((session: any) => (
-                      <Card key={session.id} className="border-none rounded-[2.5rem] bg-white shadow-lg hover:shadow-purple-500/10 transition-all overflow-hidden border border-slate-100">
-                         <CardContent className="p-8">
-                            <div className="flex justify-between items-start mb-6">
-                               <div className="space-y-1">
-                                  <div className="flex items-center gap-2 text-purple-600">
-                                     <Calendar className="h-5 w-5" />
-                                     <span className="font-black">
-                                        {(() => {
-                                           try {
-                                              return new Date(session.date).toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'short' });
-                                           } catch (e) {
-                                              return String(session.date);
-                                           }
-                                        })()}
-                                     </span>
-                                  </div>
-                                  <div className="flex items-center gap-2 text-slate-400 font-bold text-sm">
-                                     <Clock className="h-4 w-4" />
-                                     <span>{session.time_slot || 'TBD'} (45 mins)</span>
-                                  </div>
-                               </div>
-                               <Badge className="bg-purple-100 text-purple-600 border-none rounded-lg px-3 py-1 font-black">₹{session.price || initialMentor.pricing || 499}</Badge>
-                            </div>
-                            <Button onClick={() => handleBook(session)} disabled={isBooking} className="w-full h-14 rounded-2xl font-black text-lg shadow-xl shadow-purple-100 bg-purple-600">
-                              {isBooking ? <div className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : "Book This Slot"}
-                            </Button>
-                         </CardContent>
-                      </Card>
-                    ))
-                  )}
-               </div>
+                    <iframe 
+                      src={`https://cal.com/${initialMentor.cal_link}?embed=true`}
+                      className="w-full h-[600px] border-none"
+                      title="Booking Calendar"
+                    />
+                 </Card>
+               ) : (
+                 <Card className="border-none rounded-[2.5rem] bg-white p-12 text-center shadow-xl border border-dashed border-slate-200">
+                    <Globe className="h-16 w-16 text-slate-200 mx-auto mb-6" />
+                    <h3 className="text-xl font-bold mb-2">Calendar Not Linked</h3>
+                    <p className="text-slate-500 font-medium max-w-sm mx-auto">This mentor hasn't linked their Cal.com booking page yet. Please check back later or contact support.</p>
+                 </Card>
+               )}
             </section>
           </div>
 
