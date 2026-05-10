@@ -114,9 +114,11 @@ export default async function MentorDashboard() {
                 <Bell className="h-5 w-5 text-slate-400" />
                 <div className="absolute top-4 right-4 h-2 w-2 bg-red-500 rounded-full border-2 border-white" />
              </Button>
-             <Button variant="outline" className="rounded-2xl h-14 px-8 font-black border-slate-200">
-                <Settings className="mr-2 h-5 w-5 text-slate-400" /> Account
-             </Button>
+             <Link href="/mentor/settings">
+               <Button variant="outline" className="rounded-2xl h-14 px-8 font-black border-slate-200">
+                  <Settings className="mr-2 h-5 w-5 text-slate-400" /> Profile Settings
+               </Button>
+             </Link>
           </div>
         </header>
 
