@@ -25,7 +25,7 @@ export default async function MentorDashboard() {
     .single()
 
   // Allow access if role is mentor/admin OR if onboarding is complete
-  if (profile?.role !== 'mentor' && profile?.role !== 'admin' && !profile?.onboarding_complete) {
+  if (!profile || (profile.role !== 'mentor' && profile.role !== 'admin' && !profile.onboarding_complete)) {
     redirect("/dashboard")
   }
 
@@ -35,11 +35,11 @@ export default async function MentorDashboard() {
   let sessions: any[] = []
   let unscheduledSessions: any[] = []
   try {
-    const { data: allSessions } = await supabase
+    const { data: allSessions, error: sessError } = await supabase
       .from('sessions')
       .select(`
         *,
-        student:student_id (
+        student:profiles!student_id (
           name,
           email
         )
@@ -47,8 +47,20 @@ export default async function MentorDashboard() {
       .eq('mentor_id', user.id)
       .order('created_at', { ascending: false })
     
-    sessions = allSessions?.filter(s => s.status === 'confirmed' || s.status === 'completed') || []
-    unscheduledSessions = allSessions?.filter(s => s.status === 'paid_unscheduled') || []
+    if (sessError) {
+      console.error("Session fetch error, trying fallback:", sessError)
+      const { data: fallbackData } = await supabase
+        .from('sessions')
+        .select('*')
+        .eq('mentor_id', user.id)
+        .order('created_at', { ascending: false })
+      
+      sessions = fallbackData?.filter(s => s.status === 'confirmed' || s.status === 'completed') || []
+      unscheduledSessions = fallbackData?.filter(s => s.status === 'paid_unscheduled') || []
+    } else {
+      sessions = allSessions?.filter(s => s.status === 'confirmed' || s.status === 'completed') || []
+      unscheduledSessions = allSessions?.filter(s => s.status === 'paid_unscheduled') || []
+    }
   } catch (err) {
     console.error("Dashboard sessions error:", err)
   }
@@ -61,7 +73,7 @@ export default async function MentorDashboard() {
       .from('payments')
       .select('amount')
       .eq('mentor_id', user.id)
-      .eq('status', 'completed') // 'completed' is our internal success status
+      .eq('status', 'captured') // 'captured' is our internal success status
 
     totalEarnings = payments?.reduce((acc, curr) => acc + (Number(curr.amount) * 0.7 || 0), 0) || 0
     totalPayments = payments?.length || 0
@@ -119,7 +131,7 @@ export default async function MentorDashboard() {
       <main className="flex-1 lg:ml-80 p-6 md:p-12 min-h-screen">
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-8">
           <div>
-            <h1 className="text-3xl md:text-5xl font-black tracking-tighter mb-2 text-slate-900">Welcome Back, {profile.name?.split(' ')[0]}!</h1>
+            <h1 className="text-3xl md:text-5xl font-black tracking-tighter mb-2 text-slate-900">Welcome Back, {profile?.name?.split(' ')[0] || 'Expert'}!</h1>
             <Badge className="bg-emerald-50 text-emerald-600 border-none font-black text-[10px] uppercase px-3">Session Sync Active</Badge>
           </div>
           

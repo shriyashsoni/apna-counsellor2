@@ -90,7 +90,7 @@ export async function verifyRazorpayPayment({
             order_id: orderId,
             payment_id: paymentId,
             amount: amount,
-            status: 'completed',
+            status: 'captured',
             user_id: notes.user_id,
             mentor_id: notes.mentor_id,
             service_id: notes.service_id,

@@ -75,15 +75,15 @@ export async function POST(req: Request) {
       }).eq('id', session_id);
 
       // 5. Record Payment for Admin Dashboard
-      await supabase.from('payments').insert({
+      await supabase.from('payments').upsert({
         user_id,
         mentor_id,
         session_id,
         amount: payload.amount / 100, // Convert from paisa to rupees
         status: 'captured',
-        razorpay_payment_id: payload.id,
-        razorpay_order_id: payload.order_id
-      });
+        payment_id: payload.id, // Correct column name for unique constraint
+        order_id: payload.order_id
+      }, { onConflict: 'payment_id' });
 
       // 6. Send Notifications
       await Promise.all([
