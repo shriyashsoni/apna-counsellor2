@@ -24,6 +24,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { useState } from "react"
 import { toast } from "sonner"
+import Cal from "@calcom/embed-react"
 
 export default function MentorBookingPage() {
   const params = useParams()
@@ -36,6 +37,8 @@ export default function MentorBookingPage() {
   const [services, setServices] = useState<any[]>([])
   const [reviews, setReviews] = useState<any[]>([])
   const [selectedService, setSelectedService] = useState<any>(null)
+  const [isPaid, setIsPaid] = useState(false)
+  const [isProcessing, setIsProcessing] = useState(false)
   const supabase = createClient()
 
   useEffect(() => {
@@ -47,7 +50,7 @@ export default function MentorBookingPage() {
         .from("profiles")
         .select("*")
         .or(`id.eq.${isUuid ? mentorId : '00000000-0000-0000-0000-000000000000'},slug.eq.${mentorId}`)
-        .single()
+        .maybeSingle()
 
       if (mentorError || !mentorData) {
         setMentor(null)
@@ -64,7 +67,22 @@ export default function MentorBookingPage() {
         .eq("is_active", true)
       
       setServices(servicesData || [])
-      if (servicesData?.length) setSelectedService(servicesData[0])
+      
+      if (servicesData?.length) {
+        setServices(servicesData)
+        setSelectedService(servicesData[0])
+      } else if (mentorData.pricing) {
+        const defaultService = {
+          id: 'default',
+          title: 'Consultation Call',
+          duration_minutes: 45,
+          price: mentorData.pricing
+        }
+        setServices([defaultService])
+        setSelectedService(defaultService)
+      } else {
+        setServices([])
+      }
 
       // 3. Fetch Reviews
       const { data: reviewsData } = await supabase
@@ -80,15 +98,70 @@ export default function MentorBookingPage() {
     fetchMentorData()
   }, [mentorId]);
   
-  const handleBooking = () => {
-    if (!selectedSlot) {
-      toast.error("Please select a time slot")
+  const handleBooking = async () => {
+    if (!selectedService) {
+      toast.error("Please select a service")
       return
     }
-    toast.success("Redirecting to payment...")
-    // Simulate booking flow
-    setTimeout(() => router.push("/dashboard"), 1500)
+
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      toast.error("Please login to book a session")
+      router.push("/login?redirect=/mentorship/" + mentorId)
+      return
+    }
+
+    setIsProcessing(true)
+    try {
+      const response = await fetch("/api/razorpay/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: selectedService.price,
+          notes: {
+            user_id: user.id,
+            mentor_id: mentor.id,
+            service_id: selectedService.id,
+            type: 'mentorship'
+          }
+        })
+      })
+
+      const order = await response.json()
+      if (!response.ok) throw new Error(order.error || "Failed to create order")
+
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        amount: order.amount,
+        currency: order.currency,
+        name: "Apna Counsellor",
+        description: `Booking session with ${mentor.name}`,
+        order_id: order.id,
+        handler: async function (response: any) {
+          setIsPaid(true)
+          toast.success("Payment successful! You can now schedule your meeting.")
+        },
+        prefill: {
+          name: user.user_metadata?.full_name || "",
+          email: user.email || "",
+        },
+        theme: { color: "#6d28d9" },
+      }
+
+      const rzp = new (window as any).Razorpay(options)
+      rzp.open()
+    } catch (err: any) {
+      toast.error(err.message || "Payment initiation failed")
+    } finally {
+      setIsProcessing(false)
+    }
   }
+
+  if (mentor === undefined) return (
+    <div className="h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">
+      <div className="h-12 w-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+    </div>
+  )
 
   if (mentor === null) return (
     <div className="h-screen flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-950 p-8 text-center">
@@ -162,15 +235,15 @@ export default function MentorBookingPage() {
                    <div className="space-y-4">
                       {services.length === 0 ? (
                         <Card className="p-8 rounded-[2.5rem] bg-slate-50 border-none text-center">
-                           <p className="font-bold text-slate-400">Standard Consultation Session</p>
-                           <p className="text-xs font-medium text-slate-400">Default 45-min career guidance call</p>
+                           <p className="font-bold text-slate-400">No services currently available</p>
+                           <p className="text-xs font-medium text-slate-400">Please check back later or contact support.</p>
                         </Card>
                       ) : (
                         services.map(service => (
                           <Card 
                             key={service.id} 
                             onClick={() => setSelectedService(service)}
-                            className={`p-6 rounded-[2.5rem] cursor-pointer transition-all border-2 ${selectedService?.id === service.id ? 'border-primary bg-primary/5 shadow-lg shadow-primary/5' : 'border-slate-100 hover:border-primary/50'}`}
+                            className={`p-6 rounded-[2.5rem] cursor-pointer transition-all border-2 ${selectedService?.id === service.id ? 'border-primary bg-primary/5 shadow-lg shadow-primary/5' : 'border-slate-100 dark:border-slate-800 hover:border-primary/50'}`}
                           >
                              <div className="flex justify-between items-center">
                                 <div>
@@ -257,10 +330,25 @@ export default function MentorBookingPage() {
 
                    <Button 
                      onClick={handleBooking}
+                     disabled={isProcessing}
                      className="w-full h-16 rounded-2xl bg-primary hover:bg-primary/90 font-black text-xl shadow-xl shadow-primary/20"
                    >
-                     Continue to Pay
+                     {isProcessing ? (
+                       <div className="h-6 w-6 border-4 border-white border-t-transparent rounded-full animate-spin" />
+                     ) : isPaid ? "Booked Successfully" : "Continue to Pay"}
                    </Button>
+
+                   {isPaid && mentor.cal_link && (
+                     <div className="mt-8 pt-8 border-t border-slate-100">
+                        <Badge className="bg-emerald-500 text-white border-none mb-4 px-3 py-1 font-black text-[10px] uppercase tracking-widest">Payment Verified</Badge>
+                        <h3 className="text-xl font-black mb-4">Schedule your session:</h3>
+                        <Cal
+                          calLink={mentor.cal_link}
+                          style={{width:"100%",height:"100%",overflow:"scroll"}}
+                          config={{layout: 'month_view'}}
+                        />
+                     </div>
+                   )}
 
                    <div className="flex items-center gap-4 text-xs text-slate-400 font-bold justify-center">
                      <span className="flex items-center gap-1"><ShieldCheck className="h-3 w-3" /> Secure Payment</span>

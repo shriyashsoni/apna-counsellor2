@@ -67,7 +67,7 @@ export default function DashboardPage() {
         .from('profiles')
         .select('*')
         .eq('id', authUser.id)
-        .single()
+        .maybeSingle()
 
       if (!profileData) {
         router.push("/onboarding")
@@ -114,7 +114,10 @@ function AdminDashboard({ user }: { user: any }) {
       const { count: colleges } = await supabase.from('colleges').select('*', { count: 'exact', head: true })
       const { count: mentors } = await supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'mentor')
       
-      setStats({ users, colleges, mentors, revenue: 0 })
+      const { data: payments } = await supabase.from('payments').select('amount').eq('status', 'captured')
+      const revenue = payments?.reduce((acc, curr) => acc + (curr.amount || 0), 0) || 0
+      
+      setStats({ users, colleges, mentors, revenue })
     }
     fetchStats()
   }, [])
