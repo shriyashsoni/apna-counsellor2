@@ -90,23 +90,23 @@ export default function PredictorPage() {
         percentile: percentile ? parseFloat(percentile) : undefined,
         category,
       });
-      setDbResults(dataResults);
+      setDbResults(dataResults || []);
 
       // 2. Try AI Prediction
       const aiResponse = await predictAI({
         exam: examName,
-        rank: rank ? parseInt(rank) : (percentile ? Math.floor((100 - parseFloat(percentile)) * 12000) : 0),
+        rank: rank ? parseInt(rank.replace(/,/g, "")) : (percentile ? Math.floor((100 - parseFloat(percentile)) * 12000) : 0),
         category,
         homeState,
         preferredBranches: selectedBranches
       });
       
-      if (aiResponse && aiResponse.length > 0) {
-        setAiResults(aiResponse);
-      }
+      setAiResults(aiResponse || []);
       setShowResults(true);
     } catch (error) {
       console.error("Prediction failed:", error);
+      setDbResults([]);
+      setAiResults([]);
       setShowResults(true); 
     } finally {
       setIsPredicting(false);
@@ -329,11 +329,19 @@ export default function PredictorPage() {
                        <div className="h-16 w-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
                        <p className="font-black text-xl text-slate-900">Consulting AI Advisor...</p>
                     </div>
-                  ) : (!dbResults || dbResults.length === 0) && (!aiResults || aiResults.length === 0) ? (
+                  ) : (dbResults?.length === 0 && aiResults?.length === 0) ? (
                     <Card className="col-span-full p-20 text-center rounded-[3rem] border-dashed border-2 border-slate-200 dark:border-slate-800 bg-white/50">
                        <AlertCircle className="h-20 w-20 text-slate-200 mx-auto mb-6" />
-                       <h3 className="text-3xl font-black mb-4">No Matches Found</h3>
-                       <p className="text-slate-500 font-medium max-w-sm mx-auto">This rank might be too high for the selected filters. Try broadening your branch preferences or checking another counseling.</p>
+                       <h3 className="text-3xl font-black mb-4">No Verified Matches Found</h3>
+                       <p className="text-slate-500 font-medium max-w-sm mx-auto">
+                         We couldn't find exact matches in our database for Rank {rank || percentile}. 
+                         This usually happens when the rank is outside historical cutoff ranges.
+                       </p>
+                       <div className="mt-8">
+                         <Button onClick={() => setShowResults(false)} variant="outline" className="rounded-xl font-black">
+                           Try Different Filters
+                         </Button>
+                       </div>
                     </Card>
                   ) : (
                     <>

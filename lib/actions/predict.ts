@@ -32,13 +32,14 @@ export async function predictColleges(args: {
     .single()
 
   if (counseling) {
-    collegeQuery = collegeQuery.eq("counseling_id", counseling.id)
+    // Search for colleges linked to this counseling OR colleges that match the counseling name in their description/location
+    collegeQuery = collegeQuery.or(`counseling_id.eq.${counseling.id},location.ilike.%${counseling.name}%,description.ilike.%${counseling.name}%`)
   } else {
     // Better fallback: search for exam name in college name or description
-    collegeQuery = collegeQuery.or(`name.ilike.%${args.exam}%,location.ilike.%${args.exam}%`)
+    collegeQuery = collegeQuery.or(`name.ilike.%${args.exam}%,location.ilike.%${args.exam}%,description.ilike.%${args.exam}%`)
   }
 
-  const { data: colleges, error } = await collegeQuery.limit(200)
+  const { data: colleges, error } = await collegeQuery.limit(300)
   if (error || !colleges) return []
 
   // Try fetching from ranks table if colleges don't have cutoffs

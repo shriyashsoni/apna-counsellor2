@@ -68,15 +68,31 @@ export async function predictAI(args: {
     }
 
     const data = await response.json();
-    const content = data.candidates[0].content.parts[0].text;
-    const parsed = JSON.parse(content);
-    
-    if (parsed.colleges && Array.isArray(parsed.colleges)) {
-      return parsed.colleges;
+    if (!data.candidates || !data.candidates[0].content) {
+      console.error("Gemini API Unexpected Response:", JSON.stringify(data));
+      return null;
     }
+
+    let content = data.candidates[0].content.parts[0].text;
     
-    const firstArray = Object.values(parsed).find(v => Array.isArray(v));
-    return (firstArray as any[]) || [];
+    // Clean content if it contains markdown code blocks
+    content = content.replace(/```json\n?/, "").replace(/```\n?/, "").trim();
+    
+    try {
+      const parsed = JSON.parse(content);
+      
+      if (parsed.colleges && Array.isArray(parsed.colleges)) {
+        return parsed.colleges;
+      }
+      
+      if (Array.isArray(parsed)) return parsed;
+
+      const firstArray = Object.values(parsed).find(v => Array.isArray(v));
+      return (firstArray as any[]) || [];
+    } catch (parseError) {
+      console.error("AI Response Parsing Failed:", content);
+      return null;
+    }
   } catch (error) {
     console.error("AI prediction failed:", error);
     return null;
