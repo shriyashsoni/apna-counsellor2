@@ -165,7 +165,7 @@ CREATE TABLE public.notifications (
     title TEXT,
     message TEXT,
     type TEXT, -- info, warning, success
-    read BOOLEAN DEFAULT FALSE,
+    is_read BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
