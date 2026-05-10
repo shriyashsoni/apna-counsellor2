@@ -37,13 +37,7 @@ export default async function MentorDashboard() {
   try {
     const { data: allSessions, error: sessError } = await supabase
       .from('sessions')
-      .select(`
-        *,
-        student:profiles!student_id (
-          name,
-          email
-        )
-      `)
+      .select('*, profiles:student_id(name, email)')
       .eq('mentor_id', user.id)
       .order('created_at', { ascending: false })
     
@@ -247,7 +241,8 @@ export default async function MentorDashboard() {
                                        <p className="text-[10px] font-black text-purple-600 uppercase tracking-widest">Upcoming Session</p>
                                        {s.status === 'completed' && <Badge className="bg-emerald-50 text-emerald-600 border-none text-[8px]">Completed</Badge>}
                                      </div>
-                                     <h4 className="text-xl font-black">{(s.student as any)?.name || s.student_name || 'Student'}</h4>
+                                     <h4 className="text-xl font-black">{s.profiles?.name || s.student_name || 'Student'}</h4>
+                                     <p className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-widest">{s.profiles?.email || 'No email'}</p>
                                       <div className="flex items-center gap-4 mt-1 text-sm font-bold text-slate-400">
                                         <div className="flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" /> {s.scheduled_at ? new Date(s.scheduled_at).toLocaleDateString() : (s.date || 'No Date')}</div>
                                         <div className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" /> {s.scheduled_at ? new Date(s.scheduled_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : (s.time_slot || 'No Time')}</div>
