@@ -25,6 +25,7 @@ import Image from "next/image"
 import { useState } from "react"
 import { toast } from "sonner"
 import Cal from "@calcom/embed-react"
+import { verifyRazorpayPayment } from "@/lib/actions/razorpay"
 
 export default function MentorBookingPage() {
   const params = useParams()
@@ -138,8 +139,29 @@ export default function MentorBookingPage() {
         description: `Booking session with ${mentor.name}`,
         order_id: order.id,
         handler: async function (response: any) {
-          setIsPaid(true)
-          toast.success("Payment successful! You can now schedule your meeting.")
+          try {
+            const isVerified = await verifyRazorpayPayment({
+              orderId: response.razorpay_order_id,
+              paymentId: response.razorpay_payment_id,
+              signature: response.razorpay_signature,
+              amount: selectedService.price,
+              notes: {
+                user_id: user.id,
+                mentor_id: mentor.id,
+                service_id: selectedService.id,
+                type: 'mentorship'
+              }
+            })
+
+            if (isVerified) {
+              setIsPaid(true)
+              toast.success("Payment successful! You can now schedule your meeting.")
+            } else {
+              toast.error("Payment verification failed. Please contact support.")
+            }
+          } catch (err) {
+            toast.error("Error verifying payment")
+          }
         },
         prefill: {
           name: user.user_metadata?.full_name || "",
@@ -309,53 +331,51 @@ export default function MentorBookingPage() {
                    </div>
                  </div>
                  <div className="p-8 space-y-8">
-                   <div>
-                     <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-4">Select a Slot</label>
-                     <div className="grid grid-cols-2 gap-3">
-                       {slots.map(slot => (
-                         <button
-                           key={slot}
-                           onClick={() => setSelectedSlot(slot)}
-                           className={`p-3 rounded-xl border-2 font-bold text-sm transition-all ${
-                             selectedSlot === slot 
-                               ? "border-primary bg-primary text-white shadow-lg shadow-primary/20" 
-                               : "border-slate-100 dark:border-slate-800 hover:border-primary/50 text-slate-600 dark:text-slate-400"
-                           }`}
-                         >
-                           {slot}
-                         </button>
-                       ))}
-                     </div>
-                   </div>
-
-                   <Button 
-                     onClick={handleBooking}
-                     disabled={isProcessing}
-                     className="w-full h-16 rounded-2xl bg-primary hover:bg-primary/90 font-black text-xl shadow-xl shadow-primary/20"
-                   >
-                     {isProcessing ? (
-                       <div className="h-6 w-6 border-4 border-white border-t-transparent rounded-full animate-spin" />
-                     ) : isPaid ? "Booked Successfully" : "Continue to Pay"}
-                   </Button>
-
-                   {isPaid && mentor.cal_link && (
-                     <div className="mt-8 pt-8 border-t border-slate-100">
-                        <Badge className="bg-emerald-500 text-white border-none mb-4 px-3 py-1 font-black text-[10px] uppercase tracking-widest">Payment Verified</Badge>
-                        <h3 className="text-xl font-black mb-4">Schedule your session:</h3>
-                        <Cal
-                          calLink={mentor.cal_link}
-                          style={{width:"100%",height:"100%",overflow:"scroll"}}
-                          config={{layout: 'month_view'}}
-                        />
-                     </div>
-                   )}
-
-                   <div className="flex items-center gap-4 text-xs text-slate-400 font-bold justify-center">
-                     <span className="flex items-center gap-1"><ShieldCheck className="h-3 w-3" /> Secure Payment</span>
-                     <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> Instant Confirm</span>
-                   </div>
-                 </div>
-               </Card>
+                    <div className="relative group">
+                      <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-4 flex items-center justify-between">
+                         <span>Live Availability</span>
+                         <Badge variant="outline" className="text-[8px] border-primary/20 text-primary font-bold">Powered by Cal.com</Badge>
+                      </label>
+                      
+                      <div className="relative rounded-2xl overflow-hidden border-2 border-slate-50 dark:border-slate-800 bg-slate-50/50 min-h-[300px]">
+                         {!isPaid && (
+                           <div className="absolute inset-0 z-20 backdrop-blur-sm bg-white/40 dark:bg-slate-900/40 flex flex-col items-center justify-center p-6 text-center">
+                              <div className="h-16 w-16 rounded-2xl bg-white dark:bg-slate-800 shadow-xl flex items-center justify-center mb-4 border border-slate-100 dark:border-slate-700">
+                                 <Zap className="h-8 w-8 text-primary fill-current" />
+                              </div>
+                              <h4 className="text-lg font-black mb-2">Calendar Locked</h4>
+                              <p className="text-xs font-medium text-slate-500 mb-6">Complete payment to access {mentor.name}'s real-time availability and book your slot.</p>
+                              <Button 
+                                onClick={handleBooking}
+                                disabled={isProcessing}
+                                className="rounded-xl h-12 px-6 bg-primary hover:bg-primary/90 font-black shadow-lg shadow-primary/20"
+                              >
+                                {isProcessing ? <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : "Pay to Unlock Calendar"}
+                              </Button>
+                           </div>
+                         )}
+                         
+                         <div className={`${!isPaid ? 'opacity-40 grayscale pointer-events-none' : ''} transition-all duration-500`}>
+                            {mentor.cal_link && (
+                              <Cal
+                                calLink={mentor.cal_link}
+                                style={{width:"100%",height:"400px",overflow:"scroll"}}
+                                config={{
+                                  layout: 'month_view',
+                                  theme: 'light'
+                                }}
+                              />
+                            )}
+                         </div>
+                      </div>
+                    </div>
+ 
+                    <div className="flex items-center gap-4 text-xs text-slate-400 font-bold justify-center pt-4">
+                      <span className="flex items-center gap-1"><ShieldCheck className="h-3 w-3" /> Secure Payment</span>
+                      <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> Timezone Sync</span>
+                    </div>
+                  </div>
+                </Card>
             </aside>
           </div>
         </div>

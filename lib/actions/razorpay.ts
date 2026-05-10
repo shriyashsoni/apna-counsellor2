@@ -62,11 +62,15 @@ export async function createRazorpayOrder({
 export async function verifyRazorpayPayment({ 
   orderId, 
   paymentId, 
-  signature 
+  signature,
+  amount,
+  notes
 }: { 
   orderId: string, 
   paymentId: string, 
-  signature: string 
+  signature: string,
+  amount?: number,
+  notes?: any
 }) {
     const secret = process.env.RAZORPAY_KEY_SECRET;
     if (!secret) throw new Error("Razorpay secret not configured");
@@ -75,6 +79,30 @@ export async function verifyRazorpayPayment({
     hmac.update(orderId + "|" + paymentId);
     const generatedSignature = hmac.digest("hex");
 
-    return generatedSignature === signature;
+    const isValid = generatedSignature === signature;
+
+    if (isValid && amount && notes) {
+      // Save payment to database
+      try {
+        await supabaseAdmin
+          .from('payments')
+          .insert({
+            order_id: orderId,
+            payment_id: paymentId,
+            amount: amount,
+            status: 'completed',
+            user_id: notes.user_id,
+            mentor_id: notes.mentor_id,
+            service_id: notes.service_id,
+            type: notes.type || 'mentorship',
+            metadata: notes
+          });
+      } catch (dbErr) {
+        console.error("Failed to save payment to DB:", dbErr);
+        // We still return true because the payment was technically valid according to Razorpay
+      }
+    }
+
+    return isValid;
 }
 

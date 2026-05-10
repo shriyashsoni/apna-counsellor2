@@ -204,12 +204,17 @@ export default function MentorshipPage() {
                                        className="object-cover group-hover:scale-110 transition-transform duration-500"
                                     />
                                  </div>
-                                 <div className="flex flex-col items-end">
+                                 <div className="flex flex-col items-end gap-2">
+                                    {mentor.cal_link && (
+                                       <Badge className="bg-emerald-500 text-white border-none px-2 py-0.5 rounded-lg flex gap-1 font-black text-[9px] animate-pulse">
+                                          <div className="h-1.5 w-1.5 bg-white rounded-full" /> LIVE
+                                       </Badge>
+                                    )}
                                     <div className="flex items-center gap-1 bg-amber-50 dark:bg-amber-500/10 px-3 py-1 rounded-xl">
                                        <Star className="h-4 w-4 text-amber-500 fill-amber-500" />
                                        <span className="font-black text-amber-700 dark:text-amber-400 text-sm">{mentor.rating || '4.9'}</span>
                                     </div>
-                                    <p className="text-[10px] font-black text-slate-400 uppercase mt-2">{mentor.reviews || 0} Reviews</p>
+                                    <p className="text-[10px] font-black text-slate-400 uppercase">{mentor.reviews || 0} Reviews</p>
                                  </div>
                               </div>
 
