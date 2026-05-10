@@ -69,7 +69,7 @@ export default function AdminDashboard() {
       const { data: paymentData } = await supabase.from('payments').select('amount')
       const { data: appData, error: appError } = await supabase.from('mentor_applications').select('*, profiles(email)').eq('status', 'pending')
       if (appError) console.error("Applications Fetch Error:", appError)
-      const { data: sessionData } = await supabase.from('sessions').select('*, profiles!sessions_student_id_fkey(name, email)').order('created_at', { ascending: false })
+      const { data: sessionData } = await supabase.from('sessions').select('*, profiles:student_id(name, email)').order('created_at', { ascending: false })
       
       const totalRevenue = paymentData?.reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0) || 0
 
