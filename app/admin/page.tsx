@@ -146,13 +146,18 @@ export default function AdminDashboard() {
     setIsSubmitting(true)
     try {
       // 1. Save to Supabase Notifications Table
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) throw new Error("No authenticated user found")
+
       // We explicitly map fields to avoid issues with missing columns in old schemas
       const notificationData: any = {
         title: notifForm.title,
         message: notifForm.message,
         type: notifForm.type,
+        user_id: user.id, // Link to the admin who created it
         is_read: false
       }
+
 
       // Only add these if you've run the schema update
       // We'll wrap the insert in a try/catch specifically for schema mismatches
