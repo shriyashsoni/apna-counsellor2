@@ -34,18 +34,23 @@ export default function TabLayout() {
         }} 
       />
       <Tabs.Screen 
-        name="colleges" 
-        options={{ 
-          href: null,
-        }} 
-      />
-      <Tabs.Screen 
         name="ai-chat" 
         options={{ 
-          title: 'AI Chat', 
+          title: 'AI Bot', 
           tabBarIcon: ({ color, focused }) => (
             <View style={focused ? styles.activeIconBg : undefined}>
               <Ionicons name={focused ? "sparkles" : "sparkles-outline"} size={22} color={color} />
+            </View>
+          )
+        }} 
+      />
+      <Tabs.Screen 
+        name="mentorship" 
+        options={{ 
+          title: 'Mentors', 
+          tabBarIcon: ({ color, focused }) => (
+            <View style={focused ? styles.activeIconBg : undefined}>
+              <Ionicons name={focused ? "people" : "people-outline"} size={22} color={color} />
             </View>
           )
         }} 
@@ -61,13 +66,9 @@ export default function TabLayout() {
           )
         }} 
       />
-      {/* Hide Mentors tab - will be shown when real mentors onboard */}
-      <Tabs.Screen 
-        name="explore" 
-        options={{ 
-          href: null,
-        }} 
-      />
+      <Tabs.Screen name="colleges" options={{ href: null }} />
+      <Tabs.Screen name="explore" options={{ href: null }} />
+
     </Tabs>
   );
 }

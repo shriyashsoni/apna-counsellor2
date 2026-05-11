@@ -100,6 +100,22 @@ export default function Login() {
             )}
           </TouchableOpacity>
 
+          <View style={styles.separator}>
+            <View style={styles.line} />
+            <Text style={styles.sepText}>OR</Text>
+            <View style={styles.line} />
+          </View>
+
+          <TouchableOpacity
+            style={styles.googleBtn}
+            onPress={() => {/* Google Auth logic */}}
+            activeOpacity={0.8}
+          >
+            <Ionicons name="logo-google" size={20} color={COLORS.textPrimary} />
+            <Text style={styles.googleBtnText}>Continue with Google</Text>
+          </TouchableOpacity>
+
+
           <TouchableOpacity testID="goto-register" style={styles.linkBtn} onPress={() => router.push('/(auth)/register')}>
             <Text style={styles.linkText}>Don't have an account? <Text style={styles.linkBold}>Sign Up</Text></Text>
           </TouchableOpacity>
@@ -129,6 +145,11 @@ const styles = StyleSheet.create({
   submitBtn: { backgroundColor: COLORS.primary, paddingVertical: 18, borderRadius: RADIUS.pill, alignItems: 'center', justifyContent: 'center', marginBottom: SPACING.md, ...SHADOWS.md },
   submitBtnDisabled: { opacity: 0.6 },
   submitBtnText: { ...TYPOGRAPHY.body, color: COLORS.textInverse, fontWeight: '600', fontSize: 17 },
+  separator: { flexDirection: 'row', alignItems: 'center', marginVertical: SPACING.lg, gap: SPACING.md },
+  line: { flex: 1, height: 1, backgroundColor: COLORS.border },
+  sepText: { ...TYPOGRAPHY.caption, color: COLORS.textSecondary, fontWeight: '700' },
+  googleBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: COLORS.background, paddingVertical: 16, borderRadius: RADIUS.pill, gap: SPACING.md, borderWidth: 1, borderColor: COLORS.border, ...SHADOWS.sm },
+  googleBtnText: { ...TYPOGRAPHY.body, color: COLORS.textPrimary, fontWeight: '600' },
   linkBtn: { alignItems: 'center', paddingVertical: SPACING.md },
   linkText: { ...TYPOGRAPHY.body, color: COLORS.textSecondary },
   linkBold: { fontWeight: '700', color: COLORS.primary },

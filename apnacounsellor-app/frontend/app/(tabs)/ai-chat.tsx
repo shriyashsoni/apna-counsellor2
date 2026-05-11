@@ -369,30 +369,62 @@ export default function AIChat() {
               <View style={[styles.dot, styles.dot1]} />
               <View style={[styles.dot, styles.dot2]} />
               <View style={[styles.dot, styles.dot3]} />
+        <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
+          <Ionicons name="arrow-back" size={24} color="#1E1B4B" />
+        </TouchableOpacity>
+        <View style={styles.headerTitleContainer}>
+          <Text style={styles.headerTitle}>Counseling Copilot</Text>
+          <View style={styles.statusRow}>
+            <View style={styles.onlineDot} />
+            <Text style={styles.statusText}>AI Agent Online</Text>
+          </View>
+        </View>
+        <TouchableOpacity onPress={() => { setMessages([]); setSessionId(''); }} style={styles.clearBtn}>
+          <Ionicons name="trash-outline" size={20} color="#64748B" />
+        </TouchableOpacity>
+      </View>
+
+      <FlatList
+        ref={flatListRef}
+        data={messages}
+        keyExtractor={(_, i) => String(i)}
+        renderItem={({ item }) => (
+          <View style={[styles.messageWrapper, item.role === 'user' ? styles.userWrapper : styles.aiWrapper]}>
+            <View style={[styles.bubble, item.role === 'user' ? styles.userBubble : styles.aiBubble]}>
+              <Text style={[styles.messageText, item.role === 'user' ? styles.userText : styles.aiText]}>
+                {item.content}
+              </Text>
+              <Text style={styles.timestamp}>{new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
             </View>
-            <Text style={styles.typingText}>AI is thinking...</Text>
           </View>
         )}
+        contentContainerStyle={styles.chatList}
+        onContentSizeChange={() => flatListRef.current?.scrollToEnd()}
+      />
 
-        <View style={styles.inputBar}>
-          <TextInput
-            testID="ai-chat-input"
-            style={styles.textInput}
-            placeholder="Ask me anything about your career..."
-            placeholderTextColor={COLORS.textMuted}
-            value={input}
-            onChangeText={setInput}
-            multiline
-            maxLength={1000}
-          />
-          <TouchableOpacity
-            testID="ai-send-btn"
-            style={[styles.sendBtn, (!input.trim() || loading) && styles.sendBtnDisabled]}
-            onPress={() => sendMessage()}
-            disabled={!input.trim() || loading}
-          >
-            <Ionicons name="send" size={20} color="#fff" />
-          </TouchableOpacity>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} keyboardVerticalOffset={90}>
+        <View style={styles.inputArea}>
+          <View style={styles.glassInputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Ask about NITs, IIITs, cutoffs..."
+              placeholderTextColor="#94A3B8"
+              value={input}
+              onChangeText={setInput}
+              multiline
+            />
+            <TouchableOpacity 
+              style={[styles.sendBtn, !input.trim() && styles.sendBtnDisabled]} 
+              onPress={() => sendMessage()}
+              disabled={loading || !input.trim()}
+            >
+              {loading ? (
+                <ActivityIndicator size="small" color="#FFF" />
+              ) : (
+                <Ionicons name="send" size={20} color="#FFF" />
+              )}
+            </TouchableOpacity>
+          </View>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -400,8 +432,6 @@ export default function AIChat() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: COLORS.surfacePink },
-  flex: { flex: 1 },
   
   header: { 
     flexDirection: 'row', 

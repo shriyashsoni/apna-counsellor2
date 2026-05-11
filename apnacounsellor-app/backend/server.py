@@ -495,11 +495,26 @@ async def ai_chat(body: ChatInput, user: dict = Depends(get_current_user)):
         "content": body.message, "timestamp": ts
     }).execute()
 
-    ctx = f"Student: {user.get('name', 'Unknown')}"
-    if user.get("exam"): ctx += f", Exam: {user['exam']}"
-    if user.get("interests"): ctx += f", Interests: {', '.join(user.get('interests', []))}"
-    
-    sys_msg = f"You are Apna Counsellor AI - an expert educational counselor for Indian engineering students. Help ONLY with engineering college admissions through: JoSAA (JEE Main/Advanced), MHT-CET (Maharashtra), COMEDK (Karnataka), MPDTE (Madhya Pradesh). Provide guidance on college selection, cutoffs, branch choices, placements, and career options. Be concise, specific, encouraging. Student: {ctx}. Keep responses under 200 words. Focus only on engineering - do not discuss medical/NEET/law/MBA."
+    # 1. Fetch Grounding Context from Supabase (Same as Website)
+    context_data = ""
+    try:
+        # Search for colleges matching keywords in the message
+        keywords = body.message.split()[:5] # Take first few words for a simple search
+        search_query = " | ".join(keywords)
+        
+        # Simple text search or ilike for context
+        res = supabase.table("colleges").select("*").ilike("name", f"%{keywords[0]}%").limit(5).execute()
+        matches = res.data or []
+        
+        if matches:
+            context_data = "Here are some verified records from our 1.7L college database for your reference:\n"
+            for m in matches:
+                context_data += f"- {m['name']} ({m['state']}): Avg Pkg {m.get('avg_package', 'N/A')}, NIRF {m.get('nirf_rank', 'N/A')}\n"
+    except Exception as e:
+        logger.warning(f"Context injection failed: {e}")
+
+    sys_msg = f"You are Apna Counsellor AI. Use the following DATABASE RECORDS to answer accurately if relevant: {context_data}. Help ONLY with engineering college admissions (JoSAA, MHT-CET, COMEDK). Be concise and specific. Student Profile: {ctx}."
+
 
     # Get history from Supabase
     history_res = supabase.table("chat_history").select("*").eq("session_id", sid).order("timestamp", desc=False).execute()
@@ -586,57 +601,89 @@ async def get_college(college_id: str):
 
 @api.post("/colleges/predict")
 async def predict_colleges(body: PredictInput, user: dict = Depends(get_current_user)):
-    apiKey = os.environ.get("GROQ_API_KEY")
-    if not apiKey:
-        raise HTTPException(500, "AI service not configured")
-
-    prompt = f"""
-    You are an expert Indian college admission counselor with deep knowledge of JoSAA, CSAB, MHT-CET, WBJEE, COMEDK, and State DTE counselings.
-    Based on the following student details, predict the top 15 best-fit colleges and branches they might get:
-    - Exam: {body.exam}
-    - Score/Rank: {body.rank or body.percentile}
-    - Category: {body.category}
-    - Preferred Branches: {", ".join(body.preferred_branches) if body.preferred_branches else "Any"}
-    
-    Consider Home State Quota (HS) vs Other State Quota (OS) logic. 
-    Use 2024 REFERENCE Ranks for calibration.
-    
-    Return the results as a JSON object with a key "colleges" containing an array of objects with these fields:
-    - name: Full college name
-    - branch: Recommended branch
-    - probability: Percentage chance (40-98)
-    - state: College state
-    - type: Government/Private
-    - avgPackage: e.g., "₹12 LPA"
-    - nirfRank: Approximate NIRF rank
-    - reason: Brief 1-sentence reason why this is a good match
-    """
-
     try:
-        async with httpx.AsyncClient() as client:
-            resp = await client.post(
-                "https://api.groq.com/openai/v1/chat/completions",
-                headers={"Authorization": f"Bearer {apiKey}"},
-                json={
-                    "model": "llama3-8b-8192",
-                    "messages": [{"role": "user", "content": prompt}],
-                    "temperature": 0.5,
-                    "response_format": {"type": "json_object"}
-                },
-                timeout=30
-            )
-            data = resp.json()
-            content = data["choices"][0]["message"]["content"]
-            import json
-            parsed = json.loads(content)
-            results = parsed.get("colleges", [])
+        # 1. Map Percentile to Rank if needed
+        input_rank = body.rank
+        if not input_rank and body.percentile:
+            # Simple mapping: (100 - percentile) * 12000 (total JEE aspirants approximation)
+            input_rank = int((100 - body.percentile) * 12000)
+            if input_rank < 1: input_rank = 1
+
+        # 2. Query Supabase 'colleges' table (Universal Coverage)
+        # We query the full college list and then apply our estimation agent
+        query = supabase.table("colleges").select("*")
+        
+        # Apply broad filters
+        if body.preferred_states:
+            query = query.in_("state", body.preferred_states)
+        
+        # Limit to a reasonable number for processing
+        res = query.limit(200).execute()
+        colleges = res.data or []
+
+        # 3. Estimation Agent Logic (Ported from Website)
+        def estimate_cutoff(college, category):
+            # Base logic for premium institutes
+            name = college.get("name", "").upper()
+            base_rank = 15000 # Default for average college
             
-            # Map results to include college_id if possible by searching our database
-            # For simplicity, we'll return the AI results directly as per website logic
-            return results
+            if "IIT" in name: base_rank = 5000
+            elif "NIT" in name: base_rank = 12000
+            elif "IIIT" in name: base_rank = 18000
+            elif "PRIVATE" in college.get("type", "").upper(): base_rank = 60000
+            
+            # NIRF adjustment
+            nirf = college.get("nirf_rank")
+            if nirf and str(nirf).isdigit():
+                base_rank = base_rank + (int(nirf) * 100)
+
+            # Category Multipliers
+            multipliers = {
+                "General": 1.0,
+                "OBC": 2.5,
+                "SC": 6.0,
+                "ST": 10.0,
+                "EWS": 1.5
+            }
+            return int(base_rank * multipliers.get(category, 1.0))
+
+        # 4. Process Results
+        predicted = []
+        for c in colleges:
+            cutoff = estimate_cutoff(c, body.category)
+            
+            # Simple probability logic
+            prob = 0
+            if input_rank <= cutoff * 0.8: prob = 95
+            elif input_rank <= cutoff: prob = 85
+            elif input_rank <= cutoff * 1.2: prob = 60
+            elif input_rank <= cutoff * 1.5: prob = 30
+            else: prob = 10
+
+            if prob >= 30: # Only show realistic options
+                predicted.append({
+                    "id": c.get("college_id") or c.get("id"),
+                    "college_id": c.get("college_id"),
+                    "name": c.get("name"),
+                    "short_name": c.get("short_name") or c.get("name"),
+                    "branch": "Computer Science / IT (Predicted)", # Placeholder for broad search
+                    "probability": prob,
+                    "state": c.get("state"),
+                    "type": c.get("type"),
+                    "avg_package": c.get("avg_package") or "₹6.5 LPA",
+                    "annual_fee": c.get("annual_fee") or "₹1.8L",
+                    "cutoff_rank": cutoff,
+                    "reason": f"Matches your rank of {input_rank} based on {body.category} category trends."
+                })
+
+        # Sort by probability and package
+        predicted.sort(key=lambda x: (x["probability"], x["avg_package"]), reverse=True)
+        return predicted[:20]
+
     except Exception as e:
-        logger.error(f"AI prediction error: {e}")
-        raise HTTPException(500, "Prediction failed")
+        logger.error(f"Prediction error: {e}")
+        raise HTTPException(500, f"Prediction failed: {str(e)}")
+
 
 @api.post("/colleges/compare")
 async def compare_colleges(body: CompareInput):
@@ -1291,6 +1338,42 @@ async def ai_scrape_bulk(body: BulkScrapeInput, user: dict = Depends(get_current
         "saved": body.save,
     }
 
+# ── Payment Integration ────────────────────────────────
+import razorpay
+rzp = razorpay.Client(auth=(os.environ.get("RAZORPAY_KEY_ID"), os.environ.get("RAZORPAY_KEY_SECRET")))
+
+class PaymentLinkInput(BaseModel):
+    amount: int
+    purpose: str
+    customer_name: Optional[str] = "Student"
+    customer_email: Optional[str] = "student@apnacounsellor.com"
+    customer_contact: Optional[str] = "9999999999"
+
+@api.post("/payments/create-link")
+async def create_payment_link(body: PaymentLinkInput, user: dict = Depends(get_current_user)):
+    try:
+        # Amount is in paise, so multiply by 100
+        payment_link = rzp.payment_link.create({
+            "amount": body.amount * 100,
+            "currency": "INR",
+            "accept_partial": False,
+            "description": body.purpose,
+            "customer": {
+                "name": user.get("name", body.customer_name),
+                "email": user.get("email", body.customer_email),
+                "contact": user.get("phone", body.customer_contact)
+            },
+            "notify": {"sms": True, "email": True},
+            "reminder_enable": True,
+            "notes": {"user_id": user.get("id"), "purpose": body.purpose},
+            "callback_url": "https://apnacounsellor.com/payment-success",
+            "callback_method": "get"
+        })
+        return {"success": True, "payment_url": payment_link["short_url"], "id": payment_link["id"]}
+    except Exception as e:
+        logger.error(f"Payment Link Error: {e}")
+        raise HTTPException(500, f"Failed to create payment link: {str(e)}")
+
 # ── Health ──────────────────────────────────────────────
 @api.get("/health")
 async def health():
@@ -1298,3 +1381,4 @@ async def health():
             "timestamp": datetime.now(timezone.utc).isoformat()}
 
 app.include_router(api)
+

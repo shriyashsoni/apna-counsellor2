@@ -59,86 +59,62 @@ export default function Dashboard() {
         contentContainerStyle={styles.scroll}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={COLORS.primary} />}
       >
-        {/* Header */}
-        <View style={styles.header}>
+        {/* Header - Premium Redesign */}
+        <View style={styles.premiumHeader}>
           <View>
-            <Text style={styles.greeting}>{greeting}</Text>
-            <Text style={styles.userName}>{user?.name || 'User'}</Text>
+            <Text style={styles.premiumGreeting}>{greeting},</Text>
+            <Text style={styles.premiumUserName}>{user?.name || 'Future IITian'}</Text>
           </View>
-          <GenderAvatar gender={user?.gender} role={user?.role} size={48} imageUrl={user?.profilePhoto || user?.avatar} />
+          <TouchableOpacity onPress={() => router.push('/(tabs)/profile')}>
+            <GenderAvatar gender={user?.gender} size={54} imageUrl={user?.profilePhoto || user?.avatar} />
+          </TouchableOpacity>
         </View>
 
-        {/* AI Action Card */}
+        {/* AI Action Card - Glassmorphism style */}
         <TouchableOpacity
-          testID="ai-action-card"
-          style={styles.aiCard}
+          style={styles.aiGlassCard}
           onPress={() => router.push('/(tabs)/ai-chat')}
           activeOpacity={0.9}
         >
-          <View style={styles.aiCardContent}>
-            <Ionicons name="sparkles" size={28} color={COLORS.textInverse} />
-            <View style={styles.aiCardText}>
-              <Text style={styles.aiCardTitle}>AI Assistant</Text>
-              <Text style={styles.aiCardDesc}>Get instant guidance on colleges, exams & careers</Text>
+          <View style={styles.aiGlassContent}>
+            <View style={styles.aiIconBg}>
+              <Ionicons name="sparkles" size={24} color={COLORS.primary} />
             </View>
-            <Ionicons name="arrow-forward-circle" size={28} color="rgba(255,255,255,0.6)" />
+            <View style={styles.aiTextContainer}>
+              <Text style={styles.aiGlassTitle}>AI Counseling Copilot</Text>
+              <Text style={styles.aiGlassDesc}>Instant rank analysis & college suggestions</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={24} color={COLORS.primary} />
           </View>
         </TouchableOpacity>
 
-        {/* Quick Actions */}
-        <View style={styles.quickActions}>
-          <TouchableOpacity testID="quick-college-btn" style={styles.quickAction} onPress={() => router.push('/predictor')}>
-            <View style={styles.quickActionIcon}><Ionicons name="analytics" size={22} color={COLORS.primary} /></View>
-            <Text style={styles.quickActionText}>College{'\n'}Predictor</Text>
-          </TouchableOpacity>
-          <TouchableOpacity testID="quick-sessions-btn" style={styles.quickAction} onPress={() => router.push('/browse-colleges')}>
-            <View style={styles.quickActionIcon}><Ionicons name="business" size={22} color={COLORS.primary} /></View>
-            <Text style={styles.quickActionText}>Browse{'\n'}Colleges</Text>
-          </TouchableOpacity>
-          <TouchableOpacity testID="quick-profile-btn" style={styles.quickAction} onPress={() => router.push('/compare')}>
-            <View style={styles.quickActionIcon}><Ionicons name="git-compare" size={22} color={COLORS.primary} /></View>
-            <Text style={styles.quickActionText}>Compare{'\n'}Colleges</Text>
-          </TouchableOpacity>
-          <TouchableOpacity testID="quick-ai-btn" style={styles.quickAction} onPress={() => router.push('/(tabs)/ai-chat')}>
-            <View style={styles.quickActionIcon}><Ionicons name="chatbubbles" size={22} color={COLORS.primary} /></View>
-            <Text style={styles.quickActionText}>AI{'\n'}Counsellor</Text>
-          </TouchableOpacity>
+        {/* Quick Actions Grid - Modern Cards */}
+        <View style={styles.actionGrid}>
+          {[
+            { id: 'pred', title: 'Predictor', icon: 'analytics', route: '/predictor', color: '#E0E7FF' },
+            { id: 'comp', title: 'Compare', icon: 'git-compare', route: '/compare', color: '#F0F9FF' },
+            { id: 'coll', title: 'Colleges', icon: 'business', route: '/browse-colleges', color: '#ECFDF5' },
+            { id: 'res', title: 'Expert', icon: 'people', route: '/(tabs)/mentorship', color: '#FFF7ED' }
+          ].map((item) => (
+            <TouchableOpacity key={item.id} style={[styles.actionCard, { backgroundColor: item.color }]} onPress={() => router.push(item.route as any)}>
+              <View style={styles.actionIconBg}><Ionicons name={item.icon as any} size={22} color={COLORS.primary} /></View>
+              <Text style={styles.actionCardText}>{item.title}</Text>
+            </TouchableOpacity>
+          ))}
         </View>
 
-        {/* Role-specific Dashboard Access */}
-        {(user?.role === 'mentor' || user?.role === 'counsellor') && (
+        {/* Role-specific Actions */}
+        {user?.role === 'admin' && (
           <TouchableOpacity
-            style={styles.roleCard}
-            onPress={() => router.push('/mentor-dashboard')}
-            activeOpacity={0.9}
+            style={styles.adminBanner}
+            onPress={() => router.push('/admin-dashboard')}
           >
-            <View style={styles.roleCardContent}>
-              <Ionicons name="bar-chart" size={24} color={COLORS.textInverse} />
-              <View style={styles.roleCardText}>
-                <Text style={styles.roleCardTitle}>Mentor Dashboard</Text>
-                <Text style={styles.roleCardDesc}>View bookings, earnings & reviews</Text>
-              </View>
-              <Ionicons name="chevron-forward" size={24} color="rgba(255,255,255,0.6)" />
-            </View>
+            <Ionicons name="shield-checkmark" size={20} color={COLORS.textInverse} />
+            <Text style={styles.adminBannerText}>Admin Management Console</Text>
+            <Ionicons name="arrow-forward" size={16} color={COLORS.textInverse} />
           </TouchableOpacity>
         )}
 
-        {user?.role === 'admin' && (
-          <TouchableOpacity
-            style={[styles.roleCard, { backgroundColor: COLORS.primaryDark }]}
-            onPress={() => router.push('/admin-dashboard')}
-            activeOpacity={0.9}
-          >
-            <View style={styles.roleCardContent}>
-              <Ionicons name="shield-checkmark" size={24} color={COLORS.textInverse} />
-              <View style={styles.roleCardText}>
-                <Text style={styles.roleCardTitle}>Admin Dashboard</Text>
-                <Text style={styles.roleCardDesc}>Manage users, colleges & applications</Text>
-              </View>
-              <Ionicons name="chevron-forward" size={24} color="rgba(255,255,255,0.6)" />
-            </View>
-          </TouchableOpacity>
-        )}
 
         {/* Upcoming Sessions */}
         {sessions.length > 0 && (
@@ -343,4 +319,24 @@ const styles = StyleSheet.create({
   roleCardText: { flex: 1 },
   roleCardTitle: { ...TYPOGRAPHY.body, fontWeight: '600', color: COLORS.textInverse, marginBottom: 2 },
   roleCardDesc: { ...TYPOGRAPHY.caption, color: 'rgba(255,255,255,0.7)', fontSize: 12 },
+  premiumHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 24, paddingTop: 24, marginBottom: 20 },
+  premiumGreeting: { fontSize: 16, color: '#6366F1', fontFamily: 'Lexend_400Regular', opacity: 0.8 },
+  premiumUserName: { fontSize: 28, fontWeight: '800', color: '#1E1B4B', fontFamily: 'Lexend_700Bold', marginTop: 2 },
+  aiGlassCard: { marginHorizontal: 24, backgroundColor: '#FFFFFF', borderRadius: 24, padding: 2, shadowColor: '#4F46E5', shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.1, shadowRadius: 20, elevation: 5, marginBottom: 24 },
+  aiGlassContent: { flexDirection: 'row', alignItems: 'center', padding: 16, backgroundColor: 'rgba(255, 255, 255, 0.95)', borderRadius: 22 },
+  aiIconBg: { width: 48, height: 48, borderRadius: 14, backgroundColor: '#EEF2FF', justifyContent: 'center', alignItems: 'center' },
+  aiTextContainer: { flex: 1, marginLeft: 16 },
+  aiGlassTitle: { fontSize: 18, fontWeight: '700', color: '#1E1B4B' },
+  aiGlassDesc: { fontSize: 13, color: '#64748B', marginTop: 2 },
+  actionGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', paddingHorizontal: 24, marginBottom: 24 },
+  actionCard: { width: (width - 64) / 2, height: 100, borderRadius: 20, padding: 16, marginBottom: 16, justifyContent: 'space-between' },
+  actionIconBg: { width: 36, height: 36, borderRadius: 10, backgroundColor: '#FFFFFF', justifyContent: 'center', alignItems: 'center' },
+  actionCardText: { fontSize: 15, fontWeight: '600', color: '#1E1B4B' },
+  adminBanner: { marginHorizontal: 24, backgroundColor: '#1E1B4B', borderRadius: 16, padding: 14, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 24 },
+  adminBannerText: { color: '#FFFFFF', fontWeight: '700', marginHorizontal: 10 },
+  premiumCourseCard: { width: 220, backgroundColor: '#FFFFFF', borderRadius: 20, padding: 16, marginRight: 16, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.05, shadowRadius: 10, elevation: 2 },
+  courseIconBg: { width: 40, height: 40, borderRadius: 10, backgroundColor: '#4F46E5', justifyContent: 'center', alignItems: 'center', marginBottom: 12 },
+  courseTitle: { fontSize: 16, fontWeight: '700', color: '#1E1B4B', marginBottom: 4 },
+  courseMentor: { fontSize: 12, color: '#64748B', marginBottom: 8 },
+  coursePrice: { fontSize: 15, fontWeight: '800', color: '#4F46E5' },
 });
