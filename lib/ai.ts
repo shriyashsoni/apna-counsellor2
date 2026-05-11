@@ -12,35 +12,21 @@ export async function predictAI(args: {
   }
 
   const prompt = `
-    You are an elite Indian college admission counselor with access to 2024-2025 cutoff data for JoSAA, CSAB, MHT-CET, WBJEE, COMEDK, and State DTE counselings.
-    Based on the following student details, predict the top 15-20 best-fit colleges and branches:
+    You are an elite Indian college admission counselor (Apna Counsellor AI).
+    Based on the following student details:
     - Exam: ${args.exam}
     - Score/Rank: ${args.rank}
     - Category: ${args.category}
     - Home State: ${args.homeState || "Not Specified"}
     - Preferred Branches: ${args.preferredBranches?.join(", ") || "Any Engineering Branch"}
     
-    Logic Requirements:
-    1. HS (Home State) vs OS (Other State) Quota analysis.
-    2. Category Reservation impact (OBC/SC/ST/EWS/PWD).
-    3. Historical 2024 Rank Shifts (e.g., CSE cutoffs moving 10-15%).
-    4. Consider NIRF ranking and placement records.
-    
-    Reference Benchmarks:
-    - IIT Bombay CSE: < 60 (Gen)
-    - NIT Trichy CSE: < 1500 (Gen)
-    - VJTI/COEP (MHT-CET): < 200 Rank
-    - Top Private (BITS/VIT): Competitive ranks
-    
-    Return EXACTLY a JSON object with a "colleges" key. Each college object must have:
-    - name (Full name)
-    - branch (Specific branch)
-    - probability (40-99 as integer)
-    - state (Location)
-    - type (Government/Private/IIT/NIT)
-    - avgPackage (e.g., "₹15 LPA")
-    - nirfRank (Number or null)
-    - reason (1 sentence explaining the fit)
+    Tasks:
+    1. Predict top 10-15 best-fit colleges.
+    2. Provide a 3-line personalized recommendation in Hinglish. Mention their best safe pick, best moderate pick, and one reach college.
+
+    Return EXACTLY a JSON object with two keys:
+    1. "colleges": Array of objects {name, branch, probability (40-99), state, type, avgPackage, nirfRank, reason, tag ("Safe"|"Moderate"|"Reach")}
+    2. "summary": String (The 3-line Hinglish recommendation)
   `;
 
   try {
@@ -61,34 +47,18 @@ export async function predictAI(args: {
       }),
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error("Gemini API Error:", errorData);
-      return null;
-    }
+    if (!response.ok) return null;
 
     const data = await response.json();
-    if (!data.candidates || !data.candidates[0].content) {
-      console.error("Gemini API Unexpected Response:", JSON.stringify(data));
-      return null;
-    }
-
     let content = data.candidates[0].content.parts[0].text;
-    
-    // Clean content if it contains markdown code blocks
     content = content.replace(/```json\n?/, "").replace(/```\n?/, "").trim();
     
     try {
       const parsed = JSON.parse(content);
-      
-      if (parsed.colleges && Array.isArray(parsed.colleges)) {
-        return parsed.colleges;
-      }
-      
-      if (Array.isArray(parsed)) return parsed;
-
-      const firstArray = Object.values(parsed).find(v => Array.isArray(v));
-      return (firstArray as any[]) || [];
+      return {
+        colleges: parsed.colleges || [],
+        summary: parsed.summary || ""
+      };
     } catch (parseError) {
       console.error("AI Response Parsing Failed:", content);
       return null;
@@ -98,3 +68,4 @@ export async function predictAI(args: {
     return null;
   }
 }
+

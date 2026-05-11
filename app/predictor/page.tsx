@@ -50,7 +50,8 @@ export default function PredictorPage() {
   const [selectedBranches, setSelectedBranches] = useState<string[]>([]);
   const [isPredicting, setIsPredicting] = useState(false);
   const [showResults, setShowResults] = useState(false);
-  const [aiResults, setAiResults] = useState<any[] | null>(null);
+  const [aiSummary, setAiSummary] = useState('');
+  const [aiColleges, setAiColleges] = useState<any[] | null>(null);
   const [dbResults, setDbResults] = useState<any[] | null>(null);
   const supabase = createClient();
 
@@ -72,41 +73,46 @@ export default function PredictorPage() {
     });
   }, []);
 
-  const results = aiResults || dbResults;
-
   const handlePredict = async () => {
     if (!rank && !percentile) return;
     setIsPredicting(true);
-    setAiResults(null);
+    setAiColleges(null);
+    setAiSummary('');
     setDbResults(null);
     
     try {
       const examName = selectedCounseling?.name || exam;
+      const userRank = rank ? parseInt(rank.replace(/,/g, "")) : (percentile ? Math.floor((100 - parseFloat(percentile)) * 12000) : 0);
       
       // 1. Try DB Prediction first
       const dataResults = await predictColleges({
         exam: examName,
-        rank: rank ? parseInt(rank.replace(/,/g, "")) : undefined,
-        percentile: percentile ? parseFloat(percentile) : undefined,
+        rank: userRank,
         category,
+        homeState,
+        preferredBranches: selectedBranches
       });
       setDbResults(dataResults || []);
 
-      // 2. Try AI Prediction
+      // 2. Try AI Prediction for personalized summary and additional matches
       const aiResponse = await predictAI({
         exam: examName,
-        rank: rank ? parseInt(rank.replace(/,/g, "")) : (percentile ? Math.floor((100 - parseFloat(percentile)) * 12000) : 0),
+        rank: userRank,
         category,
         homeState,
         preferredBranches: selectedBranches
       });
       
-      setAiResults(aiResponse || []);
+      if (aiResponse) {
+        setAiColleges(aiResponse.colleges || []);
+        setAiSummary(aiResponse.summary || "");
+      }
+      
       setShowResults(true);
     } catch (error) {
       console.error("Prediction failed:", error);
       setDbResults([]);
-      setAiResults([]);
+      setAiColleges([]);
       setShowResults(true); 
     } finally {
       setIsPredicting(false);
@@ -139,7 +145,7 @@ export default function PredictorPage() {
               </div>
               <div>
                 <h1 className="text-5xl font-black tracking-tight text-slate-900 dark:text-white">AI Predictor.</h1>
-                <p className="text-slate-500 font-bold text-lg">Next-gen admission probability for 2026</p>
+                <p className="text-slate-500 font-bold text-lg">Next-gen rank-based analysis for 2026</p>
               </div>
             </div>
           </div>
@@ -168,7 +174,7 @@ export default function PredictorPage() {
                     {/* Counselling Selection */}
                     <div className="space-y-4">
                       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2">
-                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Target Counselling</label>
+                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Target Counselling / Exam</label>
                         <div className="relative w-full sm:max-w-[250px]">
                           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
                           <Input 
@@ -182,7 +188,7 @@ export default function PredictorPage() {
                       
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-h-[200px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-slate-200">
                         {(counselings || [])
-                          .filter(c => c.name.toLowerCase().includes(exam.toLowerCase()))
+                          .filter(c => c.name.toLowerCase().includes(exam.toLowerCase()) || (c.exam || '').toLowerCase().includes(exam.toLowerCase()))
                           .map((c: any) => (
                             <button
                               key={c.id}
@@ -214,7 +220,7 @@ export default function PredictorPage() {
 
                       {/* Home State */}
                       <div className="space-y-4">
-                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Home State (for State Quota)</label>
+                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Home State (for HS Quota)</label>
                         <select 
                           className="w-full h-16 rounded-2xl bg-slate-50 dark:bg-slate-800 border-none px-6 font-bold text-slate-900 dark:text-white appearance-none cursor-pointer"
                           value={homeState}
@@ -294,11 +300,11 @@ export default function PredictorPage() {
 
                    <Card className="border-none rounded-[3rem] bg-slate-950 text-white p-8 relative overflow-hidden group">
                       <div className="relative z-10">
-                        <h4 className="text-xl font-black mb-4">Elite Predictor</h4>
+                        <h4 className="text-xl font-black mb-4">Rank Logic</h4>
                         <p className="text-slate-400 text-sm font-medium leading-relaxed mb-6">
-                          Our Pro algorithm uses real-time 2024 cutoff shifts to predict your 2026 seat with 99% accuracy.
+                          Our Pro algorithm uses rank-based buffers to calculate admission probability with 99% accuracy.
                         </p>
-                        <Button className="w-full rounded-2xl h-12 bg-purple-600 hover:bg-purple-700 font-black">Upgrade to Pro</Button>
+                        <Button className="w-full rounded-2xl h-12 bg-purple-600 hover:bg-purple-700 font-black">Learn More</Button>
                       </div>
                       <div className="absolute -bottom-10 -right-10 h-32 w-32 bg-purple-600/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000" />
                    </Card>
@@ -312,62 +318,94 @@ export default function PredictorPage() {
                 className="space-y-8"
               >
                 {/* Result Header */}
-                <div className="flex justify-between items-center px-4">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center px-4 gap-4">
                   <div className="flex items-center gap-4">
                     <Button variant="ghost" onClick={() => setShowResults(false)} className="rounded-2xl h-12 w-12 p-0 text-slate-500 bg-white shadow-sm border border-slate-100 hover:text-primary">
                       <ArrowLeft className="h-5 w-5" />
                     </Button>
                     <div>
-                      <h2 className="text-3xl font-black">Your College List for Rank {rank || percentile}</h2>
-                      <p className="text-slate-500 font-bold text-sm">{selectedCounseling?.name || exam} · {category} · {homeState || 'All India'}</p>
+                      <h2 className="text-3xl font-black">Prediction Results</h2>
+                      <p className="text-slate-500 font-bold text-sm">{selectedCounseling?.name} · {category} · Rank {rank || percentile}</p>
                     </div>
                   </div>
-                </div>                {/* Result List */}
+                </div>
+
+                {/* AI Summary Section */}
+                {aiSummary && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                  >
+                    <Card className="border-none rounded-[3rem] bg-gradient-to-r from-primary/10 to-purple-600/10 p-8 border border-primary/20">
+                      <div className="flex gap-4">
+                        <div className="h-10 w-10 bg-primary text-white rounded-xl flex items-center justify-center shrink-0">
+                          <Sparkles className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-black mb-2">AI Counsellor Summary</h3>
+                          <p className="text-slate-700 dark:text-slate-300 font-medium leading-relaxed whitespace-pre-wrap italic">
+                            {aiSummary}
+                          </p>
+                        </div>
+                      </div>
+                    </Card>
+                  </motion.div>
+                )}
+
+                {/* Result List */}
                 <div className="grid md:grid-cols-2 gap-6">
                   {isPredicting ? (
                     <div className="col-span-full py-20 text-center space-y-4">
                        <div className="h-16 w-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
-                       <p className="font-black text-xl text-slate-900">Consulting AI Advisor...</p>
+                       <p className="font-black text-xl text-slate-900">Calculating Probabilities...</p>
                     </div>
-                  ) : (dbResults?.length === 0 && aiResults?.length === 0) ? (
+                  ) : (!dbResults?.length && !aiColleges?.length) ? (
                     <Card className="col-span-full p-20 text-center rounded-[3rem] border-dashed border-2 border-slate-200 dark:border-slate-800 bg-white/50">
                        <AlertCircle className="h-20 w-20 text-slate-200 mx-auto mb-6" />
-                       <h3 className="text-3xl font-black mb-4">No Verified Matches Found</h3>
+                       <h3 className="text-3xl font-black mb-4">No Matches Found</h3>
                        <p className="text-slate-500 font-medium max-w-sm mx-auto">
-                         We couldn't find exact matches in our database for Rank {rank || percentile}. 
-                         This usually happens when the rank is outside historical cutoff ranges.
+                         We couldn't find matches for Rank {rank || percentile}. Try searching in a broader counselling or check your filters.
                        </p>
                        <div className="mt-8">
                          <Button onClick={() => setShowResults(false)} variant="outline" className="rounded-xl font-black">
-                           Try Different Filters
+                           Adjust Filters
                          </Button>
                        </div>
                     </Card>
                   ) : (
                     <>
-                      {/* DB Results */}
-                      {dbResults?.map((item: any, i: number) => (
+                      {/* Combined Results */}
+                      {[...(dbResults || []), ...(aiColleges || [])]
+                        .filter((v, i, a) => a.findIndex(t => (t.id === v.id && t.branch === v.branch) || (t.name === v.name && t.branch === v.branch)) === i) // Dedupe
+                        .sort((a, b) => (b.totalScore || b.probability) - (a.totalScore || a.probability))
+                        .map((item: any, i: number) => (
                         <motion.div
-                          key={`db-${i}`}
+                          key={`${item.id || item.name}-${i}`}
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: i * 0.05 }}
                         >
-                          <Card className="border-none rounded-[2.5rem] shadow-sm bg-white dark:bg-slate-900 hover:shadow-2xl hover:shadow-primary/5 transition-all group overflow-hidden border-2 border-emerald-500/20">
+                          <Card className={`border-none rounded-[2.5rem] shadow-sm bg-white dark:bg-slate-900 hover:shadow-2xl hover:shadow-primary/5 transition-all group overflow-hidden border-2 ${
+                            item.tag === 'Safe' ? 'border-emerald-500/20' : 
+                            item.tag === 'Moderate' ? 'border-orange-500/20' : 'border-blue-500/20'
+                          }`}>
                             <CardContent className="p-8">
                               <div className="flex justify-between items-start mb-6">
                                 <div className="flex-1">
                                   <div className="flex items-center gap-2 mb-3">
-                                    <Badge className="bg-emerald-500 text-white border-none px-3 py-1 rounded-lg font-black text-[10px] uppercase tracking-widest">
-                                      <CheckCircle2 className="h-3 w-3 mr-1" /> Verified Data
+                                    <Badge className={`${
+                                      item.tag === 'Safe' ? 'bg-emerald-500' : 
+                                      item.tag === 'Moderate' ? 'bg-orange-500' : 'bg-blue-500'
+                                    } text-white border-none px-3 py-1 rounded-lg font-black text-[10px] uppercase tracking-widest`}>
+                                      {item.tag || 'Moderate'}
                                     </Badge>
-                                    <Badge variant="outline" className="border-emerald-200 text-emerald-600 px-3 py-1 rounded-lg font-black text-[10px]">
-                                      {item.probability}% Chance
+                                    <Badge variant="outline" className="border-slate-200 text-slate-600 px-3 py-1 rounded-lg font-black text-[10px]">
+                                      {item.quota || 'AI'} Quota
                                     </Badge>
                                   </div>
                                   <h3 className="text-2xl font-black text-slate-900 dark:text-white group-hover:text-primary transition-colors leading-tight">{item.name}</h3>
                                   <div className="flex items-center gap-2 mt-3 text-slate-500 font-bold text-sm">
-                                    <MapPin className="h-4 w-4" /> {item.state} · {item.type}
+                                    <MapPin className="h-4 w-4" /> {item.state} · {item.type || 'Govt'}
                                   </div>
                                 </div>
                                 <div className="h-12 w-12 rounded-2xl bg-slate-50 dark:bg-slate-800 flex flex-col items-center justify-center border border-slate-100 dark:border-slate-700">
@@ -380,10 +418,27 @@ export default function PredictorPage() {
                                  <div className="h-12 w-12 rounded-2xl bg-white dark:bg-slate-900 flex items-center justify-center text-primary shadow-sm border border-slate-100 dark:border-slate-700">
                                     <GraduationCap className="h-6 w-6" />
                                  </div>
-                                 <div>
+                                 <div className="flex-1 overflow-hidden">
                                     <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1.5">Branch</p>
-                                    <p className="text-lg font-black text-slate-900 dark:text-white leading-none">{item.branch}</p>
+                                    <p className="text-lg font-black text-slate-900 dark:text-white leading-none truncate">{item.branch}</p>
                                  </div>
+                              </div>
+
+                              <div className="space-y-2 mb-6">
+                                <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-slate-400">
+                                  <span>Admission Probability</span>
+                                  <span>{item.probability}%</span>
+                                </div>
+                                <div className="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                                  <motion.div 
+                                    initial={{ width: 0 }}
+                                    animate={{ width: `${item.probability}%` }}
+                                    className={`h-full ${
+                                      item.tag === 'Safe' ? 'bg-emerald-500' : 
+                                      item.tag === 'Moderate' ? 'bg-orange-500' : 'bg-blue-500'
+                                    }`}
+                                  />
+                                </div>
                               </div>
 
                               <div className="flex items-center justify-between pt-6 border-t border-slate-50 dark:border-slate-800">
@@ -393,80 +448,15 @@ export default function PredictorPage() {
                                     <p className="font-black text-slate-900 dark:text-white">{item.avgPackage || '₹8-12 LPA'}</p>
                                   </div>
                                   <div>
-                                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Fee/Year</p>
-                                    <p className="font-black text-slate-900 dark:text-white">{item.annualFee || '₹2.5L'}</p>
+                                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Cutoff Rank</p>
+                                    <p className="font-black text-slate-900 dark:text-white">{item.cutoffRank || 'N/A'}</p>
                                   </div>
                                 </div>
-                                <Button size="sm" className="rounded-xl font-black gap-2 h-10 px-5 shadow-lg shadow-primary/10">
-                                  Details <ArrowRight className="h-4 w-4" />
-                                </Button>
-                              </div>
-                            </CardContent>
-                          </Card>
-                        </motion.div>
-                      ))}
-
-                      {/* AI Results */}
-                      {aiResults?.map((item: any, i: number) => (
-                        <motion.div
-                          key={`ai-${i}`}
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: (dbResults?.length || 0 + i) * 0.05 }}
-                        >
-                          <Card className="border-none rounded-[2.5rem] shadow-sm bg-white dark:bg-slate-900 hover:shadow-2xl hover:shadow-primary/5 transition-all group overflow-hidden border border-slate-50 dark:border-slate-800">
-                            <CardContent className="p-8">
-                              <div className="flex justify-between items-start mb-6">
-                                <div className="flex-1">
-                                  <div className="flex items-center gap-2 mb-3">
-                                    <Badge className="bg-primary/10 text-primary border-none px-3 py-1 rounded-lg font-black text-[10px] uppercase tracking-widest">
-                                      <Sparkles className="h-3 w-3 mr-1" /> AI Predicted
-                                    </Badge>
-                                    <Badge variant="outline" className="border-primary/20 text-primary px-3 py-1 rounded-lg font-black text-[10px]">
-                                      {item.probability}% Chance
-                                    </Badge>
-                                  </div>
-                                  <h3 className="text-2xl font-black text-slate-900 dark:text-white group-hover:text-primary transition-colors leading-tight">{item.name}</h3>
-                                  <div className="flex items-center gap-2 mt-3 text-slate-500 font-bold text-sm">
-                                    <MapPin className="h-4 w-4" /> {item.state} · {item.type}
-                                  </div>
-                                </div>
-                                <div className="h-12 w-12 rounded-2xl bg-slate-50 dark:bg-slate-800 flex flex-col items-center justify-center border border-slate-100 dark:border-slate-700">
-                                  <span className="text-[10px] font-black text-slate-400 leading-none">NIRF</span>
-                                  <span className="text-lg font-black leading-none mt-1">{item.nirfRank || '#?'}</span>
-                                </div>
-                              </div>
-                              
-                              <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-800/50 flex items-center gap-5 border border-slate-100 dark:border-slate-800 mb-6">
-                                 <div className="h-12 w-12 rounded-2xl bg-white dark:bg-slate-900 flex items-center justify-center text-primary shadow-sm border border-slate-100 dark:border-slate-700">
-                                    <GraduationCap className="h-6 w-6" />
-                                 </div>
-                                 <div>
-                                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1.5">Recommended Branch</p>
-                                    <p className="text-lg font-black text-slate-900 dark:text-white leading-none">{item.branch}</p>
-                                 </div>
-                              </div>
-
-                              {item.reason && (
-                                <p className="text-xs font-medium text-slate-500 bg-primary/5 p-4 rounded-2xl mb-6 italic border border-primary/10">
-                                  " {item.reason} "
-                                </p>
-                              )}
-
-                              <div className="flex items-center justify-between pt-6 border-t border-slate-50 dark:border-slate-800">
-                                <div className="flex gap-6">
-                                  <div>
-                                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Avg Package</p>
-                                    <p className="font-black text-slate-900 dark:text-white">{item.avgPackage}</p>
-                                  </div>
-                                  <div>
-                                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Fee/Year</p>
-                                    <p className="font-black text-slate-900 dark:text-white">{item.annualFee || '₹2.5L'}</p>
-                                  </div>
-                                </div>
-                                <Button size="sm" className="rounded-xl font-black gap-2 h-10 px-5 shadow-lg shadow-primary/10">
-                                  Details <ArrowRight className="h-4 w-4" />
-                                </Button>
+                                <Link href={`/colleges/${item.id || ''}`}>
+                                  <Button size="sm" className="rounded-xl font-black gap-2 h-10 px-5 shadow-lg shadow-primary/10">
+                                    View <ChevronRight className="h-4 w-4" />
+                                  </Button>
+                                </Link>
                               </div>
                             </CardContent>
                           </Card>
@@ -480,11 +470,11 @@ export default function PredictorPage() {
                    <div className="relative z-10">
                       <div className="flex items-center justify-center gap-2 text-emerald-400 font-black mb-4">
                         <CheckCircle2 className="h-6 w-6" />
-                        AI Analysis Complete
+                        Algorithm Analysis Complete
                       </div>
                       <p className="text-slate-400 font-medium max-w-2xl mx-auto mb-8">
-                        Our model has analyzed **1.32 Lakh colleges** against your rank of **{rank || percentile}**. 
-                        Predictions include historical cutoff shifts and 2024 category trends.
+                        Our model has analyzed the rank shifts for **{selectedCounseling?.name}** against your rank. 
+                        Predictions are categorized into Safe, Moderate, and Reach tiers.
                       </p>
                       <Link href="/book-call">
                         <Button className="bg-primary hover:bg-primary/90 text-white font-black rounded-2xl h-14 px-10">
@@ -504,4 +494,5 @@ export default function PredictorPage() {
     </AuthGuard>
   )
 }
+
 

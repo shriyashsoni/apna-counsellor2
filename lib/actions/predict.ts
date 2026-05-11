@@ -7,107 +7,122 @@ export async function predictColleges(args: {
   rank?: number;
   percentile?: number;
   category: string;
+  homeState?: string;
+  gender?: string;
   preferredBranches?: string[];
-  preferredStates?: string[];
 }) {
   const supabase = createClient()
   let rank = args.rank || 0;
   const percentile = args.percentile || 0;
 
-  // Rank Normalization Logic
-  if (args.exam.toUpperCase() === "JEE MAINS" && percentile > 0) {
+  // 1. Rank Normalization (for JEE Mains)
+  if (args.exam.toUpperCase().includes("JEE MAIN") && percentile > 0 && rank === 0) {
     rank = Math.max(1, Math.floor((100 - percentile) * 12000));
-  } else if (args.exam.toUpperCase() === "JEE ADVANCED" && rank === 0) {
-    rank = 50000;
   }
 
-  // Optimized Query: Find counseling by name
-  let collegeQuery = supabase.from("colleges").select("*")
-  
+  // 2. Find the Counseling ID first
   const { data: counseling } = await supabase
     .from("counselings")
-    .select("id, name")
+    .select("id, name, exam")
     .or(`name.ilike.%${args.exam}%,exam.ilike.%${args.exam}%`)
     .limit(1)
-    .single()
+    .single();
 
-  if (counseling) {
-    // Search for colleges linked to this counseling OR colleges that match the counseling name in their description/location
-    collegeQuery = collegeQuery.or(`counseling_id.eq.${counseling.id},location.ilike.%${counseling.name}%,description.ilike.%${counseling.name}%`)
-  } else {
-    // Better fallback: search for exam name in college name or description
-    collegeQuery = collegeQuery.or(`name.ilike.%${args.exam}%,location.ilike.%${args.exam}%,description.ilike.%${args.exam}%`)
-  }
-
-  const { data: colleges, error } = await collegeQuery.limit(300)
-  if (error || !colleges) return []
-
-  // Try fetching from ranks table if colleges don't have cutoffs
-  const collegeIds = colleges.map(c => c.id)
-  const { data: rankRecords } = await supabase
+  // 3. Query the Ranks Table directly (Data-First approach)
+  // We look for any ranks that match the category and where student's rank is eligible
+  let rankQuery = supabase
     .from("ranks")
-    .select("*")
-    .in("college_id", collegeIds)
+    .select(`
+      *,
+      colleges!inner(
+        id, name, state, type, avg_package, nirf_rank, image_url, counseling_id
+      )
+    `)
     .eq("category", args.category)
-    .gte("closing_rank", rank) // All colleges where student can get admission
-    .order("closing_rank", { ascending: true })
+    .gte("closing_rank", rank);
 
-  const results: any[] = []
-
-  for (const c of colleges) {
-    if (args.preferredStates && args.preferredStates.length > 0 && !args.preferredStates.includes(c.state || "")) {
-      continue;
-    }
-
-    const cutoffs = (c.cutoffs as any) || {};
-    const collegeRanks = rankRecords?.filter(r => r.college_id === c.id) || [];
-
-    // Check embedded cutoffs
-    let match = false;
-    for (const [branch, data] of Object.entries(cutoffs)) {
-      const branchData = data as any;
-      const catCutoff = branchData[args.category] || branchData["General"] || 0;
-
-      if (catCutoff > 0 && rank <= catCutoff) {
-        // Higher probability if rank is much lower than cutoff
-        const prob = Math.min(99, Math.max(30, Math.floor(100 - (rank / catCutoff) * 60)));
-        results.push({
-          id: c.id,
-          name: c.name,
-          state: c.state,
-          type: c.type,
-          branch: branch,
-          cutoffRank: catCutoff,
-          probability: prob,
-          avgPackage: c.avg_package,
-          nirfRank: c.nirf_rank,
-        });
-        match = true;
-        break;
-      }
-    }
-
-    // Check ranks table fallback
-    if (!match && collegeRanks.length > 0) {
-      const bestRank = collegeRanks[0]; // Already sorted by closing_rank ASC
-      if (rank <= bestRank.closing_rank) {
-        const prob = Math.min(99, Math.max(30, Math.floor(100 - (rank / bestRank.closing_rank) * 60)));
-        results.push({
-          id: c.id,
-          name: c.name,
-          state: c.state,
-          type: c.type,
-          branch: bestRank.course_name,
-          cutoffRank: bestRank.closing_rank,
-          probability: prob,
-          avgPackage: c.avg_package,
-          nirfRank: c.nirf_rank,
-        });
-      }
-    }
+  // If we found a specific counseling, filter ranks by colleges in that counseling
+  if (counseling) {
+    rankQuery = rankQuery.eq("colleges.counseling_id", counseling.id);
+  } else {
+    // If no counseling found, try to search by exam name in college descriptions as fallback
+    // But since we are joining, it's better to just filter the results later or use a fuzzy match on counseling name
   }
+
+  const { data: rankRecords, error: rankError } = await rankQuery.limit(200);
+
+  if (rankError || !rankRecords || rankRecords.length === 0) {
+    // Fallback: If no records found for specific counseling, search all eligible ranks
+    const { data: fallbackRecords } = await supabase
+      .from("ranks")
+      .select(`
+        *,
+        colleges!inner(
+          id, name, state, type, avg_package, nirf_rank, image_url, counseling_id
+        )
+      `)
+      .eq("category", args.category)
+      .gte("closing_rank", rank)
+      .order("closing_rank", { ascending: true })
+      .limit(100);
+    
+    if (!fallbackRecords) return [];
+    return processResults(fallbackRecords, rank, args);
+  }
+
+  return processResults(rankRecords, rank, args);
+}
+
+function processResults(records: any[], userRank: number, args: any) {
+  const results = records.map(record => {
+    const college = record.colleges;
+    
+    // Effective Rank & Quota Logic
+    let quota = "AI";
+    if (args.homeState && college.state === args.homeState) {
+      quota = "HS";
+    }
+
+    // Safety score calculation
+    const buffer = record.closing_rank - userRank;
+    const range = record.closing_rank - record.opening_rank || (record.closing_rank * 0.1); 
+    
+    let safetyScore = Math.min((buffer / range) * 100, 100);
+    if (safetyScore < 0) safetyScore = 0;
+
+    const isPreferredBranch = args.preferredBranches?.some(b => 
+      record.course_name.toLowerCase().includes(b.toLowerCase())
+    );
+    const branchScore = isPreferredBranch ? 20 : 0;
+
+    const totalScore = safetyScore + branchScore;
+
+    let tag: "Safe" | "Moderate" | "Reach" = "Reach";
+    if (safetyScore > 60) tag = "Safe";
+    else if (safetyScore > 30) tag = "Moderate";
+
+    return {
+      id: college.id,
+      name: college.name,
+      state: college.state,
+      type: college.type,
+      branch: record.course_name,
+      cutoffRank: record.closing_rank,
+      openingRank: record.opening_rank,
+      probability: Math.floor(safetyScore),
+      safetyScore,
+      totalScore,
+      tag,
+      quota,
+      avgPackage: college.avg_package,
+      nirfRank: college.nirf_rank,
+      image: college.image_url
+    };
+  });
 
   return results
-    .sort((a, b) => b.probability - a.probability)
-    .slice(0, 30);
+    .sort((a, b) => b.totalScore - a.totalScore)
+    .slice(0, 50);
 }
+
+
