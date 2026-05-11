@@ -132,15 +132,29 @@ export async function sendBroadCastEmail(to: string[], title: string, message: s
     ` : ''}
   `;
 
-  return novu.trigger('broadcast-email', {
-    to: to.map(email => ({ subscriberId: email, email })),
-    payload: {
-      title,
-      message,
-      actionLink
-    }
-  });
+  console.log(`Triggering broadcast email to ${to.length} subscribers...`);
+  
+  if (!process.env.NOVU_API_KEY) {
+    console.error("NOVU_API_KEY is missing. Skipping email broadcast.");
+    return { success: false, error: "Email provider not configured" };
+  }
+
+  try {
+    const result = await novu.trigger('broadcast-email', {
+      to: to.map(email => ({ subscriberId: email, email })),
+      payload: {
+        title,
+        message,
+        actionLink
+      }
+    });
+    return { success: true, data: result.data };
+  } catch (error: any) {
+    console.error("Novu Broadcast Error:", error);
+    throw new Error(error.message || "Failed to trigger email broadcast");
+  }
 }
+
 
 export async function sendAdminNotification(subject: string, message: string) {
   const ADMIN_EMAILS = ["sonishriyash@gmail.com", "apnacounsellor@gmail.com"];

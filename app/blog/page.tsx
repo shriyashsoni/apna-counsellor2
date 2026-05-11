@@ -2,6 +2,8 @@ import { createClient } from "@/lib/supabase/server"
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { GraduationCap, ArrowRight, Clock, Tag } from 'lucide-react';
+import { Badge } from "@/components/ui/badge"
+
 
 export const metadata: Metadata = {
   title: 'Admission Blog | Expert Insights by Apna Counsellor',

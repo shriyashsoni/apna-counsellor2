@@ -26,6 +26,8 @@ import {
 } from "@/components/ui/select"
 import Image from "next/image"
 import { approveMentorAction, suspendMentorAction, deleteMentorAction, toggleMentorVisibilityAction } from "@/lib/actions/admin"
+import { sendBroadCastEmail } from "@/lib/actions/emails"
+
 
 type EditorView = 'dashboard' | 'course-creator' | 'blog-creator' | 'test-creator' | 'roi-manager' | 'notification-center' | 'identity-manager';
 
@@ -144,28 +146,55 @@ export default function AdminDashboard() {
     setIsSubmitting(true)
     try {
       // 1. Save to Supabase Notifications Table
-      const { error } = await supabase.from('notifications').insert({
-        ...notifForm,
-        target_group: 'all',
+      // We explicitly map fields to avoid issues with missing columns in old schemas
+      const notificationData: any = {
+        title: notifForm.title,
+        message: notifForm.message,
+        type: notifForm.type,
         is_read: false
+      }
+
+      // Only add these if you've run the schema update
+      // We'll wrap the insert in a try/catch specifically for schema mismatches
+      const { error } = await supabase.from('notifications').insert({
+        ...notificationData,
+        target_group: 'all',
+        link: notifForm.link
       })
-      if (error) throw error
+
+      if (error) {
+        console.warn("Notification insert with extended fields failed, trying basic fields...", error)
+        const { error: retryError } = await supabase.from('notifications').insert(notificationData)
+        if (retryError) throw retryError
+      }
 
       // 2. Automated Email Broadcast
-      const { sendBroadCastEmail } = await import('@/lib/actions/emails')
       const userEmails = users.map(u => u.email).filter(Boolean)
       
       if (userEmails.length > 0) {
-        await sendBroadCastEmail(userEmails, notifForm.title, notifForm.message, notifForm.link)
-        toast.success(`Notification sent to ${userEmails.length} users via Email!`)
+        try {
+          const result = await sendBroadCastEmail(userEmails, notifForm.title, notifForm.message, notifForm.link)
+          if (result.success) {
+            toast.success(`Notification sent to ${userEmails.length} users via Email!`)
+          } else {
+            toast.warning(`Notification saved, but email skipped: ${result.error}`)
+          }
+        } catch (emailError: any) {
+          console.error("Email Broadcast Failed:", emailError)
+          toast.error("Database updated, but Email broadcast failed. Check Novu logs.")
+        }
       } else {
         toast.success("Notification posted to dashboard!")
       }
       
       setView('dashboard')
-    } catch (e: any) { toast.error(e.message) }
+    } catch (e: any) { 
+      console.error("Critical Notification Error:", e)
+      toast.error(e.message || "A critical error occurred while sending notification") 
+    }
     finally { setIsSubmitting(false) }
   }
+
 
   const approveMentor = async (appId: string, userId: string) => {
     try {

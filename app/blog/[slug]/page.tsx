@@ -3,6 +3,9 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { Calendar, Clock, User, ArrowLeft, Share2, Facebook, Twitter, Linkedin, ChevronRight } from 'lucide-react';
+import { Card } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+
 
 interface BlogPageProps {
   params: {
