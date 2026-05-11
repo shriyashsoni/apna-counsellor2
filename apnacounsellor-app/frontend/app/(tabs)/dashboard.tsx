@@ -14,18 +14,22 @@ export default function Dashboard() {
   const [mentors, setMentors] = useState<any[]>([]);
   const [colleges, setColleges] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const [backendStatus, setBackendStatus] = useState<'checking' | 'online' | 'offline'>('checking');
 
   const fetchData = useCallback(async () => {
     try {
-      const [mentorsData, collegesData] = await Promise.all([
+      setBackendStatus('checking');
+      const [mentorsData, collegesData, health] = await Promise.all([
         apiCall('/mentors').catch(() => []),
         apiCall('/colleges').catch(() => []),
+        apiCall('/health').catch(() => null)
       ]);
       setMentors(Array.isArray(mentorsData) ? mentorsData.slice(0, 6) : []);
       setColleges(Array.isArray(collegesData) ? collegesData.slice(0, 6) : []);
+      setBackendStatus(health ? 'online' : 'offline');
     } catch (e) {
       console.log('Dashboard error:', e);
+      setBackendStatus('offline');
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -48,7 +52,11 @@ export default function Dashboard() {
         {/* Premium Header */}
         <View style={styles.header}>
           <View>
-            <Text style={styles.greetingText}>Welcome back,</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+              <Text style={styles.greetingText}>Welcome back,</Text>
+              <View style={[styles.statusDot, { backgroundColor: backendStatus === 'online' ? COLORS.secondary : (backendStatus === 'checking' ? COLORS.warning : COLORS.error) }]} />
+              <Text style={{ fontSize: 10, color: COLORS.textMuted, fontWeight: '700' }}>{backendStatus.toUpperCase()}</Text>
+            </View>
             <Text style={styles.userNameText}>{user?.name?.split(' ')[0] || 'Future Engineer'}</Text>
           </View>
           <TouchableOpacity onPress={() => router.push('/(tabs)/profile')} style={styles.profileBtn}>
@@ -172,6 +180,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   greetingText: { fontSize: 16, color: COLORS.textSecondary, fontWeight: '500' },
+  statusDot: { width: 8, height: 8, borderRadius: 4, marginLeft: 2 },
   userNameText: { fontSize: 28, fontWeight: '800', color: COLORS.textPrimary, marginTop: 4 },
   profileBtn: { padding: 4 },
   aiHeroCard: {

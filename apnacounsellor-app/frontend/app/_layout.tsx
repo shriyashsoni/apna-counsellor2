@@ -23,6 +23,13 @@ export default function RootLayout() {
     if (loaded || error) {
       SplashScreen.hideAsync();
     }
+    
+    // Safety fallback: hide splash screen after 5 seconds anyway
+    const timer = setTimeout(() => {
+      SplashScreen.hideAsync();
+    }, 5000);
+    
+    return () => clearTimeout(timer);
   }, [loaded, error]);
 
   if (!loaded && !error) {

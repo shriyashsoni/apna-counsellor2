@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Image, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Image, Dimensions, ActivityIndicator } from 'react-native';
 const { width } = Dimensions.get('window');
 import { useRouter } from 'expo-router';
 import { useAuth } from '../src/context/AuthContext';

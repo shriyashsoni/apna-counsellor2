@@ -4,7 +4,7 @@
     "slug": "apna-counsellor",
     "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/images/logo.jpg",
+    "icon": "./assets/images/icon.png",
     "scheme": "apnacounsellor",
     "userInterfaceStyle": "light",
     "newArchEnabled": false,
@@ -16,7 +16,7 @@
       "package": "com.apnacounsellor.app",
       "versionCode": 2,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/logo.jpg",
+        "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
       "permissions": [
@@ -28,12 +28,13 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/logo.jpg",
-          "imageWidth": 180,
+          "image": "./assets/images/splash-image.png",
+          "imageWidth": 240,
           "resizeMode": "contain",
-          "backgroundColor": "#FFFFFF"
+          "backgroundColor": "#F8FAFC"
         }
-      ]
+      ],
+      "expo-asset"
     ],
     "extra": {
       "eas": {

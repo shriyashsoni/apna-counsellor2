@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform, ScrollView, ActivityIndicator, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
 import { COLORS, SPACING, RADIUS, SHADOWS } from '../../src/constants/theme';
@@ -103,6 +103,28 @@ export default function Login() {
             )}
           </TouchableOpacity>
 
+          <View style={styles.divider}>
+            <View style={styles.dividerLine} />
+            <Text style={styles.dividerText}>OR</Text>
+            <View style={styles.dividerLine} />
+          </View>
+
+          <TouchableOpacity 
+            style={styles.googleBtn} 
+            onPress={async () => {
+              const { data, error } = await supabase.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                  redirectTo: 'apnacounsellor://google-auth',
+                }
+              });
+              if (error) Alert.alert('Error', error.message);
+            }}
+          >
+            <Ionicons name="logo-google" size={20} color="#EA4335" />
+            <Text style={styles.googleBtnText}>Continue with Google</Text>
+          </TouchableOpacity>
+
           <View style={styles.footer}>
             <Text style={styles.footerText}>New to Apna Counsellor?</Text>
             <TouchableOpacity onPress={() => router.push('/(auth)/register')}>
@@ -135,6 +157,11 @@ const styles = StyleSheet.create({
   submitBtn: { height: 60, backgroundColor: '#4F46E5', borderRadius: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, ...SHADOWS.md },
   disabledBtn: { opacity: 0.7 },
   submitBtnText: { color: '#FFF', fontSize: 18, fontWeight: '700', fontFamily: 'Lexend_700Bold' },
+  divider: { flexDirection: 'row', alignItems: 'center', marginVertical: 24, gap: 12 },
+  dividerLine: { flex: 1, height: 1, backgroundColor: '#E2E8F0' },
+  dividerText: { color: '#94A3B8', fontSize: 12, fontWeight: '700' },
+  googleBtn: { height: 60, backgroundColor: '#FFF', borderRadius: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 12, borderWidth: 1, borderColor: '#E2E8F0', ...SHADOWS.sm },
+  googleBtnText: { color: '#1E1B4B', fontSize: 16, fontWeight: '600', fontFamily: 'Inter_600SemiBold' },
   footer: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 8, marginTop: 'auto', paddingVertical: 24 },
   footerText: { fontSize: 15, color: '#64748B', fontFamily: 'Inter_400Regular' },
   linkText: { fontSize: 15, color: '#4F46E5', fontWeight: '700', fontFamily: 'Lexend_700Bold' },
