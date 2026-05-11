@@ -29,36 +29,30 @@ export async function predictColleges(args: {
     .single();
 
   // 3. Query the Ranks Table directly (Data-First approach)
-  // We look for any ranks that match the category and where student's rank is eligible
   let rankQuery = supabase
     .from("ranks")
     .select(`
       *,
       colleges!inner(
-        id, name, state, type, avg_package, nirf_rank, image_url, counseling_id
+        id, college_id, name, state, type, avg_package, nirf_rank, image_url, counseling_id
       )
     `)
     .eq("category", args.category)
     .gte("closing_rank", rank);
 
-  // If we found a specific counseling, filter ranks by colleges in that counseling
   if (counseling) {
     rankQuery = rankQuery.eq("colleges.counseling_id", counseling.id);
-  } else {
-    // If no counseling found, try to search by exam name in college descriptions as fallback
-    // But since we are joining, it's better to just filter the results later or use a fuzzy match on counseling name
   }
 
   const { data: rankRecords, error: rankError } = await rankQuery.limit(200);
 
   if (rankError || !rankRecords || rankRecords.length === 0) {
-    // Fallback: If no records found for specific counseling, search all eligible ranks
     const { data: fallbackRecords } = await supabase
       .from("ranks")
       .select(`
         *,
         colleges!inner(
-          id, name, state, type, avg_package, nirf_rank, image_url, counseling_id
+          id, college_id, name, state, type, avg_package, nirf_rank, image_url, counseling_id
         )
       `)
       .eq("category", args.category)
@@ -101,8 +95,12 @@ function processResults(records: any[], userRank: number, args: any) {
     if (safetyScore > 60) tag = "Safe";
     else if (safetyScore > 30) tag = "Moderate";
 
+    // Use the slug (college_id) if available, otherwise slugify the name
+    const slug = college.college_id || (college.name || '').toLowerCase().trim().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
+
     return {
-      id: college.id,
+      id: slug, // This is the ID used for linking to /college/[id]
+      db_id: college.id,
       name: college.name,
       state: college.state,
       type: college.type,
@@ -124,5 +122,6 @@ function processResults(records: any[], userRank: number, args: any) {
     .sort((a, b) => b.totalScore - a.totalScore)
     .slice(0, 50);
 }
+
 
 

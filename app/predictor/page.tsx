@@ -357,14 +357,14 @@ export default function PredictorPage() {
                   {isPredicting ? (
                     <div className="col-span-full py-20 text-center space-y-4">
                        <div className="h-16 w-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
-                       <p className="font-black text-xl text-slate-900">Calculating Probabilities...</p>
+                       <p className="font-black text-xl text-slate-900">Searching 1.7L+ Verified Records...</p>
                     </div>
-                  ) : (!dbResults?.length && !aiColleges?.length) ? (
+                  ) : (!dbResults?.length) ? (
                     <Card className="col-span-full p-20 text-center rounded-[3rem] border-dashed border-2 border-slate-200 dark:border-slate-800 bg-white/50">
                        <AlertCircle className="h-20 w-20 text-slate-200 mx-auto mb-6" />
                        <h3 className="text-3xl font-black mb-4">No Matches Found</h3>
                        <p className="text-slate-500 font-medium max-w-sm mx-auto">
-                         We couldn't find matches for Rank {rank || percentile}. Try searching in a broader counselling or check your filters.
+                         We couldn't find matches for Rank {rank || percentile} in our database. Try searching in a broader counselling or check your filters.
                        </p>
                        <div className="mt-8">
                          <Button onClick={() => setShowResults(false)} variant="outline" className="rounded-xl font-black">
@@ -374,13 +374,11 @@ export default function PredictorPage() {
                     </Card>
                   ) : (
                     <>
-                      {/* Combined Results */}
-                      {[...(dbResults || []), ...(aiColleges || [])]
-                        .filter((v, i, a) => a.findIndex(t => (t.id === v.id && t.branch === v.branch) || (t.name === v.name && t.branch === v.branch)) === i) // Dedupe
-                        .sort((a, b) => (b.totalScore || b.probability) - (a.totalScore || a.probability))
+                      {/* Verified DB Results Only */}
+                      {dbResults
                         .map((item: any, i: number) => (
                         <motion.div
-                          key={`${item.id || item.name}-${i}`}
+                          key={`${item.db_id}-${i}`}
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: i * 0.05 }}
@@ -403,7 +401,7 @@ export default function PredictorPage() {
                                       {item.quota || 'AI'} Quota
                                     </Badge>
                                   </div>
-                                  <h3 className="text-2xl font-black text-slate-900 dark:text-white group-hover:text-primary transition-colors leading-tight">{item.name}</h3>
+                                  <h3 className="text-2xl font-black text-slate-900 dark:text-white group-hover:text-primary transition-colors leading-tight line-clamp-2">{item.name}</h3>
                                   <div className="flex items-center gap-2 mt-3 text-slate-500 font-bold text-sm">
                                     <MapPin className="h-4 w-4" /> {item.state} · {item.type || 'Govt'}
                                   </div>
@@ -452,7 +450,7 @@ export default function PredictorPage() {
                                     <p className="font-black text-slate-900 dark:text-white">{item.cutoffRank || 'N/A'}</p>
                                   </div>
                                 </div>
-                                <Link href={`/colleges/${item.id || ''}`}>
+                                <Link href={`/college/${item.id}`}>
                                   <Button size="sm" className="rounded-xl font-black gap-2 h-10 px-5 shadow-lg shadow-primary/10">
                                     View <ChevronRight className="h-4 w-4" />
                                   </Button>
@@ -465,6 +463,7 @@ export default function PredictorPage() {
                     </>
                   )}
                 </div>
+
 
                 <div className="p-10 rounded-[3rem] bg-slate-900 text-white text-center relative overflow-hidden">
                    <div className="relative z-10">
