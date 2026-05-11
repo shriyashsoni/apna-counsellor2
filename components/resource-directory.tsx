@@ -114,28 +114,24 @@ const ResourceDirectory = () => {
         </div>
 
         {/* Informational Cards */}
-        <div className="grid md:grid-cols-2 gap-8 mt-24">
-           <div className="p-10 rounded-[2.5rem] bg-slate-50 dark:bg-white/[0.02] border border-slate-200 dark:border-white/5 group hover:border-primary/50 transition-colors">
-              <Trophy className="h-10 w-10 text-primary mb-6" />
-              <h3 className="text-2xl font-black mb-4">Placement Statistics</h3>
-              <p className="text-slate-500 font-medium leading-relaxed mb-8">
-                 Access detailed placement reports for top 100 NITs, IIITs, and private universities. Analyze average packages and median salaries.
-              </p>
-              <Link href="/resources" className="text-primary font-black uppercase text-xs tracking-widest flex items-center gap-2">
-                 View Reports <ArrowRight className="h-4 w-4" />
-              </Link>
-           </div>
+        <div className="grid md:grid-cols-1 gap-8 mt-24">
            <div className="p-10 rounded-[2.5rem] bg-slate-50 dark:bg-white/[0.02] border border-slate-200 dark:border-white/5 group hover:border-primary/50 transition-colors">
               <Users className="h-10 w-10 text-primary mb-6" />
               <h3 className="text-2xl font-black mb-4">Community Support</h3>
               <p className="text-slate-500 font-medium leading-relaxed mb-8">
-                 Join our WhatsApp and Telegram groups with 50k+ students. Get real-time answers to your counseling doubts from verified mentors.
+                 Join our WhatsApp and Telegram groups with 1500+ active students. Get real-time answers to your counseling doubts from verified mentors.
               </p>
-              <Link href="https://wa.link/cld3hu" className="text-primary font-black uppercase text-xs tracking-widest flex items-center gap-2">
-                 Join Now <ArrowRight className="h-4 w-4" />
-              </Link>
+              <div className="flex flex-wrap gap-4">
+                <Link href="https://whatsapp.com/channel/0029VabjCVD5PO11jeEupQ44" target="_blank" className="text-primary font-black uppercase text-xs tracking-widest flex items-center gap-2 border border-primary/20 px-6 py-3 rounded-xl hover:bg-primary/5 transition-all">
+                   Join WhatsApp <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link href="https://t.me/apnacounsellor" target="_blank" className="text-primary font-black uppercase text-xs tracking-widest flex items-center gap-2 border border-primary/20 px-6 py-3 rounded-xl hover:bg-primary/5 transition-all">
+                   Join Telegram <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
            </div>
         </div>
+
       </div>
     </section>
   )
