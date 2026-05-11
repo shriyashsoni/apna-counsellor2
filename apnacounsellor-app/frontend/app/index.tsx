@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Image, Dimensions } from 'react-native';
+const { width } = Dimensions.get('window');
 import { useRouter } from 'expo-router';
 import { useAuth } from '../src/context/AuthContext';
-import { COLORS, SPACING, TYPOGRAPHY, RADIUS, SHADOWS } from '../src/constants/theme';
+import { COLORS, SHADOWS } from '../src/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -16,76 +17,57 @@ export default function Welcome() {
 
   if (loading) {
     return (
-      <View style={s.loadingContainer}>
-        <Image source={require('../assets/images/logo.jpg')} style={s.loadingLogo} resizeMode="contain" />
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#4F46E5" />
       </View>
     );
   }
 
   return (
-    <SafeAreaView style={s.container}>
-      <View style={s.content}>
-        {/* Hero Section with Logo */}
-        <View style={s.heroSection}>
-          <View style={s.logoWrapper}>
-            <Image source={require('../assets/images/logo.jpg')} style={s.logo} resizeMode="contain" />
+    <SafeAreaView style={styles.container}>
+      <View style={styles.content}>
+        {/* Animated Background Element */}
+        <View style={styles.bgBlob} />
+
+        <View style={styles.heroSection}>
+          <View style={styles.logoCircle}>
+            <Ionicons name="school" size={60} color="#4F46E5" />
           </View>
-          <Text style={s.tagline}>India's #1 AI-Powered{"\n"}Engineering Counseling Platform</Text>
+          <Text style={styles.title}>Apna{"\n"}Counsellor</Text>
+          <Text style={styles.tagline}>India's Premier AI-Powered Engineering Counseling Platform</Text>
         </View>
 
-        {/* Features Grid */}
-        <View style={s.features}>
-          <View style={s.featureRow}>
-            <View style={s.featureItem}>
-              <View style={s.featureIconBg}>
-                <Ionicons name="school-outline" size={22} color={COLORS.primary} />
+        <View style={styles.features}>
+          {[
+            { icon: 'sparkles', text: 'AI Rank Analysis', color: '#4F46E5' },
+            { icon: 'people', text: 'IIT/NIT Mentors', color: '#10B981' },
+            { icon: 'analytics', text: 'College Predictor', color: '#F59E0B' }
+          ].map((f, i) => (
+            <View key={i} style={styles.featureItem}>
+              <View style={[styles.featureIcon, { backgroundColor: f.color + '20' }]}>
+                <Ionicons name={f.icon as any} size={20} color={f.color} />
               </View>
-              <Text style={s.featureText}>IIT/NIT Mentors</Text>
+              <Text style={styles.featureText}>{f.text}</Text>
             </View>
-            <View style={s.featureItem}>
-              <View style={s.featureIconBg}>
-                <Ionicons name="sparkles-outline" size={22} color={COLORS.primaryMedium} />
-              </View>
-              <Text style={s.featureText}>AI Predictor</Text>
-            </View>
-          </View>
-          <View style={s.featureRow}>
-            <View style={s.featureItem}>
-              <View style={s.featureIconBg}>
-                <Ionicons name="business-outline" size={22} color={COLORS.primary} />
-              </View>
-              <Text style={s.featureText}>200+ Colleges</Text>
-            </View>
-            <View style={s.featureItem}>
-              <View style={s.featureIconBg}>
-                <Ionicons name="chatbubbles-outline" size={22} color={COLORS.primaryMedium} />
-              </View>
-              <Text style={s.featureText}>24/7 AI Chat</Text>
-            </View>
-          </View>
+          ))}
         </View>
 
-        {/* Action Buttons */}
-        <View style={s.actions}>
+        <View style={styles.actions}>
           <TouchableOpacity 
-            testID="get-started-btn" 
-            style={s.primaryButton} 
-            onPress={() => router.push('/(auth)/register')} 
-            activeOpacity={0.85}
+            style={styles.primaryBtn} 
+            onPress={() => router.push('/(auth)/register')}
+            activeOpacity={0.9}
           >
-            <Text style={s.primaryButtonText}>Get Started</Text>
-            <View style={s.buttonArrow}>
-              <Ionicons name="arrow-forward" size={18} color={COLORS.primary} />
-            </View>
+            <Text style={styles.primaryBtnText}>Get Started</Text>
+            <Ionicons name="arrow-forward" size={20} color="#FFF" />
           </TouchableOpacity>
           
           <TouchableOpacity 
-            testID="login-btn" 
-            style={s.secondaryButton} 
-            onPress={() => router.push('/(auth)/login')} 
-            activeOpacity={0.8}
+            style={styles.secondaryBtn} 
+            onPress={() => router.push('/(auth)/login')}
+            activeOpacity={0.7}
           >
-            <Text style={s.secondaryButtonText}>Already have an account? <Text style={s.signInText}>Sign In</Text></Text>
+            <Text style={styles.secondaryBtnText}>Already have an account? <Text style={styles.boldText}>Sign In</Text></Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -93,118 +75,23 @@ export default function Welcome() {
   );
 }
 
-const s = StyleSheet.create({
-  container: { 
-    flex: 1, 
-    backgroundColor: COLORS.primaryLight 
-  },
-  loadingContainer: { 
-    flex: 1, 
-    backgroundColor: COLORS.primaryLight, 
-    alignItems: 'center', 
-    justifyContent: 'center' 
-  },
-  loadingLogo: {
-    width: 200,
-    height: 200,
-  },
-  content: { 
-    flex: 1, 
-    paddingHorizontal: SPACING.lg, 
-    justifyContent: 'space-between', 
-    paddingVertical: SPACING.xxl 
-  },
-  heroSection: { 
-    alignItems: 'center', 
-    marginTop: SPACING.xl 
-  },
-  logoWrapper: {
-    marginBottom: SPACING.lg,
-  },
-  logo: {
-    width: 180,
-    height: 180,
-  },
-  tagline: { 
-    ...TYPOGRAPHY.body, 
-    color: COLORS.textSecondary, 
-    textAlign: 'center', 
-    lineHeight: 26,
-    fontSize: 16,
-  },
-  features: { 
-    gap: SPACING.md 
-  },
-  featureRow: { 
-    flexDirection: 'row', 
-    gap: SPACING.md 
-  },
-  featureItem: { 
-    flex: 1, 
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    gap: SPACING.sm, 
-    backgroundColor: COLORS.surfaceElevated, 
-    padding: SPACING.md, 
-    borderRadius: RADIUS.md, 
-    borderWidth: 1, 
-    borderColor: COLORS.border,
-    ...SHADOWS.sm,
-  },
-  featureIconBg: {
-    width: 40,
-    height: 40,
-    borderRadius: RADIUS.sm,
-    backgroundColor: COLORS.surface,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  featureText: { 
-    ...TYPOGRAPHY.body, 
-    fontWeight: '500', 
-    color: COLORS.textPrimary, 
-    fontSize: 13,
-    flex: 1,
-  },
-  actions: { 
-    gap: SPACING.md 
-  },
-  primaryButton: { 
-    flexDirection: 'row', 
-    backgroundColor: COLORS.primary, 
-    paddingVertical: 18, 
-    paddingHorizontal: SPACING.xl, 
-    borderRadius: RADIUS.pill, 
-    alignItems: 'center', 
-    justifyContent: 'center', 
-    gap: SPACING.sm,
-    ...SHADOWS.md,
-  },
-  primaryButtonText: { 
-    ...TYPOGRAPHY.body, 
-    color: COLORS.textInverse, 
-    fontWeight: '600', 
-    fontSize: 17 
-  },
-  buttonArrow: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: COLORS.textInverse,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  secondaryButton: { 
-    paddingVertical: SPACING.md, 
-    alignItems: 'center' 
-  },
-  secondaryButtonText: { 
-    ...TYPOGRAPHY.body, 
-    color: COLORS.textSecondary, 
-    fontWeight: '400' 
-  },
-  signInText: {
-    fontWeight: '700',
-    color: COLORS.primary,
-  },
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: '#F8FAFC' },
+  loadingContainer: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  content: { flex: 1, padding: 32, justifyContent: 'space-between' },
+  bgBlob: { position: 'absolute', top: -100, right: -100, width: 300, height: 300, borderRadius: 150, backgroundColor: '#4F46E510' },
+  heroSection: { marginTop: 60, alignItems: 'center' },
+  logoCircle: { width: 120, height: 120, borderRadius: 40, backgroundColor: '#FFF', justifyContent: 'center', alignItems: 'center', ...SHADOWS.lg, marginBottom: 24 },
+  title: { fontSize: 42, fontWeight: '900', color: '#1E1B4B', textAlign: 'center', fontFamily: 'Lexend_800ExtraBold', lineHeight: 48 },
+  tagline: { fontSize: 16, color: '#64748B', textAlign: 'center', marginTop: 16, fontFamily: 'Inter_400Regular', lineHeight: 24 },
+  features: { gap: 16, marginVertical: 40 },
+  featureItem: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#FFF', padding: 16, borderRadius: 20, ...SHADOWS.sm, borderWidth: 1, borderColor: '#F1F5F9' },
+  featureIcon: { width: 40, height: 40, borderRadius: 10, justifyContent: 'center', alignItems: 'center', marginRight: 16 },
+  featureText: { fontSize: 15, fontWeight: '700', color: '#1E1B4B', fontFamily: 'Lexend_700Bold' },
+  actions: { gap: 16, marginBottom: 20 },
+  primaryBtn: { height: 64, backgroundColor: '#4F46E5', borderRadius: 24, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 12, ...SHADOWS.md },
+  primaryBtnText: { color: '#FFF', fontSize: 18, fontWeight: '800', fontFamily: 'Lexend_800ExtraBold' },
+  secondaryBtn: { alignItems: 'center', paddingVertical: 12 },
+  secondaryBtnText: { fontSize: 15, color: '#64748B', fontFamily: 'Inter_400Regular' },
+  boldText: { fontWeight: '700', color: '#4F46E5' },
 });

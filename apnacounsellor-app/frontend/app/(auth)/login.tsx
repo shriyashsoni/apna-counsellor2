@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform, ScrollView, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
-import { COLORS, SPACING, TYPOGRAPHY, RADIUS, SHADOWS } from '../../src/constants/theme';
+import { COLORS, SPACING, RADIUS, SHADOWS } from '../../src/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function Login() {
   const router = useRouter();
@@ -25,7 +26,7 @@ export default function Login() {
       await login(email.trim(), password);
       router.replace('/(tabs)/dashboard');
     } catch (e: any) {
-      setError(e.message || 'Login failed');
+      setError(e.message || 'Invalid credentials');
     } finally {
       setLoading(false);
     }
@@ -35,90 +36,79 @@ export default function Login() {
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.flex}>
         <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
-          <TouchableOpacity testID="back-btn" style={styles.backBtn} onPress={() => router.back()}>
-            <Ionicons name="arrow-back" size={24} color={COLORS.primary} />
+          <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
+            <Ionicons name="arrow-back" size={24} color={COLORS.textPrimary} />
           </TouchableOpacity>
 
           <View style={styles.header}>
             <Text style={styles.title}>Welcome Back</Text>
-            <Text style={styles.subtitle}>Sign in to continue your journey</Text>
+            <Text style={styles.subtitle}>Sign in to your premium academic portal</Text>
           </View>
 
           {error ? (
-            <View style={styles.errorContainer}>
-              <Ionicons name="alert-circle" size={16} color={COLORS.error} />
-              <Text testID="login-error" style={styles.errorText}>{error}</Text>
+            <View style={styles.errorBanner}>
+              <Ionicons name="alert-circle" size={18} color={COLORS.error} />
+              <Text style={styles.errorText}>{error}</Text>
             </View>
           ) : null}
 
           <View style={styles.form}>
-            <View style={styles.inputGroup}>
-              <Text style={styles.inputLabel}>EMAIL</Text>
-              <TextInput
-                testID="login-email-input"
-                style={styles.input}
-                placeholder="your@email.com"
-                placeholderTextColor={COLORS.textSecondary}
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
+            <View style={styles.inputWrapper}>
+              <Text style={styles.label}>EMAIL ADDRESS</Text>
+              <View style={styles.inputContainer}>
+                <Ionicons name="mail-outline" size={20} color={COLORS.textMuted} style={styles.inputIcon} />
+                <TextInput
+                  style={styles.input}
+                  placeholder="name@example.com"
+                  placeholderTextColor={COLORS.textMuted}
+                  value={email}
+                  onChangeText={setEmail}
+                  autoCapitalize="none"
+                  keyboardType="email-address"
+                />
+              </View>
             </View>
 
-            <View style={styles.inputGroup}>
-              <Text style={styles.inputLabel}>PASSWORD</Text>
-              <View style={styles.passwordContainer}>
+            <View style={styles.inputWrapper}>
+              <Text style={styles.label}>PASSWORD</Text>
+              <View style={styles.inputContainer}>
+                <Ionicons name="lock-closed-outline" size={20} color={COLORS.textMuted} style={styles.inputIcon} />
                 <TextInput
-                  testID="login-password-input"
-                  style={styles.passwordInput}
-                  placeholder="Enter password"
-                  placeholderTextColor={COLORS.textSecondary}
+                  style={styles.input}
+                  placeholder="••••••••"
+                  placeholderTextColor={COLORS.textMuted}
                   value={password}
                   onChangeText={setPassword}
                   secureTextEntry={!showPassword}
                 />
                 <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeBtn}>
-                  <Ionicons name={showPassword ? 'eye-off' : 'eye'} size={20} color={COLORS.textSecondary} />
+                  <Ionicons name={showPassword ? 'eye-off' : 'eye'} size={20} color={COLORS.textMuted} />
                 </TouchableOpacity>
               </View>
             </View>
           </View>
 
-          <TouchableOpacity
-            testID="login-submit-btn"
-            style={[styles.submitBtn, loading && styles.submitBtnDisabled]}
+          <TouchableOpacity 
+            style={[styles.submitBtn, loading && styles.disabledBtn]} 
             onPress={handleLogin}
             disabled={loading}
-            activeOpacity={0.8}
           >
             {loading ? (
-              <ActivityIndicator color={COLORS.textInverse} />
+              <ActivityIndicator color="#FFF" />
             ) : (
-              <Text style={styles.submitBtnText}>Sign In</Text>
+              <>
+                <Text style={styles.submitBtnText}>Sign In</Text>
+                <Ionicons name="chevron-forward" size={18} color="#FFF" />
+              </>
             )}
           </TouchableOpacity>
 
-          <View style={styles.separator}>
-            <View style={styles.line} />
-            <Text style={styles.sepText}>OR</Text>
-            <View style={styles.line} />
+          <View style={styles.footer}>
+            <Text style={styles.footerText}>New to Apna Counsellor?</Text>
+            <TouchableOpacity onPress={() => router.push('/(auth)/register')}>
+              <Text style={styles.linkText}>Create Account</Text>
+            </TouchableOpacity>
           </View>
-
-          <TouchableOpacity
-            style={styles.googleBtn}
-            onPress={() => {/* Google Auth logic */}}
-            activeOpacity={0.8}
-          >
-            <Ionicons name="logo-google" size={20} color={COLORS.textPrimary} />
-            <Text style={styles.googleBtnText}>Continue with Google</Text>
-          </TouchableOpacity>
-
-
-          <TouchableOpacity testID="goto-register" style={styles.linkBtn} onPress={() => router.push('/(auth)/register')}>
-            <Text style={styles.linkText}>Don't have an account? <Text style={styles.linkBold}>Sign Up</Text></Text>
-          </TouchableOpacity>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -126,31 +116,26 @@ export default function Login() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: COLORS.primaryLight },
+  container: { flex: 1, backgroundColor: '#F8FAFC' },
   flex: { flex: 1 },
-  scroll: { flexGrow: 1, paddingHorizontal: SPACING.lg, paddingVertical: SPACING.xl },
-  backBtn: { width: 44, height: 44, alignItems: 'center', justifyContent: 'center', marginBottom: SPACING.lg },
-  header: { marginBottom: SPACING.xl },
-  title: { ...TYPOGRAPHY.h1, color: COLORS.primary, marginBottom: SPACING.xs },
-  subtitle: { ...TYPOGRAPHY.body, color: COLORS.textSecondary },
-  errorContainer: { flexDirection: 'row', alignItems: 'center', gap: SPACING.sm, backgroundColor: COLORS.errorLight, padding: SPACING.md, borderRadius: RADIUS.sm, marginBottom: SPACING.md },
-  errorText: { ...TYPOGRAPHY.caption, color: COLORS.error, fontSize: 13 },
-  form: { gap: SPACING.lg, marginBottom: SPACING.xl },
-  inputGroup: { gap: SPACING.xs },
-  inputLabel: { ...TYPOGRAPHY.label, color: COLORS.textSecondary, fontSize: 12 },
-  input: { height: 56, backgroundColor: COLORS.background, borderRadius: RADIUS.md, paddingHorizontal: SPACING.md, fontSize: 16, color: COLORS.textPrimary, borderWidth: 1, borderColor: COLORS.border, ...SHADOWS.sm },
-  passwordContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.background, borderRadius: RADIUS.md, borderWidth: 1, borderColor: COLORS.border, ...SHADOWS.sm },
-  passwordInput: { flex: 1, height: 56, paddingHorizontal: SPACING.md, fontSize: 16, color: COLORS.textPrimary },
-  eyeBtn: { padding: SPACING.md },
-  submitBtn: { backgroundColor: COLORS.primary, paddingVertical: 18, borderRadius: RADIUS.pill, alignItems: 'center', justifyContent: 'center', marginBottom: SPACING.md, ...SHADOWS.md },
-  submitBtnDisabled: { opacity: 0.6 },
-  submitBtnText: { ...TYPOGRAPHY.body, color: COLORS.textInverse, fontWeight: '600', fontSize: 17 },
-  separator: { flexDirection: 'row', alignItems: 'center', marginVertical: SPACING.lg, gap: SPACING.md },
-  line: { flex: 1, height: 1, backgroundColor: COLORS.border },
-  sepText: { ...TYPOGRAPHY.caption, color: COLORS.textSecondary, fontWeight: '700' },
-  googleBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: COLORS.background, paddingVertical: 16, borderRadius: RADIUS.pill, gap: SPACING.md, borderWidth: 1, borderColor: COLORS.border, ...SHADOWS.sm },
-  googleBtnText: { ...TYPOGRAPHY.body, color: COLORS.textPrimary, fontWeight: '600' },
-  linkBtn: { alignItems: 'center', paddingVertical: SPACING.md },
-  linkText: { ...TYPOGRAPHY.body, color: COLORS.textSecondary },
-  linkBold: { fontWeight: '700', color: COLORS.primary },
+  scroll: { padding: 24, flexGrow: 1 },
+  backBtn: { width: 44, height: 44, borderRadius: 12, backgroundColor: '#FFF', justifyContent: 'center', alignItems: 'center', marginBottom: 32, ...SHADOWS.sm },
+  header: { marginBottom: 40 },
+  title: { fontSize: 32, fontWeight: '800', color: '#1E1B4B', fontFamily: 'Lexend_800ExtraBold' },
+  subtitle: { fontSize: 16, color: '#64748B', marginTop: 8, fontFamily: 'Inter_400Regular' },
+  errorBanner: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#FEF2F2', padding: 16, borderRadius: 12, marginBottom: 24, borderWidth: 1, borderColor: '#FEE2E2' },
+  errorText: { color: '#EF4444', fontSize: 14, fontWeight: '600', marginLeft: 8 },
+  form: { gap: 24, marginBottom: 32 },
+  inputWrapper: { gap: 8 },
+  label: { fontSize: 12, fontWeight: '700', color: '#4F46E5', letterSpacing: 1 },
+  inputContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#FFF', borderRadius: 16, borderWidth: 1, borderColor: '#E2E8F0', paddingHorizontal: 16, height: 60, ...SHADOWS.sm },
+  inputIcon: { marginRight: 12 },
+  input: { flex: 1, fontSize: 16, color: '#1E1B4B', fontFamily: 'Inter_500Medium' },
+  eyeBtn: { padding: 8 },
+  submitBtn: { height: 60, backgroundColor: '#4F46E5', borderRadius: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, ...SHADOWS.md },
+  disabledBtn: { opacity: 0.7 },
+  submitBtnText: { color: '#FFF', fontSize: 18, fontWeight: '700', fontFamily: 'Lexend_700Bold' },
+  footer: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 8, marginTop: 'auto', paddingVertical: 24 },
+  footerText: { fontSize: 15, color: '#64748B', fontFamily: 'Inter_400Regular' },
+  linkText: { fontSize: 15, color: '#4F46E5', fontWeight: '700', fontFamily: 'Lexend_700Bold' },
 });

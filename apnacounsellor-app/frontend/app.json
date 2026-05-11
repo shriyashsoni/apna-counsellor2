@@ -2,34 +2,26 @@
   "expo": {
     "name": "Apna Counsellor",
     "slug": "apna-counsellor",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/logo.jpg",
-    "scheme": "frontend",
-    "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
-    "updates": {
-      "url": "https://u.expo.dev/3340feef-5567-47cd-9b5c-69efcff43603"
-    },
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
+    "scheme": "apnacounsellor",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": false,
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.apnacounsellor.app"
     },
     "android": {
       "package": "com.apnacounsellor.app",
+      "versionCode": 2,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/logo.jpg",
-        "backgroundColor": "#F6E5ED"
+        "backgroundColor": "#FFFFFF"
       },
-      "edgeToEdgeEnabled": true
-    },
-    "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/logo.jpg"
+      "permissions": [
+        "INTERNET"
+      ]
     },
     "plugins": [
       "expo-router",
@@ -37,17 +29,13 @@
         "expo-splash-screen",
         {
           "image": "./assets/images/logo.jpg",
-          "imageWidth": 200,
+          "imageWidth": 180,
           "resizeMode": "contain",
-          "backgroundColor": "#F6E5ED"
+          "backgroundColor": "#FFFFFF"
         }
       ]
     ],
-    "experiments": {
-      "typedRoutes": true
-    },
     "extra": {
-      "router": {},
       "eas": {
         "projectId": "3340feef-5567-47cd-9b5c-69efcff43603"
       }

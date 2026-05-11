@@ -2,22 +2,15 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform, ScrollView, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
-import { COLORS, SPACING, TYPOGRAPHY, RADIUS, SHADOWS } from '../../src/constants/theme';
+import { COLORS, SPACING, RADIUS, SHADOWS } from '../../src/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
-
-const ROLES = [
-  { key: 'student', label: 'Student', icon: 'school-outline' as const, desc: 'Get guidance & mentorship' },
-  { key: 'mentor', label: 'Mentor', icon: 'people-outline' as const, desc: 'Help students & earn' },
-];
 
 export default function Register() {
   const router = useRouter();
   const { register } = useAuth();
-  const [step, setStep] = useState(1);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('student');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -26,14 +19,10 @@ export default function Register() {
       setError('Please fill in all fields');
       return;
     }
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters');
-      return;
-    }
     setError('');
     setLoading(true);
     try {
-      await register(name.trim(), email.trim(), password, role);
+      await register(name.trim(), email.trim(), password, 'student');
       router.replace('/(tabs)/dashboard');
     } catch (e: any) {
       setError(e.message || 'Registration failed');
@@ -46,129 +35,90 @@ export default function Register() {
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.flex}>
         <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
-          <TouchableOpacity testID="back-btn" style={styles.backBtn} onPress={() => step === 1 ? router.back() : setStep(1)}>
-            <Ionicons name="arrow-back" size={24} color={COLORS.primary} />
+          <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
+            <Ionicons name="arrow-back" size={24} color="#1E1B4B" />
           </TouchableOpacity>
 
-          {/* Progress bar */}
-          <View style={styles.progressBar}>
-            <View style={[styles.progressFill, { width: step === 1 ? '50%' : '100%' }]} />
+          <View style={styles.header}>
+            <Text style={styles.title}>Join the Elite</Text>
+            <Text style={styles.subtitle}>Unlock expert counseling & AI predictors</Text>
           </View>
 
-          {step === 1 ? (
-            <>
-              <View style={styles.header}>
-                <Text style={styles.title}>Join Apna Counselor</Text>
-                <Text style={styles.subtitle}>Choose your role to get started</Text>
+          {error ? (
+            <View style={styles.errorBanner}>
+              <Ionicons name="alert-circle" size={18} color={COLORS.error} />
+              <Text style={styles.errorText}>{error}</Text>
+            </View>
+          ) : null}
+
+          <View style={styles.form}>
+            <View style={styles.inputWrapper}>
+              <Text style={styles.label}>FULL NAME</Text>
+              <View style={styles.inputContainer}>
+                <Ionicons name="person-outline" size={20} color="#94A3B8" style={styles.inputIcon} />
+                <TextInput
+                  style={styles.input}
+                  placeholder="John Doe"
+                  placeholderTextColor="#94A3B8"
+                  value={name}
+                  onChangeText={setName}
+                />
               </View>
+            </View>
 
-              <View style={styles.rolesContainer}>
-                {ROLES.map((r) => (
-                  <TouchableOpacity
-                    key={r.key}
-                    testID={`role-${r.key}-btn`}
-                    style={[styles.roleCard, role === r.key && styles.roleCardActive]}
-                    onPress={() => setRole(r.key)}
-                    activeOpacity={0.8}
-                  >
-                    <Ionicons name={r.icon} size={32} color={role === r.key ? COLORS.textInverse : COLORS.primary} />
-                    <Text style={[styles.roleTitle, role === r.key && styles.roleTitleActive]}>{r.label}</Text>
-                    <Text style={[styles.roleDesc, role === r.key && styles.roleDescActive]}>{r.desc}</Text>
-                  </TouchableOpacity>
-                ))}
+            <View style={styles.inputWrapper}>
+              <Text style={styles.label}>EMAIL ADDRESS</Text>
+              <View style={styles.inputContainer}>
+                <Ionicons name="mail-outline" size={20} color="#94A3B8" style={styles.inputIcon} />
+                <TextInput
+                  style={styles.input}
+                  placeholder="name@example.com"
+                  placeholderTextColor="#94A3B8"
+                  value={email}
+                  onChangeText={setEmail}
+                  autoCapitalize="none"
+                  keyboardType="email-address"
+                />
               </View>
+            </View>
 
-              <TouchableOpacity
-                testID="register-next-btn"
-                style={styles.submitBtn}
-                onPress={() => {
-                  if (role === 'mentor') {
-                    router.push('/(auth)/mentor-register');
-                  } else {
-                    setStep(2);
-                  }
-                }}
-                activeOpacity={0.8}
-              >
-                <Text style={styles.submitBtnText}>{role === 'mentor' ? 'Become a Mentor' : 'Continue'}</Text>
-                <Ionicons name="arrow-forward" size={20} color={COLORS.textInverse} />
-              </TouchableOpacity>
-            </>
-          ) : (
-            <>
-              <View style={styles.header}>
-                <Text style={styles.title}>Create Account</Text>
-                <Text style={styles.subtitle}>Fill in your details as a {role}</Text>
+            <View style={styles.inputWrapper}>
+              <Text style={styles.label}>CREATE PASSWORD</Text>
+              <View style={styles.inputContainer}>
+                <Ionicons name="lock-closed-outline" size={20} color="#94A3B8" style={styles.inputIcon} />
+                <TextInput
+                  style={styles.input}
+                  placeholder="••••••••"
+                  placeholderTextColor="#94A3B8"
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry
+                />
               </View>
+            </View>
+          </View>
 
-              {error ? (
-                <View style={styles.errorContainer}>
-                  <Ionicons name="alert-circle" size={16} color={COLORS.error} />
-                  <Text testID="register-error" style={styles.errorText}>{error}</Text>
-                </View>
-              ) : null}
-
-              <View style={styles.form}>
-                <View style={styles.inputGroup}>
-                  <Text style={styles.inputLabel}>FULL NAME</Text>
-                  <TextInput
-                    testID="register-name-input"
-                    style={styles.input}
-                    placeholder="Enter your name"
-                    placeholderTextColor={COLORS.textSecondary}
-                    value={name}
-                    onChangeText={setName}
-                    autoCapitalize="words"
-                  />
-                </View>
-
-                <View style={styles.inputGroup}>
-                  <Text style={styles.inputLabel}>EMAIL</Text>
-                  <TextInput
-                    testID="register-email-input"
-                    style={styles.input}
-                    placeholder="your@email.com"
-                    placeholderTextColor={COLORS.textSecondary}
-                    value={email}
-                    onChangeText={setEmail}
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                  />
-                </View>
-
-                <View style={styles.inputGroup}>
-                  <Text style={styles.inputLabel}>PASSWORD</Text>
-                  <TextInput
-                    testID="register-password-input"
-                    style={styles.input}
-                    placeholder="Min 6 characters"
-                    placeholderTextColor={COLORS.textSecondary}
-                    value={password}
-                    onChangeText={setPassword}
-                    secureTextEntry
-                  />
-                </View>
-              </View>
-
-              <TouchableOpacity
-                testID="register-submit-btn"
-                style={[styles.submitBtn, loading && styles.submitBtnDisabled]}
-                onPress={handleRegister}
-                disabled={loading}
-                activeOpacity={0.8}
-              >
-                {loading ? (
-                  <ActivityIndicator color={COLORS.textInverse} />
-                ) : (
-                  <Text style={styles.submitBtnText}>Create Account</Text>
-                )}
-              </TouchableOpacity>
-            </>
-          )}
-
-          <TouchableOpacity testID="goto-login" style={styles.linkBtn} onPress={() => router.push('/(auth)/login')}>
-            <Text style={styles.linkText}>Already have an account? <Text style={styles.linkBold}>Sign In</Text></Text>
+          <TouchableOpacity 
+            style={[styles.submitBtn, loading && styles.disabledBtn]} 
+            onPress={handleRegister}
+            disabled={loading}
+          >
+            {loading ? (
+              <ActivityIndicator color="#FFF" />
+            ) : (
+              <>
+                <Text style={styles.submitBtnText}>Create Account</Text>
+                <Ionicons name="sparkles" size={18} color="#FFF" />
+              </>
+            )}
           </TouchableOpacity>
+
+          <View style={styles.footer}>
+            <Text style={styles.footerText}>Already part of us?</Text>
+            <TouchableOpacity onPress={() => router.push('/(auth)/login')}>
+              <Text style={styles.linkText}>Sign In</Text>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -176,32 +126,25 @@ export default function Register() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: COLORS.primaryLight },
+  container: { flex: 1, backgroundColor: '#F8FAFC' },
   flex: { flex: 1 },
-  scroll: { flexGrow: 1, paddingHorizontal: SPACING.lg, paddingVertical: SPACING.xl },
-  backBtn: { width: 44, height: 44, alignItems: 'center', justifyContent: 'center', marginBottom: SPACING.sm },
-  progressBar: { height: 3, backgroundColor: COLORS.border, borderRadius: 2, marginBottom: SPACING.xl },
-  progressFill: { height: 3, backgroundColor: COLORS.primary, borderRadius: 2 },
-  header: { marginBottom: SPACING.xl },
-  title: { ...TYPOGRAPHY.h1, color: COLORS.primary, marginBottom: SPACING.xs },
-  subtitle: { ...TYPOGRAPHY.body, color: COLORS.textSecondary },
-  errorContainer: { flexDirection: 'row', alignItems: 'center', gap: SPACING.sm, backgroundColor: COLORS.errorLight, padding: SPACING.md, borderRadius: RADIUS.sm, marginBottom: SPACING.md },
-  errorText: { ...TYPOGRAPHY.caption, color: COLORS.error, fontSize: 13 },
-  rolesContainer: { gap: SPACING.md, marginBottom: SPACING.xl },
-  roleCard: { padding: SPACING.lg, borderRadius: RADIUS.lg, borderWidth: 1, borderColor: COLORS.border, backgroundColor: COLORS.background, gap: SPACING.sm, ...SHADOWS.sm },
-  roleCardActive: { backgroundColor: COLORS.primary, borderColor: COLORS.primary, ...SHADOWS.md },
-  roleTitle: { ...TYPOGRAPHY.h3, color: COLORS.primary },
-  roleTitleActive: { color: COLORS.textInverse },
-  roleDesc: { ...TYPOGRAPHY.caption, color: COLORS.textSecondary },
-  roleDescActive: { color: 'rgba(255,255,255,0.7)' },
-  form: { gap: SPACING.lg, marginBottom: SPACING.xl },
-  inputGroup: { gap: SPACING.xs },
-  inputLabel: { ...TYPOGRAPHY.label, color: COLORS.textSecondary, fontSize: 12 },
-  input: { height: 56, backgroundColor: COLORS.background, borderRadius: RADIUS.md, paddingHorizontal: SPACING.md, fontSize: 16, color: COLORS.textPrimary, borderWidth: 1, borderColor: COLORS.border, ...SHADOWS.sm },
-  submitBtn: { flexDirection: 'row', backgroundColor: COLORS.primary, paddingVertical: 18, borderRadius: RADIUS.pill, alignItems: 'center', justifyContent: 'center', gap: SPACING.sm, marginBottom: SPACING.md, ...SHADOWS.md },
-  submitBtnDisabled: { opacity: 0.6 },
-  submitBtnText: { ...TYPOGRAPHY.body, color: COLORS.textInverse, fontWeight: '600', fontSize: 17 },
-  linkBtn: { alignItems: 'center', paddingVertical: SPACING.md },
-  linkText: { ...TYPOGRAPHY.body, color: COLORS.textSecondary },
-  linkBold: { fontWeight: '700', color: COLORS.primary },
+  scroll: { padding: 24, flexGrow: 1 },
+  backBtn: { width: 44, height: 44, borderRadius: 12, backgroundColor: '#FFF', justifyContent: 'center', alignItems: 'center', marginBottom: 32, ...SHADOWS.sm },
+  header: { marginBottom: 32 },
+  title: { fontSize: 32, fontWeight: '800', color: '#1E1B4B', fontFamily: 'Lexend_800ExtraBold' },
+  subtitle: { fontSize: 16, color: '#64748B', marginTop: 8, fontFamily: 'Inter_400Regular' },
+  errorBanner: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#FEF2F2', padding: 16, borderRadius: 12, marginBottom: 24, borderWidth: 1, borderColor: '#FEE2E2' },
+  errorText: { color: '#EF4444', fontSize: 14, fontWeight: '600', marginLeft: 8 },
+  form: { gap: 20, marginBottom: 32 },
+  inputWrapper: { gap: 8 },
+  label: { fontSize: 12, fontWeight: '700', color: '#4F46E5', letterSpacing: 1 },
+  inputContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#FFF', borderRadius: 16, borderWidth: 1, borderColor: '#E2E8F0', paddingHorizontal: 16, height: 60, ...SHADOWS.sm },
+  inputIcon: { marginRight: 12 },
+  input: { flex: 1, fontSize: 16, color: '#1E1B4B', fontFamily: 'Inter_500Medium' },
+  submitBtn: { height: 60, backgroundColor: '#4F46E5', borderRadius: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, ...SHADOWS.md },
+  disabledBtn: { opacity: 0.7 },
+  submitBtnText: { color: '#FFF', fontSize: 18, fontWeight: '700', fontFamily: 'Lexend_700Bold' },
+  footer: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 8, marginTop: 'auto', paddingVertical: 24 },
+  footerText: { fontSize: 15, color: '#64748B', fontFamily: 'Inter_400Regular' },
+  linkText: { fontSize: 15, color: '#4F46E5', fontWeight: '700', fontFamily: 'Lexend_700Bold' },
 });
