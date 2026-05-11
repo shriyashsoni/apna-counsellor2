@@ -25,7 +25,8 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue 
 } from "@/components/ui/select"
 import Image from "next/image"
-import { approveMentorAction, suspendMentorAction, deleteMentorAction, toggleMentorVisibilityAction } from "@/lib/actions/admin"
+import { approveMentorAction, suspendMentorAction, deleteMentorAction, toggleMentorVisibilityAction, createBroadcastNotificationAction } from "@/lib/actions/admin"
+
 import { sendBroadCastEmail } from "@/lib/actions/emails"
 
 
@@ -145,33 +146,15 @@ export default function AdminDashboard() {
     if (!notifForm.title || !notifForm.message) return toast.error("Missing message")
     setIsSubmitting(true)
     try {
-      // 1. Save to Supabase Notifications Table
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) throw new Error("No authenticated user found")
+      // 1. Save to Supabase Notifications Table via Server Action (bypasses RLS)
+      const notifResult = await createBroadcastNotificationAction(
+        notifForm.title,
+        notifForm.message,
+        notifForm.type,
+        notifForm.link
+      )
 
-      // We explicitly map fields to avoid issues with missing columns in old schemas
-      const notificationData: any = {
-        title: notifForm.title,
-        message: notifForm.message,
-        type: notifForm.type,
-        user_id: user.id, // Link to the admin who created it
-        is_read: false
-      }
-
-
-      // Only add these if you've run the schema update
-      // We'll wrap the insert in a try/catch specifically for schema mismatches
-      const { error } = await supabase.from('notifications').insert({
-        ...notificationData,
-        target_group: 'all',
-        link: notifForm.link
-      })
-
-      if (error) {
-        console.warn("Notification insert with extended fields failed, trying basic fields...", error)
-        const { error: retryError } = await supabase.from('notifications').insert(notificationData)
-        if (retryError) throw retryError
-      }
+      if (!notifResult.success) throw new Error(notifResult.error)
 
       // 2. Automated Email Broadcast
       const userEmails = users.map(u => u.email).filter(Boolean)

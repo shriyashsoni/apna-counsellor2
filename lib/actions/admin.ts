@@ -93,3 +93,25 @@ export async function toggleMentorVisibilityAction(userId: string, isVisible: bo
     return { success: false, error: error.message }
   }
 }
+
+export async function createBroadcastNotificationAction(title: string, message: string, type: string, link?: string) {
+  try {
+    const { error } = await supabaseAdmin
+      .from('notifications')
+      .insert({
+        title,
+        message,
+        type,
+        link,
+        target_group: 'all',
+        is_read: false
+      })
+
+    if (error) throw error
+    return { success: true }
+  } catch (error: any) {
+    console.error("Broadcast Notification Error:", error)
+    return { success: false, error: error.message }
+  }
+}
+
