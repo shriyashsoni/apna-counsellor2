@@ -1,0 +1,10 @@
+node_modules
+.expo
+.next
+.metro-cache
+.cache
+dist
+build
+ios
+android
+*.log
