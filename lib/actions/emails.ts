@@ -132,28 +132,39 @@ export async function sendBroadCastEmail(to: string[], title: string, message: s
     ` : ''}
   `;
 
-  console.log(`Triggering broadcast email to ${to.length} subscribers...`);
+  console.log(`Triggering broadcast email to ${to.length} subscribers in chunks...`);
   
   if (!process.env.NOVU_API_KEY) {
     console.error("NOVU_API_KEY is missing. Skipping email broadcast.");
     return { success: false, error: "Email provider not configured" };
   }
 
+  // Chunking to handle large user lists (Novu recommends batches)
+  const CHUNK_SIZE = 50;
+  const results = [];
+
   try {
-    const result = await novu.trigger('broadcast-email', {
-      to: to.map(email => ({ subscriberId: email, email })),
-      payload: {
-        title,
-        message,
-        actionLink
-      }
-    });
-    return { success: true, data: result.data };
+    for (let i = 0; i < to.length; i += CHUNK_SIZE) {
+      const chunk = to.slice(i, i + CHUNK_SIZE);
+      const result = await novu.trigger('broadcast-email', {
+        to: chunk.map(email => ({ subscriberId: email, email })),
+        payload: {
+          title,
+          message,
+          content: message.replace(/\n/g, '<br/>'), // Fallback for templates using {{content}}
+          actionLink
+        }
+      });
+      results.push(result.data);
+    }
+    
+    return { success: true, data: results };
   } catch (error: any) {
-    console.error("Novu Broadcast Error:", error);
-    throw new Error(error.message || "Failed to trigger email broadcast");
+    console.error("Novu Broadcast Error:", error.response?.data || error.message || error);
+    throw new Error(error.response?.data?.message || error.message || "Failed to trigger email broadcast");
   }
 }
+
 
 
 export async function sendAdminNotification(subject: string, message: string) {
