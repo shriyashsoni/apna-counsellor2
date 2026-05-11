@@ -8,7 +8,14 @@ interface RelatedLink {
 
 interface RelatedLinksProps {
   pageSlug: string;
+  currentCollege?: {
+    name: string;
+    state: string;
+    city: string;
+    type: string;
+  };
 }
+
 
 const relationshipMap: Record<string, RelatedLink[]> = {
   'mht-cet': [
@@ -45,23 +52,57 @@ const relationshipMap: Record<string, RelatedLink[]> = {
   ]
 };
 
-export default function RelatedLinks({ pageSlug }: RelatedLinksProps) {
+export default function RelatedLinks({ pageSlug, currentCollege }: RelatedLinksProps) {
   let links: RelatedLink[] = [];
 
   const lowerSlug = pageSlug.toLowerCase();
 
   if (lowerSlug.includes('mht-cet')) links = relationshipMap['mht-cet'];
-  else if (lowerSlug.includes('jee') || lowerSlug.includes('josaa') || lowerSlug.includes('nit') || lowerSlug.includes('iit') || lowerSlug.includes('csab')) links = relationshipMap['jee'];
-  else if (lowerSlug.includes('neet') || lowerSlug.includes('aiims') || lowerSlug.includes('jipmer')) links = relationshipMap['neet'];
-  else if (lowerSlug.includes('college')) links = relationshipMap['college-detail'];
-  else {
-    links = relationshipMap['college-detail'];
-  }
+  else if (lowerSlug.includes('jee') || lowerSlug.includes('josaa') || lowerSlug.includes('nit') || lowerSlug.includes('iit')) links = relationshipMap['jee'];
+  else links = relationshipMap['college-detail'];
 
   return (
     <section className="mt-20 border-t border-slate-100 pt-12">
-      <h2 className="text-3xl font-black mb-8 text-slate-900 tracking-tight">Expert Recommendations</h2>
+      <div className="flex items-center justify-between mb-8">
+        <h2 className="text-3xl font-black text-slate-900 tracking-tight">
+          {currentCollege ? `More Colleges in ${currentCollege.state}` : 'Expert Recommendations'}
+        </h2>
+        <Link href="/colleges" className="text-primary font-black text-sm uppercase tracking-widest hover:underline">
+          View All Colleges →
+        </Link>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Dynamic Contextual Links to fix "Discovered - not indexed" */}
+        {currentCollege && (
+           <>
+             <Link 
+                href={`/colleges?state=${currentCollege.state}`}
+                className="group block p-8 bg-blue-50 border border-blue-100 rounded-[2rem] hover:bg-white hover:border-blue-500 hover:shadow-2xl transition-all duration-300"
+              >
+                <h3 className="text-xl font-bold text-blue-900 group-hover:text-blue-600 mb-3">
+                  Top Colleges in {currentCollege.state}
+                </h3>
+                <p className="text-blue-700/70 leading-relaxed text-sm">
+                  Explore other premier {currentCollege.type} institutions located in {currentCollege.state} for 2026 admissions.
+                </p>
+                <div className="mt-6 text-blue-600 font-bold text-sm">Browse State List →</div>
+             </Link>
+             <Link 
+                href={`/predictor`}
+                className="group block p-8 bg-emerald-50 border border-emerald-100 rounded-[2rem] hover:bg-white hover:border-emerald-500 hover:shadow-2xl transition-all duration-300"
+              >
+                <h3 className="text-xl font-bold text-emerald-900 group-hover:text-emerald-600 mb-3">
+                  {currentCollege.name} Predictor
+                </h3>
+                <p className="text-emerald-700/70 leading-relaxed text-sm">
+                  Calculate your admission probability for {currentCollege.name} and similar {currentCollege.type} colleges.
+                </p>
+                <div className="mt-6 text-emerald-600 font-bold text-sm">Start Prediction →</div>
+             </Link>
+           </>
+        )}
+
         {links.map((link) => (
           <Link 
             key={link.href} 
@@ -71,7 +112,7 @@ export default function RelatedLinks({ pageSlug }: RelatedLinksProps) {
             <h3 className="text-xl font-bold text-slate-800 group-hover:text-blue-600 mb-3">
               {link.title}
             </h3>
-            <p className="text-slate-500 leading-relaxed">
+            <p className="text-slate-500 leading-relaxed text-sm">
               {link.description}
             </p>
             <div className="mt-6 text-blue-600 font-bold text-sm opacity-0 group-hover:opacity-100 transition-opacity">
@@ -83,3 +124,4 @@ export default function RelatedLinks({ pageSlug }: RelatedLinksProps) {
     </section>
   );
 }
+

@@ -42,8 +42,15 @@ export async function updateSession(request: NextRequest) {
   const isAuthCallback = request.nextUrl.pathname.startsWith('/auth')
   const isPublicPage = [
     '/', '/about', '/contact', '/privacy-policy', '/terms', '/founder', '/pricing', '/predictor', '/colleges',
+    '/counselling', '/college', '/resources', '/mentors', '/mentorship',
     '/sitemap.xml', '/sitemap-index.xml', '/robots.txt', '/ads.txt'
-  ].some(path => request.nextUrl.pathname === path || request.nextUrl.pathname.startsWith('/sitemap-'))
+  ].some(path => 
+    request.nextUrl.pathname === path || 
+    request.nextUrl.pathname.startsWith('/college/') || 
+    request.nextUrl.pathname.startsWith('/counselling/') ||
+    request.nextUrl.pathname.startsWith('/sitemap-')
+  )
+
 
   // Skip getUser check for auth callback to prevent double code exchange
   if (isAuthCallback) {

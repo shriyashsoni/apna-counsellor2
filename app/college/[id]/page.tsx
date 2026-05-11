@@ -259,9 +259,18 @@ export default async function CollegeDetailPage({ params }: CollegePageProps) {
 
       <div className="border-t border-slate-200 dark:border-slate-800 mt-20 pt-20 pb-32">
         <div className="container mx-auto px-4">
-          <RelatedLinks pageSlug="college-detail" />
+          <RelatedLinks 
+            pageSlug="college-detail" 
+            currentCollege={{
+              name: college.name,
+              state: college.state,
+              city: college.city,
+              type: college.type
+            }}
+          />
         </div>
       </div>
+
     </div>
   );
 }
