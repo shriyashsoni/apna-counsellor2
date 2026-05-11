@@ -38,7 +38,8 @@ export async function predictColleges(args: {
       )
     `)
     .eq("category", args.category)
-    .gte("closing_rank", rank);
+    .gte("closing_rank", rank)
+    .order("year", { ascending: false }); // Latest year first
 
   if (counseling) {
     rankQuery = rankQuery.eq("colleges.counseling_id", counseling.id);
@@ -57,6 +58,7 @@ export async function predictColleges(args: {
       `)
       .eq("category", args.category)
       .gte("closing_rank", rank)
+      .order("year", { ascending: false })
       .order("closing_rank", { ascending: true })
       .limit(100);
     
@@ -95,16 +97,16 @@ function processResults(records: any[], userRank: number, args: any) {
     if (safetyScore > 60) tag = "Safe";
     else if (safetyScore > 30) tag = "Moderate";
 
-    // Use the slug (college_id) if available, otherwise slugify the name
     const slug = college.college_id || (college.name || '').toLowerCase().trim().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
 
     return {
-      id: slug, // This is the ID used for linking to /college/[id]
+      id: slug,
       db_id: college.id,
       name: college.name,
       state: college.state,
       type: college.type,
       branch: record.course_name,
+      year: record.year,
       cutoffRank: record.closing_rank,
       openingRank: record.opening_rank,
       probability: Math.floor(safetyScore),
@@ -122,6 +124,7 @@ function processResults(records: any[], userRank: number, args: any) {
     .sort((a, b) => b.totalScore - a.totalScore)
     .slice(0, 50);
 }
+
 
 
 

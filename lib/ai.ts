@@ -4,6 +4,7 @@ export async function predictAI(args: {
   category: string;
   homeState?: string;
   preferredBranches?: string[];
+  verifiedData?: any[]; // Pass top DB results here
 }) {
   const apiKey = process.env.GOOGLE_AI_API_KEY || process.env.NEXT_PUBLIC_GOOGLE_AI_API_KEY || process.env.GROQ_API_KEY;
   if (!apiKey) {
@@ -11,22 +12,34 @@ export async function predictAI(args: {
     return null;
   }
 
+  const verifiedContext = args.verifiedData?.map(d => `${d.name} (${d.branch}) - Cutoff: ${d.cutoffRank}, Tag: ${d.tag}`).join("\n") || "No database matches found.";
+
   const prompt = `
-    You are an elite Indian college admission counselor (Apna Counsellor AI).
-    Based on the following student details:
+    You are the elite Apna Counsellor AI Agent, trained on 1.7 Lakh+ Indian college records.
+    
+    Student Profile:
     - Exam: ${args.exam}
-    - Score/Rank: ${args.rank}
+    - Rank: ${args.rank}
     - Category: ${args.category}
     - Home State: ${args.homeState || "Not Specified"}
-    - Preferred Branches: ${args.preferredBranches?.join(", ") || "Any Engineering Branch"}
-    
-    Tasks:
-    1. Predict top 10-15 best-fit colleges.
-    2. Provide a 3-line personalized recommendation in Hinglish. Mention their best safe pick, best moderate pick, and one reach college.
+    - Preferences: ${args.preferredBranches?.join(", ") || "Any"}
 
-    Return EXACTLY a JSON object with two keys:
-    1. "colleges": Array of objects {name, branch, probability (40-99), state, type, avgPackage, nirfRank, reason, tag ("Safe"|"Moderate"|"Reach")}
-    2. "summary": String (The 3-line Hinglish recommendation)
+    VERIFIED DATABASE RESULTS (Top Matches):
+    ${verifiedContext}
+
+    TASK:
+    1. Analyze the student's chances based on the VERIFIED DATA above.
+    2. Provide a 3-line personalized strategy in Hinglish (Hindi + English). 
+    3. If the DB results are empty, advise the student on alternative counselings they should look into.
+    
+    CRITICAL: 
+    - Do NOT suggest colleges not present in the Verified Data list unless you are giving general advice.
+    - Your summary must mention 1 Safe, 1 Moderate, and 1 Reach college from the list.
+
+    Return EXACTLY a JSON object:
+    {
+      "summary": "Your 3-line Hinglish advice here"
+    }
   `;
 
   try {
@@ -38,10 +51,10 @@ export async function predictAI(args: {
       body: JSON.stringify({
         contents: [{ parts: [{ text: prompt }] }],
         generationConfig: {
-          temperature: 0.4,
+          temperature: 0.3, // Lower temperature for higher accuracy
           topK: 40,
           topP: 0.95,
-          maxOutputTokens: 2048,
+          maxOutputTokens: 1024,
           responseMimeType: "application/json",
         }
       }),
@@ -56,7 +69,6 @@ export async function predictAI(args: {
     try {
       const parsed = JSON.parse(content);
       return {
-        colleges: parsed.colleges || [],
         summary: parsed.summary || ""
       };
     } catch (parseError) {
@@ -68,4 +80,5 @@ export async function predictAI(args: {
     return null;
   }
 }
+
 

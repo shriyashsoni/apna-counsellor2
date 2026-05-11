@@ -94,17 +94,17 @@ export default function PredictorPage() {
       });
       setDbResults(dataResults || []);
 
-      // 2. Try AI Prediction for personalized summary and additional matches
+      // 2. Try AI Prediction with DB results as context (Training the Agent)
       const aiResponse = await predictAI({
         exam: examName,
         rank: userRank,
         category,
         homeState,
-        preferredBranches: selectedBranches
+        preferredBranches: selectedBranches,
+        verifiedData: dataResults?.slice(0, 10) // Give AI the top 10 matches for strategy
       });
       
       if (aiResponse) {
-        setAiColleges(aiResponse.colleges || []);
         setAiSummary(aiResponse.summary || "");
       }
       
