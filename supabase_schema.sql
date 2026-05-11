@@ -179,6 +179,39 @@ CREATE TABLE public.chat_history (
     timestamp TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- --- INDEXES FOR PERFORMANCE (1.7L+ RECORDS) ---
+
+-- Colleges: Fast search by name, state, and counseling
+CREATE INDEX IF NOT EXISTS idx_colleges_name ON public.colleges USING gin (name gin_trgm_ops);
+CREATE INDEX IF NOT EXISTS idx_colleges_state ON public.colleges (state);
+CREATE INDEX IF NOT EXISTS idx_colleges_counseling ON public.colleges (counseling_id);
+CREATE INDEX IF NOT EXISTS idx_colleges_slug ON public.colleges (college_id);
+
+-- Ranks: Fast lookup for cutoffs and categories
+CREATE INDEX IF NOT EXISTS idx_ranks_college_id ON public.ranks (college_id);
+CREATE INDEX IF NOT EXISTS idx_ranks_category ON public.ranks (category);
+CREATE INDEX IF NOT EXISTS idx_ranks_closing ON public.ranks (closing_rank);
+
+-- --- AUTOMATIC SLUG GENERATION ---
+
+CREATE OR REPLACE FUNCTION public.generate_college_slug()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.college_id IS NULL OR NEW.college_id = '' THEN
+        NEW.college_id := lower(regexp_replace(NEW.name, '[^a-zA-Z0-9]+', '-', 'g'));
+        -- Ensure uniqueness by appending a partial UUID if needed
+        IF EXISTS (SELECT 1 FROM public.colleges WHERE college_id = NEW.college_id) THEN
+            NEW.college_id := NEW.college_id || '-' || substr(uuid_generate_v4()::text, 1, 4);
+        END IF;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_generate_college_slug
+    BEFORE INSERT OR UPDATE ON public.colleges
+    FOR EACH ROW EXECUTE PROCEDURE public.generate_college_slug();
+
 -- --- RLS POLICIES ---
 
 -- Profiles: Users can view all, but only update their own
@@ -187,6 +220,13 @@ CREATE POLICY "Public profiles are viewable by everyone." ON public.profiles
 
 CREATE POLICY "Users can update own profile." ON public.profiles
     FOR UPDATE USING (auth.uid() = id);
+
+-- Colleges & Ranks: Viewable by everyone
+ALTER TABLE public.colleges ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Colleges are viewable by everyone." ON public.colleges FOR SELECT USING (true);
+
+ALTER TABLE public.ranks ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Ranks are viewable by everyone." ON public.ranks FOR SELECT USING (true);
 
 -- Trigger for creating profile on auth signup
 CREATE OR REPLACE FUNCTION public.handle_new_user()
