@@ -26,23 +26,23 @@ const HeroSection = () => {
   }
 
   return (
-    <section className="py-12 md:py-20">
-      <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-        <motion.div initial="hidden" animate="show" variants={container}>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-[9px] md:text-[10px] font-black uppercase tracking-widest mb-4 md:mb-6">
+    <section className="py-12 md:py-20 container mx-auto px-6 md:px-12">
+      <div className="grid lg:grid-cols-2 gap-8 items-center">
+        <motion.div initial="hidden" animate="show" variants={container} className="max-w-2xl">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-[8px] md:text-[9px] font-black uppercase tracking-widest mb-4 md:mb-5">
             <Sparkles className="h-3 w-3" />
             Empowering 50,000+ Students
           </div>
-          <motion.h1 variants={item} className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 md:mb-6 tracking-tighter leading-tight">
+          <motion.h1 variants={item} className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-4 md:mb-5 tracking-tighter leading-tight">
             India&apos;s Most Trusted <br/><span className="text-primary text-glow">Admission Portals</span>
           </motion.h1>
-          <motion.p variants={item} className="text-base md:text-lg text-slate-600 dark:text-slate-400 mb-6 md:mb-8 leading-relaxed max-w-xl">
+          <motion.p variants={item} className="text-sm md:text-base text-slate-600 dark:text-slate-400 mb-6 md:mb-7 leading-relaxed max-w-lg">
             Navigate the complex world of college admissions with India&apos;s most advanced 
             AI-powered guidance system. We bridge the gap between your rank and your dream institute.
           </motion.p>
           <motion.div variants={item} className="flex flex-col sm:flex-row gap-3 md:gap-4">
             <Link href={isAuthenticated ? "/dashboard" : "/book-call"} className="w-full sm:w-auto">
-              <Button size="lg" className="w-full sm:w-auto rounded-xl md:rounded-2xl px-6 h-12 md:h-14 font-black text-sm md:text-base shadow-lg shadow-primary/20">
+              <Button size="lg" className="w-full sm:w-auto rounded-xl md:rounded-2xl px-6 h-11 md:h-12 font-black text-xs md:text-sm shadow-lg shadow-primary/20">
                 {isAuthenticated ? "Go to Dashboard" : "Book a Counselling Call"}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -53,7 +53,7 @@ const HeroSection = () => {
               rel="noopener noreferrer"
               className="w-full sm:w-auto"
             >
-              <Button variant="outline" size="lg" className="w-full sm:w-auto rounded-xl md:rounded-2xl px-6 h-12 md:h-14 font-black text-sm md:text-base border-slate-200 dark:border-slate-800">
+              <Button variant="outline" size="lg" className="w-full sm:w-auto rounded-xl md:rounded-2xl px-6 h-11 md:h-12 font-black text-xs md:text-sm border-slate-200 dark:border-slate-800">
                 Join Community
               </Button>
             </Link>
@@ -63,7 +63,7 @@ const HeroSection = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="relative h-[300px] sm:h-[400px] lg:h-[550px] rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden shadow-xl border-2 md:border-4 border-white dark:border-slate-900 mt-6 lg:mt-0"
+          className="relative h-[250px] sm:h-[350px] lg:h-[480px] rounded-[1.5rem] md:rounded-[2rem] overflow-hidden shadow-xl border-2 md:border-4 border-white dark:border-slate-900 mt-6 lg:mt-0"
         >
           <Image
             src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/India%27s%20Trusted%20Counselling%20Platform%20for%20Admissions.jpg-awq59bTnBuIHnoBkXVTum5zn14OhAI.jpeg"
@@ -73,19 +73,19 @@ const HeroSection = () => {
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 bg-white/10 backdrop-blur-2xl border-t border-white/20 p-3 md:p-5">
+          <div className="absolute bottom-0 left-0 right-0 bg-white/10 backdrop-blur-2xl border-t border-white/20 p-3 md:p-4">
             <div className="grid grid-cols-3 gap-2 text-white">
               <div className="text-center">
-                <p className="text-lg md:text-2xl font-black">50k+</p>
-                <p className="text-[7px] md:text-[9px] uppercase font-bold tracking-widest opacity-80">Students</p>
+                <p className="text-base md:text-xl font-black">50k+</p>
+                <p className="text-[6px] md:text-[8px] uppercase font-bold tracking-widest opacity-80">Students</p>
               </div>
               <div className="text-center">
-                <p className="text-lg md:text-2xl font-black">200+</p>
-                <p className="text-[7px] md:text-[9px] uppercase font-bold tracking-widest opacity-80">Portals</p>
+                <p className="text-base md:text-xl font-black">200+</p>
+                <p className="text-[6px] md:text-[8px] uppercase font-bold tracking-widest opacity-80">Portals</p>
               </div>
               <div className="text-center">
-                <p className="text-lg md:text-2xl font-black">1.2L+</p>
-                <p className="text-[7px] md:text-[9px] uppercase font-bold tracking-widest opacity-80">College Guides</p>
+                <p className="text-base md:text-xl font-black">1.2L+</p>
+                <p className="text-[6px] md:text-[8px] uppercase font-bold tracking-widest opacity-80">College Guides</p>
               </div>
             </div>
           </div>
