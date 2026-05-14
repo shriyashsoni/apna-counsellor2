@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { Sparkles, GraduationCap, ShieldCheck, Globe, CheckCircle2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
