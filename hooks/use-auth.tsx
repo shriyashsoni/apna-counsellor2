@@ -5,20 +5,16 @@ import { createClient } from "@/lib/supabase/client"
 import { User } from "@supabase/supabase-js"
 
 interface AuthContextType {
-  user: User | null;
+  user: ExtendedUser | null;
   signIn: (provider?: string) => Promise<void>;
+  signInWithEmail: (email: string, password: string) => Promise<void>;
+  signUpWithEmail: (email: string, password: string, name: string) => Promise<void>;
   signOut: () => Promise<void>;
   isLoading: boolean;
   isAuthenticated: boolean;
 }
 
-interface ExtendedUser extends User {
-  name?: string;
-  image?: string;
-}
-
-export function useAuth(): Omit<AuthContextType, 'user'> & { 
-  user: ExtendedUser | null;
+export function useAuth(): AuthContextType & { 
   login: (provider?: string) => Promise<void>;
   logout: () => Promise<void>;
 } {
@@ -62,6 +58,28 @@ export function useAuth(): Omit<AuthContextType, 'user'> & {
     if (error) throw error
   }
 
+  const signInWithEmail = async (email: string, password: string) => {
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
+    if (error) throw error
+  }
+
+  const signUpWithEmail = async (email: string, password: string, name: string) => {
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          full_name: name,
+        },
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
+      },
+    })
+    if (error) throw error
+  }
+
   const logout = async () => {
     await supabase.auth.signOut()
     window.location.href = '/'
@@ -70,6 +88,8 @@ export function useAuth(): Omit<AuthContextType, 'user'> & {
   return {
     user,
     signIn: login,
+    signInWithEmail,
+    signUpWithEmail,
     signOut: logout,
     login,
     logout,
@@ -77,6 +97,7 @@ export function useAuth(): Omit<AuthContextType, 'user'> & {
     isAuthenticated: !!user,
   };
 }
+
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
