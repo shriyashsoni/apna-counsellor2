@@ -70,7 +70,7 @@ export default function DashboardPage() {
         .eq('id', authUser.id)
         .maybeSingle()
 
-      if (!profileData) {
+      if (!profileData || !profileData.onboarding_complete) {
         router.push("/onboarding")
       } else {
         setProfile(profileData)
