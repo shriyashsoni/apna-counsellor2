@@ -2,7 +2,7 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function updateSession(request: NextRequest) {
-  // Force WWW redirect for canonical consistency and to prevent "Sitemap is HTML" errors
+  // Force WWW redirect for canonical consistency
   if (request.nextUrl.hostname === 'apnacounsellor.in') {
     const url = request.nextUrl.clone()
     url.hostname = 'www.apnacounsellor.in'
@@ -15,7 +15,7 @@ export async function updateSession(request: NextRequest) {
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
     {
       cookies: {
         getAll() {
@@ -51,7 +51,6 @@ export async function updateSession(request: NextRequest) {
     request.nextUrl.pathname.startsWith('/sitemap-')
   )
 
-
   // Skip getUser check for auth callback to prevent double code exchange
   if (isAuthCallback) {
     return supabaseResponse
@@ -59,21 +58,40 @@ export async function updateSession(request: NextRequest) {
 
   const {
     data: { user },
+    error: userError
   } = await supabase.auth.getUser()
+
+  if (userError) {
+    console.error("Supabase middleware error:", userError.message)
+    // If there's an error getting the user (like invalid session), 
+    // we should treat them as logged out unless on a public page
+  }
 
   if (!user && !isAuthPage && !isPublicPage) {
     // No user, redirect to login for protected pages
     const url = request.nextUrl.clone()
     url.pathname = '/login'
-    return NextResponse.redirect(url)
+    
+    // Create a new redirect response but copy the cookies from supabaseResponse
+    const redirectResponse = NextResponse.redirect(url)
+    supabaseResponse.cookies.getAll().forEach((cookie) => {
+      redirectResponse.cookies.set(cookie.name, cookie.value, cookie)
+    })
+    return redirectResponse
   }
 
   if (user && isAuthPage) {
     // User is logged in, redirect away from login page
     const url = request.nextUrl.clone()
     url.pathname = '/dashboard'
-    return NextResponse.redirect(url)
+    
+    const redirectResponse = NextResponse.redirect(url)
+    supabaseResponse.cookies.getAll().forEach((cookie) => {
+      redirectResponse.cookies.set(cookie.name, cookie.value, cookie)
+    })
+    return redirectResponse
   }
 
   return supabaseResponse
 }
+

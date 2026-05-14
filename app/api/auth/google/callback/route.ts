@@ -6,17 +6,20 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const code = searchParams.get("code");
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "";
   if (!code) {
-    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_SITE_URL}/mentor/dashboard?error=no_code`);
+    return NextResponse.redirect(`${siteUrl}/mentor/dashboard?error=no_code`);
   }
 
   try {
     const tokens = await getGoogleTokens(code);
     const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const { data: authData, error: authError } = await supabase.auth.getUser();
+    const user = authData?.user;
 
-    if (!user) {
-      return NextResponse.redirect(`${process.env.NEXT_PUBLIC_SITE_URL}/login`);
+    if (authError || !user) {
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "";
+      return NextResponse.redirect(`${siteUrl}/login`);
     }
 
     // Store the refresh token in the profiles table
@@ -32,9 +35,11 @@ export async function GET(request: Request) {
       if (error) throw error;
     }
 
-    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_SITE_URL}/mentor/dashboard?success=google_linked`);
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "";
+    return NextResponse.redirect(`${siteUrl}/mentor/dashboard?success=google_linked`);
   } catch (error) {
     console.error("Google Callback Error:", error);
-    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_SITE_URL}/mentor/dashboard?error=callback_failed`);
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "";
+    return NextResponse.redirect(`${siteUrl}/mentor/dashboard?error=callback_failed`);
   }
 }

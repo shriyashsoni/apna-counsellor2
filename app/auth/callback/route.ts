@@ -25,27 +25,36 @@ export async function GET(request: Request) {
         const isNewUser = new Date(user.created_at).getTime() > Date.now() - 60000
         
         if (isNewUser) {
-          const { sendWelcomeEmail } = await import('@/lib/actions/emails')
-          const name = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0]
-          await sendWelcomeEmail(user.email!, name)
+          try {
+            const { sendWelcomeEmail } = await import('@/lib/actions/emails')
+            const name = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0]
+            await sendWelcomeEmail(user.email!, name)
+          } catch (e) {
+            console.error("Welcome email failed:", e)
+          }
         }
       }
 
       const forwardedHost = request.headers.get('x-forwarded-host')
       const isLocalEnv = process.env.NODE_ENV === 'development'
       
-      if (isLocalEnv) {
-        return NextResponse.redirect(`${origin}${next}`)
-      } else if (forwardedHost) {
-        return NextResponse.redirect(`https://${forwardedHost}${next}`)
-      } else {
-        return NextResponse.redirect(`${origin}${next}`)
+      let baseUrl = origin
+      if (!isLocalEnv && forwardedHost) {
+        baseUrl = `https://${forwardedHost}`
       }
+
+      // Force WWW redirect if on the main domain
+      if (baseUrl.includes('apnacounsellor.in') && !baseUrl.includes('www.')) {
+        baseUrl = baseUrl.replace('apnacounsellor.in', 'www.apnacounsellor.in')
+      }
+
+      return NextResponse.redirect(`${baseUrl}${next}`)
     } else {
       console.error('Auth exchange error:', exchangeError)
       return NextResponse.redirect(`${origin}/auth/auth-code-error?error=exchange_error&error_description=${encodeURIComponent(exchangeError.message)}`)
     }
   }
+
 
   // fallback for cases with no code and no error params
   return NextResponse.redirect(`${origin}/auth/auth-code-error?error=no_code&error_description=No+authentication+code+was+provided+by+the+identity+provider.`)
