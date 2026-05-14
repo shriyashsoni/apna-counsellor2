@@ -6,7 +6,20 @@ export async function updateSession(request: NextRequest) {
   if (request.nextUrl.hostname === 'apnacounsellor.in') {
     const url = request.nextUrl.clone()
     url.hostname = 'www.apnacounsellor.in'
-    return NextResponse.redirect(url, 301)
+    
+    // Create redirect response
+    const redirectResponse = NextResponse.redirect(url, 301)
+    
+    // IMPORTANT: Copy existing cookies to the redirect response
+    // This ensures the PKCE verifier and other auth cookies are not lost
+    request.cookies.getAll().forEach((cookie) => {
+      redirectResponse.cookies.set(cookie.name, cookie.value, {
+        ...cookie,
+        domain: process.env.NODE_ENV === 'production' ? '.apnacounsellor.in' : undefined,
+      })
+    })
+    
+    return redirectResponse
   }
 
   let supabaseResponse = NextResponse.next({
@@ -22,13 +35,23 @@ export async function updateSession(request: NextRequest) {
           return request.cookies.getAll()
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value))
+          cookiesToSet.forEach(({ name, value, options }) => {
+            request.cookies.set(name, value)
+          })
           supabaseResponse = NextResponse.next({
             request,
           })
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          )
+          cookiesToSet.forEach(({ name, value, options }) => {
+            // Apply a broader domain to cookies in production to prevent cross-subdomain issues
+            const cookieOptions = {
+              ...options,
+              domain: process.env.NODE_ENV === 'production' ? '.apnacounsellor.in' : undefined,
+              path: '/',
+              sameSite: 'lax' as const,
+              secure: process.env.NODE_ENV === 'production',
+            }
+            supabaseResponse.cookies.set(name, value, cookieOptions)
+          })
         },
       },
     }
@@ -61,10 +84,8 @@ export async function updateSession(request: NextRequest) {
     error: userError
   } = await supabase.auth.getUser()
 
-  if (userError) {
+  if (userError && !isPublicPage && !isAuthPage) {
     console.error("Supabase middleware error:", userError.message)
-    // If there's an error getting the user (like invalid session), 
-    // we should treat them as logged out unless on a public page
   }
 
   if (!user && !isAuthPage && !isPublicPage) {
