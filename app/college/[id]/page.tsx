@@ -15,29 +15,34 @@ interface CollegePageProps {
 export async function generateMetadata({ params }: CollegePageProps): Promise<Metadata> {
   const supabase = await createClient();
   const { data: college } = await supabase.from('colleges').select('*').eq('college_id', params.id).single();
+
+  if (!college) {
+    return {
+      title: 'College Not Found | Apna Counsellor',
+      description: 'The requested college could not be found. Explore other top institutions in India at Apna Counsellor.'
+    };
+  }
   
-  const displayName = college ? college.name : params.id.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  const displayName = college.name;
   
   const title = `${displayName} | Admissions, Cutoffs & Fees 2026`;
-  const description = college 
-    ? `Get complete details of ${college.name}, ${college.city}. Check latest MHT-CET/JEE cutoffs, placement stats, and campus insights for 2026 admissions.`
-    : `Explore admission process and cutoff trends for ${displayName}. Get expert counseling support at Apna Counsellor.`;
+  const description = `Get complete details of ${college.name}, ${college.city}. Check latest MHT-CET/JEE cutoffs, placement stats, and campus insights for 2026 admissions.`;
 
   return {
     title,
     description,
-    keywords: [displayName, 'college admission', 'cutoff 2026', 'placement stats', college?.state || 'India'],
+    keywords: [displayName, 'college admission', 'cutoff 2026', 'placement stats', college.state || 'India'],
     openGraph: {
       title,
       description,
       type: 'website',
-      images: college?.imageUrl ? [college.imageUrl] : ['/images/college-preview-v1.png'],
+      images: college.image_url ? [college.image_url] : ['/images/college-preview-v1.png'],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: college?.imageUrl ? [college.imageUrl] : ['/images/college-preview-v1.png'],
+      images: college.image_url ? [college.image_url] : ['/images/college-preview-v1.png'],
     },
     alternates: {
       canonical: `https://www.apnacounsellor.in/college/${params.id}`,
@@ -47,47 +52,11 @@ export async function generateMetadata({ params }: CollegePageProps): Promise<Me
 
 export default async function CollegeDetailPage({ params }: CollegePageProps) {
   const supabase = await createClient();
-  const { data: collegeData } = await supabase.from('colleges').select('*').eq('college_id', params.id).single();
+  const { data: college } = await supabase.from('colleges').select('*').eq('college_id', params.id).single();
 
-  const detectState = () => {
-    const slug = params.id.toLowerCase();
-    if (slug.includes('maharashtra') || slug.includes('mumbai') || slug.includes('pune')) return 'Maharashtra';
-    if (slug.includes('karnataka') || slug.includes('bangalore')) return 'Karnataka';
-    if (slug.includes('delhi')) return 'Delhi';
-    if (slug.includes('gujarat') || slug.includes('ahmedabad')) return 'Gujarat';
-    if (slug.includes('uttar-pradesh') || slug.includes('lucknow')) return 'Uttar Pradesh';
-    if (slug.includes('tamil-nadu') || slug.includes('chennai')) return 'Tamil Nadu';
-    if (slug.includes('indore') || slug.includes('bhopal') || slug.includes('gwalior') || slug.includes('jabalpur')) return 'Madhya Pradesh';
-    return 'India';
-  };
-
-  const detectCity = () => {
-    const slug = params.id.toLowerCase();
-    const cities = ['Indore', 'Bhopal', 'Mumbai', 'Pune', 'Bangalore', 'Delhi', 'Chennai', 'Lucknow', 'Ahmedabad', 'Gwalior', 'Jabalpur'];
-    for (const city of cities) {
-      if (slug.includes(city.toLowerCase())) return city;
-    }
-    return 'Main Campus';
-  };
-
-  const displayName = collegeData ? collegeData.name : params.id.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-  
-  const college = collegeData || {
-    name: displayName,
-    shortName: displayName.split(' ').filter(s => s.length > 0).map(s => s[0]).join('').substring(0, 5).toUpperCase(),
-    city: detectCity(),
-    state: detectState(),
-    type: 'Premier Institute',
-    nirfRank: 'Awaiting 2026',
-    description: null,
-    website: '#',
-    established: 2008,
-    tier: 'Premium',
-    aiScore: 88,
-    annualFee: '₹1.5L - ₹3.2L',
-    avgPackage: '7.2 LPA',
-    imageUrl: `https://images.unsplash.com/photo-1541339907198-e08756ebafe3?q=80&w=1000&auto=format&fit=crop`
-  };
+  if (!college) {
+    notFound();
+  }
 
   const WHATSAPP_GROUP_LINK = "https://www.whatsapp.com/channel/0029VabjCVD5PO11jeEupQ44";
 
@@ -100,10 +69,10 @@ export default async function CollegeDetailPage({ params }: CollegePageProps) {
           "@context": "https://schema.org",
           "@type": "EducationalOrganization",
           "name": college.name,
-          "alternateName": college.shortName,
+          "alternateName": college.short_name,
           "description": college.description || `Leading ${college.type} institute located in ${college.city}, ${college.state}.`,
           "url": college.website !== '#' ? college.website : `https://www.apnacounsellor.in/college/${params.id}`,
-          "logo": college.imageUrl,
+          "logo": college.image_url || `https://www.apnacounsellor.in/images/college-preview-v1.png`,
           "address": {
             "@type": "PostalAddress",
             "addressLocality": college.city,
@@ -115,7 +84,7 @@ export default async function CollegeDetailPage({ params }: CollegePageProps) {
 
       <div className="relative h-[65vh] min-h-[550px] w-full overflow-hidden">
         <Image 
-          src={college.imageUrl || '/images/college-placeholder.jpg'} 
+          src={college.image_url || '/images/college-placeholder.jpg'} 
           alt={college.name}
           fill
           className="object-cover scale-105"

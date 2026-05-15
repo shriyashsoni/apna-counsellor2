@@ -258,8 +258,7 @@ function CollegesList() {
               >
                 {colleges.map((college) => {
                   // Always generate the slug from the name to match the sitemap's <loc>
-                  const nameSlug = (college.name || '').toLowerCase().trim().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
-                  const finalId = nameSlug;
+                  const finalId = college.college_id || (college.name || '').toLowerCase().trim().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
 
                   return (
                   <motion.div key={college.id || finalId} variants={item}>
@@ -276,14 +275,14 @@ function CollegesList() {
                                   <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-[8px] md:text-[9px] font-black uppercase tracking-wider text-slate-500">
                                     {college.tier || college.type || "Private"}
                                   </span>
-                                  {college.aiScore && (
+                                  {college.ai_score && (
                                     <span className="px-2 py-0.5 rounded-full bg-primary/10 text-[8px] md:text-[9px] font-black uppercase tracking-wider text-primary border border-primary/10 flex items-center gap-1">
-                                      <Sparkles className="h-2 w-2" /> AI {college.aiScore}
+                                      <Sparkles className="h-2 w-2" /> AI {college.ai_score}
                                     </span>
                                   )}
-                                  {college.nirfRank && (
+                                  {college.nirf_rank && (
                                     <span className="px-2 py-0.5 rounded-full bg-orange-500/10 text-[8px] md:text-[9px] font-black uppercase tracking-wider text-orange-500 border border-orange-500/10">
-                                      NIRF #{college.nirfRank}
+                                      NIRF #{college.nirf_rank}
                                     </span>
                                   )}
                                 </div>
@@ -308,13 +307,13 @@ function CollegesList() {
                               <p className="text-[8px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 flex items-center gap-1">
                                 <DollarSign className="h-2 w-2 md:h-3 md:w-3" /> Fee
                               </p>
-                              <p className="text-xs md:text-sm font-bold text-slate-700 dark:text-slate-300">{college.annualFee || "Contact for Fee"}</p>
+                              <p className="text-xs md:text-sm font-bold text-slate-700 dark:text-slate-300">{college.annual_fee || "Contact for Fee"}</p>
                             </div>
                             <div>
                               <p className="text-[8px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 flex items-center gap-1">
                                 <Trophy className="h-2 w-2 md:h-3 md:w-3" /> Package
                               </p>
-                              <p className="text-xs md:text-sm font-bold text-emerald-500">{college.avgPackage || "TBD"}</p>
+                              <p className="text-xs md:text-sm font-bold text-emerald-500">{college.avg_package || "TBD"}</p>
                             </div>
                           </div>
                         </CardContent>

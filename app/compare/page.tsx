@@ -25,12 +25,12 @@ import Link from "next/link"
 import Image from "next/image"
 
 const METRICS = [
-  { key: 'nirfRank', label: 'NIRF Rank', icon: <TrendingUp className="h-4 w-4" />, fmt: (v: any) => v ? `#${v}` : 'N/A' },
+  { key: 'nirf_rank', label: 'NIRF Rank', icon: <TrendingUp className="h-4 w-4" />, fmt: (v: any) => v ? `#${v}` : 'N/A' },
   { key: 'type', label: 'Institution Type', icon: <GraduationCap className="h-4 w-4" />, fmt: (v: any) => v },
   { key: 'state', label: 'Location / State', icon: <MapPin className="h-4 w-4" />, fmt: (v: any) => v },
-  { key: 'annualFee', label: 'Annual Fees', icon: <Banknote className="h-4 w-4" />, fmt: (v: any) => v ? `₹${v}` : 'N/A' },
-  { key: 'avgPackage', label: 'Avg Package', icon: <Briefcase className="h-4 w-4" />, fmt: (v: any) => v ? `₹${v}` : 'N/A' },
-  { key: 'highestPackage', label: 'Highest Pkg', icon: <TrendingUp className="h-4 w-4" />, fmt: (v: any) => v ? `₹${v}` : 'N/A' },
+  { key: 'annual_fee', label: 'Annual Fees', icon: <Banknote className="h-4 w-4" />, fmt: (v: any) => v ? `₹${v}` : 'N/A' },
+  { key: 'avg_package', label: 'Avg Package', icon: <Briefcase className="h-4 w-4" />, fmt: (v: any) => v ? `₹${v}` : 'N/A' },
+  { key: 'highest_package', label: 'Highest Pkg', icon: <TrendingUp className="h-4 w-4" />, fmt: (v: any) => v ? `₹${v}` : 'N/A' },
 ];
 
 export default function ComparePage() {
@@ -169,7 +169,7 @@ export default function ComparePage() {
                                        </button>
                                     </div>
                                     <Badge variant="outline" className="rounded-xl px-3 py-1 font-black text-[10px] bg-slate-50 dark:bg-slate-800 border-none">
-                                       {c.shortName} · {c.type}
+                                       {c.short_name || c.name.substring(0, 5)} · {c.type}
                                     </Badge>
                                  </div>
                               </th>
@@ -200,7 +200,7 @@ export default function ComparePage() {
                            </td>
                            {comparedColleges.map((c: any) => (
                               <td key={c.id} className="p-8">
-                                 <Link href={`/college/${c.id}`}>
+                                 <Link href={`/college/${c.college_id}`}>
                                     <Button className="w-full rounded-2xl font-black h-14 gap-2">
                                        View Details <ChevronRight className="h-4 w-4" />
                                     </Button>
