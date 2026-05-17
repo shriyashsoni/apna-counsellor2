@@ -1,9 +1,7 @@
-import { createServerClient } from '@supabase/ssr'
+import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function updateSession(request: NextRequest) {
-  const isApnaDomain = request.nextUrl.hostname.includes('apnacounsellor.in');
-
   // Force WWW redirect for canonical consistency
   if (request.nextUrl.hostname === 'apnacounsellor.in') {
     const url = request.nextUrl.clone()
@@ -17,51 +15,17 @@ export async function updateSession(request: NextRequest) {
     request.cookies.getAll().forEach((cookie) => {
       redirectResponse.cookies.set(cookie.name, cookie.value, {
         ...cookie,
-        domain: isApnaDomain ? '.apnacounsellor.in' : undefined,
       })
     })
     
     return redirectResponse
   }
 
-  let supabaseResponse = NextResponse.next({
+  const supabaseResponse = NextResponse.next({
     request,
   })
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll()
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => {
-            request.cookies.set(name, value)
-          })
-          supabaseResponse = NextResponse.next({
-            request,
-          })
-          cookiesToSet.forEach(({ name, value, options }) => {
-            // Apply a broader domain to cookies in production to prevent cross-subdomain issues
-            const cookieOptions = {
-              ...options,
-              domain: isApnaDomain ? '.apnacounsellor.in' : undefined,
-              path: '/',
-              sameSite: 'lax' as const,
-              secure: process.env.NODE_ENV === 'production',
-            }
-            supabaseResponse.cookies.set(name, value, cookieOptions)
-          })
-        },
-      },
-    }
-  )
-
-  // IMPORTANT: Avoid writing any logic between createServerClient and
-  // supabase.auth.getUser(). A simple mistake can make it very hard to debug
-  // issues with users being logged out.
+  const supabase = createMiddlewareClient({ req: request, res: supabaseResponse })
 
   const isAuthPage = request.nextUrl.pathname.startsWith('/login')
   const isAuthCallback = request.nextUrl.pathname.startsWith('/auth')
