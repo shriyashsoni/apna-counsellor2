@@ -2,6 +2,8 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function updateSession(request: NextRequest) {
+  const isApnaDomain = request.nextUrl.hostname.includes('apnacounsellor.in');
+
   // Force WWW redirect for canonical consistency
   if (request.nextUrl.hostname === 'apnacounsellor.in') {
     const url = request.nextUrl.clone()
@@ -15,7 +17,7 @@ export async function updateSession(request: NextRequest) {
     request.cookies.getAll().forEach((cookie) => {
       redirectResponse.cookies.set(cookie.name, cookie.value, {
         ...cookie,
-        domain: process.env.NODE_ENV === 'production' ? '.apnacounsellor.in' : undefined,
+        domain: isApnaDomain ? '.apnacounsellor.in' : undefined,
       })
     })
     
@@ -45,7 +47,7 @@ export async function updateSession(request: NextRequest) {
             // Apply a broader domain to cookies in production to prevent cross-subdomain issues
             const cookieOptions = {
               ...options,
-              domain: process.env.NODE_ENV === 'production' ? '.apnacounsellor.in' : undefined,
+              domain: isApnaDomain ? '.apnacounsellor.in' : undefined,
               path: '/',
               sameSite: 'lax' as const,
               secure: process.env.NODE_ENV === 'production',

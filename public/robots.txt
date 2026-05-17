@@ -4,15 +4,13 @@ Allow: /
 
 # *
 User-agent: *
-Disallow: /api/
-
-# *
-User-agent: *
-Disallow: /admin/
-
-# *
-User-agent: *
-Disallow: /dashboard/
+Disallow: /api/*
+Disallow: /admin/*
+Disallow: /dashboard/*
+Disallow: /onboarding/*
+Disallow: /pay/*
+Disallow: /settings/*
+Disallow: /auth/*
 
 # Host
 Host: https://www.apnacounsellor.in

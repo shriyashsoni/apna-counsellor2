@@ -1,8 +1,17 @@
 import { createServerClient } from '@supabase/ssr'
-import { cookies } from 'next/headers'
+import { cookies, headers } from 'next/headers'
 
 export function createClient() {
   const cookieStore = cookies()
+  
+  let isApnaDomain = false;
+  try {
+    const headersList = headers();
+    const host = headersList.get('host') || '';
+    isApnaDomain = host.includes('apnacounsellor.in');
+  } catch (e) {
+    // Ignore error if headers() is called outside request context
+  }
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -17,7 +26,7 @@ export function createClient() {
             cookiesToSet.forEach(({ name, value, options }) =>
               cookieStore.set(name, value, {
                 ...options,
-                domain: process.env.NODE_ENV === 'production' ? '.apnacounsellor.in' : undefined,
+                domain: isApnaDomain ? '.apnacounsellor.in' : undefined,
                 path: '/',
                 sameSite: 'lax',
                 secure: process.env.NODE_ENV === 'production',
