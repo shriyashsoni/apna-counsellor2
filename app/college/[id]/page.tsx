@@ -14,7 +14,12 @@ interface CollegePageProps {
 
 export async function generateMetadata({ params }: CollegePageProps): Promise<Metadata> {
   const supabase = await createClient();
-  const { data: college } = await supabase.from('colleges').select('*').eq('college_id', params.id).single();
+  const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(params.id);
+  const { data: college } = await supabase
+    .from('colleges')
+    .select('*')
+    .eq(isUUID ? 'id' : 'college_id', params.id)
+    .single();
 
   if (!college) {
     return {
@@ -52,7 +57,12 @@ export async function generateMetadata({ params }: CollegePageProps): Promise<Me
 
 export default async function CollegeDetailPage({ params }: CollegePageProps) {
   const supabase = await createClient();
-  const { data: college } = await supabase.from('colleges').select('*').eq('college_id', params.id).single();
+  const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(params.id);
+  const { data: college } = await supabase
+    .from('colleges')
+    .select('*')
+    .eq(isUUID ? 'id' : 'college_id', params.id)
+    .single();
 
   if (!college) {
     notFound();
@@ -84,7 +94,7 @@ export default async function CollegeDetailPage({ params }: CollegePageProps) {
 
       <div className="relative h-[65vh] min-h-[550px] w-full overflow-hidden">
         <Image 
-          src={college.image_url || '/images/college-placeholder.jpg'} 
+          src={college.image_url || '/images/real-college-preview.png'} 
           alt={college.name}
           fill
           className="object-cover scale-105"
@@ -99,7 +109,7 @@ export default async function CollegeDetailPage({ params }: CollegePageProps) {
                   RANK {college.nirf_rank || 'N/A'}
                 </div>
                 <div className="px-5 py-2 rounded-2xl bg-white/10 text-white text-xs font-black uppercase tracking-widest backdrop-blur-md border border-white/20">
-                  {college.type}
+                  {college.type || 'Higher Education'}
                 </div>
                 <div className="px-5 py-2 rounded-2xl bg-emerald-500 text-white text-xs font-black uppercase tracking-widest shadow-lg">
                   {college.tier || 'Standard'}
@@ -113,14 +123,14 @@ export default async function CollegeDetailPage({ params }: CollegePageProps) {
                   <div className="p-2 rounded-xl bg-blue-500/20 backdrop-blur-sm">
                     <svg className="w-6 h-6 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" /></svg>
                   </div>
-                  {college.city}, {college.state}
+                  {college.city && college.state ? `${college.city}, ${college.state}` : (college.city || college.state || 'India')}
                 </span>
                 <span className="hidden md:block w-3 h-3 rounded-full bg-white/30" />
                 <span className="flex items-center gap-3">
                   <div className="p-2 rounded-xl bg-purple-500/20 backdrop-blur-sm">
                     <svg className="w-6 h-6 text-purple-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 011.782 0l7.182-3.078a9.445 9.445 0 01.185 1.508 1 1 0 01-.815 1.12 7.488 7.488 0 00-3.646 1.354 1 1 0 01-1.314-.064 4.992 4.992 0 00-2.78-1.202 1 1 0 01-.884-.884 9.015 9.015 0 00-.136-1.398l-.209.09a3 3 0 01-2.36 0l-1.94-.831v3.957a9.027 9.027 0 002.3 1.638l.003.012a1 1 0 01.596.891 1 1 0 01-.596.891l-.003.012z" /></svg>
                   </div>
-                  Est. {college.established}
+                  {college.established ? `Est. ${college.established}` : 'Established Institute'}
                 </span>
               </div>
             </div>
@@ -133,8 +143,8 @@ export default async function CollegeDetailPage({ params }: CollegePageProps) {
           <div className="lg:col-span-8 space-y-16">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
-                { label: 'Avg Package', value: college.avg_package, color: 'text-emerald-600' },
-                { label: 'Annual Fee', value: college.annual_fee, color: 'text-blue-600' },
+                { label: 'Avg Package', value: college.avg_package || 'LPA TBD', color: 'text-emerald-600' },
+                { label: 'Annual Fee', value: college.annual_fee || 'TBD', color: 'text-blue-600' },
                 { label: 'AI Score', value: `${college.ai_score || 0}/100`, color: 'text-purple-600' },
                 { label: 'Placement', value: '85%+', color: 'text-orange-600' },
               ].map((stat, i) => (
@@ -149,7 +159,7 @@ export default async function CollegeDetailPage({ params }: CollegePageProps) {
               <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-8 tracking-tight">Institutional Profile</h2>
               <div className="prose prose-lg prose-slate dark:prose-invert max-w-none">
                 <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
-                  {college.description || `${college.name} represents a standard of excellence in ${college.type} within ${college.state}. As a ${college.tier} institution, it offers a blend of traditional academic rigor and modern industry-aligned training. The campus in ${college.city} is equipped with modern infrastructure including smart labs, extensive digital libraries, and innovation centers.`}
+                  {college.description || `${college.name} represents a standard of excellence in ${college.type || 'higher education'} within ${college.state || 'India'}. As a ${college.tier || 'standard'} institution, it offers a blend of traditional academic rigor and modern industry-aligned training. The campus in ${college.city || 'India'} is equipped with modern infrastructure including smart labs, extensive digital libraries, and innovation centers.`}
                 </p>
               </div>
             </section>
@@ -211,7 +221,7 @@ export default async function CollegeDetailPage({ params }: CollegePageProps) {
               <div className="space-y-4">
                 {[
                   { label: 'Download Brochure', value: 'WhatsApp Link', link: WHATSAPP_GROUP_LINK },
-                  { label: 'Admission Form', value: '2026 Apply', link: college.website },
+                  { label: 'Admission Form', value: '2026 Apply', link: college.website && college.website !== '#' ? college.website : WHATSAPP_GROUP_LINK },
                 ].map((item, i) => (
                   <Link key={i} href={item.link} target="_blank">
                     <div className="flex items-center justify-between p-4 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors border border-transparent hover:border-slate-100">
@@ -231,10 +241,10 @@ export default async function CollegeDetailPage({ params }: CollegePageProps) {
           <RelatedLinks 
             pageSlug="college-detail" 
             currentCollege={{
-              name: college.name,
-              state: college.state,
-              city: college.city,
-              type: college.type
+              name: college.name || 'This College',
+              state: college.state || 'India',
+              city: college.city || 'India',
+              type: college.type || 'Higher Education'
             }}
           />
         </div>
