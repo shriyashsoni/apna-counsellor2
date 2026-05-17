@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
+// The client you created from the Server-Side Auth instructions
+import { createClient } from '@/lib/supabase/server'
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
@@ -14,8 +14,7 @@ export async function GET(request: Request) {
   }
 
   if (code) {
-    const cookieStore = cookies()
-    const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
+    const supabase = createClient()
     const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
     
     if (!exchangeError) {
