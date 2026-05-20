@@ -1,5 +1,12 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
+import { createClient } from '@supabase/supabase-js';
+
+// Initialize Supabase Admin client using Service Role Key to safely write user data
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 
 export async function POST(request: Request) {
   try {
@@ -16,6 +23,26 @@ export async function POST(request: Request) {
       image: photoURL || null,
       id: uuid, // Mapped Supabase UUID
     };
+    
+    // Sync/Replicate user details directly inside public.profiles in Supabase
+    if (uuid) {
+      const { error: syncError } = await supabaseAdmin
+        .from('profiles')
+        .upsert({
+          id: uuid,
+          email: email,
+          name: sessionData.name,
+          image: sessionData.image,
+        }, { onConflict: 'id' });
+        
+      if (syncError) {
+        console.error('Failed to sync profile to database:', syncError);
+        // Note: We log the error but still proceed to set the session cookie 
+        // to avoid completely locking the user out if DB is temporarily slow.
+      } else {
+        console.log('Successfully synced/replicated user profile to database:', uuid);
+      }
+    }
     
     const cookieStore = cookies();
     
