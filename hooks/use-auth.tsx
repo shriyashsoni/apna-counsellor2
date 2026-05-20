@@ -1,8 +1,32 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { createClient } from "@/lib/supabase/client"
-import { User } from "@supabase/supabase-js"
+import { auth } from "@/lib/firebase"
+import { 
+  onAuthStateChanged, 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword, 
+  signOut as firebaseSignOut,
+  signInWithPopup,
+  GoogleAuthProvider,
+  updateProfile,
+  User as FirebaseUser
+} from "firebase/auth"
+import { firebaseUidToUuid } from "@/lib/auth-utils"
+
+export interface ExtendedUser {
+  id: string; // Deterministic Supabase UUID
+  uid: string; // Firebase UID
+  email: string | null;
+  name: string;
+  image: string | null;
+  user_metadata?: {
+    full_name?: string;
+    name?: string;
+    avatar_url?: string;
+    picture?: string;
+  };
+}
 
 interface AuthContextType {
   user: ExtendedUser | null;
@@ -18,72 +42,141 @@ export function useAuth(): AuthContextType & {
   login: (provider?: string) => Promise<void>;
   logout: () => Promise<void>;
 } {
-  const supabase = createClient()
   const [user, setUser] = useState<ExtendedUser | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  const mapUser = (supabaseUser: User | null): ExtendedUser | null => {
-    if (!supabaseUser) return null;
+  const mapUser = (firebaseUser: FirebaseUser | null): ExtendedUser | null => {
+    if (!firebaseUser) return null;
+    const uuid = firebaseUidToUuid(firebaseUser.uid);
+    const name = firebaseUser.displayName || firebaseUser.email?.split('@')[0] || "User";
+    const image = firebaseUser.photoURL;
     return {
-      ...supabaseUser,
-      name: supabaseUser.user_metadata?.full_name || supabaseUser.user_metadata?.name || supabaseUser.email?.split('@')[0],
-      image: supabaseUser.user_metadata?.avatar_url || supabaseUser.user_metadata?.picture,
+      id: uuid,
+      uid: firebaseUser.uid,
+      email: firebaseUser.email,
+      name,
+      image,
+      user_metadata: {
+        full_name: name,
+        name: name,
+        avatar_url: image || undefined,
+        picture: image || undefined
+      }
     };
   };
 
   useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(mapUser(session?.user ?? null))
-      setIsLoading(false)
-    })
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setUser(mapUser(session?.user ?? null))
-        setIsLoading(false)
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        const extendedUser = mapUser(firebaseUser);
+        setUser(extendedUser);
+        
+        // Sync with server session cookie
+        try {
+          await fetch("/api/auth/session", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              uid: firebaseUser.uid,
+              email: firebaseUser.email,
+              displayName: firebaseUser.displayName,
+              photoURL: firebaseUser.photoURL,
+              uuid: extendedUser?.id,
+            }),
+          });
+        } catch (err) {
+          console.error("Failed to sync session to server:", err);
+        }
+      } else {
+        setUser(null);
+        // Clear server session cookie
+        try {
+          await fetch("/api/auth/session", {
+            method: "DELETE",
+          });
+        } catch (err) {
+          console.error("Failed to clear server session:", err);
+        }
       }
-    )
+      setIsLoading(false);
+    });
 
-    return () => subscription.unsubscribe()
-  }, [supabase.auth])
+    return () => unsubscribe();
+  }, [])
 
-  const login = async (provider: any = "google") => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider,
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
-      },
-    })
-    if (error) throw error
-  }
+  const login = async (provider: string = "google") => {
+    setIsLoading(true);
+    try {
+      if (provider === "google") {
+        const googleProvider = new GoogleAuthProvider();
+        // Always ask to select account to avoid silent auto-logins with wrong account
+        googleProvider.setCustomParameters({ prompt: 'select_account' });
+        await signInWithPopup(auth, googleProvider);
+      } else {
+        throw new Error(`Unsupported provider: ${provider}`);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      throw error;
+    }
+  };
 
   const signInWithEmail = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
-    if (error) throw error
-  }
+    setIsLoading(true);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      setIsLoading(false);
+      throw error;
+    }
+  };
 
   const signUpWithEmail = async (email: string, password: string, name: string) => {
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          full_name: name,
-        },
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
-      },
-    })
-    if (error) throw error
-  }
+    setIsLoading(true);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      // Update display name
+      await updateProfile(userCredential.user, {
+        displayName: name,
+      });
+      
+      // Force trigger state sync with updated display name
+      const currentUser = auth.currentUser;
+      if (currentUser) {
+        const extendedUser = mapUser(currentUser);
+        setUser(extendedUser);
+        await fetch("/api/auth/session", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            uid: currentUser.uid,
+            email: currentUser.email,
+            displayName: name,
+            photoURL: currentUser.photoURL,
+            uuid: extendedUser?.id,
+          }),
+        });
+      }
+    } catch (error) {
+      setIsLoading(false);
+      throw error;
+    }
+  };
 
   const logout = async () => {
-    await supabase.auth.signOut()
-    window.location.href = '/'
-  }
+    setIsLoading(true);
+    try {
+      await firebaseSignOut(auth);
+      window.location.href = '/';
+    } catch (error) {
+      setIsLoading(false);
+      throw error;
+    }
+  };
 
   return {
     user,
@@ -97,7 +190,6 @@ export function useAuth(): AuthContextType & {
     isAuthenticated: !!user,
   };
 }
-
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
