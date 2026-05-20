@@ -69,9 +69,8 @@ export function useAuth(): AuthContextType & {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
         const extendedUser = mapUser(firebaseUser);
-        setUser(extendedUser);
         
-        // Sync with server session cookie
+        // Sync with server session cookie first before changing user state
         try {
           await fetch("/api/auth/session", {
             method: "POST",
@@ -89,9 +88,11 @@ export function useAuth(): AuthContextType & {
         } catch (err) {
           console.error("Failed to sync session to server:", err);
         }
+        
+        // Set user only after cookie has been successfully saved
+        setUser(extendedUser);
       } else {
-        setUser(null);
-        // Clear server session cookie
+        // Clear server session cookie first
         try {
           await fetch("/api/auth/session", {
             method: "DELETE",
@@ -99,6 +100,7 @@ export function useAuth(): AuthContextType & {
         } catch (err) {
           console.error("Failed to clear server session:", err);
         }
+        setUser(null);
       }
       setIsLoading(false);
     });
@@ -146,7 +148,7 @@ export function useAuth(): AuthContextType & {
       const currentUser = auth.currentUser;
       if (currentUser) {
         const extendedUser = mapUser(currentUser);
-        setUser(extendedUser);
+        // Sync session cookie first
         await fetch("/api/auth/session", {
           method: "POST",
           headers: {
@@ -160,6 +162,7 @@ export function useAuth(): AuthContextType & {
             uuid: extendedUser?.id,
           }),
         });
+        setUser(extendedUser);
       }
     } catch (error) {
       setIsLoading(false);
