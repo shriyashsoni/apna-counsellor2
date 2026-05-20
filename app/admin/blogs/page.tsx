@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
-import { FileText, ArrowLeft, Loader2, Tag, Eye } from "lucide-react"
+import { FileText, ArrowLeft, Loader2, Tag, Eye, Zap, CheckCircle } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -16,6 +16,24 @@ export default function AdminBlogsPage() {
   const router = useRouter()
   const supabase = createClient()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isTriggering, setIsTriggering] = useState(false)
+  const [agentTriggered, setAgentTriggered] = useState(false)
+
+  const handleTriggerAgent = async () => {
+    setIsTriggering(true)
+    setAgentTriggered(false)
+    try {
+      const res = await fetch("/api/admin/trigger-agent", { method: "POST" })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || "Failed to trigger")
+      setAgentTriggered(true)
+      toast.success("🤖 AI Agent triggered! Blogs will be published in ~5 minutes.")
+    } catch (err: any) {
+      toast.error(`Agent Error: ${err.message}`)
+    } finally {
+      setIsTriggering(false)
+    }
+  }
   const [tagInput, setTagInput] = useState("")
 
   const [form, setForm] = useState({
@@ -106,6 +124,25 @@ export default function AdminBlogsPage() {
           </div>
         </div>
         <div className="flex gap-3">
+          {/* AI Agent Trigger Button */}
+          <Button
+            onClick={handleTriggerAgent}
+            disabled={isTriggering || agentTriggered}
+            className={`rounded-xl h-11 px-5 font-black text-xs flex items-center gap-2 border transition-all ${
+              agentTriggered
+                ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400 cursor-default"
+                : "bg-purple-500/10 border-purple-500/30 text-purple-300 hover:bg-purple-500/20 shadow-[0_0_15px_rgba(168,85,247,0.15)]"
+            }`}
+          >
+            {isTriggering ? (
+              <Loader2 className="animate-spin h-4 w-4" />
+            ) : agentTriggered ? (
+              <CheckCircle className="h-4 w-4" />
+            ) : (
+              <Zap className="h-4 w-4" />
+            )}
+            {isTriggering ? "Triggering..." : agentTriggered ? "Agent Running!" : "Run AI Agent"}
+          </Button>
           <Button
             variant="ghost"
             onClick={() => setForm({ ...form, status: 'draft' })}
