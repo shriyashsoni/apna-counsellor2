@@ -24,35 +24,38 @@ export async function POST(request: Request) {
       id: uuid, // Mapped Supabase UUID
     };
     
-    // Sync/Replicate user details directly inside public.profiles in Supabase
-    if (uuid) {
+    // Sync Firebase user into public.profiles in Supabase
+    // Uses firebase_uid as the conflict key so the same Firebase user
+    // always maps to the same profile row, even across devices.
+    if (uuid && uid) {
       const { error: syncError } = await supabaseAdmin
         .from('profiles')
         .upsert({
           id: uuid,
+          firebase_uid: uid,          // store the raw Firebase UID
           email: email,
           name: sessionData.name,
-          image: sessionData.image,
+          avatar_url: photoURL || null, // correct column name
+          updated_at: new Date().toISOString(),
         }, { onConflict: 'id' });
         
       if (syncError) {
-        console.error('Failed to sync profile to database:', syncError);
-        // Note: We log the error but still proceed to set the session cookie 
-        // to avoid completely locking the user out if DB is temporarily slow.
+        console.error('Failed to sync profile to database:', syncError.message);
+        // Log but don't block login
       } else {
-        console.log('Successfully synced/replicated user profile to database:', uuid);
+        console.log('✅ Profile synced to Supabase:', uuid);
       }
     }
     
     const cookieStore = cookies();
     
-    // Set session cookie
+    // Set secure session cookie (1 week)
     cookieStore.set('apna_counsellor_session', JSON.stringify(sessionData), {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       path: '/',
-      maxAge: 60 * 60 * 24 * 7, // 1 week
+      maxAge: 60 * 60 * 24 * 7,
     });
     
     return NextResponse.json({ success: true, user: sessionData });
@@ -64,9 +67,6 @@ export async function POST(request: Request) {
 
 export async function DELETE() {
   const cookieStore = cookies();
-  
-  // Clear session cookie
   cookieStore.delete('apna_counsellor_session');
-  
   return NextResponse.json({ success: true });
 }
