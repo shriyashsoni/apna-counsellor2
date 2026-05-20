@@ -8,7 +8,7 @@ import { createClient } from "@/lib/supabase/client"
 import { motion, AnimatePresence } from "framer-motion"
 import { 
   LayoutDashboard, Rocket, UserCheck, FileText, Users, 
-  Bell, Settings, ShieldCheck, ChevronLeft, LogOut, Loader2, ShieldAlert
+  Bell, Settings, ShieldCheck, ChevronLeft, LogOut, ShieldAlert, Loader2
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -22,66 +22,45 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const supabase = createClient()
 
   useEffect(() => {
-    async function checkAdminCredentials() {
-      if (!user?.id) {
-        setIsAdmin(false)
-        return
-      }
-      try {
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('role')
-          .eq('id', user.id)
-          .single()
-        
-        if (data && data.role === 'admin') {
-          setIsAdmin(true)
-        } else {
-          setIsAdmin(false)
-        }
-      } catch (err) {
-        setIsAdmin(false)
-      }
+    async function checkAdmin() {
+      if (!user?.id) { setIsAdmin(false); return }
+      const { data } = await supabase.from('profiles').select('role').eq('id', user.id).single()
+      setIsAdmin(data?.role === 'admin')
     }
-    
     if (!authLoading) {
       if (!isAuthenticated) {
         setIsAdmin(false)
         router.push("/login?redirect=" + encodeURIComponent(pathname))
       } else {
-        checkAdminCredentials()
+        checkAdmin()
       }
     }
   }, [user, isAuthenticated, authLoading, pathname, router])
 
-  if (authLoading || isAdmin === null) {
-    return (
-      <div className="min-h-screen bg-[#080808] flex flex-col items-center justify-center text-white font-sans">
-        <div className="relative h-20 w-20 mb-6">
-          <div className="absolute inset-0 border-4 border-[#00FF88]/20 border-t-[#00FF88] rounded-full animate-spin" />
-          <ShieldCheck className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-8 w-8 text-[#00FF88] animate-pulse" />
-        </div>
-        <p className="text-xs font-black uppercase tracking-widest text-slate-400 animate-pulse">Authenticating Admin Command...</p>
+  if (authLoading || isAdmin === null) return (
+    <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center text-white">
+      <div className="relative h-16 w-16 mb-6">
+        <div className="absolute inset-0 border-4 border-purple-500/20 border-t-purple-500 rounded-full animate-spin" />
+        <ShieldCheck className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-7 w-7 text-purple-400 animate-pulse" />
       </div>
-    )
-  }
+      <p className="text-xs font-black uppercase tracking-widest text-slate-400 animate-pulse">Authenticating Admin Session...</p>
+    </div>
+  )
 
-  if (!isAdmin) {
-    return (
-      <div className="min-h-screen bg-[#080808] flex flex-col items-center justify-center text-white p-6 font-sans">
-        <div className="h-16 w-16 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-500 flex items-center justify-center mb-6 shadow-xl shadow-red-950/20">
-          <ShieldAlert className="h-8 w-8" />
-        </div>
-        <h1 className="text-2xl font-black mb-2 tracking-tight">Access Restricted</h1>
-        <p className="text-slate-400 text-sm font-medium text-center max-w-sm mb-8 leading-relaxed">
-          You do not have administration credentials to enter the Apna Counsellor Command Center.
-        </p>
-        <Button onClick={() => router.push("/")} className="rounded-xl h-12 bg-white text-black font-black hover:bg-slate-100 px-6">
-          Return to Homepage
-        </Button>
+  if (!isAdmin) return (
+    <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center text-white p-6">
+      <div className="h-16 w-16 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-400 flex items-center justify-center mb-6">
+        <ShieldAlert className="h-8 w-8" />
       </div>
-    )
-  }
+      <h1 className="text-2xl font-black mb-3 tracking-tight">Access Restricted</h1>
+      <p className="text-slate-400 text-sm text-center max-w-sm mb-8 leading-relaxed">
+        You do not have admin credentials to access the Apna Counsellor Command Center.
+      </p>
+      <Button onClick={() => router.push("/")} className="rounded-xl h-12 bg-white text-black font-black px-8 hover:bg-slate-100">
+        Return to Homepage
+      </Button>
+    </div>
+  )
 
   const menuItems = [
     { label: "Dashboard Overview", path: "/admin", icon: LayoutDashboard },
@@ -89,131 +68,111 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { label: "Mentor Manager", path: "/admin/mentors", icon: UserCheck },
     { label: "Blog Manager", path: "/admin/blogs", icon: FileText },
     { label: "Students Manager", path: "/admin/students", icon: Users },
-    { label: "Notifications & Broadcasts", path: "/admin/notifications", icon: Bell },
+    { label: "Notifications", path: "/admin/notifications", icon: Bell },
     { label: "Settings", path: "/admin/settings", icon: Settings },
   ]
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut()
-    router.push("/login")
-  }
-
   return (
-    <div className="min-h-screen bg-[#080808] text-slate-200 flex font-sans overflow-x-hidden">
-      {/* 1. COLLAPSIBLE SIDEBAR */}
+    <div className="min-h-screen bg-slate-950 text-slate-200 flex overflow-x-hidden">
+      {/* SIDEBAR */}
       <motion.aside
-        animate={{ width: isCollapsed ? 76 : 280 }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
-        className="fixed top-0 bottom-0 left-0 bg-[#0d0d0d] border-r border-white/5 flex flex-col z-30 select-none shadow-2xl"
+        animate={{ width: isCollapsed ? 72 : 260 }}
+        transition={{ duration: 0.25, ease: "easeInOut" }}
+        className="fixed top-0 bottom-0 left-0 bg-slate-900 border-r border-white/5 flex flex-col z-30 shadow-2xl overflow-hidden"
       >
-        {/* Sidebar Header */}
-        <div className="h-20 flex items-center justify-between px-6 border-b border-white/5">
-          <AnimatePresence mode="wait">
+        {/* Logo */}
+        <div className="h-16 flex items-center px-4 border-b border-white/5 flex-shrink-0">
+          <div className="h-9 w-9 rounded-xl bg-purple-600 flex items-center justify-center shadow-lg shadow-purple-500/20 flex-shrink-0">
+            <ShieldCheck className="h-5 w-5 text-white" />
+          </div>
+          <AnimatePresence>
             {!isCollapsed && (
-              <motion.div
-                initial={{ opacity: 0, x: -10 }}
+              <motion.span
+                initial={{ opacity: 0, x: -8 }}
                 animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -10 }}
-                className="flex items-center gap-3"
+                exit={{ opacity: 0, x: -8 }}
+                className="ml-3 font-black text-sm text-white tracking-tight whitespace-nowrap"
               >
-                <div className="h-9 w-9 rounded-xl bg-[#00FF88]/10 border border-[#00FF88]/20 flex items-center justify-center">
-                  <ShieldCheck className="h-5 w-5 text-[#00FF88]" />
-                </div>
-                <span className="font-black text-sm tracking-tight uppercase leading-none">
-                  Apna <br /><span className="text-[#00FF88]">Command</span>
-                </span>
-              </motion.div>
+                Admin <span className="text-purple-400">Command</span>
+              </motion.span>
             )}
           </AnimatePresence>
-
-          {isCollapsed && (
-            <div className="h-9 w-9 mx-auto rounded-xl bg-[#00FF88]/10 border border-[#00FF88]/20 flex items-center justify-center">
-              <ShieldCheck className="h-5 w-5 text-[#00FF88]" />
-            </div>
-          )}
         </div>
 
-        {/* Navigation Items */}
-        <nav className="flex-1 py-8 px-3 space-y-1.5 overflow-y-auto pr-2">
-          {menuItems.map((item) => {
-            const active = pathname === item.path
+        {/* Nav Items */}
+        <nav className="flex-1 py-4 px-2 space-y-1 overflow-y-auto overflow-x-hidden">
+          {menuItems.map(item => {
+            const active = pathname === item.path || (item.path !== '/admin' && pathname.startsWith(item.path))
             return (
-              <Link key={item.label} href={item.path} className="block">
-                <div
-                  className={`relative flex items-center gap-4 px-4 py-3.5 rounded-xl cursor-pointer transition-all ${
-                    active 
-                    ? "bg-[#00FF88]/10 text-white font-black border border-[#00FF88]/20" 
-                    : "text-slate-400 hover:text-white hover:bg-white/5 font-semibold"
-                  }`}
-                >
-                  {/* Glowing active notch */}
+              <Link key={item.path} href={item.path}>
+                <div className={`relative flex items-center gap-3 px-3 py-3 rounded-xl cursor-pointer transition-all group ${
+                  active ? "bg-purple-600 text-white shadow-lg shadow-purple-500/20" : "text-slate-400 hover:text-white hover:bg-white/5"
+                }`}>
                   {active && (
-                    <motion.div
-                      layoutId="activeIndicator"
-                      className="absolute left-0 top-3 bottom-3 w-1 bg-[#00FF88] rounded-r-md shadow-[0_0_10px_#00FF88]"
+                    <motion.div layoutId="activeBar"
+                      className="absolute left-0 top-2 bottom-2 w-1 bg-purple-300 rounded-r-full"
                     />
                   )}
-                  <item.icon className={`h-5 w-5 flex-shrink-0 ${active ? 'text-[#00FF88]' : 'text-slate-400'}`} />
-                  
-                  {!isCollapsed && (
-                    <motion.span
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="text-xs tracking-tight"
-                    >
-                      {item.label}
-                    </motion.span>
-                  )}
+                  <item.icon className={`h-5 w-5 flex-shrink-0 ${active ? 'text-white' : 'text-slate-500 group-hover:text-slate-300'}`} />
+                  <AnimatePresence>
+                    {!isCollapsed && (
+                      <motion.span
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="text-xs font-bold truncate"
+                      >
+                        {item.label}
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
                 </div>
               </Link>
             )
           })}
         </nav>
 
-        {/* Collapsible Trigger at Footer */}
-        <div className="p-4 border-t border-white/5 space-y-2">
-          <Button
-            variant="ghost"
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            className="w-full h-11 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center p-0"
+        {/* Footer */}
+        <div className="p-2 border-t border-white/5 space-y-1 flex-shrink-0">
+          <Button variant="ghost" onClick={() => setIsCollapsed(!isCollapsed)}
+            className="w-full h-10 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white p-0 flex items-center justify-center"
           >
-            <ChevronLeft className={`h-5 w-5 transition-transform duration-300 ${isCollapsed ? 'rotate-180' : ''}`} />
+            <ChevronLeft className={`h-4 w-4 transition-transform duration-300 ${isCollapsed ? 'rotate-180' : ''}`} />
           </Button>
-          <Button
-            variant="ghost"
-            onClick={handleLogout}
-            className="w-full h-11 rounded-xl hover:bg-red-500/10 text-slate-400 hover:text-red-500 flex items-center justify-center gap-3"
+          <Button variant="ghost" onClick={async () => { await supabase.auth.signOut(); router.push("/login") }}
+            className="w-full h-10 rounded-xl hover:bg-red-500/10 text-slate-400 hover:text-red-400 flex items-center justify-center gap-2"
           >
-            <LogOut className="h-5 w-5 flex-shrink-0" />
-            {!isCollapsed && <span className="text-xs font-black uppercase">Sign Out</span>}
+            <LogOut className="h-4 w-4 flex-shrink-0" />
+            {!isCollapsed && <span className="text-[10px] font-black uppercase">Sign Out</span>}
           </Button>
         </div>
       </motion.aside>
 
-      {/* 2. MAIN WORKSPACE CONTAINER */}
-      <div 
-        className="flex-1 min-h-screen flex flex-col transition-all duration-300"
-        style={{ marginLeft: isCollapsed ? 76 : 280 }}
-      >
-        {/* Topbar navigation panel */}
-        <header className="h-20 border-b border-white/5 px-8 bg-[#0c0c0c]/85 backdrop-blur-xl flex items-center justify-between sticky top-0 z-20">
+      {/* MAIN AREA */}
+      <div className="flex-1 flex flex-col transition-all duration-300" style={{ marginLeft: isCollapsed ? 72 : 260 }}>
+        {/* Topbar */}
+        <header className="h-16 border-b border-white/5 px-6 bg-slate-900/80 backdrop-blur-xl flex items-center justify-between sticky top-0 z-20">
           <div>
-            <h2 className="text-xs font-black uppercase tracking-widest text-[#00FF88]">Apna Counsellor V2</h2>
-            <p className="text-[10px] font-bold text-slate-500 uppercase mt-0.5">Global Command Node</p>
+            <h2 className="text-xs font-black uppercase tracking-widest text-purple-400">Apna Counsellor</h2>
+            <p className="text-[10px] font-bold text-slate-500 uppercase mt-0.5">Admin Control Panel</p>
           </div>
-
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
+            <Link href="/" target="_blank">
+              <Button variant="ghost" className="h-9 rounded-lg text-slate-400 hover:text-white text-xs font-bold border border-white/5 hover:border-white/10 px-3">
+                View Site ↗
+              </Button>
+            </Link>
             <Avatar className="h-9 w-9 rounded-xl border border-white/10">
               <AvatarImage src={user?.user_metadata?.avatar_url} />
-              <AvatarFallback className="bg-purple-900/40 text-purple-400 font-bold text-xs uppercase">
-                {user?.email?.charAt(0)}
+              <AvatarFallback className="bg-purple-900/40 text-purple-400 font-bold text-xs rounded-xl">
+                {user?.email?.charAt(0)?.toUpperCase()}
               </AvatarFallback>
             </Avatar>
           </div>
         </header>
 
-        {/* Scrollable Workpane */}
-        <main className="flex-1 p-8 overflow-y-auto">
+        {/* Page Content */}
+        <main className="flex-1 p-6 overflow-y-auto">
           <div className="max-w-7xl mx-auto">
             {children}
           </div>
