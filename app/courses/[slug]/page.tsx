@@ -272,7 +272,7 @@ export default function CourseDetailsPage() {
       <section className="py-24 bg-white/5 border-y border-white/5">
         <div className="container mx-auto px-4 max-w-6xl space-y-16">
           <div className="text-center space-y-4">
-            <h2 className="text-3xl sm:text-5xl font-black tracking-tight">Our Legendary 2024 & 2025 Outcomes</h2>
+            <h2 className="text-3xl sm:text-5xl font-black tracking-tight">Our Legendary 2024 & 2026 Outcomes</h2>
             <p className="text-slate-400 font-semibold max-w-2xl mx-auto">
               Real success stories of students who trusted Apna Counsellor and secured seats in premium IITs, NITs, and Government Engineering Colleges.
             </p>
@@ -295,7 +295,7 @@ export default function CourseDetailsPage() {
               },
               {
                 title: "COEP Pune Admission",
-                batch: "Batch 2025 Early Launch",
+                batch: "Batch 2026 Early Launch",
                 description: "Successful student verification map and round tracking unlocked institutional allocation smoothly.",
                 bg: "from-emerald-600 to-teal-600"
               }

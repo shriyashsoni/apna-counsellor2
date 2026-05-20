@@ -23,10 +23,10 @@ export const metadata: Metadata = {
   description:
     "Empowering students to secure seats in India's top colleges. Expert guidance for MHT-CET, JEE, NEET, and MBA admissions with AI-driven predictors and personalized mentorship.",
   keywords: [
-    "Apna Counsellor", "college admission guide India", "MHT CET counseling 2025", 
-    "JoSAA cutoff 2025", "NEET UG admission", "MBA college predictor", 
+    "Apna Counsellor", "college admission guide India", "MHT CET counseling 2026", 
+    "JoSAA cutoff 2026", "NEET UG admission", "MBA college predictor", 
     "engineering admission expert", "CAP rounds help", "top colleges in India",
-    "college comparison", "rank predictor 2025"
+    "college comparison", "rank predictor 2026"
   ],
   metadataBase: new URL('https://www.apnacounsellor.in'),
   alternates: {

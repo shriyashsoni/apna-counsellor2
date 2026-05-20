@@ -48,7 +48,7 @@ export default function CoursesClientPage() {
             <Sparkles className="h-4 w-4" /> Live Admission Courses
           </div>
           <h1 className="text-4xl md:text-6xl font-black tracking-tight text-slate-900 dark:text-white leading-none">
-            Counselling & <br/><span className="text-purple-600">Admission Programs</span> 2025
+            Counselling & <br/><span className="text-purple-600">Admission Programs</span> 2026
           </h1>
           <p className="text-lg max-w-3xl mx-auto text-slate-500 dark:text-slate-400 font-medium">
             Personalized, data-driven programs to guide you step-by-step through engineering, MBA, and NEET counselling.
