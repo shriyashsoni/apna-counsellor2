@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { 
   Rocket, ArrowLeft, ArrowRight, Check, Sparkles, BookOpen, 
-  HelpCircle, Settings, Image as ImageIcon, Video, Search, FileText, ChevronDown, Trash2
+  HelpCircle, Settings, Image as ImageIcon, Video, Search, FileText, ChevronDown, Trash2, Loader2
 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
