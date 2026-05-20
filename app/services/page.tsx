@@ -2,7 +2,7 @@ import CoursesClientPage from "../courses/CoursesClientPage"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Counselling Support Courses 2026 – Apna Counsellor",
+  title: "Counselling Support Courses – Apna Counsellor",
   description:
     "Discover affordable, expert-led courses to master college admissions – MHT CET, JEE, MP DTE, COMEDK and more. Learn to choose wisely & apply smartly.",
   keywords:
