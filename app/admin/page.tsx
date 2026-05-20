@@ -12,9 +12,9 @@ import {
   ExternalLink, ArrowLeft, Image as ImageIcon, Video, Trash2, Save, Eye,
   Type, List, Calendar, Tag, Shield, PieChart, Briefcase, GraduationCap, Bell,
   FilePlus, ClipboardList, Monitor, Star, Clock, Zap, MapPin, Mail, CreditCard,
-  Share2, MousePointer2, Smartphone, MonitorIcon
+  Share2, MousePointer2, Smartphone, MonitorIcon, Edit, Trash
 } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
@@ -29,7 +29,7 @@ import Image from "next/image"
 import { approveMentorAction, suspendMentorAction, deleteMentorAction, toggleMentorVisibilityAction, createBroadcastNotificationAction } from "@/lib/actions/admin"
 import { sendBroadCastEmail } from "@/lib/actions/emails"
 
-type EditorView = 'dashboard' | 'course-creator' | 'blog-creator' | 'test-creator' | 'roi-manager' | 'notification-center' | 'identity-manager';
+type EditorView = 'dashboard' | 'course-creator' | 'blog-creator' | 'test-creator' | 'roi-manager' | 'notification-center' | 'identity-manager' | 'resource-manager';
 
 export default function AdminDashboard() {
   const { user, isLoading: authLoading, isAuthenticated } = useAuth()
@@ -52,6 +52,10 @@ export default function AdminDashboard() {
   const [enrollments, setEnrollments] = useState<any[]>([])
   const [auditLogs, setAuditLogs] = useState<any[]>([])
   
+  // Selected course for adding/editing resources
+  const [selectedCourse, setSelectedCourse] = useState<any>(null)
+  const [newResource, setNewResource] = useState({ title: '', type: 'video', url: '' })
+
   const [stats, setStats] = useState<any>({
     users: 0, mentors: 0, colleges: 0, revenue: 0, sessions: 0, pendingMentors: 0
   })
@@ -164,6 +168,7 @@ export default function AdminDashboard() {
         duration_hours: Number(courseForm.duration) || 0,
         total_lessons: Number(courseForm.lessons) || 0,
         curriculum: courseForm.modules,
+        resources: [],
         slug: courseForm.title.toLowerCase().replace(/[^a-zA-Z0-9]+/g, '-'),
         is_published: true
       }).select().single()
@@ -181,6 +186,32 @@ export default function AdminDashboard() {
       fetchData()
     } catch (e: any) { toast.error(e.message) }
     finally { setIsSubmitting(false) }
+  }
+
+  const handleUpdateResources = async () => {
+    if (!selectedCourse) return
+    setIsSubmitting(true)
+    try {
+      const { error } = await supabase
+        .from('courses')
+        .update({ resources: selectedCourse.resources || [] })
+        .eq('id', selectedCourse.id)
+      
+      if (error) throw error
+
+      await supabase.from('course_audit_logs').insert({
+        action: 'course_updated',
+        details: `Admin upgraded learning resources for Course: "${selectedCourse.title}"`
+      })
+
+      toast.success("Course resources updated successfully!")
+      setView('dashboard')
+      fetchData()
+    } catch (e: any) {
+      toast.error(e.message)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleCreateBlog = async () => {
@@ -707,6 +738,111 @@ export default function AdminDashboard() {
      </div>
   )
 
+  const RenderResourceManager = () => {
+    if (!selectedCourse) return null
+    
+    const resourcesList = selectedCourse.resources || []
+    
+    const addResourceItem = () => {
+      if (!newResource.title || !newResource.url) return toast.error("Missing fields")
+      const updated = [...resourcesList, { ...newResource, id: Math.random().toString(36).substr(2, 9) }]
+      setSelectedCourse({ ...selectedCourse, resources: updated })
+      setNewResource({ title: '', type: 'video', url: '' })
+      toast.success("Resource item staged!")
+    }
+
+    const removeResourceItem = (id: string) => {
+      const filtered = resourcesList.filter((r: any) => r.id !== id)
+      setSelectedCourse({ ...selectedCourse, resources: filtered })
+      toast.success("Resource staged for removal!")
+    }
+
+    return (
+      <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-500">
+        <header className="flex justify-between items-center bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm sticky top-6 z-20">
+           <div className="flex items-center gap-4">
+              <Button variant="ghost" size="icon" onClick={() => setView('dashboard')} className="rounded-full bg-slate-50 h-10 w-10"><ArrowLeft className="h-4 w-4" /></Button>
+              <div>
+                <h1 className="text-xl font-black tracking-tighter">Upgrade Course Content</h1>
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{selectedCourse.title}</p>
+              </div>
+           </div>
+           <Button onClick={handleUpdateResources} disabled={isSubmitting} className="rounded-xl px-8 h-12 font-black text-xs bg-purple-600 text-white shadow-lg shadow-purple-100 hover:scale-105 transition-all">
+              {isSubmitting ? <Loader2 className="animate-spin h-4 w-4" /> : "Deploy Upgrade Live"}
+           </Button>
+        </header>
+
+        <div className="grid md:grid-cols-12 gap-8">
+          <div className="md:col-span-7 space-y-6">
+            <Card className="p-8 rounded-[2.5rem] border-slate-100 shadow-sm">
+              <h3 className="text-lg font-black text-slate-900 mb-6">Stage New Learning Material</h3>
+              <div className="space-y-4">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-black uppercase text-slate-400">Resource Title</label>
+                  <Input placeholder="e.g. choice filing workbook pdf" value={newResource.title} onChange={e => setNewResource({ ...newResource, title: e.target.value })} className="h-12 rounded-xl" />
+                </div>
+                
+                <div className="space-y-1">
+                  <label className="text-[10px] font-black uppercase text-slate-400">Resource Category</label>
+                  <Select value={newResource.type} onValueChange={v => setNewResource({ ...newResource, type: v })}>
+                    <SelectTrigger className="h-12 rounded-xl font-bold">
+                       <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                       <SelectItem value="video">Video Lecture (YouTube/Vimeo Embed)</SelectItem>
+                       <SelectItem value="pdf">Syllabus PDF / Solutions Docs</SelectItem>
+                       <SelectItem value="link">Interactive Tool / Action Link</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[10px] font-black uppercase text-slate-400">Content URL / Link</label>
+                  <Input placeholder="https://..." value={newResource.url} onChange={e => setNewResource({ ...newResource, url: e.target.value })} className="h-12 rounded-xl" />
+                </div>
+
+                <Button onClick={addResourceItem} className="w-full h-12 rounded-xl bg-slate-900 text-white font-black hover:bg-slate-800 mt-4">+ Add Resource to Course</Button>
+              </div>
+            </Card>
+          </div>
+
+          <div className="md:col-span-5 space-y-6">
+            <Card className="p-8 rounded-[2.5rem] border-slate-100 shadow-sm space-y-6">
+              <h3 className="text-lg font-black text-slate-900">Current Course Assets ({resourcesList.length})</h3>
+              
+              <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                {resourcesList.map((r: any) => (
+                  <div key={r.id} className="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-between gap-4">
+                    <div className="flex items-center gap-3">
+                      <div className={`h-8 w-8 rounded-lg flex items-center justify-center ${
+                        r.type === 'video' ? 'bg-red-50 text-red-500' :
+                        r.type === 'pdf' ? 'bg-blue-50 text-blue-500' : 'bg-purple-50 text-purple-500'
+                      }`}>
+                        {r.type === 'video' ? <Video className="h-4 w-4" /> :
+                         r.type === 'pdf' ? <FileText className="h-4 w-4" /> : <ExternalLink className="h-4 w-4" />}
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-slate-800 line-clamp-1">{r.title}</p>
+                        <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{r.type}</p>
+                      </div>
+                    </div>
+                    <Button variant="ghost" size="icon" onClick={() => removeResourceItem(r.id)} className="h-8 w-8 text-red-500 hover:bg-red-50 rounded-lg">
+                      <Trash className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ))}
+
+                {resourcesList.length === 0 && (
+                  <div className="text-center py-10 text-slate-400 font-bold italic">No videos, PDFs or solutions added yet.</div>
+                )}
+              </div>
+            </Card>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   const RenderCoursesHub = () => (
     <div className="space-y-12 animate-in fade-in duration-500">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
@@ -752,13 +888,14 @@ export default function AdminDashboard() {
                     <p className="text-sm font-black text-slate-800">{c.total_lessons || 0}</p>
                   </div>
                   <div>
-                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Hours</p>
-                    <p className="text-sm font-black text-slate-800">{c.duration_hours || 0}</p>
+                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Assets</p>
+                    <p className="text-sm font-black text-emerald-600">{(c.resources || []).length}</p>
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <Button variant="outline" className="flex-1 rounded-xl h-10 font-black text-[10px] uppercase border-slate-100">Edit</Button>
-                  <Button variant="ghost" className="rounded-xl h-10 px-3 text-red-500 hover:bg-red-50 font-black text-[10px] uppercase">Archive</Button>
+                  <Button onClick={() => { setSelectedCourse(c); setView('resource-manager'); }} className="flex-grow rounded-xl h-10 font-black text-[10px] bg-slate-50 hover:bg-slate-100 text-slate-800 border-none uppercase flex items-center justify-center gap-1.5">
+                    <Plus className="h-3.5 w-3.5" /> Content Resources
+                  </Button>
                 </div>
               </Card>
             ))}
@@ -1032,7 +1169,8 @@ export default function AdminDashboard() {
 
   if (view === 'blog-creator') return <div className="bg-slate-50 min-h-screen p-6 md:p-12"><RenderBlogCreator /></div>
   if (view === 'course-creator') return <div className="bg-slate-50 min-h-screen p-6 md:p-12"><RenderCourseCreator /></div>
-  if (view === 'notification-center') return <div className="bg-slate-50 min-h-screen p-6 md:p-12"><div className="flex items-center gap-4 mb-12"><Button variant="ghost" size="icon" onClick={() => setView('dashboard')} className="rounded-full bg-white h-12 w-12 shadow-sm"><ArrowLeft /></Button><h1 className="text-3xl font-black tracking-tighter">Communications Center</h1></div><RenderNotificationHub /></div>
+  if (view === 'resource-manager') return <div className="bg-slate-50 min-h-screen p-6 md:p-12"><RenderResourceManager /></div>
+  if (view === 'notification-center') return <div className="bg-slate-50 min-h-screen p-6 md:p-12"><div className="flex items-center gap-4 mb-12"><Button variant="ghost" size="icon" onClick={() => setView('dashboard')} className="rounded-full bg-white h-12 w-12 shadow-sm"><ArrowLeft className="h-4 w-4" /></Button><h1 className="text-3xl font-black tracking-tighter">Communications Center</h1></div><RenderNotificationHub /></div>
 
   return (
     <div className="min-h-screen bg-slate-50 text-black font-sans flex flex-col lg:flex-row">

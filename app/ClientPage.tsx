@@ -96,9 +96,9 @@ export default function Home() {
         <CounsellingPlatforms />
 
         <div className="text-center mt-8">
-          <Link href="/services">
+          <Link href="/courses">
             <Button size="lg" className="animated-gradient text-white hover:text-white">
-              View All Services
+              View All Courses
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </Link>

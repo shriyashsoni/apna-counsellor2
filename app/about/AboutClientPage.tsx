@@ -149,9 +149,9 @@ export default function AboutClientPage() {
               </Button>
             </Link>
 
-            <Link href="/services">
+            <Link href="/courses">
               <Button variant="outline">
-                Explore Our Services
+                Explore Our Courses
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>

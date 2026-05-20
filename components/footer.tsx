@@ -54,8 +54,8 @@ const Footer = () => {
         { name: "NIT Surathkal Mentors", href: "/mentors" },
         { name: "Medical Expert Guidance", href: "/mentors" },
         { name: "One-on-One Counseling", href: "/mentorship" },
-        { name: "Premium Choice Filling", href: "/services" },
-        { name: "Documentation Support", href: "/services" },
+        { name: "Premium Choice Filling", href: "/courses" },
+        { name: "Documentation Support", href: "/courses" },
         { name: "Success Stories", href: "/about" },
         { name: "Verify Mentor", href: "/mentors" },
       ]

@@ -15,10 +15,12 @@ CREATE TABLE IF NOT EXISTS public.courses (
     duration_hours DECIMAL(5, 2) DEFAULT 0,
     total_lessons INTEGER DEFAULT 0,
     curriculum JSONB DEFAULT '[]'::jsonb,
+    resources JSONB DEFAULT '[]'::jsonb,
     slug TEXT UNIQUE,
     is_published BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
 
 -- 2. Course Enrollments Table
 CREATE TABLE IF NOT EXISTS public.course_enrollments (

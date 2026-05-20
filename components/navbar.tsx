@@ -40,7 +40,7 @@ const Navbar = ({ categorizedCounselling }: NavbarProps) => {
   const navItems = [
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
-    { name: "Services", path: "/services" },
+    { name: "Courses", path: "/courses" },
     {
       name: "Counselling",
       path: "/counselling",

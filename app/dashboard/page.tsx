@@ -209,6 +209,8 @@ function StudentDashboard({ profile, user }: { profile: any, user: any }) {
   const [subscription, setSubscription] = useState<any>(null)
   const [sessions, setSessions] = useState<any[]>([])
   const [mentors, setMentors] = useState<any[]>([])
+  const [enrolledCourses, setEnrolledCourses] = useState<any[]>([])
+  const [classroomCourse, setClassroomCourse] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [selectedSession, setSelectedSession] = useState<any>(null)
   const supabase = createClient()
@@ -217,16 +219,18 @@ function StudentDashboard({ profile, user }: { profile: any, user: any }) {
     async function fetchData() {
       setIsLoading(true)
       try {
-        const [subRes, sessRes, mentorRes] = await Promise.all([
+        const [subRes, sessRes, mentorRes, coursesRes] = await Promise.all([
           supabase.from('payments').select('*').eq('user_id', user.id).eq('status', 'captured'),
           supabase.from('sessions').select('*').eq('student_id', user.id).order('date', { ascending: true }),
-          supabase.from('profiles').select('*').eq('role', 'mentor').eq('is_visible', true).limit(4)
+          supabase.from('profiles').select('*').eq('role', 'mentor').eq('is_visible', true).limit(4),
+          supabase.from('course_enrollments').select('*, courses(*)').eq('student_id', user.id).eq('status', 'active')
         ])
         
         // Use the most recent successful payment as subscription indicator
         setSubscription(subRes.data && subRes.data.length > 0 ? subRes.data[0] : null)
         setSessions(sessRes.data || [])
         setMentors(mentorRes.data || [])
+        setEnrolledCourses(coursesRes.data || [])
       } catch (err) {
         console.error("Dashboard fetch error:", err)
       } finally {
@@ -236,7 +240,7 @@ function StudentDashboard({ profile, user }: { profile: any, user: any }) {
     fetchData()
   }, [user.id])
 
-  const isPro = !!subscription;
+  const isPro = !!subscription || enrolledCourses.length > 0;
 
   const getRecommendedPortals = () => {
     const portals = []
@@ -254,6 +258,84 @@ function StudentDashboard({ profile, user }: { profile: any, user: any }) {
       portals.push({ id: "JEE-Main", name: "JEE Main Portal", desc: "Exam registration & results", icon: "J", color: "blue" })
     }
     return portals.slice(0, 4)
+  }
+
+  // Classroom Interactive Content Panel
+  if (classroomCourse) {
+    const course = classroomCourse.courses
+    const resources = course.resources || []
+    
+    return (
+      <div className="space-y-8 animate-in fade-in duration-500 pb-12">
+        <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-100 dark:border-slate-800 shadow-sm gap-4">
+          <div className="flex items-center gap-4">
+             <Button variant="ghost" size="icon" onClick={() => setClassroomCourse(null)} className="rounded-full bg-slate-50 dark:bg-slate-800 h-10 w-10">
+               <ArrowLeft className="h-4 w-4" />
+             </Button>
+             <div>
+               <h1 className="text-xl md:text-2xl font-black tracking-tight text-slate-900 dark:text-white">{course.title}</h1>
+               <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Active Study Portal</p>
+             </div>
+          </div>
+          <Badge className="bg-purple-900/40 text-purple-400 border border-purple-500/20 font-black text-[9px] uppercase tracking-wider px-3 py-1">ENROLLED</Badge>
+        </header>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          <div className="lg:col-span-8 space-y-8">
+            <Card className="p-8 rounded-[2.5rem] bg-white dark:bg-slate-900 border-none shadow-sm">
+              <h3 className="text-xl font-black text-slate-900 dark:text-white mb-4">Course Highlights & Syllabus</h3>
+              <p className="text-sm font-semibold text-slate-500 dark:text-slate-400 leading-relaxed mb-6">
+                {course.description || "Learn preference strategies and choose your colleges with precision using our structured lectures."}
+              </p>
+              
+              <div className="space-y-4">
+                {Array.isArray(course.curriculum) && course.curriculum.map((m: any, i: number) => (
+                  <div key={i} className="p-6 bg-slate-50 dark:bg-slate-800/40 rounded-2xl border border-slate-100 dark:border-slate-800">
+                    <h4 className="font-bold text-slate-900 dark:text-white mb-2">{m.title}</h4>
+                    <p className="text-xs text-slate-400 font-semibold">Structured learning modules detailing step-by-step admissions logic.</p>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          </div>
+
+          <div className="lg:col-span-4 space-y-8">
+            <Card className="p-8 rounded-[2.5rem] bg-white dark:bg-slate-900 border-none shadow-sm space-y-6">
+              <h3 className="text-lg font-black text-slate-900 dark:text-white">Uploaded Lectures & Resources</h3>
+              
+              <div className="space-y-3">
+                {resources.map((r: any) => (
+                  <a key={r.id || r.title} href={r.url} target="_blank" rel="noopener noreferrer" className="block p-4 bg-slate-50 dark:bg-slate-800/50 hover:bg-purple-50 dark:hover:bg-purple-950/20 hover:border-purple-300 rounded-2xl border border-slate-100 dark:border-slate-800 transition-all group">
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="flex items-center gap-3">
+                        <div className={`h-8 w-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                          r.type === 'video' ? 'bg-red-50 text-red-500' :
+                          r.type === 'pdf' ? 'bg-blue-50 text-blue-500' : 'bg-purple-50 text-purple-500'
+                        }`}>
+                          {r.type === 'video' ? <Video className="h-4 w-4" /> :
+                           r.type === 'pdf' ? <FileText className="h-4 w-4" /> : <ExternalLink className="h-4 w-4" />}
+                        </div>
+                        <div className="text-left">
+                          <p className="text-xs font-bold text-slate-800 dark:text-slate-200 line-clamp-1 group-hover:text-purple-600 transition-colors">{r.title}</p>
+                          <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{r.type}</p>
+                        </div>
+                      </div>
+                      <ChevronRight className="h-4 w-4 text-slate-300 group-hover:text-purple-600 group-hover:translate-x-1 transition-all" />
+                    </div>
+                  </a>
+                ))}
+
+                {resources.length === 0 && (
+                  <div className="text-center py-10 text-slate-400 font-bold italic">
+                    No videos, PDFs or solutions uploaded yet. Check back soon!
+                  </div>
+                )}
+              </div>
+            </Card>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -274,14 +356,46 @@ function StudentDashboard({ profile, user }: { profile: any, user: any }) {
             <p className="text-slate-400 font-medium text-lg leading-relaxed mb-10 max-w-xl">
               Unlock **100+ predictors**, real-time round alerts, and priority 1-on-1 mentorship. Don&apos;t leave your future to chance.
             </p>
-            <Link href="/pricing">
+            <Link href="/courses">
               <Button className="rounded-2xl h-16 px-10 font-black text-lg shadow-2xl shadow-primary/40 bg-primary hover:bg-primary/90 transition-all hover:scale-105 active:scale-95">
-                Upgrade to Pro
+                Explore Admissions Courses
                 <Zap className="ml-2 h-5 w-5 fill-current" />
               </Button>
             </Link>
           </div>
         </motion.div>
+      )}
+
+      {/* Subscribed Courses Section */}
+      {enrolledCourses.length > 0 && (
+        <section className="space-y-6">
+          <div className="flex items-center gap-3 px-2">
+            <div className="h-10 w-10 rounded-2xl bg-purple-500/10 flex items-center justify-center text-purple-500 shadow-sm">
+              <Rocket className="h-6 w-6" />
+            </div>
+            <h2 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white">Your Enrolled Programs</h2>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {enrolledCourses.map((ec: any) => (
+              <Card key={ec.id} className="border-none rounded-[3rem] shadow-sm bg-white dark:bg-slate-900 group hover:shadow-2xl hover:-translate-y-1 transition-all border border-slate-50 dark:border-slate-800">
+                <CardContent className="p-10 flex flex-col justify-between h-full min-h-[220px]">
+                  <div>
+                    <div className="flex justify-between items-start mb-6">
+                      <Badge className="bg-purple-900/40 text-purple-400 border border-purple-500/20 font-black text-[9px] uppercase tracking-wider px-3 py-1">SUBSCRIBED</Badge>
+                      <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Active Access</span>
+                    </div>
+                    <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-2 group-hover:text-purple-600 transition-colors">{ec.courses?.title}</h3>
+                    <p className="text-slate-500 text-sm font-semibold mb-6 line-clamp-2">{ec.courses?.description}</p>
+                  </div>
+                  <Button onClick={() => setClassroomCourse(ec)} className="w-full h-14 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-black text-base shadow-lg shadow-purple-900/20 transition-all">
+                    Access Classroom <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
       )}
 
       {/* Stats Overview */}
