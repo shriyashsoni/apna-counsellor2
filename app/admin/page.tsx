@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/client"
 import { useState, useEffect } from "react"
+import { useAuth } from "@/hooks/use-auth"
 
 import { 
   Users, UserCheck, BarChart3, Activity, Database, DollarSign, ShieldCheck,
@@ -26,13 +27,14 @@ import {
 } from "@/components/ui/select"
 import Image from "next/image"
 import { approveMentorAction, suspendMentorAction, deleteMentorAction, toggleMentorVisibilityAction, createBroadcastNotificationAction } from "@/lib/actions/admin"
-
 import { sendBroadCastEmail } from "@/lib/actions/emails"
-
 
 type EditorView = 'dashboard' | 'course-creator' | 'blog-creator' | 'test-creator' | 'roi-manager' | 'notification-center' | 'identity-manager';
 
 export default function AdminDashboard() {
+  const { user, isLoading: authLoading, isAuthenticated } = useAuth()
+  const [isAdmin, setIsAdmin] = useState<boolean | null>(null)
+  
   const [view, setView] = useState<EditorView>('dashboard')
   const [activeTab, setActiveTab] = useState("overview")
   const [isLoading, setIsLoading] = useState(true)
@@ -43,6 +45,13 @@ export default function AdminDashboard() {
   const [mentors, setMentors] = useState<any[]>([])
   const [colleges, setColleges] = useState<any[]>([])
   const [applications, setApplications] = useState<any[]>([])
+  const [bookings, setBookings] = useState<any[]>([])
+  
+  // Course/Enrollment States
+  const [courses, setCourses] = useState<any[]>([])
+  const [enrollments, setEnrollments] = useState<any[]>([])
+  const [auditLogs, setAuditLogs] = useState<any[]>([])
+  
   const [stats, setStats] = useState<any>({
     users: 0, mentors: 0, colleges: 0, revenue: 0, sessions: 0, pendingMentors: 0
   })
@@ -59,9 +68,39 @@ export default function AdminDashboard() {
     title: '', message: '', type: 'info', link: ''
   })
 
-  const [bookings, setBookings] = useState<any[]>([])
-
   const supabase = createClient()
+
+  // 1. Verify if user has Admin role in database
+  useEffect(() => {
+    async function checkAdminCredentials() {
+      if (!user?.id) {
+        setIsAdmin(false)
+        return
+      }
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', user.id)
+          .single()
+        
+        if (data && data.role === 'admin') {
+          setIsAdmin(true)
+        } else {
+          setIsAdmin(false)
+        }
+      } catch (err) {
+        setIsAdmin(false)
+      }
+    }
+    if (!authLoading) {
+      if (!isAuthenticated) {
+        setIsAdmin(false)
+      } else {
+        checkAdminCredentials()
+      }
+    }
+  }, [user, isAuthenticated, authLoading])
 
   const fetchData = async () => {
     setIsLoading(true)
@@ -70,9 +109,13 @@ export default function AdminDashboard() {
       const { data: mentorData } = await supabase.from('profiles').select('*, is_visible').in('role', ['mentor', 'suspended_mentor'])
       const { data: collegeData } = await supabase.from('colleges').select('id, name, city, state').order('name')
       const { data: paymentData } = await supabase.from('payments').select('amount')
-      const { data: appData, error: appError } = await supabase.from('mentor_applications').select('*, profiles(email)').eq('status', 'pending')
-      if (appError) console.error("Applications Fetch Error:", appError)
+      const { data: appData } = await supabase.from('mentor_applications').select('*, profiles(email)').eq('status', 'pending')
       const { data: sessionData } = await supabase.from('sessions').select('*, profiles:student_id(name, email)').order('created_at', { ascending: false })
+      
+      // Load Dynamic Courses, Enrollments & Audit Logs
+      const { data: courseData } = await supabase.from('courses').select('*').order('created_at', { ascending: false })
+      const { data: enrollData } = await supabase.from('course_enrollments').select('*, courses(title), profiles:student_id(name, email)').order('created_at', { ascending: false })
+      const { data: logData } = await supabase.from('course_audit_logs').select('*').order('created_at', { ascending: false })
       
       const totalRevenue = paymentData?.reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0) || 0
 
@@ -81,6 +124,11 @@ export default function AdminDashboard() {
       setColleges(collegeData || [])
       setApplications(appData || [])
       setBookings(sessionData || [])
+      
+      setCourses(courseData || [])
+      setEnrollments(enrollData || [])
+      setAuditLogs(logData || [])
+      
       setStats({ 
         users: userData?.length || 0, 
         mentors: mentorData?.length || 0, 
@@ -90,34 +138,44 @@ export default function AdminDashboard() {
         pendingMentors: appData?.length || 0
       })
     } catch (error: any) {
-      console.error("Admin Error:", error)
-      toast.error(`Sync Failed: ${error.message || "Please check your admin permissions"}`)
+      console.error("Admin Sync Error:", error)
+      toast.error(`Platform Sync Failed: ${error.message}`)
     } finally {
       setIsLoading(false)
     }
   }
 
   useEffect(() => {
-    fetchData()
-  }, [])
+    if (isAdmin) {
+      fetchData()
+    }
+  }, [isAdmin])
 
   const handleCreateCourse = async () => {
     if (!courseForm.title || !courseForm.price) return toast.error("Missing title or price")
     setIsSubmitting(true)
     try {
-      const { error } = await supabase.from('courses').insert({
+      const { data: newCourse, error } = await supabase.from('courses').insert({
         title: courseForm.title,
         description: courseForm.description,
         price: Number(courseForm.price),
         category: courseForm.category,
         level: courseForm.level,
-        duration_hours: Number(courseForm.duration),
-        total_lessons: Number(courseForm.lessons),
+        duration_hours: Number(courseForm.duration) || 0,
+        total_lessons: Number(courseForm.lessons) || 0,
         curriculum: courseForm.modules,
-        slug: courseForm.title.toLowerCase().replace(/ /g, '-'),
+        slug: courseForm.title.toLowerCase().replace(/[^a-zA-Z0-9]+/g, '-'),
         is_published: true
-      })
+      }).select().single()
+      
       if (error) throw error
+      
+      // Save Audit/Activity Log in database
+      await supabase.from('course_audit_logs').insert({
+        action: 'course_launched',
+        details: `Admin launched new course: "${courseForm.title}" priced at ₹${courseForm.price}`
+      })
+
       toast.success("Course launched successfully!")
       setView('dashboard')
       fetchData()
@@ -131,7 +189,7 @@ export default function AdminDashboard() {
     try {
       const { error } = await supabase.from('blogs').insert({
         ...blogForm,
-        slug: blogForm.title.toLowerCase().replace(/ /g, '-'),
+        slug: blogForm.title.toLowerCase().replace(/[^a-zA-Z0-9]+/g, '-'),
         tags: blogForm.tags.split(',').map(t => t.trim()),
         is_published: true
       })
@@ -146,7 +204,6 @@ export default function AdminDashboard() {
     if (!notifForm.title || !notifForm.message) return toast.error("Missing message")
     setIsSubmitting(true)
     try {
-      // 1. Save to Supabase Notifications Table via Server Action (bypasses RLS)
       const notifResult = await createBroadcastNotificationAction(
         notifForm.title,
         notifForm.message,
@@ -156,61 +213,32 @@ export default function AdminDashboard() {
 
       if (!notifResult.success) throw new Error(notifResult.error)
 
-      // 2. Automated Email Broadcast
       const userEmails = users.map(u => u.email).filter(Boolean)
-      
       if (userEmails.length > 0) {
         try {
           const result = await sendBroadCastEmail(userEmails, notifForm.title, notifForm.message, notifForm.link)
           if (result.success) {
-            toast.success(`Notification sent to ${userEmails.length} users via Email!`)
-          } else {
-            toast.warning(`Notification saved, but email skipped: ${result.error}`)
+            toast.success(`Notification sent to ${userEmails.length} users!`)
           }
         } catch (emailError: any) {
-          console.error("Email Broadcast Failed:", emailError)
-          toast.error("Database updated, but Email broadcast failed. Check Novu logs.")
+          toast.error("Database updated, but Email broadcast failed.")
         }
       } else {
         toast.success("Notification posted to dashboard!")
       }
       
       setView('dashboard')
-    } catch (e: any) { 
-      console.error("Critical Notification Error:", e)
-      toast.error(e.message || "A critical error occurred while sending notification") 
-    }
-    finally { setIsSubmitting(false) }
-  }
-
-
-  const approveMentor = async (appId: string, userId: string) => {
-    try {
-      const { error: profileError } = await supabase.from('profiles').update({ 
-        role: 'mentor',
-        verified: true,
-        onboarding_complete: true
-      }).eq('id', userId)
-      
-      if (profileError) throw profileError
-
-      const { error: appError } = await supabase.from('mentor_applications').update({ status: 'approved' }).eq('id', appId)
-      if (appError) throw appError
-
-      toast.success("Mentor approved and profile updated!")
       fetchData()
     } catch (e: any) { 
-      console.error("Approval Error:", e)
-      toast.error(`Approval failed: ${e.message || "Permissions error"}`) 
+      toast.error(e.message) 
     }
+    finally { setIsSubmitting(false) }
   }
 
   const approveMentorWithEmail = async (appId: string, userId: string, email: string, name: string) => {
     setIsSubmitting(true)
     try {
-      console.log("Approving mentor:", { appId, userId, email, name })
       const result = await approveMentorAction(appId, userId, email, name)
-      
       if (result.success) {
         toast.success(`Mentor approved and notification sent to ${email}`)
         await fetchData()
@@ -218,7 +246,6 @@ export default function AdminDashboard() {
         throw new Error(result.error)
       }
     } catch (e: any) {
-      console.error("Approval Action Error:", e)
       toast.error(`Failed to approve: ${e.message}`)
     } finally {
       setIsSubmitting(false)
@@ -262,6 +289,37 @@ export default function AdminDashboard() {
     finally { setIsSubmitting(false) }
   }
 
+  // 2. Loading State Renderer
+  if (authLoading || isAdmin === null) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center text-white">
+        <div className="relative h-20 w-20 mb-8">
+          <div className="absolute inset-0 border-4 border-purple-500/20 border-t-purple-500 rounded-full animate-spin" />
+          <ShieldCheck className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-8 w-8 text-purple-400 animate-pulse" />
+        </div>
+        <p className="text-sm font-black uppercase tracking-widest text-slate-400 animate-pulse">Authenticating Admin Session...</p>
+      </div>
+    )
+  }
+
+  // 3. Authorization Restriction Block
+  if (!isAdmin) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center text-white p-6">
+        <div className="h-16 w-16 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-500 flex items-center justify-center mb-8 shadow-xl">
+          <Shield className="h-8 w-8" />
+        </div>
+        <h1 className="text-3xl font-black mb-2 tracking-tight">Access Restricted</h1>
+        <p className="text-slate-400 font-medium text-center max-w-sm mb-8 leading-relaxed">
+          You do not have the administration credentials required to access the Apna Counsellor Command Center.
+        </p>
+        <Button onClick={() => window.location.href = '/'} className="rounded-xl h-12 bg-white text-black font-black hover:bg-slate-100">
+          Return to Homepage
+        </Button>
+      </div>
+    )
+  }
+
   const SidebarContent = () => (
     <div className="flex flex-col h-full">
       <div className="flex items-center gap-4 mb-12">
@@ -278,6 +336,7 @@ export default function AdminDashboard() {
           { id: 'overview', label: 'Command Center', icon: LayoutDashboard },
           { id: 'users', label: 'Identity Hub', icon: Users },
           { id: 'mentors', label: 'Expert Network', icon: UserCheck },
+          { id: 'courses', label: 'Course Launcher', icon: Rocket },
           { id: 'sessions', label: 'Global Sessions', icon: Phone },
           { id: 'content', label: 'Content Architect', icon: FilePlus },
           { id: 'roi', label: 'Institute ROI', icon: GraduationCap },
@@ -314,7 +373,7 @@ export default function AdminDashboard() {
   )
 
   const RenderDashboard = () => (
-    <div className="space-y-12">
+    <div className="space-y-12 animate-in fade-in duration-500">
       {/* Quick Actions */}
       <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
@@ -338,14 +397,14 @@ export default function AdminDashboard() {
             <div className="flex justify-between items-center mb-10">
                <h3 className="text-2xl font-black flex items-center gap-3"><Activity className="h-7 w-7 text-purple-600" /> Platform Pulse</h3>
                <div className="flex gap-2">
-                  <Badge className="bg-emerald-50 text-emerald-600 border-none font-bold">+12% growth</Badge>
+                  <Badge className="bg-emerald-50 text-emerald-600 border-none font-bold">Real Data Sync</Badge>
                </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                {[
-                 { label: 'New Students', val: stats.users, detail: 'Last 30 days', icon: Users, color: 'text-blue-600' },
-                 { label: 'Mentor Calls', val: stats.sessions, detail: 'Total Sessions', icon: Phone, color: 'text-purple-600' },
-                 { label: 'Gross Revenue', val: `₹${stats.revenue.toLocaleString()}`, detail: 'Life-time', icon: DollarSign, color: 'text-emerald-600' },
+                 { label: 'Students Registered', val: stats.users, detail: 'Dynamic Supabase records', icon: Users, color: 'text-blue-600' },
+                 { label: 'Mentor Calls Booked', val: stats.sessions, detail: 'Total global sessions', icon: Phone, color: 'text-purple-600' },
+                 { label: 'Platform Revenue', val: `₹${stats.revenue.toLocaleString()}`, detail: 'Tracked Razorpay sums', icon: DollarSign, color: 'text-emerald-600' },
                ].map((s, i) => (
                  <div key={i} className="p-8 rounded-[2rem] bg-slate-50 border border-slate-100 relative overflow-hidden group">
                     <s.icon className={`h-12 w-12 ${s.color} opacity-10 absolute -top-2 -right-2`} />
@@ -359,24 +418,24 @@ export default function AdminDashboard() {
 
          <Card className="lg:col-span-4 bg-slate-950 text-white border-none rounded-[3rem] shadow-sm p-10 flex flex-col relative overflow-hidden">
             <div className="relative z-10 h-full flex flex-col">
-               <h3 className="text-xl font-black mb-6">Pending Tasks</h3>
+               <h3 className="text-xl font-black mb-6">Pending Operations</h3>
                <div className="space-y-4 flex-1">
                   <div className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/10">
                      <div className="flex items-center gap-3">
                         <UserCheck className="h-5 w-5 text-purple-400" />
-                        <span className="text-sm font-bold">Mentor Apps</span>
+                        <span className="text-sm font-bold">Mentor Requests</span>
                      </div>
                      <Badge className="bg-purple-600 text-white border-none">{stats.pendingMentors}</Badge>
                   </div>
-                  <div className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/10 opacity-50">
+                  <div className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/10">
                      <div className="flex items-center gap-3">
-                        <AlertCircle className="h-5 w-5 text-orange-400" />
-                        <span className="text-sm font-bold">Bug Reports</span>
+                        <Rocket className="h-5 w-5 text-emerald-400" />
+                        <span className="text-sm font-bold">Active Courses</span>
                      </div>
-                     <Badge className="bg-slate-700 text-white border-none">0</Badge>
+                     <Badge className="bg-emerald-600 text-white border-none">{courses.length}</Badge>
                   </div>
                </div>
-               <Button onClick={() => setActiveTab('mentors')} className="w-full mt-6 rounded-xl h-12 bg-white text-black font-black hover:bg-slate-100">Review All Requests</Button>
+               <Button onClick={() => setActiveTab('mentors')} className="w-full mt-6 rounded-xl h-12 bg-white text-black font-black hover:bg-slate-100">Review Mentor Applications</Button>
             </div>
             <Zap className="absolute -bottom-10 -right-10 h-40 w-40 text-white/5 rotate-45" />
          </Card>
@@ -385,7 +444,7 @@ export default function AdminDashboard() {
   )
 
   const RenderUsers = () => (
-    <div className="space-y-8">
+    <div className="space-y-8 animate-in fade-in duration-500">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <h2 className="text-2xl font-black">Identity Management</h2>
         <div className="relative w-full md:w-96">
@@ -441,17 +500,17 @@ export default function AdminDashboard() {
   )
 
   const RenderContentCreator = () => (
-     <div className="space-y-12">
+     <div className="space-y-12 animate-in fade-in duration-500">
         <header className="text-center max-w-2xl mx-auto mb-16">
-           <h2 className="text-4xl font-black mb-4">Content Architect</h2>
+           <h2 className="text-4xl font-black mb-4">Content Architect Hub</h2>
            <p className="text-slate-500 font-medium italic">Deploy blogs, courses, and test series directly to the live platform.</p>
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
            {[
-             { title: 'Global Blogs', icon: FileText, count: '12 Posts', action: () => setView('blog-creator') },
-             { title: 'Premium Courses', icon: Rocket, count: '4 Active', action: () => setView('course-creator') },
-             { title: 'Test Series', icon: Monitor, count: '8 Packs', action: () => setView('test-creator') },
+             { title: 'Global Blogs', icon: FileText, count: 'Live articles', action: () => setView('blog-creator') },
+             { title: 'Premium Courses', icon: Rocket, count: `${courses.length} Launched`, action: () => setActiveTab('courses') },
+             { title: 'Test Series', icon: Monitor, count: 'Assessment packs', action: () => setView('test-creator') },
            ].map((c, i) => (
              <Card key={i} className="group p-8 rounded-[3rem] bg-white border border-slate-100 shadow-sm hover:shadow-2xl transition-all cursor-pointer" onClick={c.action}>
                 <div className="h-16 w-16 bg-slate-50 rounded-3xl flex items-center justify-center mb-8 group-hover:bg-purple-600 group-hover:text-white transition-all">
@@ -467,15 +526,15 @@ export default function AdminDashboard() {
   )
 
   const RenderNotificationHub = () => (
-    <div className="max-w-4xl mx-auto space-y-8">
+    <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-500">
       <Card className="rounded-[3rem] border-slate-100 p-10 space-y-8 shadow-sm">
         <div className="flex items-center gap-4">
            <div className="h-12 w-12 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center">
               <Bell className="h-6 w-6" />
            </div>
            <div>
-              <h2 className="text-2xl font-black">Notification Hub</h2>
-              <p className="text-slate-400 font-bold text-xs uppercase tracking-widest">Broadcast Messages to All Students</p>
+              <h2 className="text-2xl font-black">Broadcast Hub</h2>
+              <p className="text-slate-400 font-bold text-xs uppercase tracking-widest">Blast Alerts & Updates Globally</p>
            </div>
         </div>
 
@@ -504,10 +563,10 @@ export default function AdminDashboard() {
                        <SelectItem value="warning">Important (Orange)</SelectItem>
                        <SelectItem value="success">Success (Green)</SelectItem>
                     </SelectContent>
-                 </Select>
+                  </Select>
               </div>
            </div>
-           <Button onClick={handleSendNotification} disabled={isSubmitting} className="w-full h-16 rounded-[2rem] bg-orange-600 text-white font-black text-lg shadow-xl shadow-orange-100">
+           <Button onClick={handleSendNotification} disabled={isSubmitting} className="w-full h-16 rounded-[2rem] bg-orange-600 text-white font-black text-lg shadow-xl shadow-orange-100 hover:scale-[1.01] transition-all">
               {isSubmitting ? <Loader2 className="animate-spin h-6 w-6" /> : "Broadcast Notification"}
            </Button>
         </div>
@@ -516,7 +575,7 @@ export default function AdminDashboard() {
   )
 
   const RenderBlogCreator = () => (
-     <div className="max-w-5xl mx-auto space-y-12 pb-20">
+     <div className="max-w-5xl mx-auto space-y-12 pb-20 animate-in fade-in duration-500">
         <header className="flex justify-between items-center bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm sticky top-6 z-20">
            <div className="flex items-center gap-4">
               <Button variant="ghost" size="icon" onClick={() => setView('dashboard')} className="rounded-full bg-slate-50 h-10 w-10"><ArrowLeft className="h-4 w-4" /></Button>
@@ -559,26 +618,21 @@ export default function AdminDashboard() {
                     </div>
                  </div>
               </Card>
-
-              <Card className="p-8 rounded-[2.5rem] border-slate-100 shadow-sm bg-purple-50 border-purple-100">
-                 <h4 className="text-sm font-black text-purple-600 mb-2">Pro Tip</h4>
-                 <p className="text-xs font-medium text-purple-900/60 leading-relaxed">Images with 1200x630 resolution perform best for social link previews.</p>
-              </Card>
            </aside>
         </div>
      </div>
   )
 
   const RenderCourseCreator = () => (
-     <div className="max-w-5xl mx-auto space-y-12 pb-20">
+     <div className="max-w-5xl mx-auto space-y-12 pb-20 animate-in fade-in duration-500">
         <header className="flex justify-between items-center bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm sticky top-6 z-20">
            <div className="flex items-center gap-4">
               <Button variant="ghost" size="icon" onClick={() => setView('dashboard')} className="rounded-full bg-slate-50 h-10 w-10"><ArrowLeft className="h-4 w-4" /></Button>
-              <h1 className="text-xl font-black tracking-tighter">Course Architect</h1>
+              <h1 className="text-xl font-black tracking-tighter">Launch New Admission Course</h1>
            </div>
            <div className="flex gap-3">
-              <Button onClick={handleCreateCourse} disabled={isSubmitting} className="rounded-xl px-8 font-black text-xs bg-purple-600 text-white shadow-lg shadow-purple-100">
-                 {isSubmitting ? <Loader2 className="animate-spin h-4 w-4" /> : "Launch Course"}
+              <Button onClick={handleCreateCourse} disabled={isSubmitting} className="rounded-xl px-8 h-12 font-black text-xs bg-purple-600 text-white shadow-lg shadow-purple-100 hover:scale-105 transition-all">
+                 {isSubmitting ? <Loader2 className="animate-spin h-4 w-4" /> : "Deploy to Live Page"}
               </Button>
            </div>
         </header>
@@ -588,18 +642,18 @@ export default function AdminDashboard() {
               <Card className="p-10 rounded-[3rem] border-slate-100 shadow-sm space-y-6">
                  <div className="space-y-4">
                     <label className="text-[10px] font-black uppercase text-slate-400">Course Title</label>
-                    <Input value={courseForm.title} onChange={e => setCourseForm({...courseForm, title: e.target.value})} placeholder="e.g. Master JoSAA Counseling" className="h-14 text-2xl font-black rounded-2xl" />
+                    <Input value={courseForm.title} onChange={e => setCourseForm({...courseForm, title: e.target.value})} placeholder="e.g. Premium JoSAA Counselling Program" className="h-14 text-2xl font-black rounded-2xl" />
                  </div>
                  <div className="space-y-4">
                     <label className="text-[10px] font-black uppercase text-slate-400">Description</label>
-                    <Textarea value={courseForm.description} onChange={e => setCourseForm({...courseForm, description: e.target.value})} placeholder="What is this course about?" className="min-h-[200px] rounded-2xl font-medium" />
+                    <Textarea value={courseForm.description} onChange={e => setCourseForm({...courseForm, description: e.target.value})} placeholder="Complete roadmap to securing top NIT/IIT/IIIT branches..." className="min-h-[200px] rounded-2xl font-medium" />
                  </div>
               </Card>
 
               <Card className="p-10 rounded-[3rem] border-slate-100 shadow-sm space-y-8">
                  <div className="flex justify-between items-center">
                     <h3 className="text-xl font-black">Curriculum Modules</h3>
-                    <Button variant="ghost" onClick={() => setCourseForm({...courseForm, modules: [...courseForm.modules, { title: 'New Module', lessons: [] }]})} className="text-purple-600 font-black">+ Add Module</Button>
+                    <Button variant="ghost" onClick={() => setCourseForm({...courseForm, modules: [...courseForm.modules, { title: `Module ${courseForm.modules.length + 1}`, lessons: [] }]})} className="text-purple-600 font-black">+ Add Module</Button>
                  </div>
                  <div className="space-y-4">
                     {courseForm.modules.map((m, i) => (
@@ -619,7 +673,7 @@ export default function AdminDashboard() {
 
            <aside className="lg:col-span-4 space-y-6">
               <Card className="p-8 rounded-[2.5rem] border-slate-100 shadow-sm space-y-6">
-                 <h4 className="text-sm font-black uppercase tracking-widest text-slate-400">Course Settings</h4>
+                 <h4 className="text-sm font-black uppercase tracking-widest text-slate-400">Course settings</h4>
                  <div className="space-y-4">
                     <div className="space-y-1">
                        <label className="text-[10px] font-black text-slate-400 uppercase">Price (₹)</label>
@@ -653,8 +707,154 @@ export default function AdminDashboard() {
      </div>
   )
 
+  const RenderCoursesHub = () => (
+    <div className="space-y-12 animate-in fade-in duration-500">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div>
+          <h2 className="text-3xl font-black text-slate-900 flex items-center gap-3">
+            <Rocket className="h-8 w-8 text-purple-600" /> Course Launcher & Tracker
+          </h2>
+          <p className="text-slate-400 font-bold uppercase tracking-widest text-[10px] mt-1">Publish programs, track enrollments, and audit logs</p>
+        </div>
+        <Button onClick={() => setView('course-creator')} className="rounded-2xl h-14 px-8 font-black bg-purple-600 text-white shadow-xl shadow-purple-100 transition-all hover:scale-105">
+          <Plus className="mr-2 h-5 w-5" /> Launch New Course
+        </Button>
+      </div>
+
+      <Tabs defaultValue="launched" className="w-full space-y-8">
+        <TabsList className="bg-slate-100 p-1.5 rounded-2xl h-16 w-full max-w-md">
+          <TabsTrigger value="launched" className="rounded-xl font-bold text-sm h-12 flex-1">Launched ({courses.length})</TabsTrigger>
+          <TabsTrigger value="enrollments" className="rounded-xl font-bold text-sm h-12 flex-1">Enrollments ({enrollments.length})</TabsTrigger>
+          <TabsTrigger value="logs" className="rounded-xl font-bold text-sm h-12 flex-1">Logs ({auditLogs.length})</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="launched">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {courses.map(c => (
+              <Card key={c.id} className="bg-white border border-slate-100 rounded-[2.5rem] p-8 shadow-sm hover:shadow-xl transition-all relative overflow-hidden group">
+                <div className="flex justify-between items-start mb-6">
+                  <div className="h-12 w-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center">
+                    <BookOpen className="h-6 w-6" />
+                  </div>
+                  <Badge className={`rounded-lg font-black text-[10px] ${c.is_published ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-400'}`}>
+                    {c.is_published ? 'PUBLISHED' : 'DRAFT'}
+                  </Badge>
+                </div>
+                <h3 className="font-black text-xl text-slate-900 line-clamp-1 mb-2">{c.title}</h3>
+                <p className="text-xs text-slate-400 font-semibold line-clamp-2 mb-6">{c.description || 'No description provided.'}</p>
+                <div className="grid grid-cols-3 gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100 mb-6 text-center">
+                  <div>
+                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Price</p>
+                    <p className="text-sm font-black text-purple-600">₹{Number(c.price).toLocaleString()}</p>
+                  </div>
+                  <div>
+                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Lessons</p>
+                    <p className="text-sm font-black text-slate-800">{c.total_lessons || 0}</p>
+                  </div>
+                  <div>
+                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Hours</p>
+                    <p className="text-sm font-black text-slate-800">{c.duration_hours || 0}</p>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <Button variant="outline" className="flex-1 rounded-xl h-10 font-black text-[10px] uppercase border-slate-100">Edit</Button>
+                  <Button variant="ghost" className="rounded-xl h-10 px-3 text-red-500 hover:bg-red-50 font-black text-[10px] uppercase">Archive</Button>
+                </div>
+              </Card>
+            ))}
+            {courses.length === 0 && (
+              <Card className="col-span-full p-20 text-center rounded-[3rem] bg-slate-50 border-2 border-dashed border-slate-200">
+                <Rocket className="h-12 w-12 text-slate-300 mx-auto mb-4 animate-bounce" />
+                <p className="text-slate-500 font-bold">No courses published yet. Launch your first course above!</p>
+              </Card>
+            )}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="enrollments">
+          <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden overflow-x-auto">
+            <table className="w-full text-left">
+              <thead className="bg-slate-50 border-b border-slate-100">
+                <tr>
+                  <th className="px-8 py-5 text-[10px] font-black uppercase text-slate-400">Student</th>
+                  <th className="px-8 py-5 text-[10px] font-black uppercase text-slate-400">Course</th>
+                  <th className="px-8 py-5 text-[10px] font-black uppercase text-slate-400">Payment ID</th>
+                  <th className="px-8 py-5 text-[10px] font-black uppercase text-slate-400">Enrolled On</th>
+                  <th className="px-8 py-5 text-[10px] font-black uppercase text-slate-400">Status</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-50">
+                {enrollments.map(e => (
+                  <tr key={e.id} className="hover:bg-slate-50/50 transition-colors">
+                    <td className="px-8 py-6">
+                      <div>
+                        <p className="font-bold text-slate-900">{e.profiles?.name || 'Anonymous Student'}</p>
+                        <p className="text-xs text-slate-400 font-semibold">{e.profiles?.email}</p>
+                      </div>
+                    </td>
+                    <td className="px-8 py-6 text-sm font-black text-slate-800">
+                      {e.courses?.title || 'Unknown Course'}
+                    </td>
+                    <td className="px-8 py-6 text-xs font-mono font-bold text-slate-400">
+                      {e.payment_id || 'N/A'}
+                    </td>
+                    <td className="px-8 py-6 text-sm font-bold text-slate-500">
+                      {new Date(e.created_at).toLocaleDateString()}
+                    </td>
+                    <td className="px-8 py-6">
+                      <Badge className={`rounded-lg px-2 py-0.5 border-none font-black text-[10px] ${
+                        e.status === 'active' ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'
+                      }`}>
+                        {e.status?.toUpperCase() || 'ACTIVE'}
+                      </Badge>
+                    </td>
+                  </tr>
+                ))}
+                {enrollments.length === 0 && (
+                  <tr>
+                    <td colSpan={5} className="p-20 text-center">
+                      <Users className="h-12 w-12 text-slate-300 mx-auto mb-4" />
+                      <p className="text-slate-500 font-bold">No student enrollments tracked yet.</p>
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="logs">
+          <Card className="rounded-[2.5rem] border-slate-100 p-8 shadow-sm">
+            <h3 className="text-lg font-black text-slate-900 mb-6">Central Activity Audit Logs</h3>
+            <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
+              {auditLogs.map(log => (
+                <div key={log.id} className="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex items-start gap-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                  <div className={`h-8 w-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 ${
+                    log.action === 'student_enrolled' ? 'bg-emerald-100 text-emerald-600' :
+                    log.action === 'course_launched' ? 'bg-purple-100 text-purple-600' : 'bg-blue-100 text-blue-600'
+                  }`}>
+                    <Activity className="h-4 w-4" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm font-bold text-slate-800">{log.details}</p>
+                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">
+                      {new Date(log.created_at).toLocaleString()}
+                    </p>
+                  </div>
+                </div>
+              ))}
+              {auditLogs.length === 0 && (
+                <div className="text-center py-10 text-slate-400 font-bold">No system updates logged yet.</div>
+              )}
+            </div>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
+  )
+
   const RenderBookings = () => (
-     <div className="space-y-8">
+     <div className="space-y-8 animate-in fade-in duration-500">
         <div className="flex justify-between items-center">
            <h2 className="text-2xl font-black flex items-center gap-3"><MonitorIcon className="h-7 w-7 text-purple-600" /> Global Sessions Monitor</h2>
            <Badge className="bg-emerald-50 text-emerald-600 border-none font-black uppercase text-[10px] px-3 py-1">Real-time Sync Active</Badge>
@@ -696,7 +896,7 @@ export default function AdminDashboard() {
   )
 
   const RenderMentorsHub = () => (
-    <div className="space-y-12">
+    <div className="space-y-12 animate-in fade-in duration-500">
       <section className="space-y-6">
         <h2 className="text-2xl font-black flex items-center gap-3">
           <UserCheck className="h-7 w-7 text-purple-600" /> Pending Applications
@@ -747,7 +947,7 @@ export default function AdminDashboard() {
       </section>
 
       <section className="space-y-6">
-        <h2 className="text-2xl font-black">Active Experts</h2>
+        <h2 className="text-2xl font-black">Active Experts Hub</h2>
         <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden overflow-x-auto">
           <table className="w-full text-left">
             <thead className="bg-slate-50 border-b border-slate-100">
@@ -868,6 +1068,7 @@ export default function AdminDashboard() {
              {activeTab === 'overview' && <RenderDashboard />}
              {activeTab === 'users' && <RenderUsers />}
              {activeTab === 'mentors' && <RenderMentorsHub />}
+             {activeTab === 'courses' && <RenderCoursesHub />}
              {activeTab === 'sessions' && <RenderBookings />}
              {activeTab === 'content' && <RenderContentCreator />}
              {activeTab === 'notifs' && <RenderNotificationHub />}
