@@ -33,6 +33,7 @@ export default function CourseDetailsPage() {
         // Fetch course info
         const { data: courseData, error } = await supabase
           .from('courses')
+          .select('*')
           .eq('slug', slug)
           .single()
         
