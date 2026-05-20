@@ -3,10 +3,11 @@ import { cookies } from 'next/headers'
 
 export function createClient() {
   const cookieStore = cookies()
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || '';
 
   const client = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+    anonKey,
     {
       cookies: {
         getAll() {
@@ -89,7 +90,7 @@ export function createClient() {
         return {
           data: {
             session: {
-              access_token: 'firebase-mock-token',
+              access_token: anonKey, // Pass standard, valid Supabase Anon JWT to prevent "expected three parts in JWT" error
               token_type: 'bearer',
               expires_in: 3600,
               refresh_token: 'firebase-mock-refresh',

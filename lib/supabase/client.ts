@@ -13,9 +13,11 @@ const waitForAuth = (): Promise<any> => {
 };
 
 export function createClient() {
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || '';
+
   const client = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+    anonKey,
     {
       cookieOptions: {
         domain: typeof window !== 'undefined' && window.location.hostname === 'localhost' ? undefined : '.apnacounsellor.in',
@@ -89,7 +91,7 @@ export function createClient() {
       return {
         data: {
           session: {
-            access_token: 'firebase-mock-token',
+            access_token: anonKey, // Pass standard, valid Supabase Anon JWT to prevent "expected three parts in JWT" error
             token_type: 'bearer',
             expires_in: 3600,
             refresh_token: 'firebase-mock-refresh',
@@ -123,7 +125,7 @@ export function createClient() {
           };
 
           callback('SIGNED_IN', {
-            access_token: 'firebase-mock-token',
+            access_token: anonKey, // Pass standard, valid Supabase Anon JWT
             user: mappedUser,
           });
         } else {
