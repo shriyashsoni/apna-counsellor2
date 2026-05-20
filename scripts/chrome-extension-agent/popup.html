@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apna Counsellor - College Harvester</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #090d16;
+      --bg-surface: rgba(17, 24, 39, 0.7);
+      --bg-card: rgba(30, 41, 59, 0.4);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --primary: #06b6d4;
+      --primary-glow: rgba(6, 182, 212, 0.15);
+      --accent: #8b5cf6;
+      --accent-glow: rgba(139, 92, 246, 0.15);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --font-body: 'Inter', sans-serif;
+      --font-title: 'Outfit', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      width: 420px;
+      min-height: 580px;
+      background: linear-gradient(135deg, #070a13 0%, #0d1527 50%, #15102a 100%);
+      font-family: var(--font-body);
+      color: var(--text-main);
+      overflow-x: hidden;
+      padding: 16px;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.1);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Header styling */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 12px;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+      animation: pulse 2s infinite alternate;
+    }
+
+    .logo-icon svg {
+      width: 18px;
+      height: 18px;
+      fill: #white;
+    }
+
+    h1 {
+      font-family: var(--font-title);
+      font-size: 18px;
+      font-weight: 700;
+      background: linear-gradient(to right, #ffffff, #a5b4fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 0.5px;
+    }
+
+    .subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+
+    .version-tag {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--primary);
+      background: var(--primary-glow);
+      padding: 2px 6px;
+      border-radius: 20px;
+      border: 1px solid rgba(6, 182, 212, 0.3);
+    }
+
+    /* Glassmorphism Cards */
+    .card {
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card:hover {
+      border-color: rgba(6, 182, 212, 0.2);
+      box-shadow: 0 8px 32px 0 rgba(6, 182, 212, 0.05);
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .stat-box {
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 10px;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+
+    .stat-box:hover {
+      transform: translateY(-2px);
+    }
+
+    .stat-value {
+      font-family: var(--font-title);
+      font-size: 20px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 2px;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+
+    .stat-value.cyan { color: var(--primary); text-shadow: 0 0 10px rgba(6, 182, 212, 0.2); }
+    .stat-value.purple { color: var(--accent); text-shadow: 0 0 10px rgba(139, 92, 246, 0.2); }
+    .stat-value.green { color: var(--success); text-shadow: 0 0 10px rgba(16, 185, 129, 0.2); }
+
+    .stat-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Progress bar */
+    .progress-container {
+      margin-top: 10px;
+    }
+
+    .progress-bar-wrapper {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 4px;
+      position: relative;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(to right, var(--primary), var(--accent));
+      border-radius: 10px;
+      transition: width 0.4s ease;
+      box-shadow: 0 0 8px var(--primary);
+    }
+
+    .progress-text {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    /* Configuration Panels */
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-main);
+      margin-bottom: 6px;
+      letter-spacing: 0.3px;
+    }
+
+    select, input {
+      width: 100%;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 12px;
+      color: var(--text-main);
+      font-family: var(--font-body);
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    select:focus, input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 8px rgba(6, 182, 212, 0.2);
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .row-flex {
+      display: flex;
+      gap: 10px;
+    }
+
+    .row-flex > div {
+      flex: 1;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #ffffff;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      font-family: var(--font-title);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      box-shadow: 0 4px 15px rgba(6, 182, 212, 0.2);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(6, 182, 212, 0.35);
+      filter: brightness(1.1);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-stop {
+      background: linear-gradient(135deg, var(--danger) 0%, #b91c1c 100%);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+    }
+
+    .btn-stop:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(239, 68, 68, 0.35);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .btn-group {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .action-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    /* Live Logs console */
+    .log-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .log-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .log-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .clear-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 10px;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .clear-btn:hover {
+      color: var(--primary);
+    }
+
+    .console-logs {
+      height: 120px;
+      background: rgba(5, 8, 16, 0.9);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 10px;
+      color: #38bdf8;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);
+    }
+
+    .log-entry {
+      margin-bottom: 4px;
+      line-height: 1.4;
+      border-left: 2px solid transparent;
+      padding-left: 5px;
+    }
+
+    .log-entry.info { border-left-color: var(--primary); color: #e0f2fe; }
+    .log-entry.success { border-left-color: var(--success); color: #34d399; }
+    .log-entry.warning { border-left-color: var(--warning); color: #fbbf24; }
+    .log-entry.error { border-left-color: var(--danger); color: #f87171; }
+
+    /* Custom Selection Drawer (CSS selector help) */
+    .custom-selectors-drawer {
+      display: none;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--border-color);
+      animation: fadeIn 0.3s forwards;
+    }
+
+    /* Pulse animation */
+    @keyframes pulse {
+      0% { box-shadow: 0 0 10px rgba(6, 182, 212, 0.3); }
+      100% { box-shadow: 0 0 22px rgba(6, 182, 212, 0.6); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Tooltip info */
+    .info-tooltip {
+      font-size: 9px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <div class="logo-container">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3L1 9L12 15L21 10.09V17H23V9L12 3M12 5.18L18.97 9L12 12.82L5.03 9L12 5.18M12 16.5C11.5 16.5 10 16 10 14.5V11L12 12L14 11V14.5C14 16 12.5 16.5 12 16.5Z" fill="#ffffff"/>
+          </svg>
+        </div>
+        <div>
+          <h1>College Harvester</h1>
+          <div class="subtitle">Apna Counsellor AI Scraper</div>
+        </div>
+      </div>
+      <div class="version-tag">Agent V1.0</div>
+    </header>
+
+    <!-- Stats Panel -->
+    <div class="card">
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-value cyan" id="scraped-count">0</div>
+          <div class="stat-label">Scraped</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value purple" id="pages-count">0</div>
+          <div class="stat-label">Pages</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value green" id="success-rate">0%</div>
+          <div class="stat-label">Success</div>
+        </div>
+      </div>
+      <div class="progress-container">
+        <div class="progress-bar-wrapper">
+          <div class="progress-bar" id="scraper-progress"></div>
+        </div>
+        <div class="progress-text">
+          <span id="status-text">Ready to harvest college data...</span>
+          <span id="progress-percent">0%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scraper Config Card -->
+    <div class="card">
+      <div class="form-group">
+        <label for="scraper-preset">Target Directory Preset</label>
+        <select id="scraper-preset">
+          <option value="aishe">Official AISHE Portal (HE Directory)</option>
+          <option value="shiksha">Shiksha Directory Scraper</option>
+          <option value="collegedekho">CollegeDekho Listing Scraper</option>
+          <option value="custom">Custom Site (CSS Selectors)</option>
+        </select>
+        <div class="info-tooltip">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          <span id="preset-tooltip">Scrapes AISHE codes, names, states, cities from official portal.</span>
+        </div>
+      </div>
+
+      <!-- Custom CSS Selector drawer -->
+      <div id="custom-selectors" class="custom-selectors-drawer">
+        <div class="form-group row-flex">
+          <div>
+            <label for="selector-item">Item Selector</label>
+            <input type="text" id="selector-item" placeholder=".college-card">
+          </div>
+          <div>
+            <label for="selector-name">Name Selector</label>
+            <input type="text" id="selector-name" placeholder="h3.title">
+          </div>
+        </div>
+        <div class="form-group row-flex">
+          <div>
+            <label for="selector-state">State Selector</label>
+            <input type="text" id="selector-state" placeholder=".location-state">
+          </div>
+          <div>
+            <label for="selector-city">City Selector</label>
+            <input type="text" id="selector-city" placeholder=".location-city">
+          </div>
+        </div>
+        <div class="form-group row-flex">
+          <div>
+            <label for="selector-website">Website Selector</label>
+            <input type="text" id="selector-website" placeholder="a.visit-site">
+          </div>
+          <div>
+            <label for="selector-next">Next Page Button</label>
+            <input type="text" id="selector-next" placeholder="a.next-btn">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row-flex">
+        <div>
+          <label for="limit-items">Max College Target</label>
+          <input type="number" id="limit-items" value="1000" min="1">
+        </div>
+        <div>
+          <label for="delay-sec">Scraping Interval (s)</label>
+          <input type="number" id="delay-sec" value="2.5" step="0.5" min="0.5">
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="btn-group">
+        <button class="btn btn-primary" id="btn-start">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="fill: currentColor;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          Harvest Colleges
+        </button>
+        <button class="btn btn-secondary" id="btn-stop" disabled>Stop</button>
+      </div>
+    </div>
+
+    <!-- Live Logs -->
+    <div class="card log-panel">
+      <div class="log-header">
+        <div class="log-title">Live Scraper Logs</div>
+        <button class="clear-btn" id="btn-clear-logs">Clear Logs</button>
+      </div>
+      <div class="console-logs" id="console-logs"></div>
+      
+      <!-- Export Options -->
+      <div class="action-grid">
+        <button class="btn btn-secondary" id="btn-export-csv" disabled>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          Export CSV
+        </button>
+        <button class="btn btn-secondary" id="btn-export-json" disabled>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="9" x2="15" y2="9"></line><line x1="9" y1="13" x2="15" y2="13"></line><line x1="9" y1="17" x2="13" y2="17"></line></svg>
+          Export JSON
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

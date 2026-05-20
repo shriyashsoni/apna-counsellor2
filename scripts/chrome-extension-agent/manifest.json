@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "Apna Counsellor - College Harvester Agent",
+  "version": "1.0.0",
+  "description": "Premium multi-platform agent to extract college details directly using Chrome with zero dependencies.",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "tabs",
+    "unlimitedStorage"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "College Harvester Agent"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ]
+}
