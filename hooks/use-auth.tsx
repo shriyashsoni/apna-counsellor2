@@ -10,6 +10,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   updateProfile,
+  sendPasswordResetEmail,
   User as FirebaseUser
 } from "firebase/auth"
 import { firebaseUidToUuid } from "@/lib/auth-utils"
@@ -181,11 +182,23 @@ export function useAuth(): AuthContextType & {
     }
   };
 
+  const sendPasswordReset = async (email: string) => {
+    setIsLoading(true);
+    try {
+      await sendPasswordResetEmail(auth, email);
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      throw error;
+    }
+  };
+
   return {
     user,
     signIn: login,
     signInWithEmail,
     signUpWithEmail,
+    sendPasswordReset,
     signOut: logout,
     login,
     logout,

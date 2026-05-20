@@ -10,7 +10,7 @@ import Link from "next/link"
 import { useAuth } from "@/hooks/use-auth"
 
 export default function LoginPage() {
-  const { signIn, signInWithEmail, signUpWithEmail, isAuthenticated, isLoading } = useAuth()
+  const { signIn, signInWithEmail, signUpWithEmail, sendPasswordReset, isAuthenticated, isLoading } = useAuth()
   const router = useRouter()
   const [isConnecting, setIsConnecting] = useState(false)
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login')
@@ -54,6 +54,27 @@ export default function LoginPage() {
       console.error("Auth error", error)
       const { toast } = await import("sonner")
       toast.error(error.message || "Authentication failed")
+    } finally {
+      setIsConnecting(false)
+    }
+  }
+
+  const handleForgotPassword = async () => {
+    if (!email) {
+      const { toast } = await import("sonner")
+      toast.warning("Please enter your email address first to reset your password.")
+      return
+    }
+    
+    setIsConnecting(true)
+    try {
+      await sendPasswordReset(email)
+      const { toast } = await import("sonner")
+      toast.success("Password reset email sent! Please check your inbox.")
+    } catch (error: any) {
+      console.error("Password reset error", error)
+      const { toast } = await import("sonner")
+      toast.error(error.message || "Failed to send password reset email")
     } finally {
       setIsConnecting(false)
     }
@@ -197,7 +218,18 @@ export default function LoginPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-black uppercase tracking-widest text-slate-400 ml-1">Password</label>
+                <div className="flex justify-between items-center ml-1">
+                  <label className="text-xs font-black uppercase tracking-widest text-slate-400">Password</label>
+                  {authMode === 'login' && (
+                    <button
+                      type="button"
+                      onClick={handleForgotPassword}
+                      className="text-xs font-bold text-primary hover:underline hover:text-primary/80 focus:outline-none"
+                    >
+                      Forgot Password?
+                    </button>
+                  )}
+                </div>
                 <input 
                   type="password"
                   placeholder="••••••••"
