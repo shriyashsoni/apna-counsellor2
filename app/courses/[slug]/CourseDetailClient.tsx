@@ -195,19 +195,19 @@ export default function CourseDetailClient({ slug, initialCourse }: { slug: stri
       <div className="container mx-auto px-4 max-w-6xl pt-10">
         
         {/* Title Section */}
-        <div className="mb-8">
-          <div className="flex items-center gap-2 mb-3 text-sm font-semibold text-slate-500 uppercase tracking-widest">
+        <div className="mb-6 sm:mb-8">
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-3 text-xs sm:text-sm font-semibold text-slate-500 uppercase tracking-widest">
             <Link href="/" className="hover:text-purple-600 transition-colors">Home</Link>
             <span>›</span>
             <Link href="/courses" className="hover:text-purple-600 transition-colors">Courses</Link>
             <span>›</span>
             <span className="text-slate-900">{course.category || 'Batch'}</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-black tracking-tight text-slate-900 mb-4 leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-slate-900 mb-4 leading-tight">
             {course.title}
           </h1>
           
-          <div className="flex flex-col sm:flex-row gap-4 sm:items-center text-sm font-bold text-slate-600">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center text-xs sm:text-sm font-bold text-slate-600">
             <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-sm">
               <Users className="h-4 w-4 text-purple-600" />
               <span>For {course.category || 'MHT-CET'} Aspirants</span>
@@ -226,12 +226,12 @@ export default function CourseDetailClient({ slug, initialCourse }: { slug: stri
           <div className="lg:col-span-8 space-y-12">
             
             {/* Sticky Tabs Bar */}
-            <div className="sticky top-0 z-40 bg-[#F8F9FA] pt-4 pb-0 flex gap-6 overflow-x-auto no-scrollbar border-b border-slate-200 shadow-[0_10px_10px_-10px_rgba(0,0,0,0.05)]">
+            <div className="sticky top-0 z-40 bg-[#F8F9FA] pt-4 pb-0 flex gap-4 sm:gap-6 overflow-x-auto no-scrollbar border-b border-slate-200 shadow-[0_10px_10px_-10px_rgba(0,0,0,0.05)] px-1">
               {tabs.map(t => (
                 <button 
                   key={t.id}
                   onClick={() => scrollToSection(t.id)}
-                  className={`pb-3 font-bold text-base whitespace-nowrap transition-all border-b-[3px] ${
+                  className={`pb-3 font-bold text-sm sm:text-base whitespace-nowrap transition-all border-b-[3px] ${
                     activeTab === t.id 
                       ? 'border-purple-600 text-purple-700' 
                       : 'border-transparent text-slate-500 hover:text-slate-800'
@@ -247,9 +247,9 @@ export default function CourseDetailClient({ slug, initialCourse }: { slug: stri
               
               {/* About Section */}
               <section id="about" className="scroll-mt-32">
-                <h2 className="text-2xl font-black mb-6 text-slate-900">About the Batch</h2>
+                <h2 className="text-xl sm:text-2xl font-black mb-4 sm:mb-6 text-slate-900">About the Batch</h2>
                 <Card className="bg-white rounded-3xl border-slate-200 shadow-sm overflow-hidden">
-                  <CardContent className="p-8 space-y-6">
+                  <CardContent className="p-5 sm:p-8 space-y-6">
                     <div className="relative">
                       <div 
                         className={`text-slate-600 font-medium text-base leading-relaxed prose prose-slate prose-p:my-2 prose-ul:my-2 prose-ol:my-2 max-w-none ${!isDescriptionExpanded ? 'line-clamp-4 overflow-hidden' : ''}`}
@@ -314,16 +314,16 @@ export default function CourseDetailClient({ slug, initialCourse }: { slug: stri
 
               {/* Features Section */}
               <section id="features" className="scroll-mt-32">
-                <h2 className="text-2xl font-black mb-6 text-slate-900">Batch Features</h2>
-                <div className="grid sm:grid-cols-2 gap-6">
+                <h2 className="text-xl sm:text-2xl font-black mb-4 sm:mb-6 text-slate-900">Batch Features</h2>
+                <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
                   
                   {/* Primary Feature Box */}
                   <Card className="bg-slate-900 rounded-3xl border-slate-800 shadow-xl overflow-hidden relative group">
                     <div className="absolute top-0 right-0 p-4">
                       <Badge className="bg-purple-500 text-white font-black border-none uppercase tracking-widest text-[9px]">Premium</Badge>
                     </div>
-                    <CardContent className="p-8">
-                      <h3 className="text-2xl font-black text-white mb-6 border-b border-slate-800 pb-4">
+                    <CardContent className="p-5 sm:p-8">
+                      <h3 className="text-xl sm:text-2xl font-black text-white mb-6 border-b border-slate-800 pb-4">
                         Core Program
                       </h3>
                       <ul className="space-y-4">
@@ -345,8 +345,8 @@ export default function CourseDetailClient({ slug, initialCourse }: { slug: stri
 
                   {/* Secondary Features/Bonuses Box */}
                   <Card className="bg-white rounded-3xl border-slate-200 shadow-sm overflow-hidden border-t-[6px] border-t-amber-400">
-                    <CardContent className="p-8">
-                      <h3 className="text-2xl font-black text-slate-900 mb-6 border-b border-slate-100 pb-4">
+                    <CardContent className="p-5 sm:p-8">
+                      <h3 className="text-xl sm:text-2xl font-black text-slate-900 mb-6 border-b border-slate-100 pb-4">
                         Bonuses Included
                       </h3>
                       <ul className="space-y-4">
@@ -430,8 +430,8 @@ export default function CourseDetailClient({ slug, initialCourse }: { slug: stri
               {/* Details / Resources Section */}
               <section id="details" className="scroll-mt-32">
                 <Card className="bg-white rounded-3xl border-slate-200 shadow-sm overflow-hidden">
-                  <CardContent className="p-8 md:p-12">
-                    <h2 className="text-2xl font-black mb-8 text-slate-900">More Details</h2>
+                  <CardContent className="p-5 sm:p-8 md:p-12">
+                    <h2 className="text-xl sm:text-2xl font-black mb-6 sm:mb-8 text-slate-900">More Details</h2>
                     <div className="space-y-6">
                       
                       {Array.isArray(course.resources) && course.resources.length > 0 ? (
@@ -602,20 +602,27 @@ export default function CourseDetailClient({ slug, initialCourse }: { slug: stri
       </div>
       
       {/* MOBILE STICKY BUY BAR (Visible only on mobile/tablet) */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-4 shadow-[0_-10px_20px_rgba(0,0,0,0.05)] z-50 flex items-center justify-between gap-4">
-        <div>
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-3 sm:p-4 shadow-[0_-10px_20px_rgba(0,0,0,0.08)] z-50 flex items-center justify-between gap-3">
+        <div className="flex-shrink-0">
           {course.is_free ? (
-            <p className="text-2xl font-black text-emerald-500">FREE</p>
+            <p className="text-xl sm:text-2xl font-black text-emerald-500">FREE</p>
           ) : (
-            <p className="text-2xl font-black text-slate-900 leading-none">
-              ₹{Number(course.discounted_price || course.price).toLocaleString()}
-            </p>
+            <div className="flex flex-col">
+              <p className="text-xl sm:text-2xl font-black text-slate-900 leading-none">
+                ₹{Number(course.discounted_price || course.price).toLocaleString()}
+              </p>
+              {course.original_price && course.discounted_price && (
+                <p className="text-[10px] sm:text-xs font-semibold text-slate-400 line-through mt-0.5">
+                  ₹{Number(course.original_price).toLocaleString()}
+                </p>
+              )}
+            </div>
           )}
         </div>
         
         {isEnrolled ? (
-          <Link href="/dashboard" className="flex-1 max-w-[200px]">
-            <Button className="w-full h-12 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-black text-md">
+          <Link href="/dashboard" className="flex-1 max-w-[220px]">
+            <Button className="w-full h-11 sm:h-12 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-black text-sm sm:text-md">
               Dashboard
             </Button>
           </Link>
@@ -623,7 +630,7 @@ export default function CourseDetailClient({ slug, initialCourse }: { slug: stri
           <Button 
             onClick={handleEnroll} 
             disabled={isPaying}
-            className="flex-1 max-w-[200px] h-12 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-black text-md shadow-lg shadow-purple-200"
+            className="flex-1 max-w-[220px] h-11 sm:h-12 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-black text-sm sm:text-md shadow-lg shadow-purple-200"
           >
             {isPaying ? <Loader2 className="animate-spin h-5 w-5" /> : (course.is_free ? "Enroll Free" : "Continue")}
           </Button>
