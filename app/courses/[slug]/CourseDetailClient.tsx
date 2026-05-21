@@ -225,6 +225,19 @@ export default function CourseDetailClient({ slug, initialCourse }: { slug: stri
           {/* LEFT COLUMN: Main Content & Tabs */}
           <div className="lg:col-span-8 space-y-12">
             
+            {/* Notification Banner */}
+            {course.tagline && (
+              <div className="bg-purple-50 border border-purple-200 p-4 rounded-2xl flex gap-3 items-start shadow-sm mb-2">
+                <div className="h-8 w-8 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 shrink-0">
+                  <Sparkles className="h-4 w-4" />
+                </div>
+                <div>
+                  <h4 className="font-black text-purple-900 text-sm">Latest Notification</h4>
+                  <p className="text-purple-700 text-sm font-medium mt-0.5">{course.tagline}</p>
+                </div>
+              </div>
+            )}
+
             {/* Sticky Tabs Bar */}
             <div className="sticky top-0 z-40 bg-[#F8F9FA] pt-4 pb-0 flex gap-4 sm:gap-6 overflow-x-auto no-scrollbar border-b border-slate-200 shadow-[0_10px_10px_-10px_rgba(0,0,0,0.05)] px-1">
               {tabs.map(t => (
@@ -396,22 +409,32 @@ export default function CourseDetailClient({ slug, initialCourse }: { slug: stri
                             </div>
                           </div>
                           
-                          {/* Module Lessons Preview */}
+                          {/* Module Lessons Preview / Unlocked Content */}
                           {mod.lessons && mod.lessons.length > 0 && (
-                            <div className="flex flex-col gap-2 w-full sm:w-auto min-w-[200px]">
-                              {mod.lessons.slice(0,2).map((lesson: any, lIdx: number) => (
-                                 <div key={lIdx} className="flex justify-between items-center bg-white p-2 px-3 rounded-lg border border-slate-200 shadow-sm text-xs font-bold">
-                                    <span className="text-slate-700 truncate max-w-[150px]">{lesson.title}</span>
-                                    {lesson.is_free_preview || course.is_free ? (
-                                      <Unlock className="h-3.5 w-3.5 text-emerald-500" />
+                            <div className="flex flex-col gap-2 w-full sm:w-auto min-w-[250px]">
+                              {mod.lessons.map((lesson: any, lIdx: number) => {
+                                const isAccessible = course.is_free || lesson.is_free_preview || isEnrolled;
+                                return (
+                                 <div key={lIdx} className="flex justify-between items-center bg-white p-2 px-3 rounded-lg border border-slate-200 shadow-sm text-xs font-bold gap-4">
+                                    <span className="text-slate-700 truncate max-w-[180px]">{lesson.title}</span>
+                                    {isAccessible ? (
+                                      lesson.video_url ? (
+                                        <a href={lesson.video_url} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 text-white bg-purple-600 hover:bg-purple-700 px-3 py-1.5 rounded-md transition-colors whitespace-nowrap shadow-sm">
+                                          <PlayCircle className="h-3.5 w-3.5" /> <span className="text-[10px] uppercase">Watch</span>
+                                        </a>
+                                      ) : (
+                                        <div className="flex items-center gap-1 text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md">
+                                          <Unlock className="h-3 w-3" /> <span className="text-[10px] uppercase">Unlocked</span>
+                                        </div>
+                                      )
                                     ) : (
-                                      <Lock className="h-3.5 w-3.5 text-slate-400" />
+                                      <div className="flex items-center gap-1 text-slate-400 bg-slate-50 border border-slate-100 px-2 py-1 rounded-md cursor-not-allowed">
+                                        <Lock className="h-3 w-3" /> <span className="text-[10px] uppercase">Locked</span>
+                                      </div>
                                     )}
                                  </div>
-                              ))}
-                              {mod.lessons.length > 2 && (
-                                <p className="text-[10px] text-center font-bold text-purple-600 mt-1">+{mod.lessons.length - 2} more lessons inside</p>
-                              )}
+                                );
+                              })}
                             </div>
                           )}
                         </div>
@@ -441,10 +464,15 @@ export default function CourseDetailClient({ slug, initialCourse }: { slug: stri
                               <span className="text-slate-400 font-medium text-lg mt-0.5">
                                 {String(idx + 1).padStart(2, '0')}.
                               </span>
-                              <div>
+                              <div className="flex-1">
                                 <p className="font-semibold text-slate-700 leading-relaxed text-base">
                                   <span className="font-black text-slate-900">{res.title}</span> — {res.type === 'pdf' ? 'PDF Resource kit and worksheets' : 'Additional learning links and videos'} will be provided according to the planner.
                                 </p>
+                                {(isEnrolled || course.is_free) && res.url && (
+                                  <a href={res.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 mt-3 text-xs font-black text-white bg-purple-600 hover:bg-purple-700 px-4 py-2.5 rounded-xl transition-all shadow-md shadow-purple-200 hover:-translate-y-0.5">
+                                    <FileText className="h-4 w-4" /> Access Resource
+                                  </a>
+                                )}
                               </div>
                             </div>
                           </div>
