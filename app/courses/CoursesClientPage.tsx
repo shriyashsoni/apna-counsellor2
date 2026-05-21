@@ -76,9 +76,15 @@ export default function CoursesClientPage() {
               <Card className="border border-slate-100 dark:border-slate-800 rounded-[3rem] shadow-xl overflow-hidden bg-white dark:bg-slate-900/40 backdrop-blur-md">
                 <CardHeader className="p-8 md:p-12 pb-6 border-b border-slate-50 dark:border-slate-800">
                   <div className="flex flex-col md:flex-row md:items-center gap-8">
-                    <div className="h-24 w-24 rounded-[2rem] bg-purple-50 dark:bg-purple-900/10 flex items-center justify-center text-purple-600 dark:text-purple-400 flex-shrink-0 mx-auto md:mx-0 shadow-inner">
-                      <Award className="h-12 w-12" />
-                    </div>
+                    {course.thumbnail_url ? (
+                      <div className="h-24 w-36 relative rounded-[2rem] overflow-hidden flex-shrink-0 mx-auto md:mx-0 shadow-inner border border-slate-100 dark:border-slate-800">
+                        <Image src={course.thumbnail_url} alt={course.title} fill className="object-cover" />
+                      </div>
+                    ) : (
+                      <div className="h-24 w-24 rounded-[2rem] bg-purple-50 dark:bg-purple-900/10 flex items-center justify-center text-purple-600 dark:text-purple-400 flex-shrink-0 mx-auto md:mx-0 shadow-inner">
+                        <Award className="h-12 w-12" />
+                      </div>
+                    )}
                     <div className="text-center md:text-left space-y-2">
                       <div className="flex flex-wrap gap-2 justify-center md:justify-start">
                         <Badge className="bg-purple-100 dark:bg-purple-950 text-purple-600 dark:text-purple-400 border-none font-black text-[10px] uppercase">{course.category || 'Counselling'}</Badge>

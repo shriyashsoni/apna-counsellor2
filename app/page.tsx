@@ -11,6 +11,7 @@ import { PartnershipCarousel } from "@/components/partnership-carousel"
 import { AIToolsSection } from "@/components/ai-tools-section"
 import { HowItWorks } from "@/components/how-it-works"
 import { ResourceDirectory } from "@/components/resource-directory"
+import { CoursesSection } from "@/components/courses-section"
 import { motion } from "framer-motion"
 
 export default function Home() {
@@ -39,6 +40,9 @@ export default function Home() {
 
       {/* How It Works Section */}
       <HowItWorks />
+
+      {/* Courses Section */}
+      <CoursesSection />
 
       {/* About Section */}
       <section className="py-24 container mx-auto px-4">
