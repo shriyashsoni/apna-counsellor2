@@ -25,8 +25,15 @@ export async function generateMetadata({ params }: CoursePageProps): Promise<Met
   }
 
   // Ensure absolute URL for social preview
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://apnacounsellor.com';
-  const ogImageUrl = course.thumbnail_url || `${baseUrl}/images/default-course-og.png`;
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://apnacounsellor.in';
+  
+  let ogImageUrl = `${baseUrl}/images/default-course-og.png`;
+  if (course.thumbnail_url) {
+    ogImageUrl = course.thumbnail_url.startsWith('http') 
+      ? course.thumbnail_url 
+      : `${baseUrl}${course.thumbnail_url.startsWith('/') ? '' : '/'}${course.thumbnail_url}`;
+  }
+  
   const courseUrl = `${baseUrl}/courses/${course.slug}`;
 
   return {

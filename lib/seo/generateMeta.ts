@@ -6,6 +6,7 @@ interface CounselingMetaParams {
   slug: string;
   city?: string;
   year?: string;
+  customImage?: string;
 }
 
 export function generateCounselingMeta({
@@ -14,6 +15,7 @@ export function generateCounselingMeta({
   slug,
   city,
   year = '2025',
+  customImage,
 }: CounselingMetaParams): Metadata {
   const title = `${examName} ${pageType} ${year}${city ? ` in ${city}` : ''} | Apna Counsellor`;
   
@@ -26,8 +28,21 @@ export function generateCounselingMeta({
   }
 
   const url = `https://www.apnacounsellor.in/${slug}`;
-  // Use the real preview image — dynamic OG generation route is not set up yet
-  const ogImage = `https://www.apnacounsellor.in/images/landing-preview-v3.png`;
+  
+  // Determine appropriate preview image based on exam name
+  let ogImage = `https://www.apnacounsellor.in/images/counseling-preview-v3.png`;
+  
+  if (customImage) {
+    ogImage = customImage.startsWith('http') ? customImage : `https://www.apnacounsellor.in${customImage.startsWith('/') ? '' : '/'}${customImage}`;
+  } else if (examName.toLowerCase().includes('josaa') || examName.toLowerCase().includes('jee')) {
+    ogImage = `https://www.apnacounsellor.in/images/josaa-counselling.png`;
+  } else if (examName.toLowerCase().includes('mht') || examName.toLowerCase().includes('cet')) {
+    ogImage = `https://www.apnacounsellor.in/images/mht-cet-counselling.png`;
+  } else if (examName.toLowerCase().includes('comedk')) {
+    ogImage = `https://www.apnacounsellor.in/images/comedk-counselling.png`;
+  } else if (examName.toLowerCase().includes('mp dte') || examName.toLowerCase().includes('mpdte')) {
+    ogImage = `https://www.apnacounsellor.in/images/mp-dte-counselling.png`;
+  }
 
   return {
     title,
