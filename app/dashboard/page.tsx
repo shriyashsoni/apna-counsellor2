@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/client"
 import { useState, useEffect } from "react"
+import { useAuth } from "@/hooks/use-auth"
 import { motion, AnimatePresence } from "framer-motion"
 import { 
   User, 
@@ -55,37 +56,47 @@ import { Video, Star as StarIcon } from "lucide-react"
 
 export default function DashboardPage() {
   const router = useRouter()
+  const { user: firebaseUser, isLoading: authLoading } = useAuth()
   const [profile, setProfile] = useState<any>(undefined)
   const [user, setUser] = useState<any>(undefined)
   const supabase = createClient()
 
   useEffect(() => {
-    async function loadData() {
-      const { data: authData } = await supabase.auth.getUser()
-      const authUser = authData?.user
-      if (!authUser) {
-        router.push("/login")
-        return
-      }
-      
-      // Get profile with metadata from user
+    // Wait for Firebase auth to resolve before acting
+    if (authLoading) return;
+
+    if (!firebaseUser) {
+      router.push("/login")
+      return
+    }
+
+    async function loadProfile() {
+      // Use the Firebase user's deterministic UUID (mapped to Supabase)
+      const userId = firebaseUser!.id
+
       const { data: profileData } = await supabase
         .from('profiles')
         .select('*')
-        .eq('id', authUser.id)
+        .eq('id', userId)
         .maybeSingle()
 
       if (!profileData || !profileData.onboarding_complete) {
         router.push("/onboarding")
       } else {
         setProfile(profileData)
-        setUser({ ...authUser, role: profileData.role || 'student' })
+        setUser({
+          id: userId,
+          uid: firebaseUser!.uid,
+          email: firebaseUser!.email,
+          name: firebaseUser!.name,
+          role: profileData.role || 'student'
+        })
       }
     }
-    loadData()
-  }, [router])
+    loadProfile()
+  }, [authLoading, firebaseUser, router])
 
-  if (user === undefined || profile === undefined) return (
+  if (authLoading || user === undefined || profile === undefined) return (
     <div className="h-screen flex flex-col items-center justify-center gap-4 bg-slate-50 dark:bg-slate-950">
       <div className="h-16 w-16 border-4 border-purple-600 border-t-transparent rounded-full animate-spin" />
       <p className="text-slate-500 font-bold animate-pulse">Initializing Your Dashboard...</p>
