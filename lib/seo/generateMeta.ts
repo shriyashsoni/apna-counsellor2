@@ -26,7 +26,8 @@ export function generateCounselingMeta({
   }
 
   const url = `https://www.apnacounsellor.in/${slug}`;
-  const ogImage = `https://www.apnacounsellor.in/og/${slug}.png`;
+  // Use the real preview image — dynamic OG generation route is not set up yet
+  const ogImage = `https://www.apnacounsellor.in/images/landing-preview-v3.png`;
 
   return {
     title,

@@ -54,3 +54,4 @@ credentials.json
 .metro-cache/
 .expo/
 *.jks
+.aider*

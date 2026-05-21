@@ -24,12 +24,14 @@ export async function middleware(request: NextRequest) {
   const isAuthCallback = request.nextUrl.pathname.startsWith('/auth')
   const isPublicPage = [
     '/', '/about', '/contact', '/privacy-policy', '/terms', '/founder', '/pricing', '/predictor', '/colleges',
-    '/counselling', '/college', '/resources', '/mentors', '/mentorship',
+    '/counselling', '/counseling', '/college', '/resources', '/mentors', '/mentorship', '/blog',
     '/sitemap.xml', '/sitemap-index.xml', '/robots.txt', '/ads.txt'
   ].some(path => 
     request.nextUrl.pathname === path || 
     request.nextUrl.pathname.startsWith('/college/') || 
     request.nextUrl.pathname.startsWith('/counselling/') ||
+    request.nextUrl.pathname.startsWith('/counseling/') ||
+    request.nextUrl.pathname.startsWith('/blog/') ||
     request.nextUrl.pathname.startsWith('/sitemap-')
   )
 

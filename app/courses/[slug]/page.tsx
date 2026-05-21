@@ -44,6 +44,7 @@ export default function CourseDetailsPage() {
           if (user?.id) {
             const { data: enrollData } = await supabase
               .from('course_enrollments')
+              .select('id')
               .eq('course_id', courseData.id)
               .eq('student_id', user.id)
               .eq('status', 'active')
@@ -79,12 +80,12 @@ export default function CourseDetailsPage() {
         name: "Apna Counsellor",
         description: course.title,
         prefill: {
-          name: user.name || "Student",
-          email: user.email || "",
+          name: user?.name || "Student",
+          email: user?.email || "",
         },
         metadata: {
           courseId: course.id,
-          studentId: user.id
+          studentId: (user?.id ?? '') as string
         },
         onSuccess: async (response) => {
           // Call secure backend route to register enrollment
@@ -93,7 +94,7 @@ export default function CourseDetailsPage() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               courseId: course.id,
-              studentId: user.id,
+              studentId: user?.id,
               paymentId: response.razorpay_payment_id
             })
           })

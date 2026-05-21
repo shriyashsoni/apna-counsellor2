@@ -88,7 +88,7 @@ function BookCallContent() {
     // Get user email
     async function getUserEmail() {
       const { data: { user } } = await supabase.auth.getUser()
-      if (user?.email) setFormData(prev => ({ ...prev, email: user.email, fullName: user.user_metadata?.full_name || prev.fullName }))
+      if (user?.email) setFormData(prev => ({ ...prev, email: user.email ?? prev.email, fullName: user.user_metadata?.full_name || prev.fullName }))
     }
 
     fetchMentors()

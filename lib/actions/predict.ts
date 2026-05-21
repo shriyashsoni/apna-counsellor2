@@ -99,19 +99,41 @@ function processResults(colleges: any[], userRank: number, args: any) {
 }
 
 function mapToResult(college: any, rankRecord: any, userRank: number, args: any) {
-  const buffer = rankRecord.closing_rank - userRank;
-  const range = rankRecord.closing_rank - rankRecord.opening_rank || (rankRecord.closing_rank * 0.1); 
-  
-  let safetyScore = Math.min((buffer / range) * 100, 100);
+  const closingRank = rankRecord.closing_rank || 0;
+  const openingRank = rankRecord.opening_rank || 0;
+  const courseName: string = rankRecord.course_name || 'General';
+
+  // Recalibrated safety score:
+  // If userRank == closingRank → buffer=0 → score=50 (Moderate, not Reach)
+  // If userRank << closingRank → score approaches 100 (Safe)
+  // If userRank >> closingRank → score approaches 0 (Reach)
+  const range = Math.max(closingRank - openingRank, closingRank * 0.15);
+  const buffer = closingRank - userRank;
+  let safetyScore = Math.min(50 + (buffer / range) * 50, 100);
   if (safetyScore < 0) safetyScore = 0;
 
-  const isPreferredBranch = args.preferredBranches?.some(b => 
-    rankRecord.course_name.toLowerCase().includes(b.toLowerCase())
-  );
-  
+  const isPreferredBranch = (args.preferredBranches as string[] | undefined)?.some(
+    (b) => courseName.toLowerCase().includes(b.toLowerCase())
+  ) ?? false;
+
   const totalScore = safetyScore + (isPreferredBranch ? 20 : 0);
-  const tag = safetyScore > 60 ? "Safe" : safetyScore > 30 ? "Moderate" : "Reach";
+  const tag = safetyScore > 65 ? "Safe" : safetyScore > 35 ? "Moderate" : "Reach";
   const slug = college.college_id || (college.name || '').toLowerCase().trim().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
+
+  // Quota detection
+  // 1. Home State quota (HS)
+  // 2. EWS – if category is EWS, flag accordingly  
+  // 3. Female supernumerary – JEE NITs give extra seats to females
+  const isHomeState = args.homeState && college.state === args.homeState;
+  const isEWS = args.category === 'EWS';
+  const isFemaleSupernumerary =
+    args.gender === 'Female' &&
+    (college.type?.includes('NIT') || college.name?.toUpperCase().includes('NIT') || college.name?.toUpperCase().includes('IIIT'));
+
+  let quota = 'AI'; // All India
+  if (isHomeState) quota = 'HS';
+  if (isEWS) quota = 'EWS';
+  if (isFemaleSupernumerary) quota = quota === 'AI' ? 'Female-SN' : `${quota}/Female-SN`;
 
   return {
     id: slug,
@@ -119,14 +141,14 @@ function mapToResult(college: any, rankRecord: any, userRank: number, args: any)
     name: college.name,
     state: college.state || "India",
     type: college.type || "Premier",
-    branch: rankRecord.course_name,
+    branch: courseName,
     year: rankRecord.year,
-    cutoffRank: rankRecord.closing_rank,
+    cutoffRank: closingRank,
     probability: Math.floor(safetyScore),
     safetyScore,
     totalScore,
     tag,
-    quota: (args.homeState && college.state === args.homeState) ? "HS" : "AI",
+    quota,
     avgPackage: college.avg_package || "TBD",
     nirfRank: college.nirf_rank,
     image: college.image_url

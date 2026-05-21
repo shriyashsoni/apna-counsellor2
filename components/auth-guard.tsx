@@ -2,7 +2,7 @@
 
 import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Loader2, Lock } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
@@ -22,7 +22,7 @@ export function AuthGuard({
   const [profile, setProfile] = useState<any>(undefined)
   const [subscription, setSubscription] = useState<any>(undefined)
   const [isClient, setIsClient] = useState(false)
-  const supabase = createClient()
+  const supabase = useMemo(() => createClient(), [])
   const router = useRouter()
 
   useEffect(() => {
@@ -52,7 +52,7 @@ export function AuthGuard({
       }
     }
     checkAuth()
-  }, [requireSubscription])
+  }, [supabase, requireSubscription])
 
   const isLoading = session === undefined || (session && profile === undefined) || (session && requireSubscription && subscription === undefined)
 

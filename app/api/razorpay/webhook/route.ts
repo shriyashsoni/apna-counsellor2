@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import crypto from 'crypto'
 import { supabaseAdmin } from '@/lib/supabase/admin'
-import { sendBookingConfirmation, sendAdminNotification } from '@/lib/actions/emails'
+import { sendBookingConfirmation, sendAdminNotification, sendMentorBookingNotification } from '@/lib/actions/emails'
 import { createMeetEvent } from '@/lib/google-calendar'
 
 export async function POST(req: Request) {

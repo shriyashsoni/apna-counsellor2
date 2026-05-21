@@ -5,8 +5,8 @@ import { NextResponse } from "next/server";
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const code = searchParams.get("code");
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.apnacounsellor.in";
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "";
   if (!code) {
     return NextResponse.redirect(`${siteUrl}/mentor/dashboard?error=no_code`);
   }
@@ -18,7 +18,6 @@ export async function GET(request: Request) {
     const user = authData?.user;
 
     if (authError || !user) {
-      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "";
       return NextResponse.redirect(`${siteUrl}/login`);
     }
 
@@ -28,18 +27,15 @@ export async function GET(request: Request) {
         .from("profiles")
         .update({ 
           google_refresh_token: tokens.refresh_token,
-          // Optionally store other info if needed
         })
         .eq("id", user.id);
 
       if (error) throw error;
     }
 
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "";
     return NextResponse.redirect(`${siteUrl}/mentor/dashboard?success=google_linked`);
   } catch (error) {
     console.error("Google Callback Error:", error);
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "";
     return NextResponse.redirect(`${siteUrl}/mentor/dashboard?error=callback_failed`);
   }
 }

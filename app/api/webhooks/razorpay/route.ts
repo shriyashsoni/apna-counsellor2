@@ -5,15 +5,16 @@ import { createMeetEvent } from '@/lib/google-calendar';
 import { sendBookingConfirmation, sendMentorBookingNotification } from '@/lib/actions/emails';
 
 export async function POST(req: Request) {
-  const body = await req.json();
+  // Read raw body text first for accurate HMAC verification
+  const rawBody = await req.text();
   const signature = req.headers.get('x-razorpay-signature');
 
-  // 1. Verify Webhook Signature
+  // 1. Verify Webhook Signature using raw body (NOT re-serialized JSON)
   const secret = process.env.RAZORPAY_WEBHOOK_SECRET;
   if (secret && signature) {
     const expectedSignature = crypto
       .createHmac('sha256', secret)
-      .update(JSON.stringify(body))
+      .update(rawBody)
       .digest('hex');
 
     if (signature !== expectedSignature) {
@@ -21,7 +22,20 @@ export async function POST(req: Request) {
     }
   }
 
+  let body: any;
+  try {
+    body = JSON.parse(rawBody);
+  } catch {
+    return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
+  }
+
   const event = body.event;
+
+  // Guard: only process payment events with expected payload shape
+  if (!body.payload?.payment?.entity) {
+    return NextResponse.json({ status: 'ignored' });
+  }
+
   const payload = body.payload.payment.entity;
   const metadata = payload.notes; // This contains our user_id, mentor_id, etc.
 

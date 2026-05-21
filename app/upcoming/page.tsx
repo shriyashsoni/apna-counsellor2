@@ -169,7 +169,7 @@ export default function UpcomingPage() {
                 </CardContent>
                 <CardFooter>
                   {platform.isLaunched ? (
-                    <Link href={platform.link} target="_blank" rel="noopener noreferrer" className="w-full">
+                    <Link href={platform.link ?? '#'} target="_blank" rel="noopener noreferrer" className="w-full">
                       <Button className="w-full animated-gradient text-white hover:text-white">
                         Visit Platform
                         <ExternalLink className="ml-2 h-4 w-4" />

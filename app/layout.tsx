@@ -98,7 +98,7 @@ export default async function RootLayout({
     ],
     "contactPoint": {
       "@type": "ContactPoint",
-      "telephone": "+91-XXXXXXXXXX",
+      "telephone": "+91-9340059530",
       "contactType": "customer service",
       "areaServed": "IN",
       "availableLanguage": ["en", "hi"]
@@ -129,11 +129,12 @@ export default async function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(searchSchema) }}
         />
-        <script
-          async
+        <Script
+          id="adsense"
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5711051199759574"
+          strategy="lazyOnload"
           crossOrigin="anonymous"
-        ></script>
+        />
         <Script
           src="https://checkout.razorpay.com/v1/checkout.js"
           strategy="beforeInteractive"

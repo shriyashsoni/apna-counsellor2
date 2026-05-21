@@ -58,7 +58,7 @@ export default function OnboardingPage() {
           phone: formData.phone,
           city: formData.city,
           exam: formData.examType,
-          target_year: parseInt(formData.targetYear) || 2026,
+          target_year: formData.targetYear || 2026,
           rank: formData.rank,
           category: formData.category,
           interested_states: formData.interestedStates,

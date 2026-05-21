@@ -94,16 +94,21 @@ export async function POST(req: Request) {
 
       let res;
       if (existingSession) {
-        // Update existing session
+        // Update existing session that was pre-created by Razorpay payment
         res = await supabase
           .from('sessions')
           .update(sessionData)
           .eq('id', existingSession.id)
-      } else {
-        // Insert new session
+      } else if (sessionData.payment_id) {
+        // Upsert by payment_id (unique) to avoid duplicates on retry
         res = await supabase
           .from('sessions')
-          .upsert(sessionData, { onConflict: 'description' }) // description contains the unique Booking ID
+          .upsert(sessionData, { onConflict: 'payment_id' })
+      } else {
+        // Free booking — insert fresh record
+        res = await supabase
+          .from('sessions')
+          .insert(sessionData)
       }
 
       if (res.error) console.error("Error syncing session from webhook:", res.error)

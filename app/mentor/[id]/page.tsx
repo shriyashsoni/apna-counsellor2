@@ -63,9 +63,9 @@ export default async function MentorProfilePage({ params }: MentorPageProps) {
 
   if (!mentor) notFound()
 
-  let sessions = []
-  let reviews = []
-  let services = []
+  let sessions: any[] = []
+  let reviews: any[] = []
+  let services: any[] = []
 
   try {
     const { data: sessionsData } = await supabase

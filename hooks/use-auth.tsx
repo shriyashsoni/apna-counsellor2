@@ -35,6 +35,7 @@ interface AuthContextType {
   signInWithEmail: (email: string, password: string) => Promise<void>;
   signUpWithEmail: (email: string, password: string, name: string) => Promise<void>;
   signOut: () => Promise<void>;
+  sendPasswordReset: (email: string) => Promise<void>;
   isLoading: boolean;
   isAuthenticated: boolean;
 }

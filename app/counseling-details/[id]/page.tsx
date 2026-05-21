@@ -80,7 +80,7 @@ export default async function CounselingDetailPage({ params }: CounselingPagePro
             <section>
               <h2 className="text-3xl font-bold mb-8">Official Resources</h2>
               <div className="grid gap-4">
-                {counseling.links.map((link, idx) => (
+                {counseling.links.map((link: { url: string; label: string }, idx: number) => (
                   <a 
                     key={idx} 
                     href={link.url} 
