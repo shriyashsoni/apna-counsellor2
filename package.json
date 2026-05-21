@@ -15,6 +15,7 @@
     "@auth/core": "^0.37.4",
     "@calcom/embed-react": "^1.5.3",
     "@emotion/is-prop-valid": "latest",
+    "@google/generative-ai": "^0.24.1",
     "@heyputer/puter.js": "^2.2.15",
     "@novu/nextjs": "^3.16.0",
     "@novu/node": "^2.6.6",

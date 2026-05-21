@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { Anthropic } from "@anthropic-ai/sdk"
+import { GoogleGenerativeAI } from "@google/generative-ai"
 
 export const maxDuration = 60; // Allow more time for AI generation
 
@@ -8,15 +8,14 @@ export async function POST(req: Request) {
     const body = await req.json().catch(() => ({}))
     const topic = body.topic || "MHT-CET or JEE Counselling Process in India"
 
-    if (!process.env.ANTHROPIC_API_KEY) {
-      return NextResponse.json({ error: "Anthropic API key not configured in .env" }, { status: 500 })
+    if (!process.env.GEMINI_API_KEY) {
+      return NextResponse.json({ error: "Gemini API key not configured in .env" }, { status: 500 })
     }
 
-    const anthropic = new Anthropic({
-      apiKey: process.env.ANTHROPIC_API_KEY,
-    })
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
 
-    const systemPrompt = `You are an expert India education writer for 'Apna Counsellor'. 
+    const systemInstruction = `You are an expert India education writer for 'Apna Counsellor'. 
 Your task is to generate a comprehensive, in-depth, SEO-optimized blog post about the given topic. 
 
 Output your response ONLY as a JSON object with NO OTHER TEXT WHATSOEVER. 
@@ -29,21 +28,16 @@ Format of JSON:
 }
 Do not wrap the JSON in Markdown backticks. Provide only RAW valid JSON.`
 
-    const response = await anthropic.messages.create({
-      model: "claude-3-5-sonnet-20240620",
-      max_tokens: 4000,
-      system: systemPrompt,
-      messages: [
-        { role: "user", content: `Write an in-depth blog post about: ${topic}. Please return ONLY valid JSON as requested.` }
-      ],
-    })
+    const prompt = `${systemInstruction}\n\nWrite an in-depth blog post about: ${topic}. Please return ONLY valid JSON as requested.`;
 
-    const textContent = response.content[0].type === 'text' ? response.content[0].text : ''
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const textContent = response.text();
     
     let generatedBlog;
     try {
-      // Attempt to parse JSON, removing markdown codeblock formatting if Claude added it
-      const cleanJson = textContent.replace(/^```json/, '').replace(/^```/, '').replace(/```$/, '').trim()
+      // Attempt to parse JSON, removing markdown codeblock formatting if Gemini added it
+      const cleanJson = textContent.replace(/^```[a-zA-Z]*\n/, '').replace(/^```/, '').replace(/```$/, '').replace(/\n```$/, '').trim()
       generatedBlog = JSON.parse(cleanJson)
     } catch (parseError) {
       console.error("Failed to parse JSON from AI response:", textContent)
