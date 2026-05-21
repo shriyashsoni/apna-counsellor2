@@ -25,6 +25,7 @@ export default function CourseDetailClient({ slug, initialCourse }: { slug: stri
   const [isEnrolled, setIsEnrolled] = useState<boolean>(false)
   const [loading, setLoading] = useState(!initialCourse)
   const [activeTab, setActiveTab] = useState('about')
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
   const supabase = createClient()
 
   useEffect(() => {
@@ -249,9 +250,20 @@ export default function CourseDetailClient({ slug, initialCourse }: { slug: stri
                 <h2 className="text-2xl font-black mb-6 text-slate-900">About the Batch</h2>
                 <Card className="bg-white rounded-3xl border-slate-200 shadow-sm overflow-hidden">
                   <CardContent className="p-8 space-y-6">
-                    <p className="text-slate-600 font-medium text-base leading-relaxed">
-                      {course.description}
-                    </p>
+                    <div className="relative">
+                      <div 
+                        className={`text-slate-600 font-medium text-base leading-relaxed prose prose-slate prose-p:my-2 prose-ul:my-2 prose-ol:my-2 max-w-none ${!isDescriptionExpanded ? 'line-clamp-4 overflow-hidden' : ''}`}
+                        dangerouslySetInnerHTML={{ __html: course.description || '' }}
+                      />
+                      {(course.description?.length > 250) && (
+                        <button 
+                          onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
+                          className="text-purple-600 font-black text-sm mt-3 hover:text-purple-700 flex items-center gap-1"
+                        >
+                          {isDescriptionExpanded ? 'Read Less' : 'Read More...'}
+                        </button>
+                      )}
+                    </div>
                     
                     <div className="grid sm:grid-cols-2 gap-6 pt-6 border-t border-slate-100">
                       <div className="flex items-start gap-3">
