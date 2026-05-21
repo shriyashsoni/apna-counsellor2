@@ -11,6 +11,27 @@ export const metadata: Metadata = {
     "Use our smart college predictor tools to know your best college options for MHT CET, JEE, MP DTE & COMEDK based on your rank, score & preferences.",
   keywords:
     "college predictor tool, MHT CET predictor 2025, JEE college predictor, COMEDK tool, MP DTE admission predictor, best college after CET",
+  openGraph: {
+    title: "College Predictor Tools – MHT CET, JEE, COMEDK, MP",
+    description: "Use our smart college predictor tools to know your best college options based on your rank & preferences.",
+    url: "https://www.apnacounsellor.in/predictors",
+    siteName: "Apna Counsellor",
+    images: [
+      {
+        url: "https://www.apnacounsellor.in/images/counseling-preview-v3.png",
+        width: 1200,
+        height: 630,
+        alt: "Apna Counsellor College Predictor Tools",
+      }
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "College Predictor Tools – MHT CET, JEE, COMEDK, MP",
+    description: "Use our smart college predictor tools to know your best college options.",
+    images: ["https://www.apnacounsellor.in/images/counseling-preview-v3.png"],
+  }
 }
 
 export default function PredictorsPage() {

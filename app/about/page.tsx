@@ -7,6 +7,27 @@ export const metadata: Metadata = {
     "Learn about Apna Counsellor – India's leading personalized counselling platform helping 1000+ students with college admissions, predictors, and choice filling.",
   keywords:
     "about Apna Counsellor, admission mentor, student guidance, college counselling platform, founder Shriyash Soni, best counselling India",
+  openGraph: {
+    title: "About Apna Counsellor – Your Admission Mentorship Partner",
+    description: "Learn about Apna Counsellor – India's leading personalized counselling platform helping 1000+ students.",
+    url: "https://www.apnacounsellor.in/about",
+    siteName: "Apna Counsellor",
+    images: [
+      {
+        url: "https://www.apnacounsellor.in/images/counseling-preview-v3.png",
+        width: 1200,
+        height: 630,
+        alt: "About Apna Counsellor",
+      }
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About Apna Counsellor – Your Admission Mentorship Partner",
+    description: "Learn about Apna Counsellor – India's leading personalized counselling platform.",
+    images: ["https://www.apnacounsellor.in/images/counseling-preview-v3.png"],
+  }
 }
 
 export default function AboutPage() {
