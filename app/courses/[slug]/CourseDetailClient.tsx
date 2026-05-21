@@ -91,7 +91,7 @@ export default function CourseDetailClient({ slug, initialCourse }: { slug: stri
         const data = await enrollRes.json()
         if (data.success) {
           setIsEnrolled(true)
-          router.push('/dashboard')
+          router.push(`/courses/${slug}/success`)
         }
       } catch (err) {
         console.error("Free enrollment failed", err)
@@ -126,7 +126,7 @@ export default function CourseDetailClient({ slug, initialCourse }: { slug: stri
           const data = await enrollRes.json()
           if (data.success) {
             setIsEnrolled(true)
-            router.push('/dashboard')
+            router.push(`/courses/${slug}/success`)
           }
         }
       })
@@ -214,7 +214,7 @@ export default function CourseDetailClient({ slug, initialCourse }: { slug: stri
             </div>
             <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-sm">
               <Calendar className="h-4 w-4 text-purple-600" />
-              <span>Starts on Available Immediately</span>
+              <span>Starts on {course.start_date ? new Date(course.start_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Available Immediately'}</span>
             </div>
           </div>
         </div>
@@ -585,7 +585,7 @@ export default function CourseDetailClient({ slug, initialCourse }: { slug: stri
                     </div>
                     <div className="flex items-center gap-3 text-sm font-semibold text-slate-600">
                       <Calendar className="h-4 w-4 text-slate-400" />
-                      <span>Starts on <strong>29 Jun 2026</strong></span>
+                      <span>Starts on <strong>{course.start_date ? new Date(course.start_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Available Immediately'}</strong></span>
                     </div>
                   </div>
 

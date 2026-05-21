@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { 
   Rocket, Plus, Search, BookOpen, Trash2, Edit, 
-  ExternalLink, Video, FileText, Loader2, AlertCircle, PlusCircle, Check
+  ExternalLink, Video, FileText, Loader2, AlertCircle, PlusCircle, Check, Users
 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -225,6 +225,15 @@ export default function AdminCoursesPage() {
                   className="flex-1 rounded-xl h-10 font-bold text-[10px] bg-white/5 hover:bg-white/10 text-white border border-white/10 uppercase flex items-center justify-center gap-1.5"
                 >
                   <PlusCircle className="h-3.5 w-3.5 text-[#00FF88]" /> Materials
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  onClick={() => router.push(`/admin/courses/${c.id}/students`)} 
+                  className="h-10 w-10 text-blue-400 hover:bg-blue-400/10 hover:text-blue-300 rounded-xl"
+                  title="View Students"
+                >
+                  <Users className="h-4.5 w-4.5" />
                 </Button>
                 <Button 
                   variant="ghost" 

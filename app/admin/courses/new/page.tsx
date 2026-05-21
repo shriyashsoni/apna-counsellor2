@@ -54,6 +54,8 @@ export default function AdminNewCoursePage() {
     banner_url: "",
     thumbnail_url: "",
     promo_video_url: "",
+    whatsapp_group_url: "",
+    start_date: "",
     color_accent: "#00FF88",
 
     // Step 4: Curriculum (Dynamic JSONB array)
@@ -204,6 +206,8 @@ export default function AdminNewCoursePage() {
         thumbnail_url: formData.thumbnail_url,
         banner_url: formData.banner_url,
         promo_video_url: formData.promo_video_url,
+        whatsapp_group_url: formData.whatsapp_group_url,
+        start_date: formData.start_date ? new Date(formData.start_date).toISOString() : null,
         is_free: formData.is_free,
         available_seats: formData.available_seats ? Number(formData.available_seats) : null,
         total_students: formData.total_students ? Number(formData.total_students) : 1200,
@@ -483,6 +487,24 @@ export default function AdminNewCoursePage() {
                     placeholder="https://www.youtube.com/watch?v=..." 
                     value={formData.promo_video_url} 
                     onChange={e => setFormData({ ...formData, promo_video_url: e.target.value })} 
+                    className="h-11 bg-white/5 border-white/10 text-white rounded-xl focus:border-[#00FF88]"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase text-slate-400">WhatsApp Group URL</label>
+                  <Input 
+                    placeholder="https://chat.whatsapp.com/..." 
+                    value={formData.whatsapp_group_url} 
+                    onChange={e => setFormData({ ...formData, whatsapp_group_url: e.target.value })} 
+                    className="h-11 bg-white/5 border-white/10 text-white rounded-xl focus:border-[#00FF88]"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase text-slate-400">Start Date</label>
+                  <Input 
+                    type="date"
+                    value={formData.start_date} 
+                    onChange={e => setFormData({ ...formData, start_date: e.target.value })} 
                     className="h-11 bg-white/5 border-white/10 text-white rounded-xl focus:border-[#00FF88]"
                   />
                 </div>
