@@ -202,6 +202,8 @@ export default function AdminNewCoursePage() {
         is_featured: formData.is_featured,
         visibility: formData.visibility,
         thumbnail_url: formData.thumbnail_url,
+        banner_url: formData.banner_url,
+        promo_video_url: formData.promo_video_url,
         is_free: formData.is_free,
         available_seats: formData.available_seats ? Number(formData.available_seats) : null,
         total_students: formData.total_students ? Number(formData.total_students) : 1200,
