@@ -23,11 +23,30 @@ export default function AdminBlogsPage() {
     setIsTriggering(true)
     setAgentTriggered(false)
     try {
-      const res = await fetch("/api/admin/trigger-agent", { method: "POST" })
+      const topic = form.title || "Random Admission Counselling Topic for India"
+      const res = await fetch("/api/admin/trigger-agent", { 
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ topic })
+      })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || "Failed to trigger")
+      
       setAgentTriggered(true)
-      toast.success("🤖 AI Agent triggered! Blogs will be published in ~5 minutes.")
+      toast.success("🤖 AI Agent generated the blog! Review it below.")
+      
+      // Auto-fill form with generated content
+      if (data.blog) {
+        setForm(prev => ({
+          ...prev,
+          title: data.blog.title || prev.title,
+          subtitle: data.blog.subtitle || prev.subtitle,
+          body: data.blog.body || prev.body,
+          tags: data.blog.tags && data.blog.tags.length > 0 ? data.blog.tags : prev.tags,
+          meta_title: data.blog.title || prev.meta_title,
+          meta_description: data.blog.subtitle || prev.meta_description,
+        }))
+      }
     } catch (err: any) {
       toast.error(`Agent Error: ${err.message}`)
     } finally {
