@@ -531,12 +531,12 @@ export default function CourseDetailClient({ slug, initialCourse }: { slug: stri
               <Card className="rounded-3xl border-slate-200 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.1)] bg-white overflow-hidden">
                 
                 {course.thumbnail_url ? (
-                  <div className="w-full aspect-video relative bg-slate-100">
+                  <div className="w-full aspect-video relative bg-white border-b border-slate-100">
                     <Image 
                       src={course.thumbnail_url} 
                       alt={course.title} 
                       fill 
-                      className="object-cover"
+                      className="object-contain"
                     />
                   </div>
                 ) : (

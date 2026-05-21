@@ -76,12 +76,12 @@ export default function CoursesClientPage() {
               <Card className="h-full flex flex-col border border-slate-200 dark:border-slate-800 rounded-[2rem] shadow-xl overflow-hidden bg-white dark:bg-slate-900 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
                 {/* Banner Image */}
                 {course.thumbnail_url ? (
-                  <div className="relative w-full aspect-video border-b border-slate-100 dark:border-slate-800">
+                  <div className="relative w-full aspect-video border-b border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900">
                     <Image
                       src={course.thumbnail_url}
                       alt={course.title}
                       fill
-                      className="object-cover"
+                      className="object-contain"
                     />
                     {course.is_free && (
                       <div className="absolute top-4 right-4 bg-emerald-500 text-white text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-lg">

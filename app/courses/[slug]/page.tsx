@@ -19,25 +19,42 @@ export async function generateMetadata({ params }: CoursePageProps): Promise<Met
 
   if (!course) {
     return {
-      title: "Course Not Found",
+      title: "Course Not Found | Apna Counsellor",
       description: "The requested course could not be found."
     }
   }
 
+  // Ensure absolute URL for social preview
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://apnacounsellor.com';
+  const ogImageUrl = course.thumbnail_url || `${baseUrl}/images/default-course-og.png`;
+  const courseUrl = `${baseUrl}/courses/${course.slug}`;
+
   return {
     title: `${course.title} | Apna Counsellor`,
-    description: course.description,
+    description: course.description || `Complete counselling guidance for ${course.category || 'students'}`,
     openGraph: {
       title: course.title,
-      description: course.description,
-      images: course.thumbnail_url ? [course.thumbnail_url] : ['/images/default-course-og.png'],
+      description: course.description || `Complete counselling guidance for ${course.category || 'students'}`,
+      url: courseUrl,
+      siteName: 'Apna Counsellor',
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: course.title,
+        }
+      ],
       type: "website",
     },
     twitter: {
       card: "summary_large_image",
       title: course.title,
-      description: course.description,
-      images: course.thumbnail_url ? [course.thumbnail_url] : ['/images/default-course-og.png'],
+      description: course.description || `Complete counselling guidance for ${course.category || 'students'}`,
+      images: [ogImageUrl],
+    },
+    alternates: {
+      canonical: courseUrl
     }
   }
 }
