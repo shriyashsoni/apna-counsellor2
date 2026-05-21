@@ -46,6 +46,9 @@ export default function AdminNewCoursePage() {
     status: "published",
     is_featured: false,
     visibility: "public",
+    is_free: false,
+    available_seats: "",
+    total_students: 1200,
 
     // Step 3: Media & Accent
     banner_url: "",
@@ -198,6 +201,10 @@ export default function AdminNewCoursePage() {
         is_published: formData.status === 'published',
         is_featured: formData.is_featured,
         visibility: formData.visibility,
+        thumbnail_url: formData.thumbnail_url,
+        is_free: formData.is_free,
+        available_seats: formData.available_seats ? Number(formData.available_seats) : null,
+        total_students: formData.total_students ? Number(formData.total_students) : 1200,
         meta_title: formData.meta_title || formData.title,
         meta_description: formData.meta_description || formData.tagline,
         keywords: formData.keywords.split(',').map(k => k.trim()).filter(Boolean)
@@ -392,6 +399,38 @@ export default function AdminNewCoursePage() {
                     className="h-5 w-5 rounded bg-white/5 border-white/10 text-[#00FF88] focus:ring-[#00FF88]"
                   />
                 </div>
+                <div className="space-y-2 flex items-center justify-between p-4 bg-white/5 border border-white/5 rounded-xl mt-6">
+                  <div>
+                    <p className="text-xs font-black text-white">100% Free Course?</p>
+                    <p className="text-[9px] text-slate-500 font-medium">Bypass Razorpay checkout</p>
+                  </div>
+                  <input 
+                    type="checkbox" 
+                    checked={formData.is_free} 
+                    onChange={e => setFormData({ ...formData, is_free: e.target.checked })} 
+                    className="h-5 w-5 rounded bg-white/5 border-white/10 text-[#00FF88] focus:ring-[#00FF88]"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase text-slate-400">Total Students (Stat)</label>
+                  <Input 
+                    type="number"
+                    placeholder="1200" 
+                    value={formData.total_students} 
+                    onChange={e => setFormData({ ...formData, total_students: e.target.value })} 
+                    className="h-11 bg-white/5 border-white/10 text-white rounded-xl focus:border-[#00FF88]"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase text-slate-400">Available Seats (Leave blank for infinite)</label>
+                  <Input 
+                    type="number"
+                    placeholder="e.g. 50" 
+                    value={formData.available_seats} 
+                    onChange={e => setFormData({ ...formData, available_seats: e.target.value })} 
+                    className="h-11 bg-white/5 border-white/10 text-white rounded-xl focus:border-[#00FF88]"
+                  />
+                </div>
               </div>
             </div>
           )}
@@ -403,6 +442,15 @@ export default function AdminNewCoursePage() {
                 <ImageIcon className="h-5 w-5 text-[#00FF88]" /> Step 3: Media Elements & Brand Identity
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase text-slate-400">Thumbnail Image URL (Course Page & SEO Preview)</label>
+                  <Input 
+                    placeholder="https://images.unsplash.com/photo-..." 
+                    value={formData.thumbnail_url} 
+                    onChange={e => setFormData({ ...formData, thumbnail_url: e.target.value })} 
+                    className="h-11 bg-white/5 border-white/10 text-white rounded-xl focus:border-[#00FF88]"
+                  />
+                </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-black uppercase text-slate-400">Banner Image URL</label>
                   <Input 
