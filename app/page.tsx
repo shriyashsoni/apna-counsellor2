@@ -35,6 +35,9 @@ export default function Home() {
       {/* AI Tools Section */}
       <AIToolsSection />
 
+      {/* Courses Section */}
+      <CoursesSection />
+
       {/* Resource Directory Section */}
       <ResourceDirectory />
 
@@ -116,9 +119,6 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-
-      {/* Courses Section — below About / Admission Strategy */}
-      <CoursesSection />
 
       {/* Services Section */}
       <section className="py-24 bg-white dark:bg-slate-900 border-y border-slate-200 dark:border-slate-800 relative overflow-hidden">
