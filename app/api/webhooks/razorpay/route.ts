@@ -42,6 +42,11 @@ export async function POST(req: Request) {
   if (event === 'payment.captured') {
     const supabase = createClient();
 
+    if (metadata?.courseId) {
+       console.log("Course payment captured. Fulfillment is handled by /api/courses/enroll route.");
+       return NextResponse.json({ status: 'success', note: 'course_ignored' });
+    }
+
     const {
       user_id,
       mentor_id,

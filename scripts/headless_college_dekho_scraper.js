@@ -87,7 +87,7 @@ Return EXACTLY a JSON object matching this schema:
   if (googleAiKey) {
     try {
       const response = await axios.post(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${googleAiKey}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${googleAiKey}`,
         {
           contents: [{ parts: [{ text: prompt }] }],
           generationConfig: {

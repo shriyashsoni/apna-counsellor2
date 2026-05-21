@@ -142,9 +142,9 @@ export default function CoursesClientPage() {
                 </CardContent>
                 <CardFooter className="flex flex-col items-center bg-slate-50 dark:bg-slate-800/20 p-8 border-t border-slate-50 dark:border-slate-800">
                   <div className="w-full max-w-sm text-center">
-                    <Link href={`https://wa.link/cld3hu`} target="_blank" className="w-full">
+                    <Link href={`/courses/${course.slug}`} className="w-full">
                       <Button className="w-full h-14 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-black text-md shadow-xl shadow-purple-100 dark:shadow-none hover:scale-[1.02] active:scale-95 transition-all">
-                        Buy Now & Enroll
+                        View Course Details
                         <ArrowRight className="ml-2 h-5 w-5" />
                       </Button>
                     </Link>
