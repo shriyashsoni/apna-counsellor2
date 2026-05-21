@@ -224,7 +224,15 @@ export default function AdminCoursesPage() {
                   onClick={() => setSelectedCourse(c)} 
                   className="flex-1 rounded-xl h-10 font-bold text-[10px] bg-white/5 hover:bg-white/10 text-white border border-white/10 uppercase flex items-center justify-center gap-1.5"
                 >
-                  <PlusCircle className="h-3.5 w-3.5 text-[#00FF88]" /> Classroom Materials
+                  <PlusCircle className="h-3.5 w-3.5 text-[#00FF88]" /> Materials
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  onClick={() => router.push(`/admin/courses/${c.id}/edit`)} 
+                  className="h-10 w-10 text-[#00FF88] hover:bg-[#00FF88]/10 hover:text-[#00e077] rounded-xl"
+                >
+                  <Edit className="h-4.5 w-4.5" />
                 </Button>
                 <Button 
                   variant="ghost" 
