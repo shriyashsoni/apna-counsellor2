@@ -9,17 +9,30 @@ export async function POST(req: NextRequest) {
     const supabase = await createClient()
     const body = await req.json()
     const { subject, html, audience, courseId } = body
-    // audience: 'all' | 'course'
+    // audience: 'all_users' | 'enrolled' | 'course'
 
     if (!subject || !html || !audience) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
-    // Fetch recipients from Supabase
     let emails: string[] = []
+    const emailSet = new Set<string>()
 
-    if (audience === 'course' && courseId) {
-      // All students enrolled in a specific course
+    if (audience === 'all_users') {
+      // ─── ALL registered users on the platform (from profiles table) ───
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('email')
+        .not('email', 'is', null)
+
+      if (error) throw error
+      ;(data || []).forEach((p: any) => {
+        if (p.email) emailSet.add(p.email)
+      })
+      emails = Array.from(emailSet)
+
+    } else if (audience === 'course' && courseId) {
+      // ─── Students enrolled in a specific course ───
       const { data, error } = await supabase
         .from('course_enrollments')
         .select('student:student_id ( email )')
@@ -27,19 +40,19 @@ export async function POST(req: NextRequest) {
         .eq('status', 'active')
 
       if (error) throw error
-      emails = (data || [])
-        .map((e: any) => e.student?.email)
-        .filter(Boolean)
+      ;(data || []).forEach((e: any) => {
+        if (e.student?.email) emailSet.add(e.student.email)
+      })
+      emails = Array.from(emailSet)
+
     } else {
-      // All enrolled students across all courses
+      // ─── All enrolled students across all courses ───
       const { data, error } = await supabase
         .from('course_enrollments')
         .select('student:student_id ( email )')
         .eq('status', 'active')
 
       if (error) throw error
-      // Deduplicate
-      const emailSet = new Set<string>()
       ;(data || []).forEach((e: any) => {
         if (e.student?.email) emailSet.add(e.student.email)
       })
@@ -47,11 +60,10 @@ export async function POST(req: NextRequest) {
     }
 
     if (emails.length === 0) {
-      return NextResponse.json({ error: 'No enrolled students found for this audience' }, { status: 404 })
+      return NextResponse.json({ error: 'No recipients found for this audience' }, { status: 404 })
     }
 
-    // Resend supports up to 100 recipients per batch call
-    // Chunk into batches of 50 for safety
+    // Chunk into batches of 50 for Resend safety
     const CHUNK_SIZE = 50
     const chunks: string[][] = []
     for (let i = 0; i < emails.length; i += CHUNK_SIZE) {
@@ -72,10 +84,15 @@ export async function POST(req: NextRequest) {
       totalSent += chunk.length
     }
 
-    // Log the broadcast in Supabase
+    // Log it
+    const audienceLabel =
+      audience === 'all_users' ? 'ALL Platform Users' :
+      audience === 'course' ? `Course Enrollees (ID: ${courseId})` :
+      'All Enrolled Students'
+
     await supabase.from('course_audit_logs').insert({
       action: 'broadcast_sent',
-      details: `Broadcast email "${subject}" sent to ${totalSent} students. Audience: ${audience}${courseId ? ` (Course ID: ${courseId})` : ''}`
+      details: `Broadcast "${subject}" sent to ${totalSent} recipients. Audience: ${audienceLabel}`
     })
 
     return NextResponse.json({ success: true, sent: totalSent, total: emails.length })

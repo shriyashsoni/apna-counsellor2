@@ -37,7 +37,7 @@ export default function AdminBroadcastPage() {
     ctaText: '',
     ctaUrl: '',
     accentColor: '#7c3aed',
-    audience: 'all',
+    audience: 'all_users',
     courseId: '',
   })
 
@@ -161,12 +161,15 @@ export default function AdminBroadcastPage() {
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase text-slate-500 tracking-widest">Audience</label>
-                <Select value={form.audience} onValueChange={v => setForm({ ...form, audience: v, courseId: '' })}>
+                              <Select value={form.audience} onValueChange={v => setForm({ ...form, audience: v, courseId: '' })}>
                   <SelectTrigger className="h-11 rounded-xl bg-white/5 border-white/10 text-white font-bold">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-[#0f0f0f] border-white/10 text-white">
-                    <SelectItem value="all">
+                    <SelectItem value="all_users">
+                      <span className="flex items-center gap-2"><Users className="h-4 w-4 text-yellow-400" /> 🌐 ALL Platform Users (Everyone)</span>
+                    </SelectItem>
+                    <SelectItem value="enrolled">
                       <span className="flex items-center gap-2"><Users className="h-4 w-4 text-[#00FF88]" /> All Enrolled Students</span>
                     </SelectItem>
                     <SelectItem value="course">
