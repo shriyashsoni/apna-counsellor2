@@ -1,4 +1,6 @@
 const { createClient } = require("@supabase/supabase-js");
+const fs = require('fs');
+const path = require('path');
 
 module.exports = {
   siteUrl: "https://www.apnacounsellor.in",
@@ -6,38 +8,119 @@ module.exports = {
   sitemapSize: 5000,
   changefreq: "weekly",
   priority: 0.9,
-  exclude: ["/admin/*", "/dashboard/*", "/api/*"],
+  exclude: ["/admin/*", "/dashboard/*", "/api/*", "/server-sitemap.xml"],
   additionalPaths: async (config) => {
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL,
       process.env.SUPABASE_SERVICE_ROLE_KEY
     );
 
-    // Fetch college slugs for sitemap
-    // We fetch in chunks or prioritize those with actual data
+    const allPaths = [];
+    const dateNow = new Date().toISOString();
+
+    // 1. Fetch Colleges
     const { data: colleges } = await supabase
       .from("colleges")
       .select("college_id")
       .not("college_id", "is", null)
-      .limit(45000); // Max for one sitemap index
+      .limit(45000);
 
-    const collegePaths = (colleges || []).map((c) => ({
-      loc: `/college/${c.college_id}`,
-      changefreq: "weekly",
-      priority: 0.8,
-      lastmod: new Date().toISOString(),
-    }));
+    if (colleges) {
+      colleges.forEach((c) => {
+        allPaths.push({
+          loc: `/college/${c.college_id}`,
+          changefreq: "weekly",
+          priority: 0.8,
+          lastmod: dateNow,
+        });
+      });
+    }
 
+    // 2. Fetch Courses
+    const { data: courses } = await supabase.from("courses").select("slug");
+    if (courses) {
+      courses.forEach((c) => {
+        if (c.slug) {
+          allPaths.push({
+            loc: `/courses/${c.slug}`,
+            changefreq: "daily",
+            priority: 0.9,
+            lastmod: dateNow,
+          });
+        }
+      });
+    }
+
+    // 3. Fetch Blogs
+    const { data: blogs } = await supabase.from("blogs").select("slug, updated_at");
+    if (blogs) {
+      blogs.forEach((b) => {
+        if (b.slug) {
+          allPaths.push({
+            loc: `/blog/${b.slug}`,
+            changefreq: "weekly",
+            priority: 0.7,
+            lastmod: b.updated_at || dateNow,
+          });
+        }
+      });
+    }
+
+    // 4. Fetch Mentors
+    const { data: mentors } = await supabase.from("profiles").select("slug, id").eq("role", "mentor");
+    if (mentors) {
+      mentors.forEach((m) => {
+        const idToUse = m.slug || m.id;
+        if (idToUse) {
+          allPaths.push({
+            loc: `/mentor/${idToUse}`,
+            changefreq: "monthly",
+            priority: 0.8,
+            lastmod: dateNow,
+          });
+        }
+      });
+    }
+
+    // 5. Add Static Counseling and Tools Directories dynamically
+    try {
+      const counselingDir = path.join(process.cwd(), 'app', 'counseling');
+      if (fs.existsSync(counselingDir)) {
+        const counselingRoutes = fs.readdirSync(counselingDir, { withFileTypes: true })
+          .filter(d => d.isDirectory() && !d.name.includes('['))
+          .map(d => `/counseling/${d.name}`);
+        
+        counselingRoutes.forEach(route => {
+          allPaths.push({ loc: route, changefreq: "monthly", priority: 0.8, lastmod: dateNow });
+        });
+      }
+
+      const toolsDir = path.join(process.cwd(), 'app', 'tools');
+      if (fs.existsSync(toolsDir)) {
+        const toolsRoutes = fs.readdirSync(toolsDir, { withFileTypes: true })
+          .filter(d => d.isDirectory() && !d.name.includes('['))
+          .map(d => `/tools/${d.name}`);
+        
+        toolsRoutes.forEach(route => {
+          allPaths.push({ loc: route, changefreq: "weekly", priority: 0.9, lastmod: dateNow });
+        });
+      }
+    } catch (err) {
+      console.warn("Could not read static directories for sitemap:", err.message);
+    }
+
+    // 6. Core Static Hub Paths
     const corePaths = [
-      { loc: '/counseling/josaa-counseling', priority: 1.0 },
-      { loc: '/counseling/mht-cet-counseling', priority: 1.0 },
-      { loc: '/counseling/neet-mcc-counseling', priority: 1.0 },
-      { loc: '/predictor', priority: 1.0 },
-      { loc: '/colleges', priority: 0.9 },
-      { loc: '/blog', priority: 0.7 },
+      { loc: '/', priority: 1.0, changefreq: "daily" },
+      { loc: '/courses', priority: 1.0, changefreq: "daily" },
+      { loc: '/counselling', priority: 1.0, changefreq: "daily" },
+      { loc: '/predictors', priority: 1.0, changefreq: "weekly" },
+      { loc: '/blog', priority: 0.9, changefreq: "daily" },
+      { loc: '/about', priority: 0.8, changefreq: "monthly" },
+      { loc: '/contact', priority: 0.8, changefreq: "monthly" },
     ];
 
-    return [...corePaths, ...collegePaths];
+    return [...corePaths, ...allPaths];
   },
   robotsTxtOptions: {
     policies: [
