@@ -41,8 +41,6 @@ export default function Home() {
       {/* How It Works Section */}
       <HowItWorks />
 
-      {/* Courses Section */}
-      <CoursesSection />
 
       {/* About Section */}
       <section className="py-24 container mx-auto px-4">
@@ -118,6 +116,9 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+
+      {/* Courses Section — below About / Admission Strategy */}
+      <CoursesSection />
 
       {/* Services Section */}
       <section className="py-24 bg-white dark:bg-slate-900 border-y border-slate-200 dark:border-slate-800 relative overflow-hidden">

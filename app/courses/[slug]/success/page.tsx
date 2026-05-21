@@ -22,6 +22,24 @@ export default function CourseSuccessPage() {
       const { data } = await supabase.from('courses').select('*').eq('slug', slug).single()
       setCourse(data)
       setLoading(false)
+
+      // Send welcome email via Resend
+      try {
+        const { data: { user } } = await supabase.auth.getUser()
+        if (user?.email && data) {
+          await fetch('/api/send-enrollment-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              studentName: user.user_metadata?.name || user.email.split('@')[0],
+              studentEmail: user.email,
+              courseTitle: data.title,
+              startDate: data.start_date ? new Date(data.start_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) : undefined,
+              whatsappUrl: data.whatsapp_group_url || undefined,
+            })
+          })
+        }
+      } catch (e) { /* silent fail */ }
       
       // Fire confetti on load!
       confetti({
