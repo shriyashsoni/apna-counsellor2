@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     }
 
     await resend.emails.send({
-      from: 'Apna Counsellor <onboarding@resend.dev>',
+      from: 'Apna Counsellor <noreply@apnacounsellor.in>',
       to: [studentEmail],
       subject: `🎉 Welcome to ${courseTitle} — You're Enrolled!`,
       html: getEnrollmentWelcomeEmail({ studentName, courseTitle, startDate, whatsappUrl }),

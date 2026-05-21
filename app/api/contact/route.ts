@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
 
     // 1. Send notification to admin
     await resend.emails.send({
-      from: 'Apna Counsellor Contact <onboarding@resend.dev>',
+      from: 'Apna Counsellor Contact <noreply@apnacounsellor.in>',
       to: [ADMIN_EMAIL],
       subject: `[${queryType.toUpperCase()}] New Query: ${subject}`,
       html: getContactQueryEmail({ name, email, phone, subject, message, queryType }),
@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
 
     // 2. Send auto-reply to user
     await resend.emails.send({
-      from: 'Apna Counsellor <onboarding@resend.dev>',
+      from: 'Apna Counsellor <noreply@apnacounsellor.in>',
       to: [email],
       subject: `We received your query: "${subject}"`,
       html: getContactAutoReplyEmail({ name, subject }),

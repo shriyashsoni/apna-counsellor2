@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
     let totalSent = 0
     for (const chunk of chunks) {
       const batchPayload = chunk.map(email => ({
-        from: 'Apna Counsellor <onboarding@resend.dev>',
+        from: 'Apna Counsellor <noreply@apnacounsellor.in>',
         to: [email],
         subject,
         html,
