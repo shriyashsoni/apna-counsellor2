@@ -56,106 +56,78 @@ export default function CoursesClientPage() {
           </p>
         </motion.div>
 
-        <div className="space-y-16">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {isLoading ? (
-            <div className="flex justify-center py-20">
+            <div className="col-span-full flex justify-center py-20">
               <Loader2 className="animate-spin h-10 w-10 text-purple-600" />
             </div>
           ) : courses.length === 0 ? (
-            <div className="text-center py-20 bg-white dark:bg-slate-900/50 rounded-[3rem] border border-slate-100 dark:border-slate-800 shadow-sm p-10">
+            <div className="col-span-full text-center py-20 bg-white dark:bg-slate-900/50 rounded-[3rem] border border-slate-100 dark:border-slate-800 shadow-sm p-10">
               <h2 className="text-2xl font-black text-slate-300">New Courses Releasing Soon</h2>
               <p className="text-slate-500 mt-2 font-medium">Our admission specialists are busy assembling this year's batch programs. Stay tuned!</p>
             </div>
           ) : courses.map((course, index) => (
             <motion.div
               key={course.id}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card className="border border-slate-100 dark:border-slate-800 rounded-[3rem] shadow-xl overflow-hidden bg-white dark:bg-slate-900/40 backdrop-blur-md">
-                <CardHeader className="p-8 md:p-12 pb-6 border-b border-slate-50 dark:border-slate-800">
-                  <div className="flex flex-col md:flex-row md:items-start gap-8">
-                    {course.thumbnail_url ? (
-                      <div className="h-32 w-48 md:h-40 md:w-64 relative rounded-[2rem] overflow-hidden flex-shrink-0 mx-auto md:mx-0 shadow-inner border border-slate-100 dark:border-slate-800">
-                        <Image src={course.thumbnail_url} alt={course.title} fill className="object-cover" />
-                      </div>
-                    ) : (
-                      <div className="h-32 w-48 md:h-40 md:w-64 rounded-[2rem] bg-purple-50 dark:bg-purple-900/10 flex items-center justify-center text-purple-600 dark:text-purple-400 flex-shrink-0 mx-auto md:mx-0 shadow-inner">
-                        <Award className="h-12 w-12 md:h-16 md:w-16" />
+              <Card className="h-full flex flex-col border border-slate-200 dark:border-slate-800 rounded-[2rem] shadow-xl overflow-hidden bg-white dark:bg-slate-900 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                {/* Banner Image */}
+                {course.thumbnail_url ? (
+                  <div className="relative w-full aspect-video border-b border-slate-100 dark:border-slate-800">
+                    <Image
+                      src={course.thumbnail_url}
+                      alt={course.title}
+                      fill
+                      className="object-cover"
+                    />
+                    {course.is_free && (
+                      <div className="absolute top-4 right-4 bg-emerald-500 text-white text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-lg">
+                        Free
                       </div>
                     )}
-                    <div className="text-center md:text-left space-y-3 pt-2">
-                      <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-                        <Badge className="bg-purple-100 dark:bg-purple-950 text-purple-600 dark:text-purple-400 border-none font-black text-[10px] uppercase">{course.category || 'Counselling'}</Badge>
-                        <Badge className="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-none font-black text-[10px] uppercase">{course.level || 'Beginner'}</Badge>
-                      </div>
-                      <CardTitle className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">{course.title}</CardTitle>
-                      <p className="text-slate-500 dark:text-slate-400 font-semibold leading-relaxed max-w-2xl line-clamp-3">{course.description}</p>
-                    </div>
                   </div>
-                </CardHeader>
-                <CardContent className="p-8 md:p-12">
-                  <div className="grid md:grid-cols-2 gap-12">
-                    <div className="space-y-6">
-                      <h3 className="font-black text-lg text-slate-900 dark:text-white flex items-center gap-2">
-                        <CheckCircle className="h-5 w-5 text-purple-600" />
-                        Core Highlights
-                      </h3>
-                      <ul className="space-y-4">
-                        {(course.highlights || [
-                          "Live Interactive Choice-Filling Sessions",
-                          "Full Access to College Predictors & Cutoffs",
-                          "Personalized Mentor Q&A Backing",
-                          "100% Accurate Admission Success Map"
-                        ]).map((highlight: string, idx: number) => (
-                          <li key={idx} className="flex items-start text-slate-600 dark:text-slate-400 font-bold text-sm">
-                            <span className="h-2 w-2 rounded-full bg-purple-600 mt-2 mr-3 flex-shrink-0" />
-                            <span>{highlight}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                ) : (
+                  <div className="h-48 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-900/10 flex items-center justify-center border-b border-slate-100 dark:border-slate-800">
+                    <Award className="h-16 w-16 text-purple-200 dark:text-purple-800/50" />
+                  </div>
+                )}
 
-                    <div className="space-y-6">
-                      <h3 className="font-black text-lg text-slate-900 dark:text-white flex items-center gap-2">
-                        <PlayCircle className="h-5 w-5 text-purple-600" />
-                        Curriculum Structure
-                      </h3>
-                      <div className="space-y-2 max-h-[160px] overflow-y-auto pr-2 custom-scrollbar">
-                        {Array.isArray(course.curriculum) && course.curriculum.length > 0 ? (
-                          course.curriculum.map((module: any, idx: number) => (
-                            <div key={idx} className="p-3 bg-slate-50 dark:bg-slate-800/40 rounded-xl border border-slate-100 dark:border-slate-800 flex justify-between items-center">
-                              <span className="text-xs font-black text-slate-800 dark:text-slate-300">{module.title || `Module ${idx + 1}`}</span>
-                              <Badge className="bg-slate-200/50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-none font-bold text-[9px]">{module.lessons?.length || 0} Lessons</Badge>
-                            </div>
-                          ))
-                        ) : (
-                          <div className="text-slate-400 text-xs font-bold py-4">Detailed modules available inside.</div>
-                        )}
-                      </div>
-                      <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-between items-end">
-                        <div>
-                          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Fee</p>
-                          <p className="text-4xl font-black text-slate-900 dark:text-white">₹{Number(course.price).toLocaleString()}</p>
-                        </div>
-                        <div className="text-right text-xs font-bold text-slate-400">
-                          {course.duration_hours || '10+'} hours · {course.total_lessons || '15+'} lessons
-                        </div>
-                      </div>
-                    </div>
+                <CardHeader className="p-6 pb-4">
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    <span className="bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 font-black text-[10px] uppercase px-2 py-1 rounded-md">
+                      {course.category || 'Counselling'}
+                    </span>
+                  </div>
+                  <CardTitle className="text-xl font-black text-slate-900 dark:text-white leading-tight line-clamp-2">
+                    {course.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6 pt-0 flex-grow">
+                  <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-3 font-medium mb-4">
+                    {course.description}
+                  </p>
+                  
+                  <div className="flex items-center gap-2 text-xs font-bold text-slate-600 dark:text-slate-300">
+                    <PlayCircle className="h-4 w-4 text-purple-500" />
+                    <span>{course.total_lessons || '15+'} Lessons Included</span>
                   </div>
                 </CardContent>
-                <CardFooter className="flex flex-col items-center bg-slate-50 dark:bg-slate-800/20 p-8 border-t border-slate-50 dark:border-slate-800">
-                  <div className="w-full max-w-sm text-center">
-                    <Link href={`/courses/${course.slug}`} className="w-full">
-                      <Button className="w-full h-14 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-black text-md shadow-xl shadow-purple-100 dark:shadow-none hover:scale-[1.02] active:scale-95 transition-all">
-                        View Course Details
-                        <ArrowRight className="ml-2 h-5 w-5" />
-                      </Button>
-                    </Link>
-                    <p className="text-slate-400 text-xs font-bold mt-3">Secure checkout backed by Razorpay</p>
+                <CardFooter className="p-6 pt-0 flex items-center justify-between border-t border-slate-100 dark:border-slate-800 mt-auto pt-6">
+                  <div>
+                    {course.is_free ? (
+                      <p className="text-xl font-black text-emerald-500">FREE</p>
+                    ) : (
+                      <p className="text-xl font-black text-slate-900 dark:text-white">₹{Number(course.price).toLocaleString()}</p>
+                    )}
                   </div>
+                  <Link href={`/courses/${course.slug}`}>
+                    <Button variant="ghost" className="rounded-xl font-black text-purple-600 hover:text-purple-700 hover:bg-purple-50 dark:hover:bg-purple-900/20">
+                      Details <ArrowRight className="ml-1 h-4 w-4" />
+                    </Button>
+                  </Link>
                 </CardFooter>
               </Card>
             </motion.div>
