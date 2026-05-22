@@ -37,7 +37,8 @@ export default function MentorSettingsPage() {
     branch: "",
     pricing: 499,
     image: "",
-    cal_link: ""
+    cal_link: "",
+    razorpay_account_id: ""
   })
 
   useEffect(() => {
@@ -80,6 +81,7 @@ export default function MentorSettingsPage() {
         pricing: parseInt(profile.pricing),
         image: profile.image,
         cal_link: cleanedCalLink,
+        razorpay_account_id: profile.razorpay_account_id,
       })
       .eq('id', user.id)
 
@@ -200,6 +202,24 @@ export default function MentorSettingsPage() {
                          className="rounded-xl h-12 border-slate-100 font-bold"
                        />
                        <p className="text-[10px] text-slate-400 font-medium">Enter your Cal.com username/slug (e.g. "shriyash-soni/30min") to enable instant bookings.</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4 pt-4 border-t border-slate-100">
+                    <div className="flex items-center justify-between">
+                       <Label className="font-black text-xs uppercase tracking-widest text-slate-400 flex items-center gap-2">
+                          Payment Integration (Razorpay Route)
+                       </Label>
+                       <a href="https://razorpay.com/route" target="_blank" rel="noopener noreferrer" className="text-[10px] font-bold text-primary hover:underline">How to get this?</a>
+                    </div>
+                    <div className="space-y-2">
+                       <Input 
+                         value={profile.razorpay_account_id || ''} 
+                         onChange={(e) => setProfile({...profile, razorpay_account_id: e.target.value})}
+                         placeholder="acc_XXXXXXXXXXXXXXXX"
+                         className="rounded-xl h-12 border-slate-100 font-bold"
+                       />
+                       <p className="text-[10px] text-slate-400 font-medium">Enter your Razorpay Linked Account ID to receive 70% of payments directly to your bank account.</p>
                     </div>
                   </div>
 

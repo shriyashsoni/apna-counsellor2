@@ -12,7 +12,8 @@ export async function createRazorpayOrder({
   amount: number, 
   currency?: string, 
   receipt?: string,
-  notes?: Record<string, string>
+  notes?: Record<string, string>,
+  mentor_id?: string
 }) {
     const keyId = process.env.RAZORPAY_KEY_ID;
     const keySecret = process.env.RAZORPAY_KEY_SECRET;
@@ -25,6 +26,33 @@ export async function createRazorpayOrder({
     
     if (isNaN(amount) || amount <= 0) {
       throw new Error(`Invalid amount: ${amount}`);
+    }
+
+    let transfers = undefined;
+    if (mentor_id) {
+      const { data: mentor } = await supabaseAdmin
+        .from('profiles')
+        .select('razorpay_account_id')
+        .eq('id', mentor_id)
+        .maybeSingle();
+
+      if (mentor?.razorpay_account_id) {
+        // Apna Counsellor keeps 30%, Mentor gets 70%
+        const mentorShare = Math.round(Number(amount) * 100 * 0.70);
+        transfers = [
+          {
+            account: mentor.razorpay_account_id,
+            amount: mentorShare,
+            currency: currency,
+            notes: {
+              split: "70% to mentor"
+            },
+            linked_account_notes: ["split"],
+            on_hold: 0
+          }
+        ];
+        console.log(`Razorpay Route: Transferring ${mentorShare / 100} to ${mentor.razorpay_account_id}`);
+      }
     }
 
     const auth = Buffer.from(`${keyId}:${keySecret}`).toString("base64");
@@ -40,7 +68,8 @@ export async function createRazorpayOrder({
           amount: Math.round(Number(amount) * 100), 
           currency: currency,
           receipt: receipt,
-          notes: notes
+          notes: notes,
+          ...(transfers && { transfers })
         }),
       });
 

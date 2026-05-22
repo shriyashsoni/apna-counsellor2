@@ -11,7 +11,8 @@ export async function POST(req: Request) {
 
     const order = await createRazorpayOrder({
       amount: Number(amount),
-      notes: notes
+      notes: notes,
+      mentor_id: notes?.mentor_id
     })
 
     return NextResponse.json(order)

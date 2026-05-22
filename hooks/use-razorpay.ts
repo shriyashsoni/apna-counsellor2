@@ -48,7 +48,8 @@ export function useRazorpay() {
       const order = await createRazorpayOrder({
         amount,
         currency: "INR",
-        notes: metadata
+        notes: metadata,
+        mentor_id: metadata.mentor_id
       })
 
       // 2. Configure checkout options
