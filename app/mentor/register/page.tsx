@@ -24,17 +24,23 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { toast } from "sonner"
+import { useAuth } from "@/hooks/use-auth"
 
 export default function MentorRegisterPage() {
   const router = useRouter()
   const [dbUser, setDbUser] = useState<any>(undefined)
   const supabase = createClient()
+  const { user: firebaseUser } = useAuth()
 
   useEffect(() => {
     async function loadUser() {
-      const { data: authData } = await supabase.auth.getUser()
-      const user = authData?.user
-      if (user) {
+      if (firebaseUser) {
+        const user = { 
+          id: firebaseUser.id, 
+          name: firebaseUser.name, 
+          email: firebaseUser.email, 
+          user_metadata: { full_name: firebaseUser.name } 
+        }
         const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).maybeSingle()
         setDbUser(profile ? { ...user, ...profile } : user)
       } else {
@@ -42,7 +48,7 @@ export default function MentorRegisterPage() {
       }
     }
     loadUser()
-  }, [])
+  }, [firebaseUser])
 
   const [step, setStep] = useState(1)
   const [loading, setLoading] = useState(false)

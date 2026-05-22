@@ -22,10 +22,12 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "sonner"
 import { AuthGuard } from "@/components/auth-guard"
+import { useAuth } from "@/hooks/use-auth"
 
 export default function MentorSettingsPage() {
   const router = useRouter()
   const supabase = createClient()
+  const { user: firebaseUser, isLoading: authLoading } = useAuth()
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [profile, setProfile] = useState<any>({
@@ -40,12 +42,12 @@ export default function MentorSettingsPage() {
 
   useEffect(() => {
     async function loadProfile() {
-      const { data: authData } = await supabase.auth.getUser()
-      const user = authData?.user
-      if (!user) {
+      if (authLoading) return;
+      if (!firebaseUser) {
         router.push("/login")
         return
       }
+      const user = { id: firebaseUser.id }
 
       const { data } = await supabase
         .from('profiles')
@@ -59,13 +61,12 @@ export default function MentorSettingsPage() {
       setLoading(false)
     }
     loadProfile()
-  }, [])
+  }, [firebaseUser, authLoading])
 
   const handleSave = async () => {
     setSaving(true)
-    const { data: authData } = await supabase.auth.getUser()
-    const user = authData?.user
-    if (!user) return
+    if (!firebaseUser) return
+    const user = { id: firebaseUser.id }
 
     const cleanedCalLink = profile.cal_link?.replace("https://cal.com/", "").replace("http://cal.com/", "").replace(/\/$/, "");
 

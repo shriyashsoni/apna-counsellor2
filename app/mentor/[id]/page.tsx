@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { createClient } from "@/lib/supabase/server"
 import { notFound } from "next/navigation"
+import { cookies } from "next/headers"
 import MentorProfileClient from "./mentor-profile-client"
 import { filterSessionsByAvailability } from "@/lib/google-calendar"
 
@@ -101,8 +102,14 @@ export default async function MentorProfilePage({ params }: MentorPageProps) {
     console.error("Data fetch error on mentor profile:", err)
   }
 
-  const { data: authData } = await supabase.auth.getUser()
-  const user = authData?.user
+  const cookieStore = cookies()
+  const sessionString = cookieStore.get('apna_counsellor_session')?.value
+  let user = null
+  if (sessionString) {
+    try {
+      user = JSON.parse(sessionString)
+    } catch(e) {}
+  }
   let dbUser = null
   if (user) {
     try {

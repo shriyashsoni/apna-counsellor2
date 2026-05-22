@@ -16,6 +16,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { createClient } from "@/lib/supabase/client"
 import { toast } from "sonner"
 import { AuthGuard } from "@/components/auth-guard"
+import { useAuth } from "@/hooks/use-auth"
 import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
 
@@ -33,19 +34,19 @@ export default function MentorAvailabilityPage() {
   const [availability, setAvailability] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const supabase = createClient()
+  const { user: firebaseUser } = useAuth()
 
   useEffect(() => {
-    fetchAvailability()
-  }, [])
+    if (firebaseUser) fetchAvailability()
+  }, [firebaseUser])
 
   const fetchAvailability = async () => {
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return
+    if (!firebaseUser) return
 
     const { data } = await supabase
       .from('mentor_availability')
       .select('*')
-      .eq('mentor_id', user.id)
+      .eq('mentor_id', firebaseUser.id)
     
     if (data) setAvailability(data)
     setLoading(false)
@@ -63,8 +64,8 @@ export default function MentorAvailabilityPage() {
 
   const saveAvailability = async () => {
     setLoading(true)
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return
+    if (!firebaseUser) return
+    const user = { id: firebaseUser.id, name: firebaseUser.name || "Expert" }
 
     // Clear old availability and insert new
     await supabase.from('mentor_availability').delete().eq('mentor_id', user.id)
@@ -81,8 +82,7 @@ export default function MentorAvailabilityPage() {
 
     // Now generate session slots for the next 7 days based on this availability
     try {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) return
+      if (!firebaseUser) return
 
       const slots = availability
       const sessionsToCreate = []
@@ -97,7 +97,7 @@ export default function MentorAvailabilityPage() {
         for (const slot of daySlots) {
           sessionsToCreate.push({
             mentor_id: user.id,
-            mentor_name: user.user_metadata?.full_name || "Expert",
+            mentor_name: user.name,
             date: date.toISOString().split('T')[0],
             time_slot: `${slot.start_time} - ${slot.end_time}`,
             status: 'available',

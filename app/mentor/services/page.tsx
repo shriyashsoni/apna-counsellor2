@@ -20,20 +20,22 @@ import { createClient } from "@/lib/supabase/client"
 import { toast } from "sonner"
 import Link from "next/link"
 import { AuthGuard } from "@/components/auth-guard"
+import { useAuth } from "@/hooks/use-auth"
 
 export default function MentorServicesPage() {
   const [services, setServices] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const supabase = createClient()
+  const { user: firebaseUser } = useAuth()
 
   useEffect(() => {
-    fetchServices()
-  }, [])
+    if (firebaseUser) fetchServices()
+  }, [firebaseUser])
 
   const fetchServices = async () => {
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return
+    if (!firebaseUser) return
+    const user = { id: firebaseUser.id }
 
     const { data } = await supabase
       .from('mentor_services')
@@ -69,8 +71,8 @@ export default function MentorServicesPage() {
   const handleSave = async () => {
     setIsSubmitting(true)
     try {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) throw new Error("Not authenticated")
+      if (!firebaseUser) throw new Error("Not authenticated")
+      const user = { id: firebaseUser.id }
 
       // Clear existing and insert new
       await supabase.from('mentor_services').delete().eq('mentor_id', user.id)

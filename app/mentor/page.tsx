@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/client"
 import { useState, useEffect } from "react"
 import { MentorGuard } from "@/components/mentor-guard"
+import { useAuth } from "@/hooks/use-auth"
 import { motion } from "framer-motion"
 import { 
   Users, 
@@ -24,14 +25,15 @@ export default function MentorPortal() {
   const [user, setUser] = useState<any>(undefined)
   const [sessions, setSessions] = useState<any[] | undefined>(undefined)
   const supabase = createClient()
+  const { user: firebaseUser } = useAuth()
 
   useEffect(() => {
     async function loadData() {
-      const { data: { user: authUser } } = await supabase.auth.getUser()
-      if (!authUser) {
+      if (!firebaseUser) {
         setUser(null)
         return
       }
+      const authUser = { id: firebaseUser.id }
 
       const { data: profile } = await supabase
         .from('profiles')
@@ -50,7 +52,7 @@ export default function MentorPortal() {
       setSessions(sessionData || [])
     }
     loadData()
-  }, [])
+  }, [firebaseUser])
   
   const stats = [
     { label: "Total Sessions", value: user?.sessions_count || 0, icon: Calendar, color: "blue" },

@@ -28,7 +28,11 @@ export async function approveMentorAction(appId: string, userId: string, email: 
 
     // 3. Send Email
     if (email) {
-      await sendMentorApprovalEmail(email, name)
+      try {
+        await sendMentorApprovalEmail(email, name)
+      } catch (emailErr) {
+        console.error("Failed to send approval email, but proceeding:", emailErr)
+      }
     }
 
     revalidatePath('/admin')

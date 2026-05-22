@@ -12,10 +12,12 @@ import {
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { useAuth } from "@/hooks/use-auth"
 
 export default function MentorDashboard() {
   const router = useRouter()
   const supabase = createClient()
+  const { user: firebaseUser, isLoading: authLoading } = useAuth()
 
   const [profile, setProfile] = useState<any>(null)
   const [sessions, setSessions] = useState<any[]>([])
@@ -27,10 +29,11 @@ export default function MentorDashboard() {
 
   useEffect(() => {
     const loadData = async () => {
+      if (authLoading) return;
+      if (!firebaseUser) { router.push("/login"); return }
+
       setIsLoading(true)
-      const { data: authData } = await supabase.auth.getUser()
-      const user = authData?.user
-      if (!user) { router.push("/login"); return }
+      const user = { id: firebaseUser.id }
 
       const { data: prof } = await supabase.from('profiles').select('*').eq('id', user.id).maybeSingle()
       if (!prof || (prof.role !== 'mentor' && prof.role !== 'admin' && !prof.onboarding_complete)) {
@@ -57,7 +60,7 @@ export default function MentorDashboard() {
       setIsLoading(false)
     }
     loadData()
-  }, [router])
+  }, [router, firebaseUser, authLoading])
 
   const markDone = async (sessionId: string) => {
     setIsUpdating(sessionId)
