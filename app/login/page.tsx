@@ -22,7 +22,9 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      router.push("/dashboard")
+      const urlParams = new URLSearchParams(window.location.search)
+      const redirectUrl = urlParams.get('redirect') || "/dashboard"
+      router.push(redirectUrl)
     }
   }, [isAuthenticated, router])
 

@@ -30,9 +30,13 @@ export default function MentorRegisterPage() {
   const router = useRouter()
   const [dbUser, setDbUser] = useState<any>(undefined)
   const supabase = createClient()
-  const { user: firebaseUser } = useAuth()
+  const { user: firebaseUser, isLoading: authLoading } = useAuth()
 
   useEffect(() => {
+    if (!authLoading && !firebaseUser) {
+      router.push("/login?redirect=/mentor/register")
+      return
+    }
     async function loadUser() {
       if (firebaseUser) {
         const user = { 
@@ -48,7 +52,7 @@ export default function MentorRegisterPage() {
       }
     }
     loadUser()
-  }, [firebaseUser])
+  }, [firebaseUser, authLoading, router])
 
   const [step, setStep] = useState(1)
   const [loading, setLoading] = useState(false)
