@@ -16,6 +16,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const { user, isLoading: authLoading, isAuthenticated } = useAuth()
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null)
+  const [userRole, setUserRole] = useState<string>("")
+  const [permissions, setPermissions] = useState<string[]>([])
   const [isCollapsed, setIsCollapsed] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
@@ -24,8 +26,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   useEffect(() => {
     async function checkAdmin() {
       if (!user?.id) { setIsAdmin(false); return }
-      const { data } = await supabase.from('profiles').select('role').eq('id', user.id).single()
-      setIsAdmin(data?.role === 'admin')
+      const { data } = await supabase.from('profiles').select('role, interests').eq('id', user.id).single()
+      
+      const role = data?.role || 'student'
+      setUserRole(role)
+      
+      const interestsData = typeof data?.interests === 'string' 
+        ? JSON.parse(data?.interests) 
+        : data?.interests || {}
+      
+      const userPerms = interestsData?.permissions || []
+      setPermissions(userPerms)
+
+      // Allow admin layout access if role is 'admin' OR they have at least one valid console permission
+      const hasAccess = role === 'admin' || userPerms.length > 0
+      setIsAdmin(hasAccess)
     }
     if (!authLoading) {
       if (!isAuthenticated) {
@@ -63,16 +78,39 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   )
 
   const menuItems = [
-    { label: "Dashboard Overview", path: "/admin", icon: LayoutDashboard },
-    { label: "Courses Manager", path: "/admin/courses", icon: Rocket },
-    { label: "Mentor Manager", path: "/admin/mentors", icon: UserCheck },
-    { label: "Blog Manager", path: "/admin/blogs", icon: FileText },
-    { label: "Students Manager", path: "/admin/students", icon: Users },
-    { label: "📢 Broadcast Emails", path: "/admin/broadcast", icon: Radio },
-    { label: "🤖 AI Email Agent", path: "/admin/email-agent", icon: Sparkles },
+    { label: "Dashboard Overview", path: "/admin", icon: LayoutDashboard, permission: "analytics" },
+    { label: "Courses Manager", path: "/admin/courses", icon: Rocket, permission: "courses" },
+    { label: "Mentor Manager", path: "/admin/mentors", icon: UserCheck, permission: "mentors" },
+    { label: "Blog Manager", path: "/admin/blogs", icon: FileText, permission: "blogs" },
+    { label: "Students Manager", path: "/admin/students", icon: Users, permission: "students" },
+    { label: "📢 Broadcast Emails", path: "/admin/broadcast", icon: Radio, permission: "broadcast" },
+    { label: "🤖 AI Email Agent", path: "/admin/email-agent", icon: Sparkles, permission: "email-agent" },
+    { label: "👥 Team Management", path: "/admin/teams", icon: Users, permission: "teams" },
     { label: "Notifications", path: "/admin/notifications", icon: Bell },
     { label: "Settings", path: "/admin/settings", icon: Settings },
   ]
+
+  // Filter sidebar items according to permissions
+  const filteredMenuItems = menuItems.filter(item => {
+    if (item.path === '/admin/teams') {
+      return userRole === 'admin'
+    }
+    if (item.permission) {
+      if (userRole === 'admin') return true
+      return permissions.includes(item.permission)
+    }
+    return true
+  })
+
+  // Live active tab path permission guard
+  const currentActiveItem = menuItems.find(item => 
+    pathname === item.path || (item.path !== '/admin' && pathname.startsWith(item.path))
+  )
+  const isAuthorizedForPage = !currentActiveItem || 
+    !currentActiveItem.permission || 
+    userRole === 'admin' || 
+    permissions.includes(currentActiveItem.permission) ||
+    (currentActiveItem.path === '/admin/teams' && userRole === 'admin')
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-200 flex overflow-x-hidden">
@@ -103,7 +141,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
         {/* Nav Items */}
         <nav className="flex-1 py-4 px-2 space-y-1 overflow-y-auto overflow-x-hidden">
-          {menuItems.map(item => {
+          {filteredMenuItems.map(item => {
             const active = pathname === item.path || (item.path !== '/admin' && pathname.startsWith(item.path))
             return (
               <Link key={item.path} href={item.path}>
@@ -133,7 +171,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             )
           })}
         </nav>
-
+ 
         {/* Footer */}
         <div className="p-2 border-t border-white/5 space-y-1 flex-shrink-0">
           <Button variant="ghost" onClick={() => setIsCollapsed(!isCollapsed)}
@@ -149,7 +187,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </Button>
         </div>
       </motion.aside>
-
+ 
       {/* MAIN AREA */}
       <div className="flex-1 flex flex-col transition-all duration-300" style={{ marginLeft: isCollapsed ? 72 : 260 }}>
         {/* Topbar */}
@@ -172,11 +210,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </Avatar>
           </div>
         </header>
-
+ 
         {/* Page Content */}
         <main className="flex-1 p-6 overflow-y-auto">
           <div className="max-w-7xl mx-auto">
-            {children}
+            {isAuthorizedForPage ? children : (
+              <div className="min-h-[400px] flex flex-col items-center justify-center text-center p-6 bg-slate-900 border border-white/5 rounded-2xl max-w-xl mx-auto my-12">
+                <div className="h-14 w-14 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 flex items-center justify-center mb-4">
+                  <ShieldAlert className="h-7 w-7" />
+                </div>
+                <h3 className="text-lg font-black text-white mb-2">Restricted Area</h3>
+                <p className="text-slate-400 text-xs leading-relaxed max-w-sm mb-6">
+                  You do not have modular staff permissions to access this command page. Please request your system administrator to assign the appropriate access rules.
+                </p>
+                <Button onClick={() => router.push("/admin")} className="rounded-xl h-10 bg-white text-black font-black px-6 hover:bg-slate-100 text-xs">
+                  Return to Dashboard
+                </Button>
+              </div>
+            )}
           </div>
         </main>
       </div>
