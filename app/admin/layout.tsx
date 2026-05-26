@@ -46,7 +46,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       }
 
       console.log("Checking admin privileges securely via Server Action for user ID:", user.id);
-      const res = await checkAdminAccessAction(user.id)
+      const res = await checkAdminAccessAction(user.id, user.email || undefined)
       
       if (!res.success) {
         console.error("Server-side Admin Access check failed or user not found.");

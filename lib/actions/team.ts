@@ -164,18 +164,46 @@ export async function removeTeamMemberAction(userId: string) {
 }
 
 // Bypasses all client-side RLS constraints to securely verify admin console permissions
-export async function checkAdminAccessAction(userId: string) {
+export async function checkAdminAccessAction(userId: string, email?: string) {
   try {
     if (!userId) return { success: false, role: 'student', permissions: [] }
 
-    const { data: profile, error } = await supabaseAdmin
+    // 1. Try to find by UUID first
+    let { data: profile, error } = await supabaseAdmin
       .from('profiles')
-      .select('role, interests')
+      .select('id, role, interests')
       .eq('id', userId)
-      .single()
+      .maybeSingle()
 
-    if (error || !profile) {
-      console.warn(`User profile with ID ${userId} was not found or failed to fetch:`, error?.message)
+    // 2. If not found by UUID, try to find by Email (case-insensitive)
+    if (!profile && email) {
+      console.log(`[Auth check] User not found by UUID ${userId}. Searching by email fallback: ${email}`);
+      const { data: emailProfile, error: emailError } = await supabaseAdmin
+        .from('profiles')
+        .select('id, role, interests')
+        .ilike('email', email.trim())
+        .maybeSingle()
+
+      if (emailProfile) {
+        profile = emailProfile
+        console.log(`[Auth check] Found profile by email! Auto-aligning database ID from ${emailProfile.id} to ${userId} for dynamic self-healing.`);
+        
+        // Dynamically update the database ID to match the Firebase UUID so future direct UUID checks succeed instantly!
+        const { error: alignError } = await supabaseAdmin
+          .from('profiles')
+          .update({ id: userId })
+          .eq('id', emailProfile.id)
+
+        if (alignError) {
+          console.error(`[Auth check] Self-healing update failed:`, alignError.message);
+        } else {
+          console.log(`[Auth check] Database healed successfully! UUID aligned.`);
+        }
+      }
+    }
+
+    if (!profile) {
+      console.warn(`User profile with ID ${userId} or email ${email} was not found.`);
       return { success: false, role: 'student', permissions: [] }
     }
 
