@@ -5,6 +5,7 @@ import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { useAuth } from "@/hooks/use-auth"
 import { createClient } from "@/lib/supabase/client"
+import { checkAdminAccessAction } from "@/lib/actions/team"
 import { motion, AnimatePresence } from "framer-motion"
 import { 
   LayoutDashboard, Rocket, UserCheck, FileText, Users, 
@@ -27,30 +28,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     async function checkAdmin() {
       if (!user?.id) { setIsAdmin(false); return }
       
-      console.log("Checking admin privileges for user ID:", user.id);
-      const { data, error } = await supabase.from('profiles').select('role, interests').eq('id', user.id).single()
+      console.log("Checking admin privileges securely via Server Action for user ID:", user.id);
+      const res = await checkAdminAccessAction(user.id)
       
-      if (error) {
-        console.error("Supabase Profile Access Query Failed:", error.message, error.details);
+      if (!res.success) {
+        console.error("Server-side Admin Access check failed or user not found.");
         setIsAdmin(false);
         return;
       }
 
-      console.log("User Profile Data retrieved:", data);
+      console.log("User Admin Privileges verified:", res);
       
-      const role = data?.role || 'student'
+      const role = res.role
       setUserRole(role)
-      
-      let userPerms: string[] = []
-      try {
-        const interestsData = typeof data?.interests === 'string' 
-          ? JSON.parse(data?.interests) 
-          : data?.interests || {}
-        userPerms = interestsData?.permissions || []
-      } catch (err) {
-        console.error("Failed to parse modular permissions from interests column:", err)
-      }
-      
+      const userPerms = res.permissions
       setPermissions(userPerms)
 
       // Allow admin layout access if role is 'admin' OR they have at least one valid console permission

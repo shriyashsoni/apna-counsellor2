@@ -162,3 +162,34 @@ export async function removeTeamMemberAction(userId: string) {
     return { success: false, error: error.message }
   }
 }
+
+// Bypasses all client-side RLS constraints to securely verify admin console permissions
+export async function checkAdminAccessAction(userId: string) {
+  try {
+    if (!userId) return { success: false, role: 'student', permissions: [] }
+
+    const { data: profile, error } = await supabaseAdmin
+      .from('profiles')
+      .select('role, interests')
+      .eq('id', userId)
+      .single()
+
+    if (error || !profile) {
+      console.warn(`User profile with ID ${userId} was not found or failed to fetch:`, error?.message)
+      return { success: false, role: 'student', permissions: [] }
+    }
+
+    const interestsData = typeof profile.interests === 'string' 
+      ? JSON.parse(profile.interests) 
+      : profile.interests || {}
+    
+    return {
+      success: true,
+      role: profile.role || 'student',
+      permissions: interestsData?.permissions || []
+    }
+  } catch (error: any) {
+    console.error("checkAdminAccessAction error:", error)
+    return { success: false, role: 'student', permissions: [] }
+  }
+}
