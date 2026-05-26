@@ -45,11 +45,11 @@ export async function getTeamMembersAction() {
 // Add a team member by email
 export async function addTeamMemberAction(email: string, role: 'mentor' | 'admin', permissions: string[]) {
   try {
-    // 1. Find user by email
+    // 1. Find user by email (case-insensitive)
     const { data: userProfile, error: findError } = await supabaseAdmin
       .from('profiles')
       .select('id, interests')
-      .eq('email', email.trim().toLowerCase())
+      .ilike('email', email.trim())
       .single()
 
     if (findError || !userProfile) {

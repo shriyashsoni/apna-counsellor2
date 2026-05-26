@@ -26,21 +26,55 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   useEffect(() => {
     async function checkAdmin() {
       if (!user?.id) { setIsAdmin(false); return }
-      const { data } = await supabase.from('profiles').select('role, interests').eq('id', user.id).single()
+      
+      console.log("Checking admin privileges for user ID:", user.id);
+      const { data, error } = await supabase.from('profiles').select('role, interests').eq('id', user.id).single()
+      
+      if (error) {
+        console.error("Supabase Profile Access Query Failed:", error.message, error.details);
+        setIsAdmin(false);
+        return;
+      }
+
+      console.log("User Profile Data retrieved:", data);
       
       const role = data?.role || 'student'
       setUserRole(role)
       
-      const interestsData = typeof data?.interests === 'string' 
-        ? JSON.parse(data?.interests) 
-        : data?.interests || {}
+      let userPerms: string[] = []
+      try {
+        const interestsData = typeof data?.interests === 'string' 
+          ? JSON.parse(data?.interests) 
+          : data?.interests || {}
+        userPerms = interestsData?.permissions || []
+      } catch (err) {
+        console.error("Failed to parse modular permissions from interests column:", err)
+      }
       
-      const userPerms = interestsData?.permissions || []
       setPermissions(userPerms)
 
       // Allow admin layout access if role is 'admin' OR they have at least one valid console permission
       const hasAccess = role === 'admin' || userPerms.length > 0
       setIsAdmin(hasAccess)
+
+      // DYNAMIC LANDING REDIRECTION FOR STAFF MEMBERS:
+      // If they land on the default '/admin' route but don't have dashboard 'analytics' permission,
+      // redirect them immediately to their first allowed command view!
+      if (hasAccess && role !== 'admin' && pathname === '/admin' && !userPerms.includes('analytics')) {
+        const allowedItems = menuItems.filter(item => {
+          if (item.path === '/admin/teams') return false
+          if (item.permission) return userPerms.includes(item.permission)
+          return true
+        })
+
+        if (allowedItems.length > 0) {
+          const targetItem = allowedItems.find(item => item.path.startsWith('/admin/')) || allowedItems[0]
+          if (targetItem) {
+            console.log(`Redirecting staff member from /admin to authorized route: ${targetItem.path}`);
+            router.push(targetItem.path)
+          }
+        }
+      }
     }
     if (!authLoading) {
       if (!isAuthenticated) {
