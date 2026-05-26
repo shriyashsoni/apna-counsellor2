@@ -5,7 +5,6 @@ import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { useAuth } from "@/hooks/use-auth"
 import { createClient } from "@/lib/supabase/client"
-import { checkAdminAccessAction } from "@/lib/actions/team"
 import { motion, AnimatePresence } from "framer-motion"
 import { 
   LayoutDashboard, Rocket, UserCheck, FileText, Users, 
@@ -13,6 +12,59 @@ import {
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { createClient as createSupabaseAdmin } from "@supabase/supabase-js"
+
+// Master admin emails - always get full access, no DB check needed
+const MASTER_ADMINS = ["sonishriyash@gmail.com", "apnacounsellor@gmail.com"]
+
+// Fetch role and permissions directly from DB using the public Supabase URL + anon key
+// We use TWO lookups: by UUID first, then by email as fallback
+async function fetchUserAccess(userId: string, email: string): Promise<{ role: string; permissions: string[] }> {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL!
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  const headers = {
+    "Content-Type": "application/json",
+    apikey: key,
+    Authorization: `Bearer ${key}`,
+  }
+
+  // 1. Try by UUID
+  const byIdRes = await fetch(
+    `${url}/rest/v1/profiles?id=eq.${userId}&select=role,interests`,
+    { headers }
+  )
+  const byId = await byIdRes.json()
+  if (Array.isArray(byId) && byId.length > 0 && byId[0]) {
+    return parseProfile(byId[0])
+  }
+
+  // 2. Fallback by email (case-insensitive via ilike)
+  const encodedEmail = encodeURIComponent(email.toLowerCase())
+  const byEmailRes = await fetch(
+    `${url}/rest/v1/profiles?email=ilike.${encodedEmail}&select=role,interests`,
+    { headers }
+  )
+  const byEmail = await byEmailRes.json()
+  if (Array.isArray(byEmail) && byEmail.length > 0 && byEmail[0]) {
+    console.log(`[AdminLayout] Found by email fallback for ${email}`)
+    return parseProfile(byEmail[0])
+  }
+
+  return { role: "student", permissions: [] }
+}
+
+function parseProfile(profile: any): { role: string; permissions: string[] } {
+  const role = profile.role || "student"
+  let permissions: string[] = []
+  try {
+    const interests =
+      typeof profile.interests === "string"
+        ? JSON.parse(profile.interests)
+        : profile.interests || {}
+    permissions = Array.isArray(interests?.permissions) ? interests.permissions : []
+  } catch {}
+  return { role, permissions }
+}
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const { user, isLoading: authLoading, isAuthenticated } = useAuth()
@@ -26,70 +78,53 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   useEffect(() => {
     async function checkAdmin() {
-      if (!user?.id) { setIsAdmin(false); return }
-      
-      const userEmail = user?.email?.toLowerCase() || ""
-      
-      // MASTER ADMIN FALLBACK WHITELIST:
-      // Instantly grants full Super-Admin access to core administration emails,
-      // preventing any lockouts due to database latency, UUID sync mismatches, or network delays.
-      const isWhitelistedAdmin = 
-        userEmail === "sonishriyash@gmail.com" || 
-        userEmail === "apnacounsellor@gmail.com";
+      if (!user?.id || !user?.email) {
+        setIsAdmin(false)
+        return
+      }
 
-      if (isWhitelistedAdmin) {
-        console.log("Master Admin credentials verified via whitelist fallback.");
+      const email = user.email.toLowerCase()
+
+      // Master admins: instant full access, no DB needed
+      if (MASTER_ADMINS.includes(email)) {
         setUserRole("admin")
         setPermissions(["courses", "analytics", "students", "broadcast", "email-agent", "teams"])
         setIsAdmin(true)
-        return;
+        return
       }
 
-      console.log("Checking admin privileges securely via backend session API...");
+      // Everyone else: fetch live role + permissions directly from DB
       try {
-        const response = await fetch("/api/auth/session")
-        const sessionData = await response.json()
-        
-        if (!sessionData.authenticated || !sessionData.user) {
-          console.error("Session not found or authenticated failed.");
-          setIsAdmin(false);
-          return;
-        }
+        console.log(`[AdminLayout] Checking access for ${email} (UUID: ${user.id})`)
+        const { role, permissions: perms } = await fetchUserAccess(user.id, email)
+        console.log(`[AdminLayout] DB result → role: "${role}", permissions: [${perms.join(", ")}]`)
 
-        console.log("User Admin Privileges verified via Session API:", sessionData.user);
-        
-        const role = sessionData.user.role || 'student'
         setUserRole(role)
-        const userPerms = sessionData.user.permissions || []
-        setPermissions(userPerms)
+        setPermissions(perms)
 
-        // Allow admin layout access if role is 'admin' OR they have at least one valid console permission
-        const hasAccess = role === 'admin' || userPerms.length > 0
+        // Grant access if they have admin/mentor role OR at least one permission assigned
+        const hasAccess = role === "admin" || role === "mentor" || perms.length > 0
         setIsAdmin(hasAccess)
 
-        // DYNAMIC LANDING REDIRECTION FOR STAFF MEMBERS:
-        // If they land on the default '/admin' route but don't have dashboard 'analytics' permission,
-        // redirect them immediately to their first allowed command view!
-        if (hasAccess && pathname === '/admin' && !userPerms.includes('analytics')) {
+        // Redirect staff away from /admin root if they don't have analytics
+        if (hasAccess && pathname === "/admin" && !perms.includes("analytics")) {
+          const menuItems = buildMenuItems()
           const allowedItems = menuItems.filter(item => {
-            if (item.path === '/admin/teams') return false
-            if (item.permission) return userPerms.includes(item.permission)
+            if (item.path === "/admin/teams") return perms.includes("teams")
+            if (item.permission) return perms.includes(item.permission)
             return true
           })
-
-          if (allowedItems.length > 0) {
-            const targetItem = allowedItems.find(item => item.path.startsWith('/admin/')) || allowedItems[0]
-            if (targetItem) {
-              console.log(`Redirecting staff member from /admin to authorized route: ${targetItem.path}`);
-              router.push(targetItem.path)
-            }
+          const target = allowedItems.find(item => item.path !== "/admin") || allowedItems[0]
+          if (target) {
+            router.push(target.path)
           }
         }
       } catch (err: any) {
-        console.error("Failed to authenticate session via API:", err.message);
-        setIsAdmin(false);
+        console.error("[AdminLayout] DB access check failed:", err.message)
+        setIsAdmin(false)
       }
     }
+
     if (!authLoading) {
       if (!isAuthenticated) {
         setIsAdmin(false)
@@ -106,7 +141,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="absolute inset-0 border-4 border-purple-500/20 border-t-purple-500 rounded-full animate-spin" />
         <ShieldCheck className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-7 w-7 text-purple-400 animate-pulse" />
       </div>
-      <p className="text-xs font-black uppercase tracking-widest text-slate-400 animate-pulse">Authenticating Admin Session...</p>
+      <p className="text-xs font-black uppercase tracking-widest text-slate-400 animate-pulse">Verifying Access...</p>
     </div>
   )
 
@@ -119,47 +154,30 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <p className="text-slate-400 text-sm text-center max-w-sm mb-8 leading-relaxed">
         You do not have admin credentials to access the Apna Counsellor Command Center.
       </p>
+      <p className="text-slate-600 text-xs mb-4">Logged in as: {user?.email}</p>
       <Button onClick={() => router.push("/")} className="rounded-xl h-12 bg-white text-black font-black px-8 hover:bg-slate-100">
         Return to Homepage
       </Button>
     </div>
   )
 
-  const menuItems = [
-    { label: "Dashboard Overview", path: "/admin", icon: LayoutDashboard, permission: "analytics" },
-    { label: "Courses Manager", path: "/admin/courses", icon: Rocket, permission: "courses" },
-    { label: "Mentor Manager", path: "/admin/mentors", icon: UserCheck, permission: "mentors" },
-    { label: "Blog Manager", path: "/admin/blogs", icon: FileText, permission: "blogs" },
-    { label: "Students Manager", path: "/admin/students", icon: Users, permission: "students" },
-    { label: "📢 Broadcast Emails", path: "/admin/broadcast", icon: Radio, permission: "broadcast" },
-    { label: "🤖 AI Email Agent", path: "/admin/email-agent", icon: Sparkles, permission: "email-agent" },
-    { label: "👥 Team Management", path: "/admin/teams", icon: Users, permission: "teams" },
-    { label: "Notifications", path: "/admin/notifications", icon: Bell },
-    { label: "Settings", path: "/admin/settings", icon: Settings },
-  ]
+  const isMasterAdmin = MASTER_ADMINS.includes(user?.email?.toLowerCase() || "")
 
-  const userEmail = user?.email?.toLowerCase() || ""
-  const isMasterAdmin = userEmail === "sonishriyash@gmail.com" || userEmail === "apnacounsellor@gmail.com";
+  const menuItems = buildMenuItems()
 
-  // Filter sidebar items according to strict checked permissions
   const filteredMenuItems = menuItems.filter(item => {
-    if (item.path === '/admin/teams') {
-      return isMasterAdmin || permissions.includes('teams')
-    }
-    if (item.permission) {
-      if (isMasterAdmin) return true
-      return permissions.includes(item.permission)
-    }
+    if (item.path === "/admin/teams") return isMasterAdmin || permissions.includes("teams")
+    if (item.permission) return isMasterAdmin || permissions.includes(item.permission)
     return true
   })
 
-  // Live active tab path permission guard (strictly respects checked permissions)
-  const currentActiveItem = menuItems.find(item => 
-    pathname === item.path || (item.path !== '/admin' && pathname.startsWith(item.path))
+  const currentActiveItem = menuItems.find(item =>
+    pathname === item.path || (item.path !== "/admin" && pathname.startsWith(item.path))
   )
-  const isAuthorizedForPage = !currentActiveItem || 
-    !currentActiveItem.permission || 
-    isMasterAdmin || 
+  const isAuthorizedForPage =
+    !currentActiveItem ||
+    !currentActiveItem.permission ||
+    isMasterAdmin ||
     permissions.includes(currentActiveItem.permission)
 
   return (
@@ -192,7 +210,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Nav Items */}
         <nav className="flex-1 py-4 px-2 space-y-1 overflow-y-auto overflow-x-hidden">
           {filteredMenuItems.map(item => {
-            const active = pathname === item.path || (item.path !== '/admin' && pathname.startsWith(item.path))
+            const active = pathname === item.path || (item.path !== "/admin" && pathname.startsWith(item.path))
             return (
               <Link key={item.path} href={item.path}>
                 <div className={`relative flex items-center gap-3 px-3 py-3 rounded-xl cursor-pointer transition-all group ${
@@ -203,7 +221,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                       className="absolute left-0 top-2 bottom-2 w-1 bg-purple-300 rounded-r-full"
                     />
                   )}
-                  <item.icon className={`h-5 w-5 flex-shrink-0 ${active ? 'text-white' : 'text-slate-500 group-hover:text-slate-300'}`} />
+                  <item.icon className={`h-5 w-5 flex-shrink-0 ${active ? "text-white" : "text-slate-500 group-hover:text-slate-300"}`} />
                   <AnimatePresence>
                     {!isCollapsed && (
                       <motion.span
@@ -221,13 +239,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             )
           })}
         </nav>
- 
+
         {/* Footer */}
         <div className="p-2 border-t border-white/5 space-y-1 flex-shrink-0">
           <Button variant="ghost" onClick={() => setIsCollapsed(!isCollapsed)}
             className="w-full h-10 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white p-0 flex items-center justify-center"
           >
-            <ChevronLeft className={`h-4 w-4 transition-transform duration-300 ${isCollapsed ? 'rotate-180' : ''}`} />
+            <ChevronLeft className={`h-4 w-4 transition-transform duration-300 ${isCollapsed ? "rotate-180" : ""}`} />
           </Button>
           <Button variant="ghost" onClick={async () => { await supabase.auth.signOut(); router.push("/login") }}
             className="w-full h-10 rounded-xl hover:bg-red-500/10 text-slate-400 hover:text-red-400 flex items-center justify-center gap-2"
@@ -237,7 +255,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </Button>
         </div>
       </motion.aside>
- 
+
       {/* MAIN AREA */}
       <div className="flex-1 flex flex-col transition-all duration-300" style={{ marginLeft: isCollapsed ? 72 : 260 }}>
         {/* Topbar */}
@@ -260,7 +278,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </Avatar>
           </div>
         </header>
- 
+
         {/* Page Content */}
         <main className="flex-1 p-6 overflow-y-auto">
           <div className="max-w-7xl mx-auto">
@@ -271,7 +289,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 </div>
                 <h3 className="text-lg font-black text-white mb-2">Restricted Area</h3>
                 <p className="text-slate-400 text-xs leading-relaxed max-w-sm mb-6">
-                  You do not have modular staff permissions to access this command page. Please request your system administrator to assign the appropriate access rules.
+                  You do not have permission to access this page. Contact your system administrator.
                 </p>
                 <Button onClick={() => router.push("/admin")} className="rounded-xl h-10 bg-white text-black font-black px-6 hover:bg-slate-100 text-xs">
                   Return to Dashboard
@@ -283,4 +301,19 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </div>
     </div>
   )
+}
+
+function buildMenuItems() {
+  return [
+    { label: "Dashboard Overview", path: "/admin", icon: LayoutDashboard, permission: "analytics" },
+    { label: "Courses Manager", path: "/admin/courses", icon: Rocket, permission: "courses" },
+    { label: "Mentor Manager", path: "/admin/mentors", icon: UserCheck, permission: "mentors" },
+    { label: "Blog Manager", path: "/admin/blogs", icon: FileText, permission: "blogs" },
+    { label: "Students Manager", path: "/admin/students", icon: Users, permission: "students" },
+    { label: "📢 Broadcast Emails", path: "/admin/broadcast", icon: Radio, permission: "broadcast" },
+    { label: "🤖 AI Email Agent", path: "/admin/email-agent", icon: Sparkles, permission: "email-agent" },
+    { label: "👥 Team Management", path: "/admin/teams", icon: Users, permission: "teams" },
+    { label: "Notifications", path: "/admin/notifications", icon: Bell },
+    { label: "Settings", path: "/admin/settings", icon: Settings },
+  ]
 }
