@@ -42,21 +42,41 @@ export async function getTeamMembersAction() {
   }
 }
 
-// Add a team member by email
 export async function addTeamMemberAction(email: string, role: 'mentor' | 'admin', permissions: string[]) {
   try {
+    const formattedEmail = email.trim().toLowerCase()
+    
     // 1. Find user by email (case-insensitive)
     const { data: userProfile, error: findError } = await supabaseAdmin
       .from('profiles')
       .select('id, interests')
-      .ilike('email', email.trim())
-      .single()
+      .ilike('email', formattedEmail)
+      .maybeSingle()
 
-    if (findError || !userProfile) {
-      return { success: false, error: "User with this email was not found. Please ask them to register/onboard first." }
+    // 2. Pre-onboard: if they are not in the profiles database yet, insert a placeholder profile
+    if (!userProfile) {
+      console.log(`[Team] Email ${formattedEmail} not found. Pre-creating placeholder profile row.`);
+      const tempId = crypto.randomUUID()
+      const { error: insertError } = await supabaseAdmin
+        .from('profiles')
+        .insert({
+          id: tempId,
+          email: formattedEmail,
+          name: email.trim().split('@')[0],
+          role,
+          interests: { permissions }
+        })
+
+      if (insertError) {
+        console.error("Failed to pre-create user profile row:", insertError.message);
+        throw insertError
+      }
+
+      revalidatePath('/admin/teams')
+      return { success: true, preCreated: true }
     }
 
-    // 2. Update their role and permissions inside interests
+    // 3. Otherwise, update their role and permissions inside interests
     const currentInterests = typeof userProfile.interests === 'string' 
       ? JSON.parse(userProfile.interests) 
       : userProfile.interests || {}

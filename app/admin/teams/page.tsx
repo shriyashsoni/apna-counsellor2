@@ -17,6 +17,7 @@ const AVAILABLE_PERMISSIONS = [
   { id: "students", label: "Manage Student Profiles", icon: Users, color: "text-purple-400 bg-purple-500/10", desc: "Access to /admin/students list and view academic details" },
   { id: "broadcast", label: "Send General Broadcasts", icon: Megaphone, color: "text-amber-400 bg-amber-500/10", desc: "Access to send system-wide notifications and bulk actions" },
   { id: "email-agent", label: "AI Email Outreach Agent", icon: Sparkles, color: "text-pink-400 bg-pink-500/10", desc: "Access to live search leads finder, AI generation and Resend outbox" },
+  { id: "teams", label: "Super Admin (Manage Team & Roles)", icon: Shield, color: "text-red-400 bg-red-500/10", desc: "Full administrative access to manage staff, roles, and assign permissions" },
 ]
 
 export default function TeamManagementPage() {
@@ -60,7 +61,13 @@ export default function TeamManagementPage() {
     setIsSaving(true)
     const res = await addTeamMemberAction(newMemberEmail, newMemberRole, newMemberPermissions)
     if (res.success) {
-      toast.success("Team member added and permissions assigned successfully!")
+      if ('preCreated' in res && res.preCreated) {
+        toast.success("Staff pre-registered successfully! When they register/log in, their modular permissions will be instantly active.", {
+          duration: 6000
+        })
+      } else {
+        toast.success("Team member added and permissions assigned successfully!")
+      }
       setNewMemberEmail("")
       setNewMemberPermissions([])
       setIsAddOpen(false)

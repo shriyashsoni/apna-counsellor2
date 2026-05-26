@@ -144,7 +144,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   // Filter sidebar items according to strict checked permissions
   const filteredMenuItems = menuItems.filter(item => {
     if (item.path === '/admin/teams') {
-      return isMasterAdmin
+      return isMasterAdmin || permissions.includes('teams')
     }
     if (item.permission) {
       if (isMasterAdmin) return true
