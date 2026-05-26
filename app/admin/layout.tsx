@@ -8,7 +8,7 @@ import { createClient } from "@/lib/supabase/client"
 import { motion, AnimatePresence } from "framer-motion"
 import { 
   LayoutDashboard, Rocket, UserCheck, FileText, Users, 
-  Bell, Settings, ShieldCheck, ChevronLeft, LogOut, ShieldAlert, Loader2, Radio
+  Bell, Settings, ShieldCheck, ChevronLeft, LogOut, ShieldAlert, Loader2, Radio, Sparkles
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -69,6 +69,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { label: "Blog Manager", path: "/admin/blogs", icon: FileText },
     { label: "Students Manager", path: "/admin/students", icon: Users },
     { label: "📢 Broadcast Emails", path: "/admin/broadcast", icon: Radio },
+    { label: "🤖 AI Email Agent", path: "/admin/email-agent", icon: Sparkles },
     { label: "Notifications", path: "/admin/notifications", icon: Bell },
     { label: "Settings", path: "/admin/settings", icon: Settings },
   ]
