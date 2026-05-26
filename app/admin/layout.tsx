@@ -35,8 +35,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       // preventing any lockouts due to database latency, UUID sync mismatches, or network delays.
       const isWhitelistedAdmin = 
         userEmail === "sonishriyash@gmail.com" || 
-        userEmail === "apnacounsellor@gmail.com" ||
-        userEmail === "sonikrishnakumar599@gmail.com";
+        userEmail === "apnacounsellor@gmail.com";
 
       if (isWhitelistedAdmin) {
         console.log("Master Admin credentials verified via whitelist fallback.");
@@ -69,7 +68,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       // DYNAMIC LANDING REDIRECTION FOR STAFF MEMBERS:
       // If they land on the default '/admin' route but don't have dashboard 'analytics' permission,
       // redirect them immediately to their first allowed command view!
-      if (hasAccess && role !== 'admin' && pathname === '/admin' && !userPerms.includes('analytics')) {
+      if (hasAccess && pathname === '/admin' && !userPerms.includes('analytics')) {
         const allowedItems = menuItems.filter(item => {
           if (item.path === '/admin/teams') return false
           if (item.permission) return userPerms.includes(item.permission)
@@ -133,27 +132,29 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { label: "Settings", path: "/admin/settings", icon: Settings },
   ]
 
-  // Filter sidebar items according to permissions
+  const userEmail = user?.email?.toLowerCase() || ""
+  const isMasterAdmin = userEmail === "sonishriyash@gmail.com" || userEmail === "apnacounsellor@gmail.com";
+
+  // Filter sidebar items according to strict checked permissions
   const filteredMenuItems = menuItems.filter(item => {
     if (item.path === '/admin/teams') {
-      return userRole === 'admin'
+      return isMasterAdmin
     }
     if (item.permission) {
-      if (userRole === 'admin') return true
+      if (isMasterAdmin) return true
       return permissions.includes(item.permission)
     }
     return true
   })
 
-  // Live active tab path permission guard
+  // Live active tab path permission guard (strictly respects checked permissions)
   const currentActiveItem = menuItems.find(item => 
     pathname === item.path || (item.path !== '/admin' && pathname.startsWith(item.path))
   )
   const isAuthorizedForPage = !currentActiveItem || 
     !currentActiveItem.permission || 
-    userRole === 'admin' || 
-    permissions.includes(currentActiveItem.permission) ||
-    (currentActiveItem.path === '/admin/teams' && userRole === 'admin')
+    isMasterAdmin || 
+    permissions.includes(currentActiveItem.permission)
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-200 flex overflow-x-hidden">
