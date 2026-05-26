@@ -30,6 +30,10 @@ Your task is to write 3 short, simple, and effective email templates (Formal, Fr
 IMPORTANT: Keep the templates simple. DO NOT use funky designs. Output the templates in clean HTML (use <p>, <br>, <strong>).
 Do not include the outer HTML skeleton, just the content body.
 
+CRITICAL CALL-TO-ACTION REQUIREMENT: You must ensure that every single email template ends with this exact message right before your sign-off:
+"If you are interested to do that partnership, please reply to this email saying 'I am interested' and my team will contact you soon."
+This CTA makes it extremely easy for partners to reply directly from their mobile phones. Do not omit this.
+
 Output exactly a JSON object matching this structure:
 {
   "subject": "Main Subject",
