@@ -37,11 +37,13 @@ export async function POST(request: Request) {
       const normalizedEmail = email.trim().toLowerCase();
 
       // 1. Check if profile already exists with this exact Firebase-derived UUID
-      const { data: existingByUUID } = await supabaseAdmin
+      const { data: existingByUUIDList } = await supabaseAdmin
         .from('profiles')
         .select('id, role, interests')
         .eq('id', uuid)
-        .maybeSingle();
+        .limit(1);
+        
+      const existingByUUID = existingByUUIDList?.[0];
 
       if (existingByUUID) {
         // Profile found by UUID → only update non-permission auth fields
@@ -59,11 +61,13 @@ export async function POST(request: Request) {
         console.log(`✅ Login sync done. Role preserved: ${existingByUUID.role} for ${email}`);
       } else {
         // 2. Not found by UUID → search by email (covers pre-assigned or duplicate-UUID users)
-        const { data: existingByEmail } = await supabaseAdmin
+        const { data: existingByEmailList } = await supabaseAdmin
           .from('profiles')
           .select('id, role, interests')
           .ilike('email', normalizedEmail)
-          .maybeSingle();
+          .limit(1);
+          
+        const existingByEmail = existingByEmailList?.[0];
 
         if (existingByEmail) {
           // Found by email → self-heal: delete old row, re-insert with correct Firebase UUID
@@ -155,8 +159,8 @@ export async function GET() {
         .from('profiles')
         .select('id, role, interests')
         .eq('id', sessionData.id)
-        .maybeSingle();
-      profile = data;
+        .limit(1);
+      profile = data?.[0];
     }
 
     // 2. Fallback: try by email
@@ -165,8 +169,8 @@ export async function GET() {
         .from('profiles')
         .select('id, role, interests')
         .ilike('email', sessionData.email.trim())
-        .maybeSingle();
-      profile = data;
+        .limit(1);
+      profile = data?.[0];
       if (profile) {
         console.log(`[Session GET] Email fallback matched for: ${sessionData.email} → role: ${profile.role}`);
       }

@@ -47,11 +47,13 @@ export async function addTeamMemberAction(email: string, role: 'mentor' | 'admin
     const formattedEmail = email.trim().toLowerCase()
     
     // 1. Find user by email (case-insensitive)
-    const { data: userProfile, error: findError } = await supabaseAdmin
+    const { data: userProfiles, error: findError } = await supabaseAdmin
       .from('profiles')
       .select('id, interests')
       .ilike('email', formattedEmail)
-      .maybeSingle()
+      .limit(1)
+
+    const userProfile = userProfiles?.[0];
 
     // 2. Pre-onboard: if they are not in the profiles database yet, insert a placeholder profile
     if (!userProfile) {
@@ -189,20 +191,24 @@ export async function checkAdminAccessAction(userId: string, email?: string) {
     if (!userId) return { success: false, role: 'student', permissions: [] }
 
     // 1. Try to find by UUID first
-    let { data: profile, error } = await supabaseAdmin
+    let { data: profilesById, error } = await supabaseAdmin
       .from('profiles')
       .select('id, role, interests')
       .eq('id', userId)
-      .maybeSingle()
+      .limit(1)
+      
+    let profile = profilesById?.[0];
 
     // 2. If not found by UUID, try to find by Email (case-insensitive)
     if (!profile && email) {
       console.log(`[Auth check] User not found by UUID ${userId}. Searching by email fallback: ${email}`);
-      const { data: emailProfile, error: emailError } = await supabaseAdmin
+      const { data: emailProfiles, error: emailError } = await supabaseAdmin
         .from('profiles')
         .select('id, role, interests')
         .ilike('email', email.trim())
-        .maybeSingle()
+        .limit(1)
+
+      const emailProfile = emailProfiles?.[0];
 
       if (emailProfile) {
         profile = emailProfile
