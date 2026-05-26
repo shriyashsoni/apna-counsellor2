@@ -6,27 +6,55 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
-import { Sparkles, Mail, Send, Copy, RefreshCw, Loader2 } from "lucide-react";
+import { Sparkles, Mail, Send, Copy, RefreshCw, Loader2, Search, Edit3, User, Globe, Phone, FileText, CheckCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
+interface Lead {
+  name: string;
+  url: string;
+  description: string;
+  type: string;
+}
+
 export function AIEmailAgent() {
+  const [activeTab, setActiveTab] = useState<"ai-pitch" | "direct-compose" | "lead-finder">("ai-pitch");
+
+  // AI Pitch Form State
   const [formData, setFormData] = useState({
     companyName: "",
     companyWebsite: "",
     recipientEmail: "",
-    recipientName: "",
     purpose: "partnership",
     additionalContext: "",
     emailLength: "medium"
   });
 
+  // Custom Sender Signature State (Request: Name, Role, Website, Contact - all custom)
+  const [senderDetails, setSenderDetails] = useState({
+    name: "Shriyash Soni",
+    role: "Founder",
+    website: "apnacounsellor.in",
+    contact: "+91 99999 99999"
+  });
+
+  // Direct Email Composer State (Request: Custom email without AI)
+  const [directEmail, setDirectEmail] = useState({
+    recipientEmail: "",
+    subject: "",
+    body: ""
+  });
+
+  // Lead Finder State (Request: Search agent for colleges/companies/funding partners)
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearchingLeads, setIsSearchingLeads] = useState(false);
+  const [discoveredLeads, setDiscoveredLeads] = useState<Lead[]>([]);
+
   const [websiteUrl, setWebsiteUrl] = useState("");
   const [isScrapingWebsite, setIsScrapingWebsite] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSendingEmail, setIsSendingEmail] = useState(false);
-  const [useColorfulTemplate, setUseColorfulTemplate] = useState(false); // Default to false (simple template)
+  const [useColorfulTemplate, setUseColorfulTemplate] = useState(false);
   const [generatedEmail, setGeneratedEmail] = useState<{
     subject: string;
     content: string;
@@ -47,12 +75,6 @@ export function AIEmailAgent() {
     { value: "collaboration", label: "Mentorship Collaboration", icon: "👥" }
   ];
 
-  const emailLengthOptions = [
-    { value: "short", label: "Short (100-150 words)", description: "Quick and concise pitch" },
-    { value: "medium", label: "Medium (200-300 words)", description: "Balanced details and proposal" },
-    { value: "long", label: "Long (350-450 words)", description: "Comprehensive collaboration plan" }
-  ];
-
   const emailTemplates = [
     {
       name: "🎓 College Tie-up",
@@ -71,12 +93,6 @@ export function AIEmailAgent() {
       companyName: "TechCorp Labs",
       purpose: "partnership",
       context: "Collaborating for student internship opportunities and project-based learning support."
-    },
-    {
-      name: "👥 Expert Mentor",
-      companyName: "IIT-B Alumni Network",
-      purpose: "collaboration",
-      context: "Inviting distinguished alumni to onboard as verified mentors on our counselling platform."
     }
   ];
 
@@ -104,7 +120,7 @@ export function AIEmailAgent() {
       if (!response.ok || data.error) throw new Error(data.error || "Failed to generate email");
 
       setGeneratedEmail(data.data);
-      toast.success("AI Email templates suggested!");
+      toast.success("AI Outbound ideas suggested successfully!");
     } catch (err) {
       console.error(err);
       toast.error(`Failed to generate email: ${err instanceof Error ? err.message : "Unknown error"}`);
@@ -149,6 +165,70 @@ export function AIEmailAgent() {
     }
   };
 
+  // Direct send email handler (Request: Custom email without AI)
+  const handleSendDirectEmail = async () => {
+    if (!directEmail.recipientEmail || !directEmail.subject || !directEmail.body) {
+      toast.error("Please fill in recipient email, subject, and body");
+      return;
+    }
+
+    setIsSendingEmail(true);
+    try {
+      // Wrap manual body in our custom signature template too!
+      const formattedBody = directEmail.body.replace(/\n/g, "<br/>");
+      const htmlContent = convertToPlainTemplate(formattedBody);
+
+      const response = await fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          to: directEmail.recipientEmail,
+          subject: directEmail.subject,
+          html: htmlContent
+        })
+      });
+
+      const data = await response.json();
+      if (!response.ok || data.error) throw new Error(data.error || "Failed to send custom email");
+
+      toast.success("Custom Email sent successfully!");
+      setDirectEmail({ recipientEmail: "", subject: "", body: "" });
+    } catch (err) {
+      console.error(err);
+      toast.error(`Failed to send custom email: ${err instanceof Error ? err.message : "Unknown error"}`);
+    } finally {
+      setIsSendingEmail(false);
+    }
+  };
+
+  // Search Lead finder handler (Request: Live search agent)
+  const handleSearchLeads = async () => {
+    if (!searchQuery) {
+      toast.error("Please enter a search query/region");
+      return;
+    }
+
+    setIsSearchingLeads(true);
+    try {
+      const response = await fetch("/api/search-leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: searchQuery })
+      });
+
+      const data = await response.json();
+      if (!response.ok || data.error) throw new Error(data.error || "Failed to find leads");
+
+      setDiscoveredLeads(data.leads || []);
+      toast.success(`Discovered ${data.leads?.length || 0} matching partnership leads!`);
+    } catch (err) {
+      console.error(err);
+      toast.error(`Search failed: ${err instanceof Error ? err.message : "Unknown error"}`);
+    } finally {
+      setIsSearchingLeads(false);
+    }
+  };
+
   const stripHtml = (html: string): string => {
     if (typeof window === "undefined") return html;
     const tmp = document.createElement("DIV");
@@ -156,6 +236,7 @@ export function AIEmailAgent() {
     return tmp.textContent || tmp.innerText || "";
   };
 
+  // Converts HTML content to plain template dynamically appending custom sender details
   const convertToPlainTemplate = (htmlContent: string): string => {
     return `
 <!DOCTYPE html>
@@ -172,16 +253,19 @@ export function AIEmailAgent() {
       ${htmlContent}
     </div>
 
-    <!-- Signature -->
+    <!-- Dynamic Signature (Customized by User) -->
     <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eeeeee;">
-      <p style="margin: 0 0 5px 0; font-size: 14px; color: #444; font-weight: bold;">Shriyash Soni</p>
-      <p style="margin: 0 0 15px 0; font-size: 13px; color: #777;">Founder, Apna Counsellor</p>
+      <p style="margin: 0 0 5px 0; font-size: 14px; color: #444; font-weight: bold;">${senderDetails.name}</p>
+      <p style="margin: 0 0 15px 0; font-size: 13px; color: #777;">${senderDetails.role}, Apna Counsellor</p>
       
       <p style="margin: 0 0 5px 0; font-size: 12px; color: #888;">
         <strong>Email:</strong> <a href="mailto:shriyash.soni@apnacounsellor.in" style="color: #7c3aed; text-decoration: none;">shriyash.soni@apnacounsellor.in</a>
       </p>
       <p style="margin: 0 0 5px 0; font-size: 12px; color: #888;">
-        <strong>Website:</strong> <a href="https://apnacounsellor.in" style="color: #7c3aed; text-decoration: none;">apnacounsellor.in</a>
+        <strong>Website:</strong> <a href="https://${senderDetails.website}" style="color: #7c3aed; text-decoration: none;">${senderDetails.website}</a>
+      </p>
+      <p style="margin: 0 0 5px 0; font-size: 12px; color: #888;">
+        <strong>Contact:</strong> ${senderDetails.contact}
       </p>
     </div>
 
@@ -189,6 +273,18 @@ export function AIEmailAgent() {
 </body>
 </html>
     `.trim();
+  };
+
+  const loadLeadIntoPitcher = (lead: Lead) => {
+    setFormData({
+      ...formData,
+      companyName: lead.name,
+      companyWebsite: lead.url,
+      purpose: lead.type === "College" ? "college" : lead.type === "School" ? "school" : "partnership"
+    });
+    setWebsiteUrl(lead.url);
+    setActiveTab("ai-pitch");
+    toast.success(`Lead "${lead.name}" loaded into AI Pitcher!`);
   };
 
   const copyToClipboard = (text: string, type: string) => {
@@ -203,7 +299,7 @@ export function AIEmailAgent() {
       purpose: template.purpose,
       additionalContext: template.context
     });
-    toast.info(`Template "${template.name}" loaded!`);
+    toast.info(`Preset "${template.name}" loaded!`);
   };
 
   const handleScrapeWebsite = async () => {
@@ -214,14 +310,12 @@ export function AIEmailAgent() {
 
     setIsScrapingWebsite(true);
     try {
-      // Just scrape basic metadata using standard API or mock scrape
       const response = await fetch(`https://r.jina.ai/${websiteUrl}`, {
         headers: { 'User-Agent': 'Mozilla/5.0' }
       });
       if (!response.ok) throw new Error("Failed to fetch site data");
       
       const text = await response.text();
-      // Extract title as name
       const titleMatch = text.match(/Title:\s*(.*)/i);
       const title = titleMatch ? titleMatch[1].trim() : "";
       
@@ -232,17 +326,16 @@ export function AIEmailAgent() {
         additionalContext: text.slice(0, 1000) ? `Extracted site summary:\n${text.slice(0, 500)}` : formData.additionalContext
       });
 
-      toast.success("Site data extracted!");
+      toast.success("Site data extracted successfully!");
     } catch (err) {
       console.error(err);
-      // If direct jina fetch fails, parse domain name
       const parsedName = websiteUrl.replace(/https?:\/\/(www\.)?/, "").split(".")[0];
       setFormData({
         ...formData,
         companyName: parsedName.charAt(0).toUpperCase() + parsedName.slice(1),
         companyWebsite: websiteUrl
       });
-      toast.success("Data filled from domain name!");
+      toast.success("Data loaded from domain name!");
     } finally {
       setIsScrapingWebsite(false);
     }
@@ -250,333 +343,598 @@ export function AIEmailAgent() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <Card className="bg-[#0f0f0f] border-white/5">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-2xl text-white">
-            <Sparkles className="h-6 w-6 text-[#00FF88]" />
-            AI Partnership Agent
-          </CardTitle>
-          <CardDescription className="text-slate-400">
-            Generate simple, professional outbound email proposals for colleges, schools, and organizations. Direct Resend delivery.
-          </CardDescription>
+      {/* Header card */}
+      <Card className="bg-[#0f0f0f] border-white/5 shadow-2xl">
+        <CardHeader className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <CardTitle className="flex items-center gap-2 text-2xl text-white tracking-tight">
+              <Sparkles className="h-6 w-6 text-[#00FF88] animate-pulse" />
+              Apna Counsellor Outreach Command Center
+            </CardTitle>
+            <CardDescription className="text-slate-400">
+              Discover verified partnership leads, generate AI campaigns, or write manual custom pitches instantly.
+            </CardDescription>
+          </div>
+          {/* Custom Tabs */}
+          <div className="flex gap-2 bg-white/5 p-1 rounded-xl border border-white/10 shrink-0">
+            <Button
+              onClick={() => setActiveTab("ai-pitch")}
+              className={`rounded-lg h-9 text-xs font-black transition-all ${activeTab === "ai-pitch" ? "bg-purple-600 text-white" : "bg-transparent text-slate-400 hover:text-white"}`}
+            >
+              🤖 AI Email Pitcher
+            </Button>
+            <Button
+              onClick={() => setActiveTab("direct-compose")}
+              className={`rounded-lg h-9 text-xs font-black transition-all ${activeTab === "direct-compose" ? "bg-purple-600 text-white" : "bg-transparent text-slate-400 hover:text-white"}`}
+            >
+              ✍️ Direct Composer
+            </Button>
+            <Button
+              onClick={() => setActiveTab("lead-finder")}
+              className={`rounded-lg h-9 text-xs font-black transition-all ${activeTab === "lead-finder" ? "bg-purple-600 text-white border-none" : "bg-transparent text-slate-400 hover:text-white"}`}
+            >
+              🔍 Live Lead Finder
+            </Button>
+          </div>
         </CardHeader>
       </Card>
 
       <div className="grid lg:grid-cols-5 gap-6">
-        {/* Input Form */}
-        <Card className="bg-[#0f0f0f] border-white/5 lg:col-span-2">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-white text-base">
-              <Mail className="h-5 w-5 text-purple-400" />
-              Campaign Details
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {/* Website Scraper */}
-            <div className="p-4 bg-white/[0.02] border border-white/5 rounded-xl space-y-3">
-              <Label className="text-xs font-black uppercase text-slate-400 tracking-widest flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-[#00FF88]" />
-                Auto-Fill from Website Link
-              </Label>
-              <div className="flex gap-2">
-                <Input
-                  type="url"
-                  placeholder="https://college.edu"
-                  value={websiteUrl}
-                  onChange={(e) => setWebsiteUrl(e.target.value)}
-                  className="flex-1 bg-white/5 border-white/10 text-white rounded-xl placeholder:text-slate-600 focus:border-[#00FF88]"
-                  disabled={isScrapingWebsite}
-                />
-                <Button
-                  onClick={handleScrapeWebsite}
-                  disabled={isScrapingWebsite}
-                  className="bg-purple-600 hover:bg-purple-700 text-white rounded-xl h-10 px-3"
-                  size="sm"
-                >
-                  {isScrapingWebsite ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    "Extract"
-                  )}
-                </Button>
+        
+        {/* LEFT COLUMN: Inputs & Configs */}
+        <div className="lg:col-span-2 space-y-6">
+          
+          {/* Signature panel (Request: Name, Role, Website, Contact) */}
+          <Card className="bg-[#0f0f0f] border-white/5 shadow-xl">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm font-black text-slate-300 uppercase tracking-widest flex items-center gap-2">
+                <Edit3 className="h-4 w-4 text-[#00FF88]" /> Sender Details (Signature)
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="grid grid-cols-2 gap-3 text-xs">
+              <div className="space-y-1">
+                <Label className="text-[10px] text-slate-500 font-bold uppercase">Name</Label>
+                <div className="relative">
+                  <User className="absolute left-3 top-3 h-3.5 w-3.5 text-slate-500" />
+                  <Input
+                    value={senderDetails.name}
+                    onChange={(e) => setSenderDetails({ ...senderDetails, name: e.target.value })}
+                    className="pl-9 h-9 bg-white/5 border-white/10 text-white rounded-lg text-xs"
+                  />
+                </div>
               </div>
-            </div>
-
-            {/* Quick Templates */}
-            <div>
-              <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest">Quick Themes</Label>
-              <div className="flex gap-2 mt-2 flex-wrap">
-                {emailTemplates.map((template) => (
-                  <Button
-                    key={template.name}
-                    variant="outline"
-                    size="sm"
-                    onClick={() => loadTemplate(template)}
-                    className="text-xs rounded-lg border-white/5 bg-white/5 text-slate-300 hover:text-white"
-                  >
-                    {template.name}
-                  </Button>
-                ))}
+              <div className="space-y-1">
+                <Label className="text-[10px] text-slate-500 font-bold uppercase">Role Title</Label>
+                <div className="relative">
+                  <Edit3 className="absolute left-3 top-3 h-3.5 w-3.5 text-slate-500" />
+                  <Input
+                    value={senderDetails.role}
+                    onChange={(e) => setSenderDetails({ ...senderDetails, role: e.target.value })}
+                    className="pl-9 h-9 bg-white/5 border-white/10 text-white rounded-lg text-xs"
+                  />
+                </div>
               </div>
-            </div>
+              <div className="space-y-1">
+                <Label className="text-[10px] text-slate-500 font-bold uppercase">Website</Label>
+                <div className="relative">
+                  <Globe className="absolute left-3 top-3 h-3.5 w-3.5 text-slate-500" />
+                  <Input
+                    value={senderDetails.website}
+                    onChange={(e) => setSenderDetails({ ...senderDetails, website: e.target.value })}
+                    className="pl-9 h-9 bg-white/5 border-white/10 text-white rounded-lg text-xs"
+                  />
+                </div>
+              </div>
+              <div className="space-y-1">
+                <Label className="text-[10px] text-slate-500 font-bold uppercase">Contact Number</Label>
+                <div className="relative">
+                  <Phone className="absolute left-3 top-3 h-3.5 w-3.5 text-slate-500" />
+                  <Input
+                    value={senderDetails.contact}
+                    onChange={(e) => setSenderDetails({ ...senderDetails, contact: e.target.value })}
+                    className="pl-9 h-9 bg-white/5 border-white/10 text-white rounded-lg text-xs"
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
-            {/* Company Name */}
-            <div className="space-y-2">
-              <Label htmlFor="companyName" className="text-xs text-slate-300">Target Name *</Label>
-              <Input
-                id="companyName"
-                placeholder="e.g. COEP Pune"
-                value={formData.companyName}
-                onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
-                className="bg-white/5 border-white/10 text-white rounded-xl placeholder:text-slate-600 focus:border-[#00FF88]"
-              />
-            </div>
-
-            {/* Company Website */}
-            <div className="space-y-2">
-              <Label htmlFor="companyWebsite" className="text-xs text-slate-300">Website URL (Optional)</Label>
-              <Input
-                id="companyWebsite"
-                type="url"
-                placeholder="https://website.com"
-                value={formData.companyWebsite}
-                onChange={(e) => setFormData({ ...formData, companyWebsite: e.target.value })}
-                className="bg-white/5 border-white/10 text-white rounded-xl placeholder:text-slate-600 focus:border-[#00FF88]"
-              />
-            </div>
-
-            {/* Recipient Email */}
-            <div className="space-y-2">
-              <Label htmlFor="recipientEmail" className="text-xs text-slate-300">Recipient Email *</Label>
-              <Input
-                id="recipientEmail"
-                type="email"
-                placeholder="principal@college.edu"
-                value={formData.recipientEmail}
-                onChange={(e) => setFormData({ ...formData, recipientEmail: e.target.value })}
-                className="bg-white/5 border-white/10 text-white rounded-xl placeholder:text-slate-600 focus:border-[#00FF88]"
-              />
-            </div>
-
-            {/* Purpose */}
-            <div className="space-y-2">
-              <Label htmlFor="purpose" className="text-xs text-slate-300">Partnership Purpose *</Label>
-              <select
-                id="purpose"
-                value={formData.purpose}
-                onChange={(e) => setFormData({ ...formData, purpose: e.target.value })}
-                className="w-full h-11 px-3 bg-white/5 border border-white/10 rounded-xl text-white focus:border-[#00FF88] text-sm"
+          {/* Tab Content Rendering */}
+          <AnimatePresence mode="wait">
+            
+            {/* T1: AI Pitch Pitcher Form */}
+            {activeTab === "ai-pitch" && (
+              <motion.div
+                key="ai-pitch-form"
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 10 }}
               >
-                {purposeOptions.map((option) => (
-                  <option key={option.value} value={option.value} className="bg-slate-950">
-                    {option.icon} {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Additional Context */}
-            <div className="space-y-2">
-              <Label htmlFor="additionalContext" className="text-xs text-slate-300">Additional Context (Optional)</Label>
-              <Textarea
-                id="additionalContext"
-                placeholder="Mention specific dates, slots or courses you want to offer..."
-                rows={3}
-                value={formData.additionalContext}
-                onChange={(e) => setFormData({ ...formData, additionalContext: e.target.value })}
-                className="bg-white/5 border-white/10 text-white rounded-xl placeholder:text-slate-600 focus:border-[#00FF88] resize-none"
-              />
-            </div>
-
-            {/* Generate Button */}
-            <Button
-              onClick={handleGenerate}
-              disabled={isGenerating}
-              className="w-full bg-[#00FF88] text-black font-black text-base h-12 rounded-xl hover:bg-[#00e077] shadow-[0_0_20px_rgba(0,255,136,0.1)] transition-all flex items-center justify-center gap-2"
-            >
-              {isGenerating ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  Generating...
-                </>
-              ) : (
-                <>
-                  <Sparkles className="h-4 w-4" />
-                  Suggest 3 AI Templates
-                </>
-              )}
-            </Button>
-          </CardContent>
-        </Card>
-
-        {/* Generated Email Preview */}
-        <Card className="bg-[#0f0f0f] border-white/5 lg:col-span-3">
-          <CardHeader>
-            <CardTitle className="flex items-center justify-between text-white text-base">
-              <span className="flex items-center gap-2">
-                <Mail className="h-5 w-5 text-[#00FF88]" />
-                Generated Outbox Suggestions
-              </span>
-              {generatedEmail && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleGenerate}
-                  disabled={isGenerating}
-                  className="text-slate-400 hover:text-white"
-                >
-                  <RefreshCw className="h-4 w-4 mr-1 text-[#00FF88]" />
-                  Regenerate
-                </Button>
-              )}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <AnimatePresence mode="wait">
-              {generatedEmail ? (
-                <motion.div
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -15 }}
-                  className="space-y-4"
-                >
-                  {/* Template Selector */}
-                  {generatedEmail.templates && (
-                    <div className="space-y-2">
-                      <Label className="text-xs text-slate-300 font-bold">Select Template Style</Label>
+                <Card className="bg-[#0f0f0f] border-white/5 shadow-xl">
+                  <CardHeader>
+                    <CardTitle className="text-white text-base flex items-center gap-2">
+                      <Sparkles className="h-5 w-5 text-purple-400" /> AI Outbound Details
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {/* Website Link Extractor */}
+                    <div className="p-3.5 bg-white/[0.02] border border-white/5 rounded-xl space-y-2">
+                      <Label className="text-[10px] font-black uppercase text-slate-400 tracking-widest flex items-center gap-1.5">
+                        <Sparkles className="h-3.5 w-3.5 text-[#00FF88]" /> Auto-Fill Website Link
+                      </Label>
                       <div className="flex gap-2">
+                        <Input
+                          type="url"
+                          placeholder="https://college.edu"
+                          value={websiteUrl}
+                          onChange={(e) => setWebsiteUrl(e.target.value)}
+                          className="flex-1 bg-white/5 border-white/10 text-white rounded-xl placeholder:text-slate-600 focus:border-[#00FF88] text-xs h-10"
+                        />
                         <Button
-                          variant={selectedTemplate === "formal" ? "default" : "outline"}
+                          onClick={handleScrapeWebsite}
+                          disabled={isScrapingWebsite}
+                          className="bg-purple-600 hover:bg-purple-700 text-white rounded-xl h-10 text-xs font-bold"
                           size="sm"
-                          onClick={() => setSelectedTemplate("formal")}
-                          className={`flex-1 rounded-xl h-10 ${selectedTemplate === "formal" ? "bg-purple-600 text-white hover:bg-purple-700" : "border-white/5 bg-white/5 text-slate-300 hover:text-white"}`}
                         >
-                          📄 Formal
-                        </Button>
-                        <Button
-                          variant={selectedTemplate === "friendly" ? "default" : "outline"}
-                          size="sm"
-                          onClick={() => setSelectedTemplate("friendly")}
-                          className={`flex-1 rounded-xl h-10 ${selectedTemplate === "friendly" ? "bg-purple-600 text-white hover:bg-purple-700" : "border-white/5 bg-white/5 text-slate-300 hover:text-white"}`}
-                        >
-                          😊 Friendly
-                        </Button>
-                        <Button
-                          variant={selectedTemplate === "creative" ? "default" : "outline"}
-                          size="sm"
-                          onClick={() => setSelectedTemplate("creative")}
-                          className={`flex-1 rounded-xl h-10 ${selectedTemplate === "creative" ? "bg-purple-600 text-white hover:bg-purple-700" : "border-white/5 bg-white/5 text-slate-300 hover:text-white"}`}
-                        >
-                          ✨ Creative
+                          {isScrapingWebsite ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : "Extract"}
                         </Button>
                       </div>
                     </div>
-                  )}
 
-                  {/* Subject Line */}
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <Label className="text-xs text-slate-300 font-bold">Subject Line</Label>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => copyToClipboard(
-                          generatedEmail.templates?.[selectedTemplate]?.subject || generatedEmail.subject,
-                          "Subject"
-                        )}
-                        className="text-slate-400 hover:text-white h-7 px-2"
+                    {/* Presets */}
+                    <div>
+                      <Label className="text-[10px] font-black uppercase text-slate-500 tracking-widest">Outreach Presets</Label>
+                      <div className="flex gap-1.5 mt-1.5 flex-wrap">
+                        {emailTemplates.map((t) => (
+                          <Button
+                            key={t.name}
+                            variant="outline"
+                            size="sm"
+                            onClick={() => loadTemplate(t)}
+                            className="text-[10px] rounded-lg border-white/5 bg-white/5 text-slate-300 hover:text-white px-2.5 h-7"
+                          >
+                            {t.name}
+                          </Button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Target name */}
+                    <div className="space-y-1.5">
+                      <Label className="text-xs text-slate-300">Target Organization Name *</Label>
+                      <Input
+                        placeholder="e.g. COEP Pune"
+                        value={formData.companyName}
+                        onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
+                        className="bg-white/5 border-white/10 text-white rounded-xl placeholder:text-slate-600 focus:border-[#00FF88] text-xs h-10"
+                      />
+                    </div>
+
+                    {/* Target Email */}
+                    <div className="space-y-1.5">
+                      <Label className="text-xs text-slate-300">Recipient Outbox Email *</Label>
+                      <Input
+                        type="email"
+                        placeholder="placement@college.edu"
+                        value={formData.recipientEmail}
+                        onChange={(e) => setFormData({ ...formData, recipientEmail: e.target.value })}
+                        className="bg-white/5 border-white/10 text-white rounded-xl placeholder:text-slate-600 focus:border-[#00FF88] text-xs h-10"
+                      />
+                    </div>
+
+                    {/* Purpose selection */}
+                    <div className="space-y-1.5">
+                      <Label className="text-xs text-slate-300">Partnership Purpose *</Label>
+                      <select
+                        value={formData.purpose}
+                        onChange={(e) => setFormData({ ...formData, purpose: e.target.value })}
+                        className="w-full h-10 px-3 bg-white/5 border border-white/10 rounded-xl text-white focus:border-[#00FF88] text-xs"
                       >
-                        <Copy className="h-3.5 w-3.5 mr-1" />
-                        Copy
-                      </Button>
+                        {purposeOptions.map((o) => (
+                          <option key={o.value} value={o.value} className="bg-slate-950">
+                            {o.icon} {o.label}
+                          </option>
+                        ))}
+                      </select>
                     </div>
-                    <div className="p-3 bg-white/5 border border-white/5 rounded-xl">
-                      <p className="font-bold text-white text-sm">
-                        {generatedEmail.templates?.[selectedTemplate]?.subject || generatedEmail.subject}
-                      </p>
-                    </div>
-                  </div>
 
-                  {/* Email Body */}
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <Label className="text-xs text-slate-300 font-bold">Email Body</Label>
-                      <div className="flex gap-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => copyToClipboard(
-                            generatedEmail.templates?.[selectedTemplate]?.content || generatedEmail.content,
-                            "HTML"
-                          )}
-                          className="text-slate-400 hover:text-white h-7 px-2"
-                        >
-                          <Copy className="h-3.5 w-3.5 mr-1" />
-                          Copy HTML
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => copyToClipboard(
-                            stripHtml(generatedEmail.templates?.[selectedTemplate]?.content || generatedEmail.content),
-                            "Plain text"
-                          )}
-                          className="text-slate-400 hover:text-white h-7 px-2"
-                        >
-                          <Copy className="h-3.5 w-3.5 mr-1" />
-                          Copy Text
-                        </Button>
-                      </div>
+                    {/* Context */}
+                    <div className="space-y-1.5">
+                      <Label className="text-xs text-slate-300">Additional Context (Optional)</Label>
+                      <Textarea
+                        placeholder="Explain dates, timelines, slots, or details you specifically want included..."
+                        rows={3}
+                        value={formData.additionalContext}
+                        onChange={(e) => setFormData({ ...formData, additionalContext: e.target.value })}
+                        className="bg-white/5 border-white/10 text-white rounded-xl placeholder:text-slate-600 focus:border-[#00FF88] text-xs resize-none"
+                      />
                     </div>
-                    <div
-                      className="p-5 bg-white/5 border border-white/5 rounded-xl min-h-[300px] max-h-[450px] overflow-y-auto text-sm leading-relaxed text-slate-300"
-                      dangerouslySetInnerHTML={{
-                        __html: generatedEmail.templates?.[selectedTemplate]?.content || generatedEmail.content
-                      }}
-                    />
-                  </div>
 
-                  {/* Send Options */}
-                  <div className="space-y-3 pt-2">
-                    {/* Primary Send Button */}
+                    {/* AI Pitch Trigger */}
                     <Button
-                      onClick={handleSendEmail}
-                      disabled={isSendingEmail}
-                      className="w-full h-12 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl flex items-center justify-center gap-2"
+                      onClick={handleGenerate}
+                      disabled={isGenerating}
+                      className="w-full bg-[#00FF88] text-black font-black text-sm h-11 rounded-xl hover:bg-[#00e077] transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,255,136,0.1)]"
                     >
-                      {isSendingEmail ? (
-                        <>
-                          <Loader2 className="h-5 w-5 animate-spin" />
-                          Sending Outbox...
-                        </>
+                      {isGenerating ? (
+                        <><Loader2 className="h-4 w-4 animate-spin" /> Suggesting Templates...</>
                       ) : (
-                        <>
-                          <Send className="h-4 w-4" />
-                          Send Selected Template Instantly
-                        </>
+                        <><Sparkles className="h-4 w-4" /> Suggest 3 AI Templates</>
                       )}
                     </Button>
-                    
-                    <p className="text-[10px] text-slate-500 text-center">
-                      * Will be delivered instantly from <strong>shriyash.soni@apnacounsellor.in</strong>. Replying is supported.
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
+
+            {/* T2: Direct manual composer (Request: Custom email without AI) */}
+            {activeTab === "direct-compose" && (
+              <motion.div
+                key="direct-compose-form"
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 10 }}
+              >
+                <Card className="bg-[#0f0f0f] border-white/5 shadow-xl">
+                  <CardHeader>
+                    <CardTitle className="text-white text-base flex items-center gap-2">
+                      <Edit3 className="h-5 w-5 text-purple-400" /> Direct Composer
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-1.5">
+                      <Label className="text-xs text-slate-300">Recipient Email *</Label>
+                      <Input
+                        type="email"
+                        placeholder="someone@domain.com"
+                        value={directEmail.recipientEmail}
+                        onChange={(e) => setDirectEmail({ ...directEmail, recipientEmail: e.target.value })}
+                        className="bg-white/5 border-white/10 text-white rounded-xl placeholder:text-slate-600 focus:border-[#00FF88] text-xs h-10"
+                      />
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <Label className="text-xs text-slate-300">Subject Line *</Label>
+                      <Input
+                        placeholder="Proposal for collaboration / partnership"
+                        value={directEmail.subject}
+                        onChange={(e) => setDirectEmail({ ...directEmail, subject: e.target.value })}
+                        className="bg-white/5 border-white/10 text-white rounded-xl placeholder:text-slate-600 focus:border-[#00FF88] text-xs h-10"
+                      />
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <Label className="text-xs text-slate-300">Custom Pitch Message Body *</Label>
+                      <Textarea
+                        placeholder="Dear Principal/Director,\n\nWe would like to propose a tie-up between Apna Counsellor and your organization..."
+                        rows={8}
+                        value={directEmail.body}
+                        onChange={(e) => setDirectEmail({ ...directEmail, body: e.target.value })}
+                        className="bg-white/5 border-white/10 text-white rounded-xl placeholder:text-slate-600 focus:border-[#00FF88] text-xs resize-none font-sans"
+                      />
+                    </div>
+
+                    <Button
+                      onClick={handleSendDirectEmail}
+                      disabled={isSendingEmail}
+                      className="w-full bg-[#00FF88] text-black font-black text-sm h-11 rounded-xl hover:bg-[#00e077] transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,255,136,0.1)]"
+                    >
+                      {isSendingEmail ? (
+                        <><Loader2 className="h-4 w-4 animate-spin" /> Delivering Email...</>
+                      ) : (
+                        <><Send className="h-4 w-4" /> Send Direct Email</>
+                      )}
+                    </Button>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
+
+            {/* T3: Live Search Finder Agent (Request: Search matching partners agent) */}
+            {activeTab === "lead-finder" && (
+              <motion.div
+                key="lead-finder-form"
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 10 }}
+              >
+                <Card className="bg-[#0f0f0f] border-white/5 shadow-xl">
+                  <CardHeader>
+                    <CardTitle className="text-white text-base flex items-center gap-2">
+                      <Search className="h-5 w-5 text-purple-400" /> Lead Finder Search Agent
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <Label className="text-xs text-slate-300">Search keywords (e.g. Colleges in Pune, Schools in Delhi)</Label>
+                      <div className="flex gap-2">
+                        <Input
+                          placeholder="Colleges / companies / funding groups..."
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          className="flex-1 bg-white/5 border-white/10 text-white rounded-xl placeholder:text-slate-600 focus:border-[#00FF88] text-xs h-10"
+                        />
+                        <Button
+                          onClick={handleSearchLeads}
+                          disabled={isSearchingLeads}
+                          className="bg-purple-600 hover:bg-purple-700 text-white rounded-xl h-10 text-xs font-bold"
+                        >
+                          {isSearchingLeads ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : "Search"}
+                        </Button>
+                      </div>
+                    </div>
+
+                    <p className="text-[10px] text-slate-500">
+                      * Uses real-time crawling to extract matching institutions and their websites instantly!
                     </p>
-                  </div>
-                </motion.div>
-              ) : (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="flex flex-col items-center justify-center min-h-[450px] text-center text-slate-500"
-                >
-                  <Mail className="h-16 w-16 mb-4 opacity-10 text-white" />
-                  <p className="text-base text-slate-400 font-bold">No generated templates yet</p>
-                  <p className="text-xs text-slate-600 mt-1 max-w-xs">Fill in your campaign details on the left and click "Suggest 3 AI Templates".</p>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </CardContent>
-        </Card>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
+
+          </AnimatePresence>
+        </div>
+
+        {/* RIGHT COLUMN: Output display & Lead Finder Output */}
+        <div className="lg:col-span-3">
+          
+          <AnimatePresence mode="wait">
+            
+            {/* Lead Finder Search Results list */}
+            {activeTab === "lead-finder" ? (
+              <motion.div
+                key="lead-finder-results"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="space-y-4"
+              >
+                <Card className="bg-[#0f0f0f] border-white/5 shadow-xl min-h-[400px]">
+                  <CardHeader>
+                    <CardTitle className="text-white text-base flex items-center justify-between">
+                      <span className="flex items-center gap-2">
+                        <Search className="h-5 w-5 text-[#00FF88]" />
+                        Discovered Partners Leads
+                      </span>
+                      <span className="text-xs text-slate-500 font-bold">
+                        {discoveredLeads.length} matches found
+                      </span>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    {discoveredLeads.length > 0 ? (
+                      <div className="grid gap-3.5 max-h-[500px] overflow-y-auto pr-1">
+                        {discoveredLeads.map((lead, idx) => (
+                          <div
+                            key={idx}
+                            className="p-4 bg-white/5 border border-white/5 rounded-xl hover:border-white/10 transition-all flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3"
+                          >
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-2">
+                                <span className={`text-[9px] font-black uppercase px-2 py-0.5 rounded-md ${
+                                  lead.type === "College" ? "bg-blue-500/10 text-blue-400" :
+                                  lead.type === "School" ? "bg-amber-500/10 text-amber-400" :
+                                  "bg-emerald-500/10 text-emerald-400"
+                                }`}>
+                                  {lead.type}
+                                </span>
+                                <h4 className="font-bold text-white text-sm">{lead.name}</h4>
+                              </div>
+                              <p className="text-xs text-slate-400 line-clamp-2">{lead.description}</p>
+                              <a
+                                href={lead.url}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="text-[10px] text-purple-400 hover:underline inline-block font-mono mt-1"
+                              >
+                                {lead.url.replace(/https?:\/\/(www\.)?/, "")} ↗
+                              </a>
+                            </div>
+                            <Button
+                              onClick={() => loadLeadIntoPitcher(lead)}
+                              size="sm"
+                              className="bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-xs shrink-0 font-bold"
+                            >
+                              📥 Pitch Lead
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="flex flex-col items-center justify-center min-h-[350px] text-slate-500 text-center">
+                        <Search className="h-14 w-14 mb-3 opacity-10 text-white" />
+                        <p className="text-base text-slate-400 font-bold">Search Search Finder Agent</p>
+                        <p className="text-xs text-slate-600 mt-1 max-w-xs">
+                          Type keywords in the search panel on the left (e.g. "Engineering colleges in Pune") to discover partner leads.
+                        </p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ) : activeTab === "direct-compose" ? (
+              
+              // Direct Compose Live Output Preview
+              <motion.div
+                key="direct-compose-preview"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="space-y-4"
+              >
+                <Card className="bg-[#0f0f0f] border-white/5 shadow-xl">
+                  <CardHeader>
+                    <CardTitle className="text-white text-base flex items-center gap-2">
+                      <FileText className="h-5 w-5 text-[#00FF88]" /> Outbox Preview (Direct Composer)
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {/* Live Outbox Subject and HTML rendering */}
+                    <div className="space-y-2">
+                      <Label className="text-xs text-slate-300 font-bold">Subject Line</Label>
+                      <div className="p-3 bg-white/5 border border-white/5 rounded-xl font-bold text-white text-xs">
+                        {directEmail.subject || "(Subject will appear here)"}
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label className="text-xs text-slate-300 font-bold">Outbound Email Structure</Label>
+                      <div
+                        className="p-5 bg-white/5 border border-white/5 rounded-xl min-h-[300px] text-xs leading-relaxed text-slate-300"
+                        dangerouslySetInnerHTML={{
+                          __html: convertToPlainTemplate(directEmail.body.replace(/\n/g, "<br/>") || "Message body written in composer will appear here...")
+                        }}
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ) : (
+              
+              // Standard AI Outbox Suggestion Panel
+              <motion.div
+                key="ai-pitch-results"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="space-y-4"
+              >
+                <Card className="bg-[#0f0f0f] border-white/5 shadow-xl">
+                  <CardHeader>
+                    <CardTitle className="flex items-center justify-between text-white text-base">
+                      <span className="flex items-center gap-2">
+                        <Mail className="h-5 w-5 text-[#00FF88]" />
+                        Generated Outbox Suggestions
+                      </span>
+                      {generatedEmail && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={handleGenerate}
+                          disabled={isGenerating}
+                          className="text-slate-400 hover:text-white"
+                        >
+                          <RefreshCw className="h-4 w-4 mr-1 text-[#00FF88]" />
+                          Regenerate
+                        </Button>
+                      )}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    {generatedEmail ? (
+                      <div className="space-y-4 animate-in fade-in duration-300">
+                        {/* Style Selectors */}
+                        {generatedEmail.templates && (
+                          <div className="space-y-1.5">
+                            <Label className="text-xs text-slate-300 font-bold">Select Template Style</Label>
+                            <div className="flex gap-2">
+                              {["formal", "friendly", "creative"].map((style) => (
+                                <Button
+                                  key={style}
+                                  variant={selectedTemplate === style ? "default" : "outline"}
+                                  size="sm"
+                                  onClick={() => setSelectedTemplate(style as any)}
+                                  className={`flex-1 rounded-xl h-9 text-xs capitalize ${selectedTemplate === style ? "bg-purple-600 text-white hover:bg-purple-700" : "border-white/5 bg-white/5 text-slate-300 hover:text-white"}`}
+                                >
+                                  {style === "formal" ? "📄 Formal" : style === "friendly" ? "😊 Friendly" : "✨ Creative"}
+                                </Button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Subject */}
+                        <div className="space-y-1.5">
+                          <div className="flex items-center justify-between">
+                            <Label className="text-xs text-slate-300 font-bold">Subject Line</Label>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => copyToClipboard(
+                                generatedEmail.templates?.[selectedTemplate]?.subject || generatedEmail.subject,
+                                "Subject"
+                              )}
+                              className="text-slate-400 hover:text-white h-6 px-2 text-xs"
+                            >
+                              <Copy className="h-3 w-3 mr-1" /> Copy
+                            </Button>
+                          </div>
+                          <div className="p-3 bg-white/5 border border-white/5 rounded-xl font-bold text-white text-xs">
+                            {generatedEmail.templates?.[selectedTemplate]?.subject || generatedEmail.subject}
+                          </div>
+                        </div>
+
+                        {/* Body Preview */}
+                        <div className="space-y-1.5">
+                          <div className="flex items-center justify-between">
+                            <Label className="text-xs text-slate-300 font-bold">Email Body</Label>
+                            <div className="flex gap-1.5">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => copyToClipboard(
+                                  generatedEmail.templates?.[selectedTemplate]?.content || generatedEmail.content,
+                                  "HTML"
+                                )}
+                                className="text-slate-400 hover:text-white h-6 px-2 text-[10px]"
+                              >
+                                <Copy className="h-3 w-3 mr-1" /> Copy HTML
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => copyToClipboard(
+                                  stripHtml(generatedEmail.templates?.[selectedTemplate]?.content || generatedEmail.content),
+                                  "Plain text"
+                                )}
+                                className="text-slate-400 hover:text-white h-6 px-2 text-[10px]"
+                              >
+                                <Copy className="h-3 w-3 mr-1" /> Copy Text
+                              </Button>
+                            </div>
+                          </div>
+                          <div
+                            className="p-5 bg-white/5 border border-white/5 rounded-xl min-h-[250px] max-h-[350px] overflow-y-auto text-xs leading-relaxed text-slate-300"
+                            dangerouslySetInnerHTML={{
+                              __html: convertToPlainTemplate(generatedEmail.templates?.[selectedTemplate]?.content || generatedEmail.content)
+                            }}
+                          />
+                        </div>
+
+                        {/* Outbound Delivery button */}
+                        <div className="space-y-2 pt-2">
+                          <Button
+                            onClick={handleSendEmail}
+                            disabled={isSendingEmail}
+                            className="w-full h-11 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl flex items-center justify-center gap-2 text-xs"
+                          >
+                            {isSendingEmail ? (
+                              <><Loader2 className="h-4 w-4 animate-spin" /> Sending...</>
+                            ) : (
+                              <><Send className="h-4 w-4" /> Send Pitch Outbox Instantly</>
+                            )}
+                          </Button>
+                          <p className="text-[9px] text-slate-500 text-center flex items-center justify-center gap-1">
+                            <CheckCircle className="h-3 w-3 text-[#00FF88]" /> Delivered live via <strong>shriyash.soni@apnacounsellor.in</strong>. Full reply support.
+                          </p>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col items-center justify-center min-h-[350px] text-center text-slate-500">
+                        <Mail className="h-16 w-16 mb-4 opacity-10 text-white animate-pulse" />
+                        <p className="text-base text-slate-400 font-bold">No outbound suggestions yet</p>
+                        <p className="text-xs text-slate-600 mt-1 max-w-xs">Fill in your campaign details on the left and click "Suggest 3 AI Templates".</p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
+
+          </AnimatePresence>
+
+        </div>
+
       </div>
     </div>
   );
