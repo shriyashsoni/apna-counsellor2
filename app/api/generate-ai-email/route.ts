@@ -83,9 +83,9 @@ Write the email templates focusing on collaboration. Make them simple and direct
       resultJsonStr = data.choices[0].message.content;
     } else {
       // Fallback to Google Gemini
-      const googleKey = process.env.GOOGLE_AI_KEY;
+      const googleKey = process.env.GOOGLE_AI_API_KEY || process.env.GEMINI_API_KEY || process.env.GOOGLE_AI_KEY;
       if (!googleKey) {
-        throw new Error("No AI API key found (GROK_API_KEY or GOOGLE_AI_KEY)");
+        throw new Error("No AI API key found (GROK_API_KEY, GOOGLE_AI_API_KEY, GEMINI_API_KEY, or GOOGLE_AI_KEY). Please add one to your environment variables.");
       }
       
       const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${googleKey}`;
