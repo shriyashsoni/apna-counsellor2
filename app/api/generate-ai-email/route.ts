@@ -52,15 +52,42 @@ Preferred Length: ${emailLength}
 Write the email templates focusing on collaboration. Make them simple and direct.
 `;
 
-    // Try GROK API first, then fallback to Google Gemini
+    // Try GROQ API first, then fallback to Google Gemini
     let resultJsonStr = "";
-    const grokKey = process.env.GROK_API_KEY || process.env.XAI_API_KEY;
+    const groqKey = process.env.GROK_API_KEY || process.env.XAI_API_KEY;
     
-    if (grokKey) {
+    if (groqKey && groqKey.startsWith("gsk_")) {
+      // User has a Groq key (groq.com)
+      const groqResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${groqKey}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          model: "llama-3.3-70b-versatile",
+          messages: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: userPrompt }
+          ],
+          response_format: { type: "json_object" },
+          temperature: 0.7
+        })
+      });
+      
+      if (!groqResponse.ok) {
+        const errorText = await groqResponse.text();
+        throw new Error(`Groq API Error: ${errorText}`);
+      }
+      
+      const data = await groqResponse.json();
+      resultJsonStr = data.choices[0].message.content;
+    } else if (groqKey) {
+      // User has an x.ai Grok key
       const grokResponse = await fetch("https://api.x.ai/v1/chat/completions", {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${grokKey}`,
+          "Authorization": `Bearer ${groqKey}`,
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
@@ -82,13 +109,13 @@ Write the email templates focusing on collaboration. Make them simple and direct
       const data = await grokResponse.json();
       resultJsonStr = data.choices[0].message.content;
     } else {
-      // Fallback to Google Gemini
+      // Fallback to Google Gemini (using gemini-1.5-flash as it is more widely supported than pro)
       const googleKey = process.env.GOOGLE_AI_API_KEY || process.env.GEMINI_API_KEY || process.env.GOOGLE_AI_KEY;
       if (!googleKey) {
         throw new Error("No AI API key found (GROK_API_KEY, GOOGLE_AI_API_KEY, GEMINI_API_KEY, or GOOGLE_AI_KEY). Please add one to your environment variables.");
       }
       
-      const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${googleKey}`;
+      const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${googleKey}`;
       const geminiResponse = await fetch(geminiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
