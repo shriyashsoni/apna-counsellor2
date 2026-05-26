@@ -52,11 +52,15 @@ Preferred Length: ${emailLength}
 Write the email templates focusing on collaboration. Make them simple and direct.
 `;
 
-    // Try GROQ API first, then fallback to Google Gemini
+    // Try GROQ API (groq.com) or x.ai Grok API
     let resultJsonStr = "";
-    const groqKey = process.env.GROK_API_KEY || process.env.XAI_API_KEY;
+    const groqKey = process.env.GROQ_API_KEY || process.env.GROK_API_KEY || process.env.XAI_API_KEY;
     
-    if (groqKey && groqKey.startsWith("gsk_")) {
+    if (!groqKey) {
+      throw new Error("No AI API key found. Please define GROQ_API_KEY (with a Q) or GROK_API_KEY in your environment variables.");
+    }
+
+    if (groqKey.startsWith("gsk_")) {
       // User has a Groq key (groq.com)
       const groqResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
         method: "POST",
@@ -82,7 +86,7 @@ Write the email templates focusing on collaboration. Make them simple and direct
       
       const data = await groqResponse.json();
       resultJsonStr = data.choices[0].message.content;
-    } else if (groqKey) {
+    } else {
       // User has an x.ai Grok key
       const grokResponse = await fetch("https://api.x.ai/v1/chat/completions", {
         method: "POST",
@@ -108,33 +112,6 @@ Write the email templates focusing on collaboration. Make them simple and direct
       
       const data = await grokResponse.json();
       resultJsonStr = data.choices[0].message.content;
-    } else {
-      // Fallback to Google Gemini (using gemini-1.5-flash as it is more widely supported than pro)
-      const googleKey = process.env.GOOGLE_AI_API_KEY || process.env.GEMINI_API_KEY || process.env.GOOGLE_AI_KEY;
-      if (!googleKey) {
-        throw new Error("No AI API key found (GROK_API_KEY, GOOGLE_AI_API_KEY, GEMINI_API_KEY, or GOOGLE_AI_KEY). Please add one to your environment variables.");
-      }
-      
-      const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${googleKey}`;
-      const geminiResponse = await fetch(geminiUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: systemPrompt + "\n\n" + userPrompt }] }],
-          generationConfig: {
-            temperature: 0.7,
-            responseMimeType: "application/json",
-          }
-        })
-      });
-
-      if (!geminiResponse.ok) {
-        const errorText = await geminiResponse.text();
-        throw new Error(`Gemini API Error: ${errorText}`);
-      }
-      
-      const data = await geminiResponse.json();
-      resultJsonStr = data.candidates[0].content.parts[0].text;
     }
 
     const emailData = JSON.parse(resultJsonStr);
