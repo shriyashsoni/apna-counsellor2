@@ -2,11 +2,20 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { createClient } from '@supabase/supabase-js';
 
-// Initialize Supabase Admin client using Service Role Key
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
+
+// Helper: parse interests JSONB safely
+function parsePermissions(interests: any): string[] {
+  try {
+    const data = typeof interests === 'string' ? JSON.parse(interests) : interests || {};
+    return Array.isArray(data?.permissions) ? data.permissions : [];
+  } catch {
+    return [];
+  }
+}
 
 export async function POST(request: Request) {
   try {
@@ -24,23 +33,22 @@ export async function POST(request: Request) {
       id: uuid,
     };
 
-    // CRITICAL FIX: Only sync auth-level fields (email, name, avatar).
-    // NEVER overwrite 'role' or 'interests' on login — these are controlled
-    // exclusively by the Admin Team Console and must survive every login event.
-    if (uuid && uid) {
-      // Check if profile already exists by UUID
-      const { data: existingProfile } = await supabaseAdmin
+    if (uuid && uid && email) {
+      const normalizedEmail = email.trim().toLowerCase();
+
+      // 1. Check if profile already exists with this exact Firebase-derived UUID
+      const { data: existingByUUID } = await supabaseAdmin
         .from('profiles')
         .select('id, role, interests')
         .eq('id', uuid)
         .maybeSingle();
 
-      if (existingProfile) {
-        // Exists → patch ONLY auth fields, leave role/interests completely untouched
-        const { error: updateError } = await supabaseAdmin
+      if (existingByUUID) {
+        // Profile found by UUID → only update non-permission auth fields
+        await supabaseAdmin
           .from('profiles')
           .update({
-            email: email,
+            email: normalizedEmail,
             name: sessionData.name,
             avatar_url: photoURL || null,
             firebase_uid: uid,
@@ -48,46 +56,55 @@ export async function POST(request: Request) {
           })
           .eq('id', uuid);
 
-        if (updateError) {
-          console.error('Failed to update profile auth fields:', updateError.message);
-        } else {
-          console.log('✅ Profile auth fields updated. Role/permissions preserved:', uuid);
-        }
+        console.log(`✅ Login sync done. Role preserved: ${existingByUUID.role} for ${email}`);
       } else {
-        // Not found by UUID → try email (self-healing for pre-assigned staff)
-        const { data: emailProfile } = await supabaseAdmin
+        // 2. Not found by UUID → search by email (covers pre-assigned or duplicate-UUID users)
+        const { data: existingByEmail } = await supabaseAdmin
           .from('profiles')
           .select('id, role, interests')
-          .ilike('email', email?.trim() || '')
+          .ilike('email', normalizedEmail)
           .maybeSingle();
 
-        if (emailProfile) {
-          // Found by email → align the ID with Firebase UUID, preserve role/interests
-          const { error: healError } = await supabaseAdmin
-            .from('profiles')
-            .update({
-              id: uuid,
-              firebase_uid: uid,
-              email: email,
-              name: sessionData.name,
-              avatar_url: photoURL || null,
-              updated_at: new Date().toISOString(),
-            })
-            .eq('id', emailProfile.id);
+        if (existingByEmail) {
+          // Found by email → self-heal: delete old row, re-insert with correct Firebase UUID
+          // (can't UPDATE primary key in PostgreSQL, so we DELETE + INSERT)
+          console.log(`[Self-heal] Found profile by email for ${email}. Old ID: ${existingByEmail.id} → New: ${uuid}`);
 
-          if (healError) {
-            console.error('Self-healing ID alignment failed:', healError.message);
+          const { error: deleteError } = await supabaseAdmin
+            .from('profiles')
+            .delete()
+            .eq('id', existingByEmail.id);
+
+          if (deleteError) {
+            console.error('Self-heal DELETE failed:', deleteError.message);
           } else {
-            console.log('✅ Profile self-healed. ID aligned from', emailProfile.id, '→', uuid, '| Role preserved:', emailProfile.role);
+            const { error: reInsertError } = await supabaseAdmin
+              .from('profiles')
+              .insert({
+                id: uuid,
+                firebase_uid: uid,
+                email: normalizedEmail,
+                name: sessionData.name,
+                avatar_url: photoURL || null,
+                role: existingByEmail.role || 'student',        // PRESERVE ROLE
+                interests: existingByEmail.interests || {},      // PRESERVE PERMISSIONS
+                updated_at: new Date().toISOString(),
+              });
+
+            if (reInsertError) {
+              console.error('Self-heal re-INSERT failed:', reInsertError.message);
+            } else {
+              console.log(`✅ Self-heal complete. Role "${existingByEmail.role}" and permissions preserved for ${email}`);
+            }
           }
         } else {
-          // Brand new user → insert with default student role
+          // 3. Truly new user → create with default student role
           const { error: insertError } = await supabaseAdmin
             .from('profiles')
             .insert({
               id: uuid,
               firebase_uid: uid,
-              email: email,
+              email: normalizedEmail,
               name: sessionData.name,
               avatar_url: photoURL || null,
               role: 'student',
@@ -96,9 +113,9 @@ export async function POST(request: Request) {
             });
 
           if (insertError) {
-            console.error('Failed to create new profile:', insertError.message);
+            console.error('New profile insert failed:', insertError.message);
           } else {
-            console.log('✅ New student profile created for:', email);
+            console.log(`✅ New student profile created for: ${email}`);
           }
         }
       }
@@ -115,7 +132,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true, user: sessionData });
   } catch (error: any) {
-    console.error('Session creation error:', error);
+    console.error('Session POST error:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
@@ -132,7 +149,7 @@ export async function GET() {
     const sessionData = JSON.parse(session);
     let profile: any = null;
 
-    // 1. Look up profile by UUID
+    // 1. Try by UUID
     if (sessionData.id) {
       const { data } = await supabaseAdmin
         .from('profiles')
@@ -142,7 +159,7 @@ export async function GET() {
       profile = data;
     }
 
-    // 2. Fallback: look up by email if UUID fails (covers self-healed and pre-registered staff)
+    // 2. Fallback: try by email
     if (!profile && sessionData.email) {
       const { data } = await supabaseAdmin
         .from('profiles')
@@ -151,25 +168,14 @@ export async function GET() {
         .maybeSingle();
       profile = data;
       if (profile) {
-        console.log('[Session GET] Email fallback found profile. Email:', sessionData.email);
+        console.log(`[Session GET] Email fallback matched for: ${sessionData.email} → role: ${profile.role}`);
       }
     }
 
-    let role = 'student';
-    let permissions: string[] = [];
+    const role = profile?.role || 'student';
+    const permissions = parsePermissions(profile?.interests);
 
-    if (profile) {
-      role = profile.role || 'student';
-      const interestsData =
-        typeof profile.interests === 'string'
-          ? JSON.parse(profile.interests)
-          : profile.interests || {};
-      permissions = interestsData?.permissions || [];
-    }
-
-    console.log(
-      `[Session GET] ${sessionData.email} → role: ${role}, permissions: [${permissions.join(', ')}]`
-    );
+    console.log(`[Session GET] ${sessionData.email} → role: "${role}", permissions: [${permissions.join(', ')}]`);
 
     return NextResponse.json({
       authenticated: true,
