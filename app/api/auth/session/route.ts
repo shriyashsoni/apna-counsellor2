@@ -37,11 +37,12 @@ export async function POST(request: Request) {
       const normalizedEmail = email.trim().toLowerCase();
 
       // 1. Check if profile already exists with this exact Firebase-derived UUID
-      const { data: existingByUUID } = await supabaseAdmin
+      const { data: uuidRows } = await supabaseAdmin
         .from('profiles')
         .select('id, role, interests')
         .eq('id', uuid)
-        .maybeSingle();
+        .limit(1);
+      const existingByUUID = uuidRows?.[0] || null;
 
       if (existingByUUID) {
         // Profile found by UUID → only update non-permission auth fields
@@ -59,11 +60,12 @@ export async function POST(request: Request) {
         console.log(`✅ Login sync done. Role preserved: ${existingByUUID.role} for ${email}`);
       } else {
         // 2. Not found by UUID → search by email (covers pre-assigned or duplicate-UUID users)
-        const { data: existingByEmail } = await supabaseAdmin
+        const { data: emailRows } = await supabaseAdmin
           .from('profiles')
           .select('id, role, interests')
           .ilike('email', normalizedEmail)
-          .maybeSingle();
+          .limit(1);
+        const existingByEmail = emailRows?.[0] || null;
 
         if (existingByEmail) {
           // Found by email → self-heal: delete old row, re-insert with correct Firebase UUID

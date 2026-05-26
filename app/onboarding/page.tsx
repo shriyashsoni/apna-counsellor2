@@ -49,6 +49,7 @@ export default function OnboardingPage() {
       }
 
       // Direct upsert - much safer and faster
+      // IMPORTANT: Do NOT include 'role' here — it would overwrite admin/mentor roles assigned via Team Management
       const { error } = await supabase
         .from('profiles')
         .upsert({
@@ -62,8 +63,7 @@ export default function OnboardingPage() {
           rank: formData.rank,
           category: formData.category,
           interested_states: formData.interestedStates,
-          onboarding_complete: true,
-          role: user.email === 'apnacounsellor@gmail.com' || user.email === 'sonishriyash@gmail.com' ? 'admin' : 'student'
+          onboarding_complete: true
         })
       
       if (error) throw error

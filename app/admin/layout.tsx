@@ -12,58 +12,32 @@ import {
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { createClient as createSupabaseAdmin } from "@supabase/supabase-js"
 
 // Master admin emails - always get full access, no DB check needed
 const MASTER_ADMINS = ["sonishriyash@gmail.com", "apnacounsellor@gmail.com"]
 
-// Fetch role and permissions directly from DB using the public Supabase URL + anon key
-// We use TWO lookups: by UUID first, then by email as fallback
+// Fetch role and permissions via secure server-side API (uses service role key)
 async function fetchUserAccess(userId: string, email: string): Promise<{ role: string; permissions: string[] }> {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL!
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  const headers = {
-    "Content-Type": "application/json",
-    apikey: key,
-    Authorization: `Bearer ${key}`,
-  }
-
-  // 1. Try by UUID
-  const byIdRes = await fetch(
-    `${url}/rest/v1/profiles?id=eq.${userId}&select=role,interests`,
-    { headers }
-  )
-  const byId = await byIdRes.json()
-  if (Array.isArray(byId) && byId.length > 0 && byId[0]) {
-    return parseProfile(byId[0])
-  }
-
-  // 2. Fallback by email (case-insensitive via ilike)
-  const encodedEmail = encodeURIComponent(email.toLowerCase())
-  const byEmailRes = await fetch(
-    `${url}/rest/v1/profiles?email=ilike.${encodedEmail}&select=role,interests`,
-    { headers }
-  )
-  const byEmail = await byEmailRes.json()
-  if (Array.isArray(byEmail) && byEmail.length > 0 && byEmail[0]) {
-    console.log(`[AdminLayout] Found by email fallback for ${email}`)
-    return parseProfile(byEmail[0])
-  }
-
-  return { role: "student", permissions: [] }
-}
-
-function parseProfile(profile: any): { role: string; permissions: string[] } {
-  const role = profile.role || "student"
-  let permissions: string[] = []
   try {
-    const interests =
-      typeof profile.interests === "string"
-        ? JSON.parse(profile.interests)
-        : profile.interests || {}
-    permissions = Array.isArray(interests?.permissions) ? interests.permissions : []
-  } catch {}
-  return { role, permissions }
+    // Use the secure server action that bypasses RLS with service role key
+    const res = await fetch("/api/admin/check-access", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId, email }),
+    })
+    
+    if (!res.ok) {
+      console.error(`[AdminLayout] Access check API returned ${res.status}`)
+      return { role: "student", permissions: [] }
+    }
+    
+    const data = await res.json()
+    console.log(`[AdminLayout] Server access check → role: "${data.role}", permissions: [${(data.permissions || []).join(", ")}]`)
+    return { role: data.role || "student", permissions: data.permissions || [] }
+  } catch (err: any) {
+    console.error("[AdminLayout] Access check failed:", err.message)
+    return { role: "student", permissions: [] }
+  }
 }
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
