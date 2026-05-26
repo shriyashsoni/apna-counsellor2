@@ -28,6 +28,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     async function checkAdmin() {
       if (!user?.id) { setIsAdmin(false); return }
       
+      const userEmail = user?.email?.toLowerCase() || ""
+      
+      // MASTER ADMIN FALLBACK WHITELIST:
+      // Instantly grants full Super-Admin access to core administration emails,
+      // preventing any lockouts due to database latency, UUID sync mismatches, or network delays.
+      const isWhitelistedAdmin = 
+        userEmail === "sonishriyash@gmail.com" || 
+        userEmail === "apnacounsellor@gmail.com" ||
+        userEmail === "sonikrishnakumar599@gmail.com";
+
+      if (isWhitelistedAdmin) {
+        console.log("Master Admin credentials verified via whitelist fallback.");
+        setUserRole("admin")
+        setPermissions(["courses", "analytics", "students", "broadcast", "email-agent", "teams"])
+        setIsAdmin(true)
+        return;
+      }
+
       console.log("Checking admin privileges securely via Server Action for user ID:", user.id);
       const res = await checkAdminAccessAction(user.id)
       
