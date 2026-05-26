@@ -45,43 +45,49 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         return;
       }
 
-      console.log("Checking admin privileges securely via Server Action for user ID:", user.id);
-      const res = await checkAdminAccessAction(user.id, user.email || undefined)
-      
-      if (!res.success) {
-        console.error("Server-side Admin Access check failed or user not found.");
-        setIsAdmin(false);
-        return;
-      }
+      console.log("Checking admin privileges securely via backend session API...");
+      try {
+        const response = await fetch("/api/auth/session")
+        const sessionData = await response.json()
+        
+        if (!sessionData.authenticated || !sessionData.user) {
+          console.error("Session not found or authenticated failed.");
+          setIsAdmin(false);
+          return;
+        }
 
-      console.log("User Admin Privileges verified:", res);
-      
-      const role = res.role
-      setUserRole(role)
-      const userPerms = res.permissions
-      setPermissions(userPerms)
+        console.log("User Admin Privileges verified via Session API:", sessionData.user);
+        
+        const role = sessionData.user.role || 'student'
+        setUserRole(role)
+        const userPerms = sessionData.user.permissions || []
+        setPermissions(userPerms)
 
-      // Allow admin layout access if role is 'admin' OR they have at least one valid console permission
-      const hasAccess = role === 'admin' || userPerms.length > 0
-      setIsAdmin(hasAccess)
+        // Allow admin layout access if role is 'admin' OR they have at least one valid console permission
+        const hasAccess = role === 'admin' || userPerms.length > 0
+        setIsAdmin(hasAccess)
 
-      // DYNAMIC LANDING REDIRECTION FOR STAFF MEMBERS:
-      // If they land on the default '/admin' route but don't have dashboard 'analytics' permission,
-      // redirect them immediately to their first allowed command view!
-      if (hasAccess && pathname === '/admin' && !userPerms.includes('analytics')) {
-        const allowedItems = menuItems.filter(item => {
-          if (item.path === '/admin/teams') return false
-          if (item.permission) return userPerms.includes(item.permission)
-          return true
-        })
+        // DYNAMIC LANDING REDIRECTION FOR STAFF MEMBERS:
+        // If they land on the default '/admin' route but don't have dashboard 'analytics' permission,
+        // redirect them immediately to their first allowed command view!
+        if (hasAccess && pathname === '/admin' && !userPerms.includes('analytics')) {
+          const allowedItems = menuItems.filter(item => {
+            if (item.path === '/admin/teams') return false
+            if (item.permission) return userPerms.includes(item.permission)
+            return true
+          })
 
-        if (allowedItems.length > 0) {
-          const targetItem = allowedItems.find(item => item.path.startsWith('/admin/')) || allowedItems[0]
-          if (targetItem) {
-            console.log(`Redirecting staff member from /admin to authorized route: ${targetItem.path}`);
-            router.push(targetItem.path)
+          if (allowedItems.length > 0) {
+            const targetItem = allowedItems.find(item => item.path.startsWith('/admin/')) || allowedItems[0]
+            if (targetItem) {
+              console.log(`Redirecting staff member from /admin to authorized route: ${targetItem.path}`);
+              router.push(targetItem.path)
+            }
           }
         }
+      } catch (err: any) {
+        console.error("Failed to authenticate session via API:", err.message);
+        setIsAdmin(false);
       }
     }
     if (!authLoading) {

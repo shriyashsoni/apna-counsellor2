@@ -65,6 +65,49 @@ export async function POST(request: Request) {
   }
 }
 
+export async function GET() {
+  try {
+    const cookieStore = cookies();
+    const session = cookieStore.get('apna_counsellor_session')?.value;
+    
+    if (!session) {
+      return NextResponse.json({ authenticated: false, user: null });
+    }
+    
+    const sessionData = JSON.parse(session);
+    
+    // Fetch latest role and permissions directly from the database on the server
+    // to bypass any client-side RLS constraints entirely
+    const { data: profile } = await supabaseAdmin
+      .from('profiles')
+      .select('role, interests')
+      .eq('id', sessionData.id)
+      .maybeSingle();
+      
+    let role = sessionData.role || 'student';
+    let permissions = [];
+    
+    if (profile) {
+      role = profile.role || 'student';
+      const interestsData = typeof profile.interests === 'string'
+        ? JSON.parse(profile.interests)
+        : profile.interests || {};
+      permissions = interestsData?.permissions || [];
+    }
+    
+    return NextResponse.json({
+      authenticated: true,
+      user: {
+        ...sessionData,
+        role,
+        permissions
+      }
+    });
+  } catch (error: any) {
+    return NextResponse.json({ authenticated: false, error: error.message }, { status: 500 });
+  }
+}
+
 export async function DELETE() {
   const cookieStore = cookies();
   cookieStore.delete('apna_counsellor_session');
