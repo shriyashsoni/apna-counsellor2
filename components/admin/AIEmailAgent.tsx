@@ -236,42 +236,28 @@ export function AIEmailAgent() {
     return tmp.textContent || tmp.innerText || "";
   };
 
-  // Converts HTML content to plain template dynamically appending custom sender details
+  // Converts HTML content to a 100% hand-written personal email format (looks exactly like Gmail/Outlook)
   const convertToPlainTemplate = (htmlContent: string): string => {
     return `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #ffffff; color: #333333; line-height: 1.6;">
-  <div style="max-width: 600px; margin: 0 auto; padding: 30px 20px;">
-    
-    <!-- Email Body -->
-    <div style="font-size: 15px;">
-      ${htmlContent}
-    </div>
-
-    <!-- Dynamic Signature (Customized by User) -->
-    <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eeeeee;">
-      <p style="margin: 0 0 5px 0; font-size: 14px; color: #444; font-weight: bold;">${senderDetails.name}</p>
-      <p style="margin: 0 0 15px 0; font-size: 13px; color: #777;">${senderDetails.role}, Apna Counsellor</p>
-      
-      <p style="margin: 0 0 5px 0; font-size: 12px; color: #888;">
-        <strong>Email:</strong> <a href="mailto:shriyash.soni@apnacounsellor.in" style="color: #7c3aed; text-decoration: none;">shriyash.soni@apnacounsellor.in</a>
-      </p>
-      <p style="margin: 0 0 5px 0; font-size: 12px; color: #888;">
-        <strong>Website:</strong> <a href="https://${senderDetails.website}" style="color: #7c3aed; text-decoration: none;">${senderDetails.website}</a>
-      </p>
-      <p style="margin: 0 0 5px 0; font-size: 12px; color: #888;">
-        <strong>Contact:</strong> ${senderDetails.contact}
-      </p>
-    </div>
-
+<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; color: #222222; line-height: 1.6; text-align: left; background-color: #ffffff; padding: 5px;">
+  <div style="margin-bottom: 25px;">
+    ${htmlContent}
   </div>
-</body>
-</html>
+
+  <!-- Hand-written Style Signature -->
+  <div style="margin-top: 30px; border: none; padding: 0;">
+    <p style="margin: 0; font-size: 14px; color: #222222;">Best regards,</p>
+    <br/>
+    <p style="margin: 0; font-size: 14px; font-weight: bold; color: #111111;">${senderDetails.name}</p>
+    <p style="margin: 0; font-size: 13px; color: #555555;">${senderDetails.role} | Apna Counsellor</p>
+    <p style="margin: 4px 0 0 0; font-size: 13px; color: #555555;">
+      Website: <a href="https://${senderDetails.website}" style="color: #1155cc; text-decoration: underline;">${senderDetails.website}</a>
+    </p>
+    <p style="margin: 2px 0 0 0; font-size: 13px; color: #555555;">
+      Contact: ${senderDetails.contact}
+    </p>
+  </div>
+</div>
     `.trim();
   };
 
