@@ -62,7 +62,8 @@ export default function OnboardingPage() {
           rank: formData.rank,
           category: formData.category,
           interested_states: formData.interestedStates,
-          onboarding_complete: true
+          onboarding_complete: true,
+          role: user.email === 'apnacounsellor@gmail.com' || user.email === 'sonishriyash@gmail.com' ? 'admin' : 'student'
         })
       
       if (error) throw error
