@@ -607,11 +607,17 @@ export default function CourseDetailClient({ slug, initialCourse }: { slug: stri
                   </div>
 
                   {isEnrolled ? (
-                    <Link href="/dashboard" className="w-full block">
-                      <Button className="w-full h-14 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-black text-lg transition-all shadow-xl shadow-purple-200">
-                        Go to Dashboard
-                      </Button>
-                    </Link>
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-2.5 justify-center bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400 p-4 rounded-2xl border border-emerald-100 dark:border-emerald-900/30 text-sm font-black uppercase tracking-wider">
+                        <CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                        <span>Already Enrolled</span>
+                      </div>
+                      <Link href="/dashboard" className="w-full block">
+                        <Button className="w-full h-14 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-black text-lg transition-all shadow-xl shadow-purple-200">
+                          Go to Dashboard
+                        </Button>
+                      </Link>
+                    </div>
                   ) : (
                     <Button 
                       onClick={handleEnroll} 
@@ -649,11 +655,14 @@ export default function CourseDetailClient({ slug, initialCourse }: { slug: stri
         </div>
         
         {isEnrolled ? (
-          <Link href="/dashboard" className="flex-1 max-w-[220px]">
-            <Button className="w-full h-11 sm:h-12 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-black text-sm sm:text-md">
-              Dashboard
-            </Button>
-          </Link>
+          <div className="flex items-center gap-2.5 flex-grow justify-end max-w-[260px]">
+            <span className="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest hidden sm:inline">Already Enrolled</span>
+            <Link href="/dashboard" className="flex-1">
+              <Button className="w-full h-11 sm:h-12 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-black text-sm sm:text-md">
+                Dashboard
+              </Button>
+            </Link>
+          </div>
         ) : (
           <Button 
             onClick={handleEnroll} 

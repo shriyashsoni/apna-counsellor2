@@ -53,6 +53,13 @@ ON public.sessions FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Ultimate Access - Course Audit Logs" 
 ON public.course_audit_logs FOR ALL USING (true) WITH CHECK (true);
 
+-- 8. Explicitly grant API access to default Supabase roles (Supabase May 2026 Mandate)
+GRANT ALL ON TABLE public.courses TO anon, authenticated, service_role;
+GRANT ALL ON TABLE public.course_enrollments TO anon, authenticated, service_role;
+GRANT ALL ON TABLE public.payments TO anon, authenticated, service_role;
+GRANT ALL ON TABLE public.sessions TO anon, authenticated, service_role;
+GRANT ALL ON TABLE public.course_audit_logs TO anon, authenticated, service_role;
+
 -- =========================================================================================
 -- SUCCESS! After running this, your Course Page will show the courses, 
 -- and the "Buy" / "Enroll" buttons will work perfectly without any Deploy or Server errors.

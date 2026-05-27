@@ -223,6 +223,7 @@ function StudentDashboard({ profile, user }: { profile: any, user: any }) {
   const [sessions, setSessions] = useState<any[]>([])
   const [mentors, setMentors] = useState<any[]>([])
   const [enrolledCourses, setEnrolledCourses] = useState<any[]>([])
+  const [notifications, setNotifications] = useState<any[]>([])
   const [classroomCourse, setClassroomCourse] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [selectedSession, setSelectedSession] = useState<any>(null)
@@ -249,7 +250,23 @@ function StudentDashboard({ profile, user }: { profile: any, user: any }) {
         
         setSessions(sessRes.data || [])
         setMentors(mentorRes.data || [])
-        setEnrolledCourses(coursesRes.data || [])
+        
+        const coursesData = coursesRes.data || []
+        setEnrolledCourses(coursesData)
+
+        // Fetch notifications targeting all, student role, or specific enrolled course
+        const enrolledCourseIds = coursesData.map((ec: any) => ec.course_id).filter(Boolean)
+        
+        let query = supabase.from('notifications').select('*, courses(title)')
+        
+        if (enrolledCourseIds.length > 0) {
+          query = query.or(`target_group.eq.all,target_group.eq.students,user_id.eq.${user.id},course_id.in.(${enrolledCourseIds.join(',')})`)
+        } else {
+          query = query.or(`target_group.eq.all,target_group.eq.students,user_id.eq.${user.id}`)
+        }
+        
+        const { data: notifsRes } = await query.order('created_at', { ascending: false }).limit(20)
+        setNotifications(notifsRes || [])
       } catch (err) {
         console.error("Dashboard fetch error:", err)
       } finally {
@@ -472,6 +489,54 @@ function StudentDashboard({ profile, user }: { profile: any, user: any }) {
         {/* Main Content Column */}
         <div className="lg:col-span-8 space-y-10">
           
+          {/* Announcements & Alerts */}
+          {notifications.length > 0 && (
+            <section className="space-y-6 animate-in fade-in duration-500">
+              <div className="flex justify-between items-center px-2">
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-500 shadow-sm">
+                    <Bell className="h-6 w-6" />
+                  </div>
+                  <h2 className="text-2xl font-black tracking-tight">Announcements & Alerts</h2>
+                </div>
+              </div>
+              
+              <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 no-scrollbar">
+                {notifications.map((n: any) => (
+                  <Card key={n.id} className="border-none rounded-3xl bg-white dark:bg-slate-900 shadow-sm border border-slate-100 dark:border-slate-800 p-6 flex items-start gap-4 transition-all duration-300 hover:shadow-md">
+                    <div className={`h-10 w-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                      n.type === 'success' ? 'bg-emerald-50 text-emerald-500 dark:bg-emerald-950/20' :
+                      n.type === 'warning' ? 'bg-amber-50 text-amber-500 dark:bg-amber-950/20' :
+                      'bg-blue-50 text-blue-500 dark:bg-blue-950/20'
+                    }`}>
+                      <Bell className="h-5 w-5" />
+                    </div>
+                    <div className="flex-grow space-y-1.5 min-w-0">
+                      <div className="flex items-center justify-between gap-3 flex-wrap">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <h4 className="font-black text-sm text-slate-900 dark:text-white leading-tight">{n.title}</h4>
+                          {n.courses?.title && (
+                            <Badge className="bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 border-none font-black text-[9px] uppercase tracking-wider px-2 py-0.5">
+                              {n.courses.title}
+                            </Badge>
+                          )}
+                        </div>
+                        <span className="text-[9px] font-bold text-slate-400 uppercase">{new Date(n.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}</span>
+                      </div>
+                      <p className="text-slate-500 dark:text-slate-400 text-xs font-semibold leading-relaxed">{n.message}</p>
+                      {n.link && (
+                        <a href={n.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-xs font-black text-purple-600 hover:text-purple-700 mt-1 transition-all group">
+                          View Details 
+                          <ArrowUpRight className="ml-1 h-3.5 w-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                        </a>
+                      )}
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </section>
+          )}
+
           {/* Recommended Portals */}
           <section>
             <div className="flex justify-between items-center mb-8 px-2">

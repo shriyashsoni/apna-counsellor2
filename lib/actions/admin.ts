@@ -98,18 +98,26 @@ export async function toggleMentorVisibilityAction(userId: string, isVisible: bo
   }
 }
 
-export async function createBroadcastNotificationAction(title: string, message: string, type: string, link?: string) {
+export async function createBroadcastNotificationAction(title: string, message: string, type: string, link?: string, courseId?: string) {
   try {
+    const insertData: any = {
+      title,
+      message,
+      type,
+      link,
+      is_read: false
+    }
+
+    if (courseId && courseId !== 'all') {
+      insertData.course_id = courseId
+      insertData.target_group = 'course_subscribers'
+    } else {
+      insertData.target_group = 'all'
+    }
+
     const { error } = await supabaseAdmin
       .from('notifications')
-      .insert({
-        title,
-        message,
-        type,
-        link,
-        target_group: 'all',
-        is_read: false
-      })
+      .insert(insertData)
 
     if (error) throw error
     return { success: true }
