@@ -119,3 +119,55 @@ export async function createBroadcastNotificationAction(title: string, message: 
   }
 }
 
+export async function createCourseAction(courseData: any) {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from('courses')
+      .insert(courseData)
+      .select()
+      .single()
+
+    if (error) throw error
+
+    await supabaseAdmin.from('course_audit_logs').insert({
+      action: 'course_launched',
+      details: `Admin successfully deployed evergreen course: "${courseData.title}" priced at ₹${courseData.discounted_price || courseData.original_price}`
+    })
+
+    revalidatePath('/courses')
+    revalidatePath('/admin/courses')
+    
+    return { success: true, course: data }
+  } catch (error: any) {
+    console.error("Course Creation Error:", error)
+    return { success: false, error: error.message }
+  }
+}
+
+export async function updateCourseAction(courseId: string, courseData: any) {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from('courses')
+      .update(courseData)
+      .eq('id', courseId)
+      .select()
+      .single()
+
+    if (error) throw error
+
+    await supabaseAdmin.from('course_audit_logs').insert({
+      action: 'course_updated',
+      details: `Admin successfully updated evergreen course: "${courseData.title}" priced at ₹${courseData.discounted_price || courseData.original_price}`
+    })
+
+    revalidatePath('/courses')
+    revalidatePath('/admin/courses')
+    revalidatePath(`/courses/${courseData.slug}`)
+    
+    return { success: true, course: data }
+  } catch (error: any) {
+    console.error("Course Update Error:", error)
+    return { success: false, error: error.message }
+  }
+}
+

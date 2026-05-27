@@ -17,6 +17,8 @@ import {
 } from "@/components/ui/select"
 import { toast } from "sonner"
 
+import { updateCourseAction } from "@/lib/actions/admin"
+
 import { useEffect } from "react"
 export default function AdminEditCoursePage({ params }: { params: { id: string } }) {
   const router = useRouter()
@@ -237,7 +239,7 @@ export default function AdminEditCoursePage({ params }: { params: { id: string }
     try {
       const slug = formData.title.toLowerCase().trim().replace(/[^a-zA-Z0-9]+/g, '-')
       
-      const { data, error } = await supabase.from('courses').update({
+      const courseData = {
         title: formData.title,
         tagline: formData.tagline,
         description: formData.description,
@@ -269,14 +271,11 @@ export default function AdminEditCoursePage({ params }: { params: { id: string }
         meta_title: formData.meta_title || formData.title,
         meta_description: formData.meta_description || formData.tagline,
         keywords: formData.keywords.split(',').map(k => k.trim()).filter(Boolean)
-      }).eq('id', params.id).select().single()
+      }
 
-      if (error) throw error
+      const result = await updateCourseAction(params.id, courseData)
 
-      await supabase.from('course_audit_logs').insert({
-        action: 'course_updated',
-        details: `Admin successfully updated evergreen course: "${formData.title}" priced at ₹${formData.discounted_price || formData.original_price}`
-      })
+      if (!result.success) throw new Error(result.error)
 
       toast.success("Course updated and changes live successfully!")
       router.push("/admin/courses")
