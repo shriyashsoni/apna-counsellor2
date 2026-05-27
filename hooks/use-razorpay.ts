@@ -45,12 +45,20 @@ export function useRazorpay() {
 
     try {
       // 1. Create order on server
-      const order = await createRazorpayOrder({
+      const result = await createRazorpayOrder({
         amount,
         currency: "INR",
         notes: metadata,
         mentor_id: metadata.mentor_id
       })
+
+      if (!result.success || !result.order) {
+        toast.error(result.error || "Failed to create payment order")
+        setIsLoading(false)
+        return
+      }
+
+      const order = result.order;
 
       // 2. Configure checkout options
       const keyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;

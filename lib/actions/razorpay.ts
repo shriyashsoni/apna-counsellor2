@@ -29,13 +29,13 @@ export async function createRazorpayOrder({
     const keySecret = process.env.RAZORPAY_KEY_SECRET;
 
     if (!keyId || !keySecret) {
-      throw new Error("Razorpay credentials not configured");
+      return { success: false, error: "Razorpay credentials not configured in server environment" };
     }
 
     console.log("Creating Razorpay Order for amount:", amount);
     
     if (isNaN(amount) || amount <= 0) {
-      throw new Error(`Invalid amount: ${amount}`);
+      return { success: false, error: `Invalid amount: ${amount}` };
     }
 
     let transfers = undefined;
@@ -96,10 +96,10 @@ export async function createRazorpayOrder({
 
       const order = await response.json();
       console.log("Razorpay Order Created Successfully:", order.id);
-      return order;
+      return { success: true, order };
     } catch (err: any) {
       console.error("Fetch Error in createRazorpayOrder:", err);
-      throw err;
+      return { success: false, error: err.message || "Failed to create order" };
     }
 }
 
