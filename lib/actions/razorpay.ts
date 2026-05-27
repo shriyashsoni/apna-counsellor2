@@ -17,7 +17,8 @@ export async function createRazorpayOrder({
   amount, 
   currency = "INR", 
   receipt,
-  notes 
+  notes,
+  mentor_id 
 }: { 
   amount: number, 
   currency?: string, 
@@ -25,6 +26,7 @@ export async function createRazorpayOrder({
   notes?: Record<string, string>,
   mentor_id?: string
 }) {
+  try {
     const keyId = process.env.RAZORPAY_KEY_ID;
     const keySecret = process.env.RAZORPAY_KEY_SECRET;
 
@@ -68,39 +70,36 @@ export async function createRazorpayOrder({
       }
     }
 
-
-
     const auth = Buffer.from(`${keyId}:${keySecret}`).toString("base64");
     
-    try {
-      const response = await fetch("https://api.razorpay.com/v1/orders", {
-        method: "POST",
-        headers: {
-          "Authorization": `Basic ${auth}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          amount: Math.round(Number(amount) * 100), 
-          currency: currency,
-          receipt: receipt,
-          notes: notes,
-          ...(transfers && { transfers })
-        }),
-      });
+    const response = await fetch("https://api.razorpay.com/v1/orders", {
+      method: "POST",
+      headers: {
+        "Authorization": `Basic ${auth}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        amount: Math.round(Number(amount) * 100), 
+        currency: currency,
+        receipt: receipt,
+        notes: notes,
+        ...(transfers && { transfers })
+      }),
+    });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error("Razorpay API Error Response:", JSON.stringify(errorData, null, 2));
-        throw new Error(errorData.error?.description || "Razorpay API error");
-      }
-
-      const order = await response.json();
-      console.log("Razorpay Order Created Successfully:", order.id);
-      return { success: true, order };
-    } catch (err: any) {
-      console.error("Fetch Error in createRazorpayOrder:", err);
-      return { success: false, error: err.message || "Failed to create order" };
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("Razorpay API Error Response:", JSON.stringify(errorData, null, 2));
+      return { success: false, error: errorData.error?.description || "Razorpay API error" };
     }
+
+    const order = await response.json();
+    console.log("Razorpay Order Created Successfully:", order.id);
+    return { success: true, order };
+  } catch (err: any) {
+    console.error("Fatal Error in createRazorpayOrder:", err);
+    return { success: false, error: err.message || "Failed to create order" };
+  }
 }
 
 export async function verifyRazorpayPayment({ 
@@ -116,8 +115,9 @@ export async function verifyRazorpayPayment({
   amount?: number,
   notes?: any
 }) {
+  try {
     const secret = process.env.RAZORPAY_KEY_SECRET;
-    if (!secret) throw new Error("Razorpay secret not configured");
+    if (!secret) return { success: false, error: "Razorpay secret not configured" };
 
     const hmac = crypto.createHmac("sha256", secret);
     hmac.update(orderId + "|" + paymentId);
@@ -171,6 +171,10 @@ export async function verifyRazorpayPayment({
       }
     }
 
-    return isValid;
+    return { success: isValid };
+  } catch (err: any) {
+    console.error("Fatal Error in verifyRazorpayPayment:", err);
+    return { success: false, error: err.message || "Payment verification failed" };
+  }
 }
 

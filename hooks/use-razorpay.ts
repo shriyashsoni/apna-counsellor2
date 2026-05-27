@@ -80,7 +80,7 @@ export function useRazorpay() {
         handler: async (response: any) => {
           try {
             // Verify payment on server for immediate feedback
-            const isVerified = await verifyRazorpayPayment({
+            const verificationResult = await verifyRazorpayPayment({
               orderId: response.razorpay_order_id,
               paymentId: response.razorpay_payment_id,
               signature: response.razorpay_signature,
@@ -88,14 +88,14 @@ export function useRazorpay() {
               notes: metadata
             })
 
-            if (isVerified) {
+            if (verificationResult && verificationResult.success) {
               toast.success("Payment successful!")
               if (onSuccess) onSuccess(response)
             } else {
-              toast.error("Payment verification failed")
+              toast.error(verificationResult?.error || "Payment verification failed")
             }
-          } catch (err) {
-            toast.error("Error verifying payment")
+          } catch (err: any) {
+            toast.error(err.message || "Error verifying payment")
           }
         },
         prefill: prefill,
