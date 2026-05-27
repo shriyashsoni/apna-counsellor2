@@ -3,11 +3,17 @@ import { cookies } from 'next/headers'
 
 export function createClient() {
   const cookieStore = cookies()
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || '';
+  // Use service_role key on server side — it bypasses RLS.
+  // This is the correct pattern when using Firebase auth (not Supabase auth).
+  // The anon key is only needed for browser-side queries.
+  const serverKey = process.env.SUPABASE_SERVICE_ROLE_KEY 
+    || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY 
+    || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY 
+    || '';
 
   const client = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    anonKey,
+    serverKey,
     {
       cookies: {
         getAll() {
@@ -90,7 +96,7 @@ export function createClient() {
         return {
           data: {
             session: {
-              access_token: anonKey, // Pass standard, valid Supabase Anon JWT to prevent "expected three parts in JWT" error
+              access_token: serverKey, // Use server key for session token
               token_type: 'bearer',
               expires_in: 3600,
               refresh_token: 'firebase-mock-refresh',
