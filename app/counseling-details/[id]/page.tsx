@@ -4,6 +4,8 @@ import RelatedLinks from '@/components/seo/RelatedLinks';
 import Script from 'next/script';
 import { notFound } from 'next/navigation';
 
+export const dynamic = "force-dynamic";
+
 interface CounselingPageProps {
   params: {
     id: string;
@@ -11,35 +13,55 @@ interface CounselingPageProps {
 }
 
 export async function generateMetadata({ params }: CounselingPageProps): Promise<Metadata> {
-  const supabase = createClient();
-  const { data: counseling } = await supabase
-    .from('counselings')
-    .select('*')
-    .eq('id', params.id)
-    .single();
+  try {
+    const supabase = createClient();
+    const { data: counseling, error } = await supabase
+      .from('counselings')
+      .select('*')
+      .eq('id', params.id)
+      .single();
 
-  if (!counseling) return { title: 'Counseling Not Found' };
+    if (error || !counseling) return { title: 'Counseling Not Found' };
 
-  const title = `${counseling.name} 2025 | Registration, Dates & Step-by-Step Guide`;
-  const description = `Complete guide to ${counseling.name} 2025. Check registration steps, eligibility for ${counseling.exam || ''}, document verification, and seat allotment rounds. Get free expert guidance at ApnaCounsellor.in`;
+    const title = `${counseling.name} 2025 | Registration, Dates & Step-by-Step Guide`;
+    const description = `Complete guide to ${counseling.name} 2025. Check registration steps, eligibility for ${counseling.exam || ''}, document verification, and seat allotment rounds. Get free expert guidance at ApnaCounsellor.in`;
 
-  return {
-    title,
-    description,
-    keywords: [counseling.name, counseling.exam || '', 'counseling process', 'admission guide 2025'],
-    alternates: {
-      canonical: `https://www.apnacounsellor.in/counseling-details/${params.id}`,
-    },
-  };
+    return {
+      title,
+      description,
+      keywords: [counseling.name, counseling.exam || '', 'counseling process', 'admission guide 2025'],
+      alternates: {
+        canonical: `https://www.apnacounsellor.in/counseling-details/${params.id}`,
+      },
+    };
+  } catch (err) {
+    console.error("Error generating counseling metadata:", err);
+    return {
+      title: 'Counseling Admissions | Apna Counsellor',
+      description: 'Check registration steps, eligibility, document verification, and seat allotment rounds.'
+    };
+  }
 }
 
 export default async function CounselingDetailPage({ params }: CounselingPageProps) {
-  const supabase = createClient();
-  const { data: counseling } = await supabase
-    .from('counselings')
-    .select('*')
-    .eq('id', params.id)
-    .single();
+  let counseling = null;
+
+  try {
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from('counselings')
+      .select('*')
+      .eq('id', params.id)
+      .single();
+
+    if (error) {
+      console.error("Supabase query error on counseling details:", error);
+    } else {
+      counseling = data;
+    }
+  } catch (err) {
+    console.error("Failed to fetch counseling details from Supabase:", err);
+  }
 
   if (!counseling) notFound();
 
@@ -147,3 +169,4 @@ export default async function CounselingDetailPage({ params }: CounselingPagePro
     </main>
   );
 }
+

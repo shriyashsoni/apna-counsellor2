@@ -3,6 +3,8 @@ import { createClient } from '@/lib/supabase/server';
 import RelatedLinks from '@/components/seo/RelatedLinks';
 import { notFound } from 'next/navigation';
 
+export const dynamic = "force-dynamic";
+
 interface CutoffPageProps {
   params: {
     collegeId: string;
@@ -11,35 +13,55 @@ interface CutoffPageProps {
 }
 
 export async function generateMetadata({ params }: CutoffPageProps): Promise<Metadata> {
-  const supabase = createClient();
-  const { data: college } = await supabase
-    .from('colleges')
-    .select('*')
-    .eq('id', params.collegeId)
-    .single();
+  try {
+    const supabase = createClient();
+    const { data: college, error } = await supabase
+      .from('colleges')
+      .select('*')
+      .eq('id', params.collegeId)
+      .single();
 
-  if (!college) return { title: 'College Not Found' };
+    if (error || !college) return { title: 'College Not Found' };
 
-  const courseName = decodeURIComponent(params.course);
-  const title = `${college.short_name || college.name} ${courseName} Cutoff 2025 | Previous Year Opening & Closing Ranks`;
-  const description = `Check detailed cutoff ranks for ${courseName} at ${college.name}. Compare opening and closing ranks for General, OBC, SC, ST, and EWS categories. Plan your ${college.state} counseling strategy.`;
+    const courseName = decodeURIComponent(params.course);
+    const title = `${college.short_name || college.name} ${courseName} Cutoff 2025 | Previous Year Opening & Closing Ranks`;
+    const description = `Check detailed cutoff ranks for ${courseName} at ${college.name}. Compare opening and closing ranks for General, OBC, SC, ST, and EWS categories. Plan your ${college.state} counseling strategy.`;
 
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: `https://www.apnacounsellor.in/cutoff/${params.collegeId}/${params.course}`,
-    },
-  };
+    return {
+      title,
+      description,
+      alternates: {
+        canonical: `https://www.apnacounsellor.in/cutoff/${params.collegeId}/${params.course}`,
+      },
+    };
+  } catch (err) {
+    console.error("Error generating cutoff metadata:", err);
+    return {
+      title: 'College Cutoff Details | Apna Counsellor',
+      description: 'Check previous year opening and closing ranks for engineering and medical courses.'
+    };
+  }
 }
 
 export default async function CutoffDetailPage({ params }: CutoffPageProps) {
-  const supabase = createClient();
-  const { data: college } = await supabase
-    .from('colleges')
-    .select('*')
-    .eq('id', params.collegeId)
-    .single();
+  let college = null;
+
+  try {
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from('colleges')
+      .select('*')
+      .eq('id', params.collegeId)
+      .single();
+
+    if (error) {
+      console.error("Supabase query error on cutoff details:", error);
+    } else {
+      college = data;
+    }
+  } catch (err) {
+    console.error("Failed to fetch cutoff details from Supabase:", err);
+  }
 
   if (!college) notFound();
 
@@ -111,3 +133,4 @@ export default async function CutoffDetailPage({ params }: CutoffPageProps) {
     </main>
   );
 }
+

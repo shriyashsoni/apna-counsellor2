@@ -5,6 +5,8 @@ import { cookies } from "next/headers"
 import MentorProfileClient from "./mentor-profile-client"
 import { filterSessionsByAvailability } from "@/lib/google-calendar"
 
+export const dynamic = "force-dynamic";
+
 interface MentorPageProps {
   params: {
     id: string;
@@ -52,17 +54,29 @@ export async function generateMetadata({ params }: MentorPageProps): Promise<Met
 }
 
 export default async function MentorProfilePage({ params }: MentorPageProps) {
-  const supabase = createClient()
-  
-  const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(params.id)
+  let supabase = null
+  let mentor = null
 
-  const { data: mentor } = await supabase
-    .from('profiles')
-    .select('*')
-    .or(`id.eq.${isUuid ? params.id : '00000000-0000-0000-0000-000000000000'},slug.eq.${params.id}`)
-    .maybeSingle()
+  try {
+    supabase = createClient()
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(params.id)
 
-  if (!mentor) notFound()
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .or(`id.eq.${isUuid ? params.id : '00000000-0000-0000-0000-000000000000'},slug.eq.${params.id}`)
+      .maybeSingle()
+
+    if (error) {
+      console.error("Supabase query error on mentor profile:", error)
+    } else {
+      mentor = data
+    }
+  } catch (err) {
+    console.error("Failed to fetch mentor profile from Supabase:", err)
+  }
+
+  if (!mentor || !supabase) notFound()
 
   let sessions: any[] = []
   let reviews: any[] = []
@@ -130,3 +144,4 @@ export default async function MentorProfilePage({ params }: MentorPageProps) {
     />
   )
 }
+
