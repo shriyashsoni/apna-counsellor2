@@ -25,13 +25,19 @@ export async function middleware(request: NextRequest) {
   const isPublicPage = [
     '/', '/about', '/contact', '/privacy-policy', '/terms', '/founder', '/pricing', '/predictor', '/colleges',
     '/counselling', '/counseling', '/college', '/resources', '/mentors', '/mentorship', '/blog',
-    '/sitemap.xml', '/sitemap-index.xml', '/robots.txt', '/ads.txt'
+    '/courses', '/sitemap.xml', '/sitemap-index.xml', '/robots.txt', '/ads.txt'
   ].some(path => 
     request.nextUrl.pathname === path || 
     request.nextUrl.pathname.startsWith('/college/') || 
     request.nextUrl.pathname.startsWith('/counselling/') ||
     request.nextUrl.pathname.startsWith('/counseling/') ||
+    request.nextUrl.pathname.startsWith('/counseling-details/') ||
+    request.nextUrl.pathname.startsWith('/courses/') ||
     request.nextUrl.pathname.startsWith('/blog/') ||
+    request.nextUrl.pathname.startsWith('/pay/') ||
+    request.nextUrl.pathname.startsWith('/compare/') ||
+    request.nextUrl.pathname.startsWith('/cutoff/') ||
+    request.nextUrl.pathname.startsWith('/mentor/') ||
     request.nextUrl.pathname.startsWith('/sitemap-')
   )
 

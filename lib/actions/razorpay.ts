@@ -1,7 +1,17 @@
 "use server"
 
 import crypto from "crypto"
-import { supabaseAdmin } from "@/lib/supabase/admin"
+
+// Helper: lazily create admin client only when env vars are confirmed present
+function getAdminClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY
+  if (!url || !key) {
+    throw new Error("Supabase admin credentials not configured")
+  }
+  const { createClient } = require('@supabase/supabase-js')
+  return createClient(url, key)
+}
 
 export async function createRazorpayOrder({ 
   amount, 
@@ -30,30 +40,35 @@ export async function createRazorpayOrder({
 
     let transfers = undefined;
     if (mentor_id) {
-      const { data: mentor } = await supabaseAdmin
-        .from('profiles')
-        .select('razorpay_account_id')
-        .eq('id', mentor_id)
-        .maybeSingle();
+      try {
+        const supabaseAdmin = getAdminClient()
+        const { data: mentor } = await supabaseAdmin
+          .from('profiles')
+          .select('razorpay_account_id')
+          .eq('id', mentor_id)
+          .maybeSingle();
 
-      if (mentor?.razorpay_account_id) {
-        // Apna Counsellor keeps 30%, Mentor gets 70%
-        const mentorShare = Math.round(Number(amount) * 100 * 0.70);
-        transfers = [
-          {
-            account: mentor.razorpay_account_id,
-            amount: mentorShare,
-            currency: currency,
-            notes: {
-              split: "70% to mentor"
-            },
-            linked_account_notes: ["split"],
-            on_hold: 0
-          }
-        ];
-        console.log(`Razorpay Route: Transferring ${mentorShare / 100} to ${mentor.razorpay_account_id}`);
+        if (mentor?.razorpay_account_id) {
+          // Apna Counsellor keeps 30%, Mentor gets 70%
+          const mentorShare = Math.round(Number(amount) * 100 * 0.70);
+          transfers = [
+            {
+              account: mentor.razorpay_account_id,
+              amount: mentorShare,
+              currency: currency,
+              notes: { split: "70% to mentor" },
+              linked_account_notes: ["split"],
+              on_hold: 0
+            }
+          ];
+          console.log(`Razorpay Route: Transferring ${mentorShare / 100} to ${mentor.razorpay_account_id}`);
+        }
+      } catch (adminErr) {
+        console.error("Could not fetch mentor razorpay account, proceeding without route:", adminErr);
       }
     }
+
+
 
     const auth = Buffer.from(`${keyId}:${keySecret}`).toString("base64");
     
@@ -113,6 +128,7 @@ export async function verifyRazorpayPayment({
     if (isValid && amount && notes) {
       // Save payment to database using upsert to avoid duplicates from webhook
       try {
+        const supabaseAdmin = getAdminClient()
         const { error: payError } = await supabaseAdmin
           .from('payments')
           .upsert({
