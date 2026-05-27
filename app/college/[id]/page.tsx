@@ -6,6 +6,8 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 
+export const dynamic = "force-dynamic";
+
 interface CollegePageProps {
   params: {
     id: string;
@@ -13,56 +15,75 @@ interface CollegePageProps {
 }
 
 export async function generateMetadata({ params }: CollegePageProps): Promise<Metadata> {
-  const supabase = await createClient();
-  const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(params.id);
-  const { data: college } = await supabase
-    .from('colleges')
-    .select('*')
-    .eq(isUUID ? 'id' : 'college_id', params.id)
-    .single();
+  try {
+    const supabase = await createClient();
+    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(params.id);
+    const { data: college, error } = await supabase
+      .from('colleges')
+      .select('*')
+      .eq(isUUID ? 'id' : 'college_id', params.id)
+      .single();
 
-  if (!college) {
+    if (error || !college) {
+      return {
+        title: 'College Details | Apna Counsellor',
+        description: 'Check latest college admission details, fees, placements, and cutoffs.'
+      };
+    }
+    
+    const displayName = college.name;
+    const title = `${displayName} | Admissions, Cutoffs & Fees 2026`;
+    const description = `Get complete details of ${college.name}, ${college.city}. Check latest MHT-CET/JEE cutoffs, placement stats, and campus insights for 2026 admissions.`;
+
     return {
-      title: 'College Not Found | Apna Counsellor',
-      description: 'The requested college could not be found. Explore other top institutions in India at Apna Counsellor.'
+      title,
+      description,
+      keywords: [displayName, 'college admission', 'cutoff 2026', 'placement stats', college.state || 'India'],
+      openGraph: {
+        title,
+        description,
+        type: 'website',
+        images: college.image_url ? [college.image_url] : ['/images/college-preview-v1.png'],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title,
+        description,
+        images: college.image_url ? [college.image_url] : ['/images/college-preview-v1.png'],
+      },
+      alternates: {
+        canonical: `https://www.apnacounsellor.in/college/${params.id}`,
+      },
+    };
+  } catch (err) {
+    console.error("Error generating college metadata:", err);
+    return {
+      title: 'College Details | Apna Counsellor',
+      description: 'Check latest college admission details, fees, placements, and cutoffs.'
     };
   }
-  
-  const displayName = college.name;
-  
-  const title = `${displayName} | Admissions, Cutoffs & Fees 2026`;
-  const description = `Get complete details of ${college.name}, ${college.city}. Check latest MHT-CET/JEE cutoffs, placement stats, and campus insights for 2026 admissions.`;
-
-  return {
-    title,
-    description,
-    keywords: [displayName, 'college admission', 'cutoff 2026', 'placement stats', college.state || 'India'],
-    openGraph: {
-      title,
-      description,
-      type: 'website',
-      images: college.image_url ? [college.image_url] : ['/images/college-preview-v1.png'],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-      images: college.image_url ? [college.image_url] : ['/images/college-preview-v1.png'],
-    },
-    alternates: {
-      canonical: `https://www.apnacounsellor.in/college/${params.id}`,
-    },
-  };
 }
 
 export default async function CollegeDetailPage({ params }: CollegePageProps) {
-  const supabase = await createClient();
-  const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(params.id);
-  const { data: college } = await supabase
-    .from('colleges')
-    .select('*')
-    .eq(isUUID ? 'id' : 'college_id', params.id)
-    .single();
+  let college = null;
+
+  try {
+    const supabase = await createClient();
+    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(params.id);
+    const { data, error } = await supabase
+      .from('colleges')
+      .select('*')
+      .eq(isUUID ? 'id' : 'college_id', params.id)
+      .single();
+
+    if (error) {
+      console.error("Supabase query error on college detail:", error);
+    } else {
+      college = data;
+    }
+  } catch (err) {
+    console.error("Failed to fetch college details from Supabase:", err);
+  }
 
   if (!college) {
     notFound();

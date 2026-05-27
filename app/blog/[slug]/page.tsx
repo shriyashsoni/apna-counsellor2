@@ -7,6 +7,8 @@ import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 
 
+export const dynamic = "force-dynamic";
+
 interface BlogPageProps {
   params: {
     slug: string;
@@ -14,44 +16,64 @@ interface BlogPageProps {
 }
 
 export async function generateMetadata({ params }: BlogPageProps): Promise<Metadata | undefined> {
-  const supabase = createClient()
-  const { data: blog } = await supabase
-    .from('blogs')
-    .select('*')
-    .eq('slug', params.slug)
-    .single()
+  try {
+    const supabase = createClient()
+    const { data: blog, error } = await supabase
+      .from('blogs')
+      .select('*')
+      .eq('slug', params.slug)
+      .single()
 
-  if (!blog) return;
+    if (error || !blog) return;
 
-  const title = blog.title;
-  const description = blog.excerpt || blog.seo_description || `Read the latest insights on ${blog.title} at Apna Counsellor.`;
+    const title = blog.title;
+    const description = blog.excerpt || blog.seo_description || `Read the latest insights on ${blog.title} at Apna Counsellor.`;
 
-  return {
-    title,
-    description,
-    openGraph: {
+    return {
       title,
       description,
-      type: 'article',
-      publishedTime: blog.created_at,
-      images: blog.featured_image ? [blog.featured_image] : ['/images/blog-preview-v1.png'],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-      images: blog.featured_image ? [blog.featured_image] : ['/images/blog-preview-v1.png'],
-    }
-  };
+      openGraph: {
+        title,
+        description,
+        type: 'article',
+        publishedTime: blog.created_at,
+        images: blog.featured_image ? [blog.featured_image] : ['/images/blog-preview-v1.png'],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title,
+        description,
+        images: blog.featured_image ? [blog.featured_image] : ['/images/blog-preview-v1.png'],
+      }
+    };
+  } catch (err) {
+    console.error("Error generating blog metadata:", err);
+    return {
+      title: "Admission Blog | Apna Counsellor",
+      description: "Read our latest expert guidance posts."
+    };
+  }
 }
 
 export default async function BlogPostPage({ params }: BlogPageProps) {
-  const supabase = createClient()
-  const { data: blog } = await supabase
-    .from('blogs')
-    .select('*, author:profiles(name, image)')
-    .eq('slug', params.slug)
-    .single()
+  let blog = null;
+
+  try {
+    const supabase = createClient()
+    const { data, error } = await supabase
+      .from('blogs')
+      .select('*, author:profiles(name, image)')
+      .eq('slug', params.slug)
+      .single()
+
+    if (error) {
+      console.error("Supabase query error on blog post:", error);
+    } else {
+      blog = data;
+    }
+  } catch (err) {
+    console.error("Failed to fetch blog post from Supabase:", err);
+  }
 
   if (!blog) notFound();
 

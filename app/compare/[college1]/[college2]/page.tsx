@@ -11,29 +11,51 @@ interface ComparePageProps {
   };
 }
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({ params }: ComparePageProps): Promise<Metadata> {
-  const supabase = createClient();
-  const { data: c1 } = await supabase.from('colleges').select('*').eq('id', params.college1).single();
-  const { data: c2 } = await supabase.from('colleges').select('*').eq('id', params.college2).single();
-  
-  if (!c1 || !c2) return { title: 'Comparison Not Found' };
+  try {
+    const supabase = createClient();
+    const { data: c1, error: e1 } = await supabase.from('colleges').select('*').eq('id', params.college1).single();
+    const { data: c2, error: e2 } = await supabase.from('colleges').select('*').eq('id', params.college2).single();
+    
+    if (e1 || e2 || !c1 || !c2) return { title: 'Comparison Not Found | Apna Counsellor' };
 
-  const title = `${c1.short_name || c1.name} vs ${c2.short_name || c2.name} Comparison | Placements, Fees & Cutoffs 2025`;
-  const description = `Detailed comparison between ${c1.name} and ${c2.name}. Compare NIRF ranks, average packages, fees structure, and admission cutoffs to make the right choice.`;
+    const title = `${c1.short_name || c1.name} vs ${c2.short_name || c2.name} Comparison | Placements, Fees & Cutoffs 2026`;
+    const description = `Detailed comparison between ${c1.name} and ${c2.name}. Compare NIRF ranks, average packages, fees structure, and admission cutoffs to make the right choice.`;
 
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: `https://www.apnacounsellor.in/compare/${params.college1}/${params.college2}`,
-    },
-  };
+    return {
+      title,
+      description,
+      alternates: {
+        canonical: `https://www.apnacounsellor.in/compare/${params.college1}/${params.college2}`,
+      },
+    };
+  } catch (err) {
+    console.error("Error generating comparison metadata:", err);
+    return {
+      title: 'College Comparison | Apna Counsellor',
+      description: 'Compare top engineering and medical colleges in India.'
+    };
+  }
 }
 
 export default async function CollegeComparePage({ params }: ComparePageProps) {
-  const supabase = createClient();
-  const { data: c1 } = await supabase.from('colleges').select('*').eq('id', params.college1).single();
-  const { data: c2 } = await supabase.from('colleges').select('*').eq('id', params.college2).single();
+  let c1 = null;
+  let c2 = null;
+
+  try {
+    const supabase = createClient();
+    const [res1, res2] = await Promise.all([
+      supabase.from('colleges').select('*').eq('id', params.college1).single(),
+      supabase.from('colleges').select('*').eq('id', params.college2).single()
+    ]);
+
+    c1 = res1.data;
+    c2 = res2.data;
+  } catch (err) {
+    console.error("Failed to fetch comparison details from Supabase:", err);
+  }
 
   if (!c1 || !c2) notFound();
 

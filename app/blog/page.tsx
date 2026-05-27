@@ -15,14 +15,27 @@ export const metadata: Metadata = {
   }
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function BlogListingPage() {
-  const supabase = createClient()
+  let blogs: any[] = []
   
-  const { data: blogs } = await supabase
-    .from('blogs')
-    .select('*')
-    .eq('is_published', true)
-    .order('created_at', { ascending: false })
+  try {
+    const supabase = createClient()
+    const { data, error } = await supabase
+      .from('blogs')
+      .select('*')
+      .eq('is_published', true)
+      .order('created_at', { ascending: false })
+
+    if (error) {
+      console.error("Supabase query error on blogs list:", error)
+    } else if (data) {
+      blogs = data
+    }
+  } catch (err) {
+    console.error("Failed to fetch blogs from Supabase:", err)
+  }
 
   const categories = Array.from(new Set(blogs?.map(b => b.category) || []));
 
