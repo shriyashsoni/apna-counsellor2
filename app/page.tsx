@@ -13,7 +13,6 @@ import { HowItWorks } from "@/components/how-it-works"
 import { ResourceDirectory } from "@/components/resource-directory"
 import { CoursesSection } from "@/components/courses-section"
 import { motion } from "framer-motion"
-import Script from "next/script"
 
 export default function Home() {
   return (
@@ -230,7 +229,7 @@ export default function Home() {
 
       {/* AI Ecosystem Interactive Hub - Latest Version */}
       <section className="py-16 bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 relative overflow-hidden w-full">
-        <Script src="https://www.itsbeyondregular.com/embed.js" defer strategy="afterInteractive" />
+        <script src="https://www.itsbeyondregular.com/embed.js" defer></script>
         <div className="w-full px-0 max-w-none">
           <div className="relative overflow-hidden bg-slate-50/50 dark:bg-slate-900/30 border-y border-slate-200 dark:border-slate-800 py-12 px-4 sm:px-8 md:px-16 shadow-2xl">
             <div className="absolute -inset-4 bg-gradient-to-r from-primary/10 to-purple-600/10 blur-2xl opacity-40 pointer-events-none" />
