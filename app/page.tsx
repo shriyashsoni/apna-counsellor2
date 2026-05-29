@@ -229,12 +229,12 @@ export default function Home() {
       </section>
 
       {/* AI Ecosystem Interactive Hub */}
-      <section className="py-16 bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 relative overflow-hidden">
+      <section className="py-16 bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 relative overflow-hidden w-full">
         <Script src="https://www.itsbeyondregular.com/embed.js" defer strategy="afterInteractive" />
-        <div className="container mx-auto px-4 max-w-5xl">
-          <div className="relative rounded-[2.5rem] overflow-hidden bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 md:p-12 shadow-2xl">
-            <div className="absolute -inset-4 bg-gradient-to-r from-primary/10 to-purple-600/10 rounded-[3rem] blur-2xl opacity-50 pointer-events-none" />
-            <div className="relative z-10 w-full min-h-[400px]">
+        <div className="w-full px-0 max-w-none">
+          <div className="relative overflow-hidden bg-slate-50/50 dark:bg-slate-900/30 border-y border-slate-200 dark:border-slate-800 py-12 px-4 sm:px-8 md:px-16 shadow-2xl">
+            <div className="absolute -inset-4 bg-gradient-to-r from-primary/10 to-purple-600/10 blur-2xl opacity-40 pointer-events-none" />
+            <div className="relative z-10 w-full min-h-[500px]">
               <div data-bn-preset="bopfigr9uj9uvteivlph6t62" className="w-full h-full"></div>
             </div>
           </div>
