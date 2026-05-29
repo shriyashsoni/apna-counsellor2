@@ -235,7 +235,7 @@ export default function Home() {
           <div className="relative overflow-hidden bg-slate-50/50 dark:bg-slate-900/30 border-y border-slate-200 dark:border-slate-800 py-12 px-4 sm:px-8 md:px-16 shadow-2xl">
             <div className="absolute -inset-4 bg-gradient-to-r from-primary/10 to-purple-600/10 blur-2xl opacity-40 pointer-events-none" />
             <div className="relative z-10 w-full min-h-[500px]">
-              <div data-bn-preset="bopfigr9uj9uvteivlph6t62" className="w-full h-full"></div>
+              <div data-bn-preset="ukrdl6co0u5wp4a8txeqwsij" className="w-full h-full"></div>
             </div>
           </div>
         </div>
