@@ -227,7 +227,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* AI Ecosystem Interactive Hub - Latest Version */}
+      {/* AI Ecosystem Interactive Hub - Production Version */}
       <section className="py-16 bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 relative overflow-hidden w-full">
         <script src="https://www.itsbeyondregular.com/embed.js" defer></script>
         <div className="w-full px-0 max-w-none">
