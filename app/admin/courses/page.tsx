@@ -196,9 +196,19 @@ export default function AdminCoursesPage() {
                 <div className="h-11 w-11 rounded-xl bg-white/5 text-white/80 flex items-center justify-center border border-white/10">
                   <BookOpen className="h-5 w-5" />
                 </div>
-                <Badge className={`rounded-lg font-black text-[9px] border-none px-2 py-0.5 ${c.is_published ? 'bg-[#00FF88]/10 text-[#00FF88]' : 'bg-white/10 text-slate-400'}`}>
-                  {c.is_published ? 'PUBLISHED' : 'DRAFT'}
-                </Badge>
+                <div className="flex flex-wrap gap-1.5 items-end justify-end max-w-[200px]">
+                  {c.is_featured && (
+                    <Badge className="rounded-lg font-black text-[9px] border-none px-1.5 py-0.5 bg-amber-500/10 text-amber-400">
+                      ★ FEATURED
+                    </Badge>
+                  )}
+                  <Badge className="rounded-lg font-black text-[9px] border-none px-1.5 py-0.5 bg-blue-500/10 text-blue-400">
+                    {String(c.mode || 'Live Course').toUpperCase()}
+                  </Badge>
+                  <Badge className={`rounded-lg font-black text-[9px] border-none px-1.5 py-0.5 ${c.is_published ? 'bg-[#00FF88]/10 text-[#00FF88]' : 'bg-white/10 text-slate-400'}`}>
+                    {c.is_published ? 'PUBLISHED' : 'DRAFT'}
+                  </Badge>
+                </div>
               </div>
 
               <h3 className="font-black text-lg text-white mb-2 line-clamp-1 leading-snug">{c.title}</h3>

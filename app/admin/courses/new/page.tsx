@@ -339,6 +339,19 @@ export default function AdminNewCoursePage() {
                     </SelectContent>
                   </Select>
                 </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase text-slate-400">Course Type / Delivery Mode</label>
+                  <Select value={formData.mode} onValueChange={v => setFormData({ ...formData, mode: v })}>
+                    <SelectTrigger className="h-11 rounded-xl bg-white/5 border-white/10 text-white">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-[#0f0f0f] border-white/10 text-white">
+                      <SelectItem value="Live Course">Live Course (Top/Live Admissions)</SelectItem>
+                      <SelectItem value="Data Course">Data Course (Recorded/Self-Paced)</SelectItem>
+                      <SelectItem value="Hybrid Course">Hybrid Course</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
             </div>
           )}
