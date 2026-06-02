@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { 
   Rocket, ArrowLeft, ArrowRight, Check, Sparkles, BookOpen, 
-  HelpCircle, Settings, Image as ImageIcon, Video, Search, FileText, ChevronDown, Trash2, Loader2
+  HelpCircle, Settings, Image as ImageIcon, Video, Search, FileText, ChevronDown, Trash2, Loader2, Upload
 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -27,6 +27,52 @@ export default function AdminEditCoursePage({ params }: { params: { id: string }
   const [step, setStep] = useState(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [uploadingIndex, setUploadingIndex] = useState<number | null>(null)
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    if (file.type !== "application/pdf") {
+      toast.error("Please upload a PDF file only.")
+      return
+    }
+
+    setUploadingIndex(index)
+    
+    try {
+      // Clean up/sanitize filename
+      const cleanFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, "_")
+      const filePath = `resources/${Date.now()}_${cleanFileName}`
+
+      const { data, error } = await supabase.storage
+        .from('course-materials')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: true
+        })
+
+      if (error) {
+        console.error("Storage upload error:", error)
+        toast.error(`Upload failed: ${error.message}. Please verify the 'course-materials' bucket exists in Supabase Storage.`)
+        return
+      }
+
+      // Get public URL
+      const { data: urlData } = supabase.storage
+        .from('course-materials')
+        .getPublicUrl(filePath)
+
+      handleResourceChange(index, "url", urlData.publicUrl)
+      toast.success("PDF uploaded successfully!")
+    } catch (err: any) {
+      console.error(err)
+      toast.error(err.message || "An unexpected error occurred during upload.")
+    } finally {
+      setUploadingIndex(null)
+      e.target.value = ""
+    }
+  }
 
   // 1. Wizard Form State Management
   const [formData, setFormData] = useState({
@@ -725,12 +771,41 @@ export default function AdminEditCoursePage({ params }: { params: { id: string }
                     </div>
                     <div className="md:col-span-4">
                       <label className="text-[8px] font-black uppercase text-slate-500">Content Location URL</label>
-                      <Input 
-                        placeholder="https://..."
-                        value={res.url} 
-                        onChange={e => handleResourceChange(rIdx, "url", e.target.value)} 
-                        className="h-10 bg-[#080808] border-white/10 text-white rounded-lg text-xs"
-                      />
+                      <div className="flex gap-2">
+                        <Input 
+                          placeholder="https://..."
+                          value={res.url} 
+                          onChange={e => handleResourceChange(rIdx, "url", e.target.value)} 
+                          className="h-10 bg-[#080808] border-white/10 text-white rounded-lg text-xs flex-grow"
+                        />
+                        {res.type === "pdf" && (
+                          <div className="relative">
+                            <input
+                              type="file"
+                              accept="application/pdf"
+                              id={`pdf-upload-${rIdx}`}
+                              className="hidden"
+                              onChange={(e) => handleFileUpload(e, rIdx)}
+                              disabled={uploadingIndex === rIdx}
+                            />
+                            <Button
+                              type="button"
+                              variant="outline"
+                              className="h-10 px-3 bg-zinc-900 border-white/10 hover:bg-zinc-800 text-white flex items-center justify-center"
+                              asChild
+                              disabled={uploadingIndex === rIdx}
+                            >
+                              <label htmlFor={`pdf-upload-${rIdx}`} className="cursor-pointer flex items-center justify-center">
+                                {uploadingIndex === rIdx ? (
+                                  <Loader2 className="h-4 w-4 animate-spin text-[#00FF88]" />
+                                ) : (
+                                  <Upload className="h-4 w-4 text-purple-400" />
+                                )}
+                              </label>
+                            </Button>
+                          </div>
+                        )}
+                      </div>
                     </div>
                     <div className="md:col-span-1 flex items-center justify-end pt-4">
                       <Button 
