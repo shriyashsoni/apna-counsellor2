@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { 
@@ -23,16 +23,18 @@ import 'react-quill/dist/quill.snow.css'
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 
-import { useEffect } from "react"
+
 export default function AdminEditCoursePage({ params }: { params: { id: string } }) {
   const router = useRouter()
-  const supabase = createClient()
   
   const [step, setStep] = useState(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [uploadingIndex, setUploadingIndex] = useState<number | null>(null)
   const [uploadingImageField, setUploadingImageField] = useState<string | null>(null)
+
+  // Create supabase client once at component level using useMemo to prevent re-renders
+  const supabase = useMemo(() => createClient(), [])
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, field: 'thumbnail_url' | 'banner_url') => {
     const file = e.target.files?.[0]
@@ -249,7 +251,8 @@ export default function AdminEditCoursePage({ params }: { params: { id: string }
       }
     }
     loadCourse()
-  }, [params.id, supabase])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params.id])
 
   // 2. Navigation Actions
   const nextStep = () => {

@@ -265,6 +265,20 @@ export default function CourseDetailClient({ slug, initialCourse }: { slug: stri
           </div>
         </div>
 
+        {/* MOBILE ONLY: Course Thumbnail/Banner Image */}
+        {(course.banner_url || course.thumbnail_url) && (
+          <div className="lg:hidden w-full rounded-2xl overflow-hidden mb-6 border border-slate-200 shadow-sm">
+            <Image
+              src={course.banner_url || course.thumbnail_url}
+              alt={course.title}
+              width={800}
+              height={400}
+              className="w-full object-cover"
+              priority
+            />
+          </div>
+        )}
+
         {/* 2-COLUMN LAYOUT */}
         <div className="grid lg:grid-cols-12 gap-10 relative">
           
