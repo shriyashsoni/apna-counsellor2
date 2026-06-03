@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useMemo } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { 
@@ -32,9 +32,6 @@ export default function AdminEditCoursePage({ params }: { params: { id: string }
   const [isLoading, setIsLoading] = useState(true)
   const [uploadingIndex, setUploadingIndex] = useState<number | null>(null)
   const [uploadingImageField, setUploadingImageField] = useState<string | null>(null)
-
-  // Create supabase client once at component level using useMemo to prevent re-renders
-  const supabase = useMemo(() => createClient(), [])
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, field: 'thumbnail_url' | 'banner_url') => {
     const file = e.target.files?.[0]
@@ -202,11 +199,19 @@ export default function AdminEditCoursePage({ params }: { params: { id: string }
   useEffect(() => {
     async function loadCourse() {
       try {
-        const { data, error } = await supabase
+        // Create client fresh inside effect to avoid stale closure
+        const supabaseClient = createClient()
+        const { data, error } = await supabaseClient
           .from('courses')
           .select('*')
           .eq('id', params.id)
           .single()
+
+        if (error) {
+          console.error("Error fetching course:", error)
+          toast.error("Failed to load course data. Please refresh.")
+          return
+        }
         
         if (data) {
           setFormData({
@@ -236,22 +241,22 @@ export default function AdminEditCoursePage({ params }: { params: { id: string }
             whatsapp_group_url: data.whatsapp_group_url || "",
             start_date: data.start_date ? new Date(data.start_date).toISOString().split('T')[0] : "",
             color_accent: data.color_accent || "#00FF88",
-            curriculum: data.curriculum || [],
-            resources: data.resources || [],
+            curriculum: Array.isArray(data.curriculum) ? data.curriculum : [],
+            resources: Array.isArray(data.resources) ? data.resources : [],
             meta_title: data.meta_title || "",
             meta_description: data.meta_description || "",
-            keywords: (data.keywords || []).join(", "),
-            highlights: data.highlights || []
+            keywords: Array.isArray(data.keywords) ? data.keywords.join(", ") : "",
+            highlights: Array.isArray(data.highlights) ? data.highlights : []
           })
         }
       } catch (err) {
         console.error("Error loading course:", err)
+        toast.error("Unexpected error loading course. Please refresh.")
       } finally {
         setIsLoading(false)
       }
     }
     loadCourse()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.id])
 
   // 2. Navigation Actions
