@@ -23,7 +23,6 @@ import {
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/hooks/use-auth"
 import Image from "next/image"
-import { ThemeToggle } from "@/components/theme-toggle"
 import { UserNav } from "@/components/user-nav"
 
 interface SidebarItem {
@@ -182,7 +181,6 @@ export default function DashboardLayout({
                 />
              </div>
              <div className="flex items-center gap-2">
-                <ThemeToggle />
                 <Button variant="ghost" size="icon" className="rounded-xl relative">
                    <Bell className="h-5 w-5" />
                    <span className="absolute top-2 right-2 h-2 w-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900" />

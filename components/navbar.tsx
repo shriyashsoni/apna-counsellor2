@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Menu, X, ChevronDown, Phone } from "lucide-react"
 import { usePathname } from "next/navigation"
-import { ThemeToggle } from "@/components/theme-toggle"
 import { UserNav } from "@/components/user-nav"
 import NotificationInbox from "@/components/notification-inbox"
 import { motion } from "framer-motion"
@@ -164,8 +163,6 @@ const Navbar = ({ categorizedCounselling }: NavbarProps) => {
         </nav>
 
         <div className="hidden md:flex items-center space-x-2">
-          <ThemeToggle />
-          <div className="h-5 w-[1px] bg-slate-200 dark:bg-slate-800 mx-1" />
           <NotificationInbox />
           <UserNav />
           <motion.div whileHover={{ scale: 1.02 }} transition={{ type: "spring", stiffness: 400, damping: 10 }}>
@@ -179,7 +176,6 @@ const Navbar = ({ categorizedCounselling }: NavbarProps) => {
 
         {/* Mobile Menu Button */}
         <div className="md:hidden flex items-center space-x-2">
-          <ThemeToggle />
           <button className="p-1.5 rounded-lg bg-slate-50 dark:bg-slate-800" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Toggle Menu">
             {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
