@@ -530,14 +530,15 @@ export default function CourseDetailClient({ slug, initialCourse }: { slug: stri
                                 <p className="font-semibold text-slate-700 leading-relaxed text-base">
                                   <span className="font-black text-slate-900">{res.title}</span> — {res.type === 'pdf' ? 'PDF Resource kit and worksheets' : 'Additional learning links and videos'} will be provided according to the planner.
                                 </p>
-                                {(isEnrolled || course.is_free || !res.is_locked) && res.url && (
+                                {(isEnrolled || course.is_free || res.is_free_preview) && res.url ? (
                                   <a href={res.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 mt-3 text-xs font-black text-white bg-purple-600 hover:bg-purple-700 px-4 py-2.5 rounded-xl transition-all shadow-md shadow-purple-200 hover:-translate-y-0.5">
                                     <FileText className="h-4 w-4" /> Access Resource
                                   </a>
-                                )}
-                                {!isEnrolled && !course.is_free && !res.is_locked && (
-                                  <span className="inline-block ml-3 mt-3 text-[10px] font-black uppercase text-emerald-500 bg-emerald-50 px-2 py-1 rounded">Free Preview</span>
-                                )}
+                                ) : !isEnrolled && !course.is_free ? (
+                                  <div className="inline-flex items-center gap-1.5 mt-3 text-xs font-bold text-slate-400 bg-slate-50 border border-slate-100 px-3 py-1.5 rounded-xl">
+                                    <Lock className="h-3 w-3" /> Enroll to Access
+                                  </div>
+                                ) : null}
                               </div>
                             </div>
                           </div>

@@ -39,12 +39,18 @@ export async function generateMetadata({ params }: CoursePageProps): Promise<Met
     
     const courseUrl = `${baseUrl}/courses/${course.slug}`;
 
+    // Strip HTML tags from description for clean social preview text
+    const stripHtml = (html: string) => html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').trim()
+    const cleanDescription = course.tagline 
+      || (course.description ? stripHtml(course.description).substring(0, 160) : null)
+      || `Complete counselling guidance for ${course.category || 'students'} by Apna Counsellor.`
+
     return {
       title: `${course.title} | Apna Counsellor`,
-      description: course.description || `Complete counselling guidance for ${course.category || 'students'}`,
+      description: cleanDescription,
       openGraph: {
         title: course.title,
-        description: course.description || `Complete counselling guidance for ${course.category || 'students'}`,
+        description: cleanDescription,
         url: courseUrl,
         siteName: 'Apna Counsellor',
         images: [
@@ -60,7 +66,7 @@ export async function generateMetadata({ params }: CoursePageProps): Promise<Met
       twitter: {
         card: "summary_large_image",
         title: course.title,
-        description: course.description || `Complete counselling guidance for ${course.category || 'students'}`,
+        description: cleanDescription,
         images: [ogImageUrl],
       },
       alternates: {
