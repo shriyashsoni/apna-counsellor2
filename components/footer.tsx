@@ -2,9 +2,8 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { Facebook, Instagram, Youtube, MessageCircle, Mail, Phone, ArrowRight, Sparkles, ShieldCheck, Globe, Zap, Apple, Play, Linkedin, Send, Twitter } from "lucide-react"
+import { Facebook, Instagram, Youtube, MessageCircle, Mail, Phone, Sparkles, ShieldCheck, Globe, Zap, Linkedin, Send, Twitter } from "lucide-react"
 import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
 
 const Footer = () => {
   const footerSections = [
@@ -119,15 +118,18 @@ const Footer = () => {
         <div className="grid lg:grid-cols-12 gap-12 py-20 border-t border-white/5 mb-20">
           <div className="lg:col-span-5 space-y-8">
             <div className="flex items-center space-x-3">
-              <div className="relative h-12 w-12 bg-white p-2 rounded-2xl border border-white/10">
+              <div className="relative h-14 w-14 shrink-0">
                 <Image
                   src="/images/apna-counsellor-logo.png"
                   alt="Apna Counsellor Logo"
                   fill
-                  className="object-contain p-2"
+                  className="object-contain"
                 />
               </div>
-              <span className="font-black text-3xl tracking-tighter text-white">Apna <span className="text-primary">Counsellor</span></span>
+              <div className="flex flex-col">
+                <span className="font-black text-2xl tracking-tight text-white leading-tight">Apna <span className="text-primary">Counsellor</span></span>
+                <span className="text-[10px] font-bold text-white/40 uppercase tracking-widest">India&apos;s #1 Admission Platform</span>
+              </div>
             </div>
             <p className="text-white text-sm font-medium leading-relaxed max-w-md italic opacity-90">
               &quot;We understand that every student has unique needs and abilities, that&apos;s why our counseling ecosystem is designed to adapt to your rank and help you grow into your dream college.&quot;
@@ -161,35 +163,42 @@ const Footer = () => {
           <div className="lg:col-span-7 flex flex-col justify-center">
             <div className="grid sm:grid-cols-2 gap-8">
                <div className="space-y-6">
-                  <h4 className="text-xs font-black uppercase tracking-widest text-white/60">Download Our App</h4>
-                  <div className="flex flex-col gap-3">
-                    <Button variant="outline" className="h-16 rounded-2xl border-white/20 bg-white/5 justify-start px-6 gap-4 hover:bg-white/10 group transition-all text-white hover:text-white border-2">
-                      <Play className="h-8 w-8 text-primary group-hover:scale-110 transition-transform" />
-                      <div className="text-left">
-                        <p className="text-[10px] font-black uppercase text-white/50">Get it on</p>
-                        <p className="text-xl font-black">Google Play</p>
+                  <h4 className="text-xs font-black uppercase tracking-widest text-white/60">Get In Touch</h4>
+                  <div className="space-y-4">
+                    <a href="mailto:info@apnacounsellor.in" className="flex items-center gap-4 text-white hover:text-primary transition-colors">
+                      <div className="h-10 w-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
+                        <Mail className="h-5 w-5" />
                       </div>
-                    </Button>
-                    <Button variant="outline" className="h-16 rounded-2xl border-white/20 bg-white/5 justify-start px-6 gap-4 hover:bg-white/10 group transition-all text-white hover:text-white border-2">
-                      <Apple className="h-8 w-8 text-white group-hover:scale-110 transition-transform" />
-                      <div className="text-left">
-                        <p className="text-[10px] font-black uppercase text-white/50">Download on the</p>
-                        <p className="text-xl font-black">App Store</p>
+                      <span className="text-sm font-bold">info@apnacounsellor.in</span>
+                    </a>
+                    <a href="https://wa.me/919136270951" target="_blank" rel="noreferrer" className="flex items-center gap-4 text-white hover:text-emerald-400 transition-colors">
+                      <div className="h-10 w-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
+                        <MessageCircle className="h-5 w-5" />
                       </div>
-                    </Button>
+                      <span className="text-sm font-bold">Chat on WhatsApp</span>
+                    </a>
+                    <a href="/contact" className="flex items-center gap-4 text-white hover:text-primary transition-colors">
+                      <div className="h-10 w-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
+                        <Phone className="h-5 w-5" />
+                      </div>
+                      <span className="text-sm font-bold">Talk to a Counsellor</span>
+                    </a>
                   </div>
                </div>
                <div className="space-y-6">
-                  <h4 className="text-xs font-black uppercase tracking-widest text-white/60">Quick Contact</h4>
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-4 text-white">
-                      <Mail className="h-5 w-5 text-white" />
-                      <span className="text-sm font-bold">info@apnacounsellor.in</span>
-                    </div>
-                    <div className="flex items-center gap-4 text-white">
-                      <Phone className="h-5 w-5 text-white" />
-                      <span className="text-sm font-bold underline underline-offset-4">Talk to a Counsellor</span>
-                    </div>
+                  <h4 className="text-xs font-black uppercase tracking-widest text-white/60">Trust & Recognition</h4>
+                  <div className="space-y-3">
+                    {[
+                      { icon: ShieldCheck, text: "100% Verified Mentors" },
+                      { icon: Globe, text: "50,000+ Students Guided" },
+                      { icon: Zap, text: "Real-Time Cutoff Data" },
+                      { icon: Sparkles, text: "AI-Powered Predictors" },
+                    ].map(({ icon: Icon, text }) => (
+                      <div key={text} className="flex items-center gap-3 text-white/80">
+                        <Icon className="h-4 w-4 text-primary shrink-0" />
+                        <span className="text-sm font-semibold">{text}</span>
+                      </div>
+                    ))}
                   </div>
                </div>
             </div>
