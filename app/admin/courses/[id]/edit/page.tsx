@@ -479,19 +479,84 @@ export default function AdminEditCoursePage({ params }: { params: { id: string }
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-black uppercase text-slate-400">Exam Category</label>
-                  <Select value={formData.category} onValueChange={v => setFormData({ ...formData, category: v })}>
-                    <SelectTrigger className="h-11 rounded-xl bg-white/5 border-white/10 text-white">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="bg-[#0f0f0f] border-white/10 text-white">
-                      <SelectItem value="JEE Main">JEE Main</SelectItem>
-                      <SelectItem value="JEE Advanced">JEE Advanced</SelectItem>
-                      <SelectItem value="NEET">NEET</SelectItem>
-                      <SelectItem value="MHT-CET">MHT-CET</SelectItem>
-                      <SelectItem value="MBA/CAT">MBA/CAT</SelectItem>
-                      <SelectItem value="Study Abroad">Study Abroad</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <div className="relative">
+                    <Input
+                      list="exam-categories"
+                      value={formData.category}
+                      onChange={e => setFormData({ ...formData, category: e.target.value })}
+                      placeholder="Select or type custom category..."
+                      className="h-11 bg-white/5 border-white/10 text-white rounded-xl focus:border-[#00FF88]"
+                    />
+                    <datalist id="exam-categories">
+                      {/* Engineering Entrance */}
+                      <option value="JEE Main" />
+                      <option value="JEE Advanced" />
+                      <option value="MHT-CET" />
+                      <option value="WBJEE" />
+                      <option value="BITSAT" />
+                      <option value="VITEEE" />
+                      <option value="COMEDK" />
+                      <option value="KCET" />
+                      <option value="GUJCET" />
+                      <option value="AP EAPCET" />
+                      <option value="TS EAPCET" />
+                      <option value="UPCET / UPTAC" />
+                      <option value="HSTES" />
+                      <option value="OJEE" />
+                      <option value="REAP Rajasthan" />
+                      <option value="TNEA Tamil Nadu" />
+                      <option value="KEA Karnataka" />
+                      <option value="CUET" />
+                      {/* Medical Entrance */}
+                      <option value="NEET UG" />
+                      <option value="NEET PG" />
+                      <option value="AIIMS" />
+                      <option value="JIPMER" />
+                      <option value="MHT-CET PCB" />
+                      <option value="NEET MDS" />
+                      <option value="FMGE" />
+                      {/* Management */}
+                      <option value="CAT" />
+                      <option value="MAT" />
+                      <option value="XAT" />
+                      <option value="SNAP" />
+                      <option value="NMAT" />
+                      <option value="CMAT" />
+                      <option value="IIFT" />
+                      <option value="TISSNET" />
+                      {/* Law */}
+                      <option value="CLAT" />
+                      <option value="AILET" />
+                      <option value="LSAT India" />
+                      <option value="MH CET Law" />
+                      {/* Design & Architecture */}
+                      <option value="NATA" />
+                      <option value="NID DAT" />
+                      <option value="UCEED" />
+                      <option value="NIFT" />
+                      <option value="CEED" />
+                      {/* Counselling Process */}
+                      <option value="JoSAA Counselling" />
+                      <option value="CSAB Counselling" />
+                      <option value="MCC NEET Counselling" />
+                      <option value="CAP Rounds MHT-CET" />
+                      <option value="WBJEEB Counselling" />
+                      <option value="COMEDK Counselling" />
+                      {/* Study Abroad */}
+                      <option value="Study Abroad" />
+                      <option value="SAT" />
+                      <option value="GRE" />
+                      <option value="GMAT" />
+                      <option value="IELTS" />
+                      <option value="TOEFL" />
+                      <option value="DUOLINGO" />
+                      {/* General */}
+                      <option value="Scholarship" />
+                      <option value="All Exams" />
+                      <option value="General Counselling" />
+                    </datalist>
+                  </div>
+                  <p className="text-[10px] text-white/40 font-medium">Select from list or type any custom category</p>
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-black uppercase text-slate-400">Counselling Level</label>
