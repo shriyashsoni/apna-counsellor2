@@ -18,6 +18,10 @@ import {
 import { toast } from "sonner"
 
 import { createCourseAction } from "@/lib/actions/admin"
+import dynamic from 'next/dynamic'
+import 'react-quill/dist/quill.snow.css'
+
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 
 export default function AdminNewCoursePage() {
   const router = useRouter()
@@ -25,6 +29,51 @@ export default function AdminNewCoursePage() {
   const [step, setStep] = useState(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [uploadingIndex, setUploadingIndex] = useState<number | null>(null)
+  const [uploadingImageField, setUploadingImageField] = useState<string | null>(null)
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, field: 'thumbnail_url' | 'banner_url') => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please upload an image file (PNG, JPG, etc).")
+      return
+    }
+
+    setUploadingImageField(field)
+    const supabase = createClient()
+    
+    try {
+      const cleanFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, "_")
+      const filePath = `images/${Date.now()}_${cleanFileName}`
+
+      const { data, error } = await supabase.storage
+        .from('course-images')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: true
+        })
+
+      if (error) {
+        console.error("Storage upload error:", error)
+        toast.error(`Upload failed: ${error.message}. Please create 'course-images' bucket.`)
+        return
+      }
+
+      const { data: urlData } = supabase.storage
+        .from('course-images')
+        .getPublicUrl(filePath)
+
+      setFormData(prev => ({ ...prev, [field]: urlData.publicUrl }))
+      toast.success("Image uploaded successfully!")
+    } catch (err: any) {
+      console.error(err)
+      toast.error(err.message || "An unexpected error occurred during upload.")
+    } finally {
+      setUploadingImageField(null)
+      e.target.value = ""
+    }
+  }
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const file = e.target.files?.[0]
@@ -138,7 +187,13 @@ export default function AdminNewCoursePage() {
     // Step 6: SEO
     meta_title: "",
     meta_description: "",
-    keywords: ""
+    keywords: "",
+
+    // Highlights (Batch Features)
+    highlights: [
+      "Live Interactive Choice-Filling Sessions",
+      "Full Access to College Predictors & Cutoffs"
+    ]
   })
 
   // 2. Navigation Actions
@@ -261,7 +316,8 @@ export default function AdminNewCoursePage() {
         total_students: formData.total_students ? Number(formData.total_students) : 1200,
         meta_title: formData.meta_title || formData.title,
         meta_description: formData.meta_description || formData.tagline,
-        keywords: formData.keywords.split(',').map(k => k.trim()).filter(Boolean)
+        keywords: formData.keywords.split(',').map(k => k.trim()).filter(Boolean),
+        highlights: formData.highlights.filter(Boolean)
       }
 
       const result = await createCourseAction(courseData)
@@ -348,13 +404,15 @@ export default function AdminNewCoursePage() {
                   />
                 </div>
                 <div className="col-span-1 md:col-span-2 space-y-2">
-                  <label className="text-[10px] font-black uppercase text-slate-400">Full Description</label>
-                  <Textarea 
-                    placeholder="Detailed learning highlights, counselling deliverables, schedules, etc..." 
-                    value={formData.description} 
-                    onChange={e => setFormData({ ...formData, description: e.target.value })} 
-                    className="min-h-[140px] bg-white/5 border-white/10 text-white rounded-xl focus:border-[#00FF88]"
-                  />
+                  <label className="text-[10px] font-black uppercase text-slate-400">Full Description (WordPress-Style)</label>
+                  <div className="bg-white/5 border border-white/10 rounded-xl overflow-hidden [&_.ql-toolbar]:bg-slate-100 [&_.ql-toolbar]:border-none [&_.ql-container]:border-none [&_.ql-editor]:min-h-[200px] [&_.ql-editor]:text-white">
+                    <ReactQuill 
+                      theme="snow"
+                      value={formData.description} 
+                      onChange={val => setFormData({ ...formData, description: val })} 
+                      placeholder="Write your detailed course description here..."
+                    />
+                  </div>
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-black uppercase text-slate-400">Exam Category</label>
@@ -495,6 +553,43 @@ export default function AdminNewCoursePage() {
                     className="h-11 bg-white/5 border-white/10 text-white rounded-xl focus:border-[#00FF88]"
                   />
                 </div>
+                <div className="col-span-1 md:col-span-3 space-y-4 pt-4 border-t border-white/10">
+                  <div className="flex justify-between items-center">
+                    <label className="text-[10px] font-black uppercase text-slate-400">Batch Features (Tick Marks)</label>
+                    <Button 
+                      onClick={() => setFormData({ ...formData, highlights: [...formData.highlights, ""] })} 
+                      type="button"
+                      className="rounded-xl h-8 px-3 bg-white/5 hover:bg-white/10 text-[#00FF88] border border-[#00FF88]/20 font-black text-[10px]"
+                    >
+                      + Add Feature
+                    </Button>
+                  </div>
+                  {formData.highlights.map((highlight, hIdx) => (
+                    <div key={hIdx} className="flex gap-2">
+                      <Input 
+                        value={highlight} 
+                        onChange={e => {
+                          const updated = [...formData.highlights];
+                          updated[hIdx] = e.target.value;
+                          setFormData({ ...formData, highlights: updated });
+                        }}
+                        placeholder="e.g. Live Interactive Sessions" 
+                        className="h-11 bg-white/5 border-white/10 text-white rounded-xl focus:border-[#00FF88] flex-grow"
+                      />
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        onClick={() => {
+                          const updated = formData.highlights.filter((_, i) => i !== hIdx);
+                          setFormData({ ...formData, highlights: updated });
+                        }} 
+                        className="text-red-500 hover:bg-red-500/10 h-11 w-11 rounded-xl"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           )}
@@ -507,22 +602,78 @@ export default function AdminNewCoursePage() {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase text-slate-400">Thumbnail Image URL (Course Page & SEO Preview)</label>
-                  <Input 
-                    placeholder="https://images.unsplash.com/photo-..." 
-                    value={formData.thumbnail_url} 
-                    onChange={e => setFormData({ ...formData, thumbnail_url: e.target.value })} 
-                    className="h-11 bg-white/5 border-white/10 text-white rounded-xl focus:border-[#00FF88]"
-                  />
+                  <label className="text-[10px] font-black uppercase text-slate-400">Thumbnail Image (PNG/JPG)</label>
+                  <div className="flex gap-2">
+                    <Input 
+                      placeholder="https://..." 
+                      value={formData.thumbnail_url} 
+                      onChange={e => setFormData({ ...formData, thumbnail_url: e.target.value })} 
+                      className="h-11 bg-white/5 border-white/10 text-white rounded-xl focus:border-[#00FF88] flex-grow"
+                    />
+                    <div className="relative">
+                      <input
+                        type="file"
+                        accept="image/png, image/jpeg, image/webp"
+                        id="thumbnail-upload"
+                        className="hidden"
+                        onChange={(e) => handleImageUpload(e, 'thumbnail_url')}
+                        disabled={uploadingImageField === 'thumbnail_url'}
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="h-11 px-4 bg-zinc-900 border-white/10 hover:bg-zinc-800 text-white rounded-xl"
+                        asChild
+                        disabled={uploadingImageField === 'thumbnail_url'}
+                      >
+                        <label htmlFor="thumbnail-upload" className="cursor-pointer flex items-center justify-center gap-2">
+                          {uploadingImageField === 'thumbnail_url' ? (
+                            <Loader2 className="h-4 w-4 animate-spin text-[#00FF88]" />
+                          ) : (
+                            <Upload className="h-4 w-4 text-[#00FF88]" />
+                          )}
+                          <span className="text-xs">Upload</span>
+                        </label>
+                      </Button>
+                    </div>
+                  </div>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase text-slate-400">Banner Image URL</label>
-                  <Input 
-                    placeholder="https://images.unsplash.com/photo-..." 
-                    value={formData.banner_url} 
-                    onChange={e => setFormData({ ...formData, banner_url: e.target.value })} 
-                    className="h-11 bg-white/5 border-white/10 text-white rounded-xl focus:border-[#00FF88]"
-                  />
+                  <label className="text-[10px] font-black uppercase text-slate-400">Banner Image (PNG/JPG)</label>
+                  <div className="flex gap-2">
+                    <Input 
+                      placeholder="https://..." 
+                      value={formData.banner_url} 
+                      onChange={e => setFormData({ ...formData, banner_url: e.target.value })} 
+                      className="h-11 bg-white/5 border-white/10 text-white rounded-xl focus:border-[#00FF88] flex-grow"
+                    />
+                    <div className="relative">
+                      <input
+                        type="file"
+                        accept="image/png, image/jpeg, image/webp"
+                        id="banner-upload"
+                        className="hidden"
+                        onChange={(e) => handleImageUpload(e, 'banner_url')}
+                        disabled={uploadingImageField === 'banner_url'}
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="h-11 px-4 bg-zinc-900 border-white/10 hover:bg-zinc-800 text-white rounded-xl"
+                        asChild
+                        disabled={uploadingImageField === 'banner_url'}
+                      >
+                        <label htmlFor="banner-upload" className="cursor-pointer flex items-center justify-center gap-2">
+                          {uploadingImageField === 'banner_url' ? (
+                            <Loader2 className="h-4 w-4 animate-spin text-[#00FF88]" />
+                          ) : (
+                            <Upload className="h-4 w-4 text-[#00FF88]" />
+                          )}
+                          <span className="text-xs">Upload</span>
+                        </label>
+                      </Button>
+                    </div>
+                  </div>
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-black uppercase text-slate-400">Card Accent Color (HEX)</label>
