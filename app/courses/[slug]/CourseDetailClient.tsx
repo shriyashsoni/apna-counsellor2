@@ -9,8 +9,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { 
-  Loader2, ArrowRight, CheckCircle2, Star, Sparkles, BookOpen, 
-  Calendar, Award, Lock, Unlock, PlayCircle, FileText, Quote, Users, Video
+  Loader2, ArrowRight, CheckCircle2, Star, Bell, BookOpen, 
+  Calendar, Award, Lock, Unlock, PlayCircle, FileText, Quote, Users, Video, Megaphone
 } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
@@ -229,7 +229,7 @@ export default function CourseDetailClient({ slug, initialCourse }: { slug: stri
       <div className="bg-purple-100 py-3 border-b border-purple-200">
         <Marquee speed={60} gradient={false} className="overflow-hidden">
           <div className="flex items-center gap-12 text-sm font-black uppercase tracking-widest text-purple-700 px-8">
-            <span className="flex items-center gap-2"><Sparkles className="h-4 w-4"/> Admissions Open 2026</span>
+            <span className="flex items-center gap-2"><Megaphone className="h-4 w-4"/> Admissions Open 2026</span>
             <span className="flex items-center gap-2"><Award className="h-4 w-4"/> Limited Seats Available</span>
             <span className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4"/> 100% Satisfaction</span>
             <span className="flex items-center gap-2"><Users className="h-4 w-4"/> Join 50,000+ Students</span>
@@ -289,7 +289,7 @@ export default function CourseDetailClient({ slug, initialCourse }: { slug: stri
             {course.tagline && (
               <div className="bg-purple-50 border border-purple-200 p-4 rounded-2xl flex gap-3 items-start shadow-sm mb-2">
                 <div className="h-8 w-8 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 shrink-0">
-                  <Sparkles className="h-4 w-4" />
+                  <Bell className="h-4 w-4" />
                 </div>
                 <div>
                   <h4 className="font-black text-purple-900 text-sm">Latest Notification</h4>

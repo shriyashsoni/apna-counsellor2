@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { Facebook, Instagram, Youtube, MessageCircle, Mail, Phone, ShieldCheck, Globe, Zap, Linkedin, Send, Twitter } from "lucide-react"
+import { Facebook, Instagram, Youtube, MessageCircle, Mail, Phone, ShieldCheck, Globe, Zap, Linkedin, Send, Twitter, BarChart2 } from "lucide-react"
 import { motion } from "framer-motion"
 
 const Footer = () => {
@@ -192,6 +192,7 @@ const Footer = () => {
                       { icon: ShieldCheck, text: "100% Verified Mentors" },
                       { icon: Globe, text: "50,000+ Students Guided" },
                       { icon: Zap, text: "Real-Time Cutoff Data" },
+                      { icon: BarChart2, text: "Data-Driven Predictors" },
                     ].map(({ icon: Icon, text }) => (
                       <div key={text} className="flex items-center gap-3 text-white/80">
                         <Icon className="h-4 w-4 text-primary shrink-0" />
