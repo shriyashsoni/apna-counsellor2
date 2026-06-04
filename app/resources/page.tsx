@@ -25,7 +25,7 @@ import { allResources } from "@/lib/data/counseling-resources"
 
 export default function ResourcesPage() {
   const [searchQuery, setSearchQuery] = useState("")
-  const [activeCategory, setActiveCategory] = useState("All")
+  const [activeCategory, setActiveCategory] = useState("JoSAA")
 
   const iconMap: Record<string, any> = {
     Globe,
@@ -65,12 +65,11 @@ export default function ResourcesPage() {
     amber: "bg-amber-500/10 text-amber-500",
   }
 
-  const categories = ["All", ...Array.from(new Set(resources.map(r => r.category)))]
+  const categories = Array.from(new Set(resources.map(r => r.category)))
 
   // We only filter by activeCategory since search is now specifically for the sidebar categories
   const filteredResources = resources.filter(res => {
-    const matchesCategory = activeCategory === "All" || res.category === activeCategory
-    return matchesCategory
+    return res.category === activeCategory
   })
 
   // Group resources by category for the new "underlined topic" format
