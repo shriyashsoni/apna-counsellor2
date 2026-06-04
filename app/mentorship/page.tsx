@@ -62,25 +62,25 @@ export default function MentorshipPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Hero Section */}
-        <div className="mb-12 relative overflow-hidden rounded-[3rem] bg-primary p-8 md:py-10 md:px-12 text-white shadow-2xl shadow-primary/20">
+        <div className="mb-8 relative overflow-hidden rounded-3xl bg-primary p-6 md:py-8 md:px-10 text-white shadow-xl shadow-primary/20">
           <div className="relative z-10 max-w-2xl">
-            <Badge className="bg-white/20 hover:bg-white/30 text-white border-none px-4 py-1 rounded-full mb-4 backdrop-blur-md">
+            <Badge className="bg-white/20 hover:bg-white/30 text-white border-none px-3 py-0.5 text-xs rounded-full mb-3 backdrop-blur-md">
               Top 1% Mentors Only
             </Badge>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4 leading-tight">
+            <h1 className="text-3xl md:text-4xl font-black tracking-tight mb-3 leading-tight">
               Learn from those who have <span className="text-indigo-200">Already Conquered.</span>
             </h1>
-            <p className="text-lg md:text-xl text-indigo-100 font-medium mb-6">
+            <p className="text-base text-indigo-100 font-medium mb-5">
               Connect with IITians, NITians, and Industry Experts for personalized 1-on-1 guidance.
             </p>
-            <div className="flex flex-wrap gap-4">
-               <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-2xl backdrop-blur-md">
-                  <CheckCircle2 className="h-5 w-5 text-indigo-200" />
-                  <span className="font-bold text-sm">Verified Experts</span>
+            <div className="flex flex-wrap gap-3">
+               <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-xl backdrop-blur-md">
+                  <CheckCircle2 className="h-4 w-4 text-indigo-200" />
+                  <span className="font-bold text-xs">Verified Experts</span>
                </div>
-               <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-2xl backdrop-blur-md">
-                  <Users className="h-5 w-5 text-indigo-200" />
-                  <span className="font-bold text-sm">5000+ Students Guided</span>
+               <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-xl backdrop-blur-md">
+                  <Users className="h-4 w-4 text-indigo-200" />
+                  <span className="font-bold text-xs">5000+ Students Guided</span>
                </div>
             </div>
           </div>
