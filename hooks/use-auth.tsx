@@ -8,12 +8,20 @@ import {
   createUserWithEmailAndPassword, 
   signOut as firebaseSignOut,
   signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   GoogleAuthProvider,
   updateProfile,
   sendPasswordResetEmail,
   User as FirebaseUser
 } from "firebase/auth"
 import { firebaseUidToUuid } from "@/lib/auth-utils"
+
+// Detect mobile browser — popups are blocked by default on mobile
+const isMobileBrowser = (): boolean => {
+  if (typeof window === 'undefined') return false;
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+};
 
 export interface ExtendedUser {
   id: string; // Deterministic Supabase UUID
@@ -68,6 +76,14 @@ export function useAuth(): AuthContextType & {
   };
 
   useEffect(() => {
+    // On mobile: check for pending redirect result from signInWithRedirect
+    if (isMobileBrowser()) {
+      getRedirectResult(auth).catch((err) => {
+        // Ignore errors — onAuthStateChanged will handle the result
+        console.warn("[auth] Redirect result error (non-critical):", err?.code);
+      });
+    }
+
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
         const extendedUser = mapUser(firebaseUser);
@@ -117,7 +133,15 @@ export function useAuth(): AuthContextType & {
         const googleProvider = new GoogleAuthProvider();
         // Always ask to select account to avoid silent auto-logins with wrong account
         googleProvider.setCustomParameters({ prompt: 'select_account' });
-        await signInWithPopup(auth, googleProvider);
+        
+        if (isMobileBrowser()) {
+          // Mobile: use redirect (popup is blocked on mobile browsers)
+          await signInWithRedirect(auth, googleProvider);
+          // Note: page will redirect away and come back — no code runs after this
+        } else {
+          // Desktop: use popup for instant UX
+          await signInWithPopup(auth, googleProvider);
+        }
       } else {
         throw new Error(`Unsupported provider: ${provider}`);
       }
