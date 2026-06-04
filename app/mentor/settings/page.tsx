@@ -40,6 +40,12 @@ export default function MentorSettingsPage() {
     cal_link: "",
     razorpay_account_id: ""
   })
+  
+  const [bankDetails, setBankDetails] = useState({
+    account_number: "",
+    ifsc_code: ""
+  })
+  const [connectingBank, setConnectingBank] = useState(false)
   const [uploadingImage, setUploadingImage] = useState(false)
 
   useEffect(() => {
@@ -161,6 +167,42 @@ export default function MentorSettingsPage() {
     }
   }
 
+  const handleConnectBank = async () => {
+    if (!bankDetails.account_number || !bankDetails.ifsc_code) {
+      toast.error("Please enter both Account Number and IFSC Code.")
+      return
+    }
+    
+    setConnectingBank(true)
+    try {
+      const response = await fetch('/api/razorpay/onboard-mentor', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          mentor_id: firebaseUser?.id,
+          name: profile.name,
+          email: firebaseUser?.email,
+          account_number: bankDetails.account_number,
+          ifsc_code: bankDetails.ifsc_code
+        })
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to connect bank account")
+      }
+
+      setProfile({ ...profile, razorpay_account_id: data.account_id })
+      toast.success("Bank account successfully linked!")
+    } catch (err: any) {
+      console.error(err)
+      toast.error(err.message)
+    } finally {
+      setConnectingBank(false)
+    }
+  }
+
   if (loading) {
     return (
       <div className="h-screen flex items-center justify-center">
@@ -274,19 +316,51 @@ export default function MentorSettingsPage() {
                   <div className="space-y-4 pt-4 border-t border-slate-100">
                     <div className="flex items-center justify-between">
                        <Label className="font-black text-xs uppercase tracking-widest text-slate-400 flex items-center gap-2">
-                          Payment Integration (Razorpay Route)
+                          Bank Account Details (For 70% Payouts)
                        </Label>
-                       <a href="https://razorpay.com/route" target="_blank" rel="noopener noreferrer" className="text-[10px] font-bold text-primary hover:underline">How to get this?</a>
+                       <span className="text-[10px] font-bold text-emerald-500 bg-emerald-50 px-2 py-1 rounded-md">Powered by Razorpay Route</span>
                     </div>
-                    <div className="space-y-2">
-                       <Input 
-                         value={profile.razorpay_account_id || ''} 
-                         onChange={(e) => setProfile({...profile, razorpay_account_id: e.target.value})}
-                         placeholder="acc_XXXXXXXXXXXXXXXX"
-                         className="rounded-xl h-12 border-slate-100 font-bold"
-                       />
-                       <p className="text-[10px] text-slate-400 font-medium">Enter your Razorpay Linked Account ID to receive 70% of payments directly to your bank account.</p>
-                    </div>
+
+                    {profile.razorpay_account_id ? (
+                      <div className="p-4 bg-emerald-50 border border-emerald-100 rounded-xl flex items-center justify-between">
+                        <div>
+                           <p className="font-bold text-emerald-800 text-sm">Bank Account Linked Successfully</p>
+                           <p className="text-[10px] text-emerald-600 font-medium mt-1">ID: {profile.razorpay_account_id}</p>
+                        </div>
+                        <CheckCircle2 className="h-6 w-6 text-emerald-500" />
+                      </div>
+                    ) : (
+                      <div className="space-y-3 p-5 bg-slate-50 border border-slate-100 rounded-2xl">
+                         <div className="grid grid-cols-2 gap-4">
+                           <div className="space-y-2">
+                              <Label className="text-[10px] font-bold text-slate-500">Account Number</Label>
+                              <Input 
+                                value={bankDetails.account_number} 
+                                onChange={(e) => setBankDetails({...bankDetails, account_number: e.target.value})}
+                                placeholder="e.g. 50100..."
+                                className="bg-white border-slate-200"
+                              />
+                           </div>
+                           <div className="space-y-2">
+                              <Label className="text-[10px] font-bold text-slate-500">IFSC Code</Label>
+                              <Input 
+                                value={bankDetails.ifsc_code} 
+                                onChange={(e) => setBankDetails({...bankDetails, ifsc_code: e.target.value})}
+                                placeholder="e.g. HDFC0000123"
+                                className="bg-white border-slate-200 uppercase"
+                              />
+                           </div>
+                         </div>
+                         <Button 
+                           onClick={handleConnectBank} 
+                           disabled={connectingBank || !bankDetails.account_number || !bankDetails.ifsc_code}
+                           className="w-full mt-2 bg-slate-900 hover:bg-slate-800 text-white font-bold"
+                         >
+                           {connectingBank ? "Connecting securely..." : "Connect Bank Account securely"}
+                         </Button>
+                         <p className="text-[10px] text-slate-400 font-medium text-center">Your details are directly sent to Razorpay and encrypted. We automatically split 70% of every booking direct to this account.</p>
+                      </div>
+                    )}
                   </div>
 
                   <div className="space-y-2 max-w-xs">
