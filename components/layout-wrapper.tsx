@@ -22,7 +22,12 @@ export default function LayoutWrapper({
   categorizedCounselling: any 
 }) {
   const pathname = usePathname()
-  const isDashboard = pathname?.startsWith("/dashboard") || pathname?.startsWith("/admin")
+  const isDashboard = pathname?.startsWith("/dashboard") || 
+                      pathname?.startsWith("/admin") ||
+                      pathname?.startsWith("/mentor/dashboard") ||
+                      pathname?.startsWith("/mentor/availability") ||
+                      pathname?.startsWith("/mentor/services") ||
+                      pathname?.startsWith("/mentor/settings")
 
   return (
     <div className="flex min-h-screen flex-col">
