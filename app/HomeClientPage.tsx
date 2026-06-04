@@ -229,13 +229,15 @@ export default function HomeClientPage() {
 
       {/* AI Ecosystem Interactive Hub - Production Version */}
       <section className="py-16 bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 relative overflow-hidden w-full">
-        <script src="https://www.itsbeyondregular.com/embed.js" defer></script>
         <div className="w-full px-0 max-w-none">
           <div className="relative overflow-hidden bg-slate-50/50 dark:bg-slate-900/30 border-y border-slate-200 dark:border-slate-800 py-12 px-4 sm:px-8 md:px-16 shadow-2xl">
             <div className="absolute -inset-4 bg-gradient-to-r from-primary/10 to-purple-600/10 blur-2xl opacity-40 pointer-events-none" />
-            <div className="relative z-10 w-full min-h-[500px]">
-              <div data-bn-preset="ukrdl6co0u5wp4a8txeqwsij" className="w-full h-full"></div>
-            </div>
+            <div 
+              className="relative z-10 w-full min-h-[500px]"
+              dangerouslySetInnerHTML={{
+                __html: `<div data-bn-preset="ukrdl6co0u5wp4a8txeqwsij" style="width: 100%; height: 100%;"></div><script src="https://www.itsbeyondregular.com/embed.js" defer></script>`
+              }}
+            />
           </div>
         </div>
       </section>
