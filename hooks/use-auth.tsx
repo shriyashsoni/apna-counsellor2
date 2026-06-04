@@ -134,14 +134,9 @@ export function useAuth(): AuthContextType & {
         // Always ask to select account to avoid silent auto-logins with wrong account
         googleProvider.setCustomParameters({ prompt: 'select_account' });
         
-        if (isMobileBrowser()) {
-          // Mobile: use redirect (popup is blocked on mobile browsers)
-          await signInWithRedirect(auth, googleProvider);
-          // Note: page will redirect away and come back — no code runs after this
-        } else {
-          // Desktop: use popup for instant UX
-          await signInWithPopup(auth, googleProvider);
-        }
+        // Use popup for all devices. signInWithRedirect is broken on iOS/Safari due to ITP.
+        // As long as this is triggered by a direct user click, mobile browsers will allow the popup.
+        await signInWithPopup(auth, googleProvider);
       } else {
         throw new Error(`Unsupported provider: ${provider}`);
       }
