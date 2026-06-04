@@ -12,7 +12,7 @@ import {
 import { toast } from "sonner"
 import {
   Send, Radio, Users, BookOpen, Sparkles, Loader2,
-  CheckCircle2, Mail, Eye, Clock
+  CheckCircle2, Mail, Eye, Clock, Code
 } from "lucide-react"
 
 const ACCENT_COLORS = [
@@ -39,7 +39,9 @@ export default function AdminBroadcastPage() {
     accentColor: '#7c3aed',
     audience: 'all_users',
     courseId: '',
+    customHtml: '',
   })
+  const [isCustomHtml, setIsCustomHtml] = useState(false)
 
   useEffect(() => {
     async function load() {
@@ -61,17 +63,27 @@ export default function AdminBroadcastPage() {
     load()
   }, [])
 
-  const previewHtml = getBroadcastEmail({
-    subject: form.subject || 'Preview Subject',
-    body: form.body || '<p>Your message will appear here...</p>',
-    ctaText: form.ctaText || undefined,
-    ctaUrl: form.ctaUrl || undefined,
-    accentColor: form.accentColor,
-  })
+  const previewHtml = isCustomHtml 
+    ? (form.customHtml || '<div style="padding: 20px; font-family: sans-serif; text-align: center; color: #666;">Provide your custom HTML code to see preview...</div>')
+    : getBroadcastEmail({
+        subject: form.subject || 'Preview Subject',
+        body: form.body || '<p>Your message will appear here...</p>',
+        ctaText: form.ctaText || undefined,
+        ctaUrl: form.ctaUrl || undefined,
+        accentColor: form.accentColor,
+      })
 
   const handleSend = async () => {
-    if (!form.subject || !form.body) {
-      toast.error("Subject and body are required!")
+    if (!form.subject) {
+      toast.error("Subject is required!")
+      return
+    }
+    if (isCustomHtml && !form.customHtml) {
+      toast.error("Custom HTML is required!")
+      return
+    }
+    if (!isCustomHtml && !form.body) {
+      toast.error("Message body is required!")
       return
     }
     if (form.audience === 'course' && !form.courseId) {
@@ -153,9 +165,29 @@ export default function AdminBroadcastPage() {
         {/* FORM */}
         <div className="lg:col-span-3 space-y-6">
           <Card className="bg-[#0f0f0f] border border-white/8 rounded-2xl p-6 space-y-5">
-            <h2 className="text-sm font-black text-[#00FF88] uppercase tracking-widest flex items-center gap-2">
-              <Mail className="h-4 w-4" /> Compose Broadcast
-            </h2>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <h2 className="text-sm font-black text-[#00FF88] uppercase tracking-widest flex items-center gap-2">
+                <Mail className="h-4 w-4" /> Compose Broadcast
+              </h2>
+              <div className="flex gap-2 bg-white/5 p-1 rounded-xl">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setIsCustomHtml(false)}
+                  className={`rounded-lg text-xs font-bold px-3 h-8 ${!isCustomHtml ? 'bg-white/10 text-white shadow-sm' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
+                >
+                  <Mail className="h-3.5 w-3.5 mr-1.5" /> Template
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setIsCustomHtml(true)}
+                  className={`rounded-lg text-xs font-bold px-3 h-8 ${isCustomHtml ? 'bg-white/10 text-white shadow-sm' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
+                >
+                  <Code className="h-3.5 w-3.5 mr-1.5" /> Custom HTML
+                </Button>
+              </div>
+            </div>
 
             {/* Audience */}
             <div className="grid sm:grid-cols-2 gap-4">
@@ -207,56 +239,72 @@ export default function AdminBroadcastPage() {
               />
             </div>
 
-            {/* Body */}
-            <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase text-slate-500 tracking-widest">
-                Message Body * <span className="text-slate-600 normal-case font-medium">(HTML supported)</span>
-              </label>
-              <Textarea
-                placeholder={`<p>Dear Students,</p>\n<p>We want to inform you about...</p>\n<p>This is important because...</p>`}
-                value={form.body}
-                onChange={e => setForm({ ...form, body: e.target.value })}
-                className="min-h-[180px] bg-white/5 border-white/10 text-white rounded-xl placeholder:text-slate-600 focus:border-[#00FF88] font-mono text-sm"
-              />
-            </div>
-
-            {/* CTA (Optional) */}
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase text-slate-500 tracking-widest">CTA Button Text (Optional)</label>
-                <Input
-                  placeholder="e.g. View Course"
-                  value={form.ctaText}
-                  onChange={e => setForm({ ...form, ctaText: e.target.value })}
-                  className="h-11 bg-white/5 border-white/10 text-white rounded-xl placeholder:text-slate-600 focus:border-[#00FF88]"
+            {isCustomHtml ? (
+              <div className="space-y-2 animate-in fade-in duration-300">
+                <label className="text-[10px] font-black uppercase text-slate-500 tracking-widest">
+                  Custom HTML Code *
+                </label>
+                <Textarea
+                  placeholder={`<html>\n  <body style="padding: 20px; font-family: sans-serif;">\n    <h1>My Custom Broadcast</h1>\n  </body>\n</html>`}
+                  value={form.customHtml}
+                  onChange={e => setForm({ ...form, customHtml: e.target.value })}
+                  className="min-h-[350px] bg-[#000000] border-white/10 text-[#00FF88] rounded-xl placeholder:text-slate-600 focus:border-[#00FF88] font-mono text-sm leading-relaxed"
                 />
               </div>
-              <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase text-slate-500 tracking-widest">CTA Button URL (Optional)</label>
-                <Input
-                  placeholder="https://apnacounsellor.in/courses/..."
-                  value={form.ctaUrl}
-                  onChange={e => setForm({ ...form, ctaUrl: e.target.value })}
-                  className="h-11 bg-white/5 border-white/10 text-white rounded-xl placeholder:text-slate-600 focus:border-[#00FF88]"
-                />
-              </div>
-            </div>
-
-            {/* Accent Color */}
-            <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase text-slate-500 tracking-widest">Email Accent Color</label>
-              <div className="flex gap-3 flex-wrap">
-                {ACCENT_COLORS.map(c => (
-                  <button
-                    key={c.value}
-                    onClick={() => setForm({ ...form, accentColor: c.value })}
-                    title={c.label}
-                    className={`h-9 w-9 rounded-full border-2 transition-transform hover:scale-110 ${form.accentColor === c.value ? 'border-white scale-110' : 'border-transparent'}`}
-                    style={{ backgroundColor: c.value }}
+            ) : (
+              <div className="space-y-5 animate-in fade-in duration-300">
+                {/* Body */}
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase text-slate-500 tracking-widest">
+                    Message Body * <span className="text-slate-600 normal-case font-medium">(HTML supported)</span>
+                  </label>
+                  <Textarea
+                    placeholder={`<p>Dear Students,</p>\n<p>We want to inform you about...</p>\n<p>This is important because...</p>`}
+                    value={form.body}
+                    onChange={e => setForm({ ...form, body: e.target.value })}
+                    className="min-h-[180px] bg-white/5 border-white/10 text-white rounded-xl placeholder:text-slate-600 focus:border-[#00FF88] font-mono text-sm"
                   />
-                ))}
+                </div>
+    
+                {/* CTA (Optional) */}
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black uppercase text-slate-500 tracking-widest">CTA Button Text (Optional)</label>
+                    <Input
+                      placeholder="e.g. View Course"
+                      value={form.ctaText}
+                      onChange={e => setForm({ ...form, ctaText: e.target.value })}
+                      className="h-11 bg-white/5 border-white/10 text-white rounded-xl placeholder:text-slate-600 focus:border-[#00FF88]"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black uppercase text-slate-500 tracking-widest">CTA Button URL (Optional)</label>
+                    <Input
+                      placeholder="https://apnacounsellor.in/courses/..."
+                      value={form.ctaUrl}
+                      onChange={e => setForm({ ...form, ctaUrl: e.target.value })}
+                      className="h-11 bg-white/5 border-white/10 text-white rounded-xl placeholder:text-slate-600 focus:border-[#00FF88]"
+                    />
+                  </div>
+                </div>
+    
+                {/* Accent Color */}
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase text-slate-500 tracking-widest">Email Accent Color</label>
+                  <div className="flex gap-3 flex-wrap">
+                    {ACCENT_COLORS.map(c => (
+                      <button
+                        key={c.value}
+                        onClick={() => setForm({ ...form, accentColor: c.value })}
+                        title={c.label}
+                        className={`h-9 w-9 rounded-full border-2 transition-transform hover:scale-110 ${form.accentColor === c.value ? 'border-white scale-110' : 'border-transparent'}`}
+                        style={{ backgroundColor: c.value }}
+                      />
+                    ))}
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Send Button */}
             <Button
