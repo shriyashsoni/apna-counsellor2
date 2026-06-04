@@ -125,23 +125,23 @@ export default function ResourcesPage() {
               </div>
               
               <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-4">Select Topic</h3>
-              <div className="flex flex-col gap-2 max-h-[50vh] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-slate-800">
+              <div className="flex flex-row lg:flex-col gap-2 overflow-x-auto lg:overflow-x-visible lg:overflow-y-auto max-h-[auto] lg:max-h-[50vh] pb-2 lg:pb-0 pr-2 scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-slate-800">
                 {visibleCategories.map(cat => (
                   <button
                     key={cat}
                     onClick={() => setActiveCategory(cat)}
-                    className={`flex items-center justify-between px-4 py-3 rounded-xl font-bold text-sm transition-all text-left ${
+                    className={`flex-shrink-0 lg:flex-shrink flex items-center justify-between px-4 py-3 rounded-xl font-bold text-sm transition-all text-left ${
                       activeCategory === cat 
                         ? "bg-primary text-white shadow-md shadow-primary/20" 
-                        : "bg-transparent text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+                        : "bg-slate-50 lg:bg-transparent dark:bg-slate-950 lg:dark:bg-transparent text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
                     }`}
                   >
                     {cat}
-                    {activeCategory === cat && <CheckCircle2 className="h-4 w-4" />}
+                    {activeCategory === cat && <CheckCircle2 className="h-4 w-4 ml-2 hidden lg:block" />}
                   </button>
                 ))}
                 {visibleCategories.length === 0 && (
-                  <p className="text-slate-400 text-sm font-medium text-center py-4">No counselings found.</p>
+                  <p className="text-slate-400 text-sm font-medium text-center py-4 w-full">No counselings found.</p>
                 )}
               </div>
             </div>
