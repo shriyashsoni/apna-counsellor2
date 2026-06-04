@@ -12,6 +12,7 @@ export function getEnrollmentWelcomeEmail({
   courseTitle: string
   startDate?: string
   whatsappUrl?: string
+  googleFormUrl?: string
 }) {
   return `
 <!DOCTYPE html>
@@ -70,6 +71,18 @@ export function getEnrollmentWelcomeEmail({
                   </tr></table>
                 </td>
               </tr>` : ''}
+              ${googleFormUrl ? `
+              <tr>
+                <td style="padding:12px 0;border-bottom:1px solid #f3f4f6;">
+                  <table cellpadding="0" cellspacing="0"><tr>
+                    <td style="width:36px;height:36px;background:#fef08a;border-radius:50%;text-align:center;vertical-align:middle;font-size:18px;">📝</td>
+                    <td style="padding-left:14px;">
+                      <p style="margin:0;font-size:14px;font-weight:800;color:#111827;">Complete Your Profile Form</p>
+                      <p style="margin:4px 0 0 0;font-size:13px;color:#6b7280;">Please fill out this required form so we can tailor the session for you.</p>
+                    </td>
+                  </tr></table>
+                </td>
+              </tr>` : ''}
               <tr>
                 <td style="padding:12px 0;border-bottom:1px solid #f3f4f6;">
                   <table cellpadding="0" cellspacing="0"><tr>
@@ -101,6 +114,16 @@ export function getEnrollmentWelcomeEmail({
                 <td align="center">
                   <a href="${whatsappUrl}" style="display:inline-block;background:#25D366;color:#ffffff;font-size:15px;font-weight:900;text-decoration:none;padding:16px 36px;border-radius:50px;box-shadow:0 4px 15px rgba(37,211,102,0.35);">
                     💬 Join WhatsApp Group
+                  </a>
+                </td>
+              </tr>
+            </table>` : ''}
+            ${googleFormUrl ? `
+            <table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 28px 0;">
+              <tr>
+                <td align="center">
+                  <a href="${googleFormUrl}" style="display:inline-block;background:#3b82f6;color:#ffffff;font-size:15px;font-weight:900;text-decoration:none;padding:16px 36px;border-radius:50px;box-shadow:0 4px 15px rgba(59,130,246,0.35);">
+                    📝 Fill Profile Data Form
                   </a>
                 </td>
               </tr>

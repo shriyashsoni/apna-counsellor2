@@ -152,6 +152,7 @@ export default function AdminEditCoursePage({ params }: { params: { id: string }
     thumbnail_url: "",
     promo_video_url: "",
     whatsapp_group_url: "",
+    google_form_url: "",
     start_date: "",
     color_accent: "#00FF88",
 
@@ -239,6 +240,7 @@ export default function AdminEditCoursePage({ params }: { params: { id: string }
             thumbnail_url: data.thumbnail_url || "",
             promo_video_url: data.promo_video_url || "",
             whatsapp_group_url: data.whatsapp_group_url || "",
+            google_form_url: data.google_form_url || "",
             start_date: data.start_date ? new Date(data.start_date).toISOString().split('T')[0] : "",
             color_accent: data.color_accent || "#00FF88",
             curriculum: Array.isArray(data.curriculum) ? data.curriculum : [],
@@ -373,6 +375,7 @@ export default function AdminEditCoursePage({ params }: { params: { id: string }
         banner_url: formData.banner_url,
         promo_video_url: formData.promo_video_url,
         whatsapp_group_url: formData.whatsapp_group_url,
+        google_form_url: formData.google_form_url,
         start_date: formData.start_date ? new Date(formData.start_date).toISOString() : null,
         is_free: formData.is_free,
         available_seats: formData.available_seats ? Number(formData.available_seats) : null,
@@ -833,6 +836,15 @@ export default function AdminEditCoursePage({ params }: { params: { id: string }
                     placeholder="https://chat.whatsapp.com/..." 
                     value={formData.whatsapp_group_url} 
                     onChange={e => setFormData({ ...formData, whatsapp_group_url: e.target.value })} 
+                    className="h-11 bg-white/5 border-white/10 text-white rounded-xl focus:border-[#00FF88]"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase text-slate-400">Batch Google Form URL (Data Collection)</label>
+                  <Input 
+                    placeholder="https://forms.gle/..." 
+                    value={formData.google_form_url} 
+                    onChange={e => setFormData({ ...formData, google_form_url: e.target.value })} 
                     className="h-11 bg-white/5 border-white/10 text-white rounded-xl focus:border-[#00FF88]"
                   />
                 </div>

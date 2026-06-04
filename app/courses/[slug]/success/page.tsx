@@ -36,6 +36,7 @@ export default function CourseSuccessPage() {
               courseTitle: data.title,
               startDate: data.start_date ? new Date(data.start_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) : undefined,
               whatsappUrl: data.whatsapp_group_url || undefined,
+              googleFormUrl: data.google_form_url || undefined,
             })
           })
         }
@@ -81,6 +82,18 @@ export default function CourseSuccessPage() {
               <div className="bg-purple-50 p-6 rounded-2xl border border-purple-100">
                 <h3 className="text-xl font-black text-slate-900 mb-2">Next Steps</h3>
                 <p className="text-slate-600 text-sm font-semibold">Please head over to your dashboard to access all resources, live lecture schedules, and videos.</p>
+              </div>
+            )}
+
+            {course?.google_form_url && (
+              <div className="bg-blue-50 p-6 rounded-2xl border border-blue-100 mt-4">
+                <h3 className="text-xl font-black text-slate-900 mb-2">Step 2: Complete Your Profile Form</h3>
+                <p className="text-slate-600 mb-6 text-sm font-semibold">Please fill out this required form so we can tailor your experience and assign your counselor.</p>
+                <a href={course.google_form_url} target="_blank" rel="noreferrer">
+                  <Button className="w-full h-14 bg-blue-600 hover:bg-blue-700 text-white font-black text-lg rounded-2xl flex items-center gap-2 shadow-lg shadow-blue-600/30">
+                    <ExternalLink className="w-6 h-6" /> Fill Profile Data Form
+                  </Button>
+                </a>
               </div>
             )}
           </CardContent>

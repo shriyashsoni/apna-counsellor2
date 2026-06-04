@@ -7,7 +7,7 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-    const { studentName, studentEmail, courseTitle, startDate, whatsappUrl } = body
+    const { studentName, studentEmail, courseTitle, startDate, whatsappUrl, googleFormUrl } = body
 
     if (!studentEmail || !courseTitle) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
       from: 'Apna Counsellor <noreply@apnacounsellor.in>',
       to: [studentEmail],
       subject: `🎉 Welcome to ${courseTitle} — You're Enrolled!`,
-      html: getEnrollmentWelcomeEmail({ studentName, courseTitle, startDate, whatsappUrl }),
+      html: getEnrollmentWelcomeEmail({ studentName, courseTitle, startDate, whatsappUrl, googleFormUrl }),
     })
 
     return NextResponse.json({ success: true })

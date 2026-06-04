@@ -15,52 +15,63 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
-    let emails: string[] = []
-    const emailSet = new Set<string>()
+    let finalUsers: { id: string, email: string }[] = []
+    const uniqueUsersMap = new Map<string, { id: string, email: string }>()
 
     if (audience === 'all_users') {
-      // ─── ALL registered users on the platform (from profiles table) ───
       const { data, error } = await supabase
         .from('profiles')
-        .select('email')
+        .select('id, email')
         .not('email', 'is', null)
 
       if (error) throw error
       ;(data || []).forEach((p: any) => {
-        if (p.email) emailSet.add(p.email)
+        if (p.email && p.id) uniqueUsersMap.set(p.id, p)
       })
-      emails = Array.from(emailSet)
 
     } else if (audience === 'course' && courseId) {
-      // ─── Students enrolled in a specific course ───
       const { data, error } = await supabase
         .from('course_enrollments')
-        .select('student:student_id ( email )')
+        .select('student:student_id ( id, email )')
         .eq('course_id', courseId)
         .eq('status', 'active')
 
       if (error) throw error
       ;(data || []).forEach((e: any) => {
-        if (e.student?.email) emailSet.add(e.student.email)
+        if (e.student?.email && e.student?.id) uniqueUsersMap.set(e.student.id, e.student)
       })
-      emails = Array.from(emailSet)
 
     } else {
-      // ─── All enrolled students across all courses ───
       const { data, error } = await supabase
         .from('course_enrollments')
-        .select('student:student_id ( email )')
+        .select('student:student_id ( id, email )')
         .eq('status', 'active')
 
       if (error) throw error
       ;(data || []).forEach((e: any) => {
-        if (e.student?.email) emailSet.add(e.student.email)
+        if (e.student?.email && e.student?.id) uniqueUsersMap.set(e.student.id, e.student)
       })
-      emails = Array.from(emailSet)
     }
 
-    if (emails.length === 0) {
+    finalUsers = Array.from(uniqueUsersMap.values())
+    const emails = finalUsers.map(u => u.email)
+
+    if (finalUsers.length === 0) {
       return NextResponse.json({ error: 'No recipients found for this audience' }, { status: 404 })
+    }
+
+    // Insert into notifications table
+    const notificationPayloads = finalUsers.map(u => ({
+      user_id: u.id,
+      title: subject,
+      message: 'New batch broadcast received. Please check your email for full details and links.',
+      type: 'info',
+      is_broadcast: true,
+      link: courseId ? \`/dashboard\` : null
+    }))
+
+    for (let i = 0; i < notificationPayloads.length; i += 500) {
+      await supabase.from('notifications').insert(notificationPayloads.slice(i, i + 500))
     }
 
     // Chunk into batches of 50 for Resend safety

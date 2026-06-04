@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { 
   Rocket, Plus, Search, BookOpen, Trash2, Edit, 
-  ExternalLink, Video, FileText, Loader2, AlertCircle, PlusCircle, Check, Users
+  ExternalLink, Video, FileText, Loader2, AlertCircle, PlusCircle, Check, Users, Send
 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -30,6 +30,13 @@ export default function AdminCoursesPage() {
   // Resources Editor Drawer state
   const [selectedCourse, setSelectedCourse] = useState<any>(null)
   const [newResource, setNewResource] = useState({ title: '', type: 'video', url: '' })
+
+  // Notification Drawer state
+  const [notifyCourse, setNotifyCourse] = useState<any>(null)
+  const [notifySubject, setNotifySubject] = useState("")
+  const [notifyBody, setNotifyBody] = useState("")
+  const [notifyUrl, setNotifyUrl] = useState("")
+  const [isSendingNotification, setIsSendingNotification] = useState(false)
 
   const fetchCourses = async () => {
     setIsLoading(true)
@@ -102,6 +109,42 @@ export default function AdminCoursesPage() {
     const filtered = (selectedCourse.resources || []).filter((r: any) => r.id !== id)
     setSelectedCourse({ ...selectedCourse, resources: filtered })
     toast.success("Resource staged for removal!")
+  }
+
+  const handleSendNotification = async () => {
+    if (!notifySubject || !notifyBody) return toast.error("Please fill subject and body.")
+    setIsSendingNotification(true)
+    
+    try {
+      let finalBody = `<p style="white-space: pre-wrap; font-size: 15px; color: #374151;">${notifyBody}</p>`
+      if (notifyUrl) {
+        finalBody += `<br/><p style="margin-top: 10px;"><strong>📺 Watch Video:</strong> <a href="${notifyUrl}" style="color: #3b82f6;">${notifyUrl}</a></p>`
+      }
+
+      // We use the broadcast API template
+      const templateRes = await fetch('/api/broadcast', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          subject: notifySubject,
+          html: finalBody,
+          audience: 'course',
+          courseId: notifyCourse.id
+        })
+      })
+      const result = await templateRes.json()
+      if (!templateRes.ok) throw new Error(result.error)
+
+      toast.success(`Video notification sent to ${result.sent} students!`)
+      setNotifyCourse(null)
+      setNotifySubject("")
+      setNotifyBody("")
+      setNotifyUrl("")
+    } catch (err: any) {
+      toast.error(`Broadcast Failed: ${err.message}`)
+    } finally {
+      setIsSendingNotification(false)
+    }
   }
 
   // Filters calculation
@@ -256,6 +299,15 @@ export default function AdminCoursesPage() {
                 <Button 
                   variant="ghost" 
                   size="icon" 
+                  onClick={() => setNotifyCourse(c)} 
+                  className="h-10 w-10 text-purple-400 hover:bg-purple-400/10 hover:text-purple-300 rounded-xl"
+                  title="Send Batch Notification"
+                >
+                  <Send className="h-4.5 w-4.5" />
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
                   onClick={() => handleDeleteCourse(c.id)} 
                   className="h-10 w-10 text-red-500 hover:bg-red-500/10 hover:text-red-400 rounded-xl"
                 >
@@ -391,6 +443,76 @@ export default function AdminCoursesPage() {
               >
                 {isSubmitting ? <Loader2 className="animate-spin h-4 w-4" /> : <Check className="h-4 w-4" />}
                 Save & Deploy Live
+              </Button>
+            </footer>
+          </div>
+        </div>
+      )}
+      {/* 5. Batch Notification Drawer Overlay */}
+      {notifyCourse && (
+        <div className="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#0f0f0f] border border-white/10 rounded-2xl max-w-2xl w-full flex flex-col max-h-[85vh] shadow-2xl relative">
+            <header className="p-6 border-b border-white/10 flex justify-between items-center">
+              <div>
+                <h3 className="text-lg font-black text-white">Send Batch Video Notification</h3>
+                <p className="text-xs font-medium text-slate-500 mt-0.5">To: {notifyCourse.title}</p>
+              </div>
+              <Button 
+                variant="ghost" 
+                onClick={() => setNotifyCourse(null)} 
+                className="h-9 w-9 text-slate-400 hover:text-white rounded-full bg-white/5 hover:bg-white/10 p-0"
+              >
+                ✕
+              </Button>
+            </header>
+
+            <div className="p-6 flex-1 overflow-y-auto space-y-4">
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black uppercase text-slate-500">Email Subject / Notification Title</label>
+                <Input 
+                  placeholder="e.g. New Live Lecture Details" 
+                  value={notifySubject} 
+                  onChange={e => setNotifySubject(e.target.value)} 
+                  className="h-11 bg-white/5 border-white/10 text-white rounded-xl placeholder:text-slate-600 focus:border-[#00FF88]"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black uppercase text-slate-500">Message Body</label>
+                <textarea 
+                  placeholder="Hello batch, we have just uploaded the new cutoff PDF and a video explanation..." 
+                  value={notifyBody} 
+                  onChange={e => setNotifyBody(e.target.value)} 
+                  className="w-full min-h-[120px] p-3 bg-white/5 border border-white/10 text-white rounded-xl placeholder:text-slate-600 focus:border-[#00FF88] focus:outline-none focus:ring-1 focus:ring-[#00FF88] text-sm resize-y"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black uppercase text-slate-500">YouTube Video Link (Optional)</label>
+                <Input 
+                  placeholder="e.g. https://youtube.com/watch?v=..." 
+                  value={notifyUrl} 
+                  onChange={e => setNotifyUrl(e.target.value)} 
+                  className="h-11 bg-white/5 border-white/10 text-white rounded-xl placeholder:text-slate-600 focus:border-[#00FF88]"
+                />
+              </div>
+            </div>
+
+            <footer className="p-6 border-t border-white/10 flex justify-end gap-3 bg-[#0a0a0a]">
+              <Button 
+                variant="ghost" 
+                onClick={() => setNotifyCourse(null)} 
+                className="rounded-xl border border-white/10 text-white hover:bg-white/5 font-bold h-11 px-5"
+              >
+                Cancel
+              </Button>
+              <Button 
+                onClick={handleSendNotification} 
+                disabled={isSendingNotification} 
+                className="rounded-xl bg-purple-500 text-white font-black hover:bg-purple-600 h-11 px-6 flex items-center gap-2 shadow-[0_0_15px_rgba(168,85,247,0.3)]"
+              >
+                {isSendingNotification ? <Loader2 className="animate-spin h-4 w-4" /> : <Send className="h-4 w-4" />}
+                Blast to Enrolled Students
               </Button>
             </footer>
           </div>
