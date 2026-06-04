@@ -8,7 +8,6 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Menu, X, ChevronDown, Phone } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { UserNav } from "@/components/user-nav"
-import NotificationInbox from "@/components/notification-inbox"
 import { motion } from "framer-motion"
 
 interface NavbarProps {
@@ -163,7 +162,6 @@ const Navbar = ({ categorizedCounselling }: NavbarProps) => {
         </nav>
 
         <div className="hidden md:flex items-center space-x-2">
-          <NotificationInbox />
           <UserNav />
           <motion.div whileHover={{ scale: 1.02 }} transition={{ type: "spring", stiffness: 400, damping: 10 }}>
             <Link href="/book-call">
@@ -245,7 +243,6 @@ const Navbar = ({ categorizedCounselling }: NavbarProps) => {
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-slate-500">Account</span>
                 <div className="flex items-center gap-3">
-                  <NotificationInbox />
                   <UserNav />
                 </div>
               </div>
