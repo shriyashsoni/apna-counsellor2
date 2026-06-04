@@ -7,6 +7,13 @@ import Footer from "@/components/footer"
 import BackgroundAnimation from "@/components/background-animation"
 import { Toaster } from "sonner"
 
+// Load chatbot ONLY on client side, NEVER during SSR
+// This prevents @heyputer/puter.js from crashing on mobile browsers
+const AIChatbot = dynamic(
+  () => import("@/components/ai/chatbot").then(mod => ({ default: mod.AIChatbot })),
+  { ssr: false }
+)
+
 
 
 export default function LayoutWrapper({ 
@@ -30,7 +37,7 @@ export default function LayoutWrapper({
       {!isDashboard && <Navbar categorizedCounselling={categorizedCounselling} />}
       <main className="flex-1">{children}</main>
       {!isDashboard && <Footer />}
-
+      <AIChatbot />
       <Toaster position="top-center" richColors />
     </div>
   )
