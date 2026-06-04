@@ -194,3 +194,22 @@ export async function deleteBroadcastNotificationAction(id: string) {
   }
 }
 
+export async function getCourseEnrollmentsAction(courseId: string) {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from('course_enrollments')
+      .select(`
+        id, created_at, status, payment_id, amount,
+        student:student_id ( id, name, email, phone )
+      `)
+      .eq('course_id', courseId)
+      .order('created_at', { ascending: false })
+
+    if (error) throw error
+    return { success: true, enrollments: data || [] }
+  } catch (error: any) {
+    console.error("Fetch Enrollments Error:", error)
+    return { success: false, error: error.message, enrollments: [] }
+  }
+}
+

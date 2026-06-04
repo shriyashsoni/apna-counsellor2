@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, Users, Mail, Phone, ExternalLink } from "lucide-react"
+import { getCourseEnrollmentsAction } from "@/lib/actions/admin"
 
 export default function CourseStudentsPage() {
   const params = useParams()
@@ -21,14 +22,7 @@ export default function CourseStudentsPage() {
       const { data: cData } = await supabase.from('courses').select('title, whatsapp_group_url').eq('id', courseId).single()
       setCourse(cData)
       
-      const { data: eData } = await supabase
-        .from('course_enrollments')
-        .select(`
-          id, created_at, status, payment_id, amount,
-          student:student_id ( id, name, email, phone )
-        `)
-        .eq('course_id', courseId)
-        .order('created_at', { ascending: false })
+      const { success, enrollments: eData } = await getCourseEnrollmentsAction(courseId)
       
       setEnrollments(eData || [])
       setLoading(false)

@@ -1099,9 +1099,32 @@ function StudentDashboard({ profile, user }: { profile: any, user: any }) {
                         <h3 className="text-xs font-black text-slate-900 dark:text-white uppercase tracking-wider mb-4 border-b border-slate-100 dark:border-slate-800 pb-2">Structured Syllabus Overview</h3>
                         <div className="space-y-3">
                           {Array.isArray(classroomCourse.courses?.curriculum) && classroomCourse.courses.curriculum.map((m: any, i: number) => (
-                            <div key={i} className="p-3 bg-slate-50 dark:bg-slate-850/50 rounded-xl border border-slate-100 dark:border-slate-800">
-                              <h4 className="font-bold text-xs text-slate-900 dark:text-white leading-tight">{m.title}</h4>
-                              <p className="text-[10px] text-slate-400 font-semibold mt-1">Structured learning unit and preference templates.</p>
+                            <div key={i} className="p-4 bg-slate-50 dark:bg-slate-850/50 rounded-xl border border-slate-100 dark:border-slate-800 space-y-3">
+                              <div>
+                                <h4 className="font-bold text-sm text-slate-900 dark:text-white leading-tight">{m.title}</h4>
+                                <p className="text-[10px] text-slate-400 font-semibold mt-0.5">{m.lessons?.length || 0} Lectures</p>
+                              </div>
+                              {m.lessons && m.lessons.length > 0 && (
+                                <div className="flex flex-col gap-2">
+                                  {m.lessons.map((lesson: any, lIdx: number) => (
+                                    <div key={lIdx} className="flex justify-between items-center bg-white dark:bg-slate-900 p-2.5 px-3 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm text-xs font-bold gap-4 transition-all hover:border-purple-200">
+                                      <div className="flex items-center gap-2 min-w-0">
+                                        <PlayCircle className="h-4 w-4 text-purple-500 shrink-0" />
+                                        <span className="text-slate-700 dark:text-slate-300 truncate">{lesson.title}</span>
+                                      </div>
+                                      {lesson.video_url ? (
+                                        <a href={lesson.video_url} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 text-white bg-purple-600 hover:bg-purple-700 px-3 py-1.5 rounded-md transition-colors whitespace-nowrap shadow-sm">
+                                          <span className="text-[10px] uppercase">Watch</span> <ExternalLink className="h-3 w-3" />
+                                        </a>
+                                      ) : (
+                                        <div className="flex items-center gap-1 text-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-1 rounded-md">
+                                          <CheckCircle2 className="h-3 w-3" /> <span className="text-[10px] uppercase tracking-wider">Completed</span>
+                                        </div>
+                                      )}
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
                             </div>
                           ))}
                           {(!classroomCourse.courses?.curriculum || classroomCourse.courses.curriculum.length === 0) && (
