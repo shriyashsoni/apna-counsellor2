@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { 
   Rocket, Plus, Search, BookOpen, Trash2, Edit, 
-  ExternalLink, Video, FileText, Loader2, AlertCircle, PlusCircle, Check, Users, Send
+  ExternalLink, Video, FileText, Loader2, AlertCircle, PlusCircle, Check, Users, Send, BellMinus
 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -37,6 +37,11 @@ export default function AdminCoursesPage() {
   const [notifyBody, setNotifyBody] = useState("")
   const [notifyUrl, setNotifyUrl] = useState("")
   const [isSendingNotification, setIsSendingNotification] = useState(false)
+
+  // Past Broadcasts state
+  const [showBroadcasts, setShowBroadcasts] = useState(false)
+  const [recentBroadcasts, setRecentBroadcasts] = useState<any[]>([])
+  const [isLoadingBroadcasts, setIsLoadingBroadcasts] = useState(false)
 
   const fetchCourses = async () => {
     setIsLoading(true)
@@ -147,6 +152,40 @@ export default function AdminCoursesPage() {
     }
   }
 
+  const fetchRecentBroadcasts = async () => {
+    setIsLoadingBroadcasts(true)
+    setShowBroadcasts(true)
+    try {
+      const { data, error } = await supabase
+        .from('notifications')
+        .select('title, created_at')
+        .eq('is_broadcast', true)
+        .order('created_at', { ascending: false })
+        .limit(500)
+      
+      if (error) throw error
+
+      const unique = Array.from(new Map((data || []).map(item => [item.title, item])).values())
+      setRecentBroadcasts(unique)
+    } catch (err: any) {
+      toast.error(`Failed to fetch past broadcasts: ${err.message}`)
+    } finally {
+      setIsLoadingBroadcasts(false)
+    }
+  }
+
+  const handleDeleteBroadcast = async (title: string) => {
+    if (!confirm(`Delete all notifications titled "${title}" from student dashboards?`)) return
+    try {
+      const { error } = await supabase.from('notifications').delete().eq('title', title).eq('is_broadcast', true)
+      if (error) throw error
+      toast.success("Broadcast deleted from all inboxes!")
+      fetchRecentBroadcasts()
+    } catch (err: any) {
+      toast.error(err.message)
+    }
+  }
+
   // Filters calculation
   const filteredCourses = courses.filter(c => {
     const matchesSearch = c.title?.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -169,12 +208,21 @@ export default function AdminCoursesPage() {
           </h1>
           <p className="text-slate-500 font-medium text-xs uppercase tracking-wider mt-1">Publish admission programs, edit study resources, and catalog guides</p>
         </div>
-        <Button 
-          onClick={() => router.push("/admin/courses/new")} 
-          className="rounded-xl h-12 px-6 font-black bg-[#00FF88] text-black hover:bg-[#00e077] transition-all hover:scale-[1.02] shadow-[0_0_20px_rgba(0,255,136,0.15)] flex items-center gap-2"
-        >
-          <Plus className="h-5 w-5" /> Launch Course Wizard
-        </Button>
+        <div className="flex items-center gap-3">
+          <Button 
+            variant="outline"
+            onClick={fetchRecentBroadcasts} 
+            className="rounded-xl h-12 px-5 font-bold bg-white/5 border-white/10 text-white hover:bg-white/10 transition-all flex items-center gap-2"
+          >
+            <BellMinus className="h-5 w-5" /> Manage Broadcasts
+          </Button>
+          <Button 
+            onClick={() => router.push("/admin/courses/new")} 
+            className="rounded-xl h-12 px-6 font-black bg-[#00FF88] text-black hover:bg-[#00e077] transition-all hover:scale-[1.02] shadow-[0_0_20px_rgba(0,255,136,0.15)] flex items-center gap-2"
+          >
+            <Plus className="h-5 w-5" /> Launch Course Wizard
+          </Button>
+        </div>
       </div>
 
       {/* 2. Interactive Search & Filters Row */}
@@ -515,6 +563,53 @@ export default function AdminCoursesPage() {
                 Blast to Enrolled Students
               </Button>
             </footer>
+          </div>
+        </div>
+      )}
+
+      {/* 6. Manage Past Broadcasts Overlay */}
+      {showBroadcasts && (
+        <div className="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#0f0f0f] border border-white/10 rounded-2xl max-w-2xl w-full flex flex-col max-h-[85vh] shadow-2xl relative">
+            <header className="p-6 border-b border-white/10 flex justify-between items-center">
+              <div>
+                <h3 className="text-lg font-black text-white flex items-center gap-2"><BellMinus className="h-5 w-5 text-red-400" /> Manage Sent Broadcasts</h3>
+                <p className="text-xs font-medium text-slate-500 mt-0.5">Delete past notifications from all student dashboards</p>
+              </div>
+              <Button 
+                variant="ghost" 
+                onClick={() => setShowBroadcasts(false)} 
+                className="h-9 w-9 text-slate-400 hover:text-white rounded-full bg-white/5 hover:bg-white/10 p-0"
+              >
+                ✕
+              </Button>
+            </header>
+
+            <div className="p-6 flex-1 overflow-y-auto space-y-3">
+              {isLoadingBroadcasts ? (
+                <div className="py-12 flex justify-center"><Loader2 className="animate-spin h-8 w-8 text-slate-500" /></div>
+              ) : recentBroadcasts.length === 0 ? (
+                <div className="text-center py-12 text-slate-500 font-bold italic text-sm">No recent broadcasts found in the system.</div>
+              ) : (
+                recentBroadcasts.map((b, i) => (
+                  <div key={i} className="flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-xl">
+                    <div>
+                      <p className="font-bold text-white text-sm">{b.title}</p>
+                      <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">
+                        Sent: {new Date(b.created_at).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <Button 
+                      variant="ghost" 
+                      onClick={() => handleDeleteBroadcast(b.title)}
+                      className="h-9 px-4 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500/20 hover:text-red-400 font-bold text-xs flex items-center gap-1.5"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" /> Delete
+                    </Button>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
         </div>
       )}
