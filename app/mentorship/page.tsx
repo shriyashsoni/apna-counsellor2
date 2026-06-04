@@ -62,15 +62,15 @@ export default function MentorshipPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Hero Section */}
-        <div className="mb-12 relative overflow-hidden rounded-[3rem] bg-primary p-10 md:p-16 text-white shadow-2xl shadow-primary/20">
+        <div className="mb-12 relative overflow-hidden rounded-[3rem] bg-primary p-8 md:py-10 md:px-12 text-white shadow-2xl shadow-primary/20">
           <div className="relative z-10 max-w-2xl">
-            <Badge className="bg-white/20 hover:bg-white/30 text-white border-none px-4 py-1 rounded-full mb-6 backdrop-blur-md">
+            <Badge className="bg-white/20 hover:bg-white/30 text-white border-none px-4 py-1 rounded-full mb-4 backdrop-blur-md">
               Top 1% Mentors Only
             </Badge>
-            <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-6 leading-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4 leading-tight">
               Learn from those who have <span className="text-indigo-200">Already Conquered.</span>
             </h1>
-            <p className="text-lg md:text-xl text-indigo-100 font-medium mb-8">
+            <p className="text-lg md:text-xl text-indigo-100 font-medium mb-6">
               Connect with IITians, NITians, and Industry Experts for personalized 1-on-1 guidance.
             </p>
             <div className="flex flex-wrap gap-4">
@@ -84,7 +84,6 @@ export default function MentorshipPage() {
                </div>
             </div>
           </div>
-          <Sparkles className="absolute -bottom-10 -right-10 h-64 w-64 text-white/10 rotate-12" />
         </div>
 
         <div className="flex flex-col lg:flex-row gap-12">

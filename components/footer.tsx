@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { Facebook, Instagram, Youtube, MessageCircle, Mail, Phone, ShieldCheck, Globe, Zap, Linkedin, Send, Twitter, BarChart2 } from "lucide-react"
+import { Facebook, Instagram, Youtube, MessageCircle, Mail, Phone, ShieldCheck, Globe, Clock, Linkedin, Send, Twitter, BarChart2 } from "lucide-react"
 import { motion } from "framer-motion"
 
 const Footer = () => {
@@ -187,16 +187,18 @@ const Footer = () => {
                </div>
                <div className="space-y-6">
                   <h4 className="text-xs font-black uppercase tracking-widest text-white/60">Trust & Recognition</h4>
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     {[
                       { icon: ShieldCheck, text: "100% Verified Mentors" },
                       { icon: Globe, text: "50,000+ Students Guided" },
-                      { icon: Zap, text: "Real-Time Cutoff Data" },
+                      { icon: Clock, text: "Real-Time Cutoff Data" },
                       { icon: BarChart2, text: "Data-Driven Predictors" },
                     ].map(({ icon: Icon, text }) => (
-                      <div key={text} className="flex items-center gap-3 text-white/80">
-                        <Icon className="h-4 w-4 text-primary shrink-0" />
-                        <span className="text-sm font-semibold">{text}</span>
+                      <div key={text} className="flex items-center gap-4 text-white hover:text-primary transition-colors cursor-default">
+                        <div className="h-10 w-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
+                          <Icon className="h-5 w-5" />
+                        </div>
+                        <span className="text-sm font-bold">{text}</span>
                       </div>
                     ))}
                   </div>

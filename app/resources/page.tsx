@@ -13,16 +13,34 @@ import {
   Users,
   Search,
   Filter,
-  X
+  X,
+  Globe,
+  CheckCircle2
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
+import { allResources } from "@/lib/data/counseling-resources"
 
 export default function ResourcesPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [activeCategory, setActiveCategory] = useState("All")
+
+  const iconMap: Record<string, any> = {
+    Globe,
+    FileText,
+    BookOpen,
+    CheckCircle: CheckCircle2,
+    Video,
+    Sparkles,
+    Trophy
+  }
+
+  const generatedResources = allResources.map(r => ({
+    ...r,
+    icon: iconMap[r.iconName as string] || FileText
+  }))
 
   const resources = [
     { title: "JoSAA 2024 Cutoff PDF", category: "Cutoffs", type: "PDF", icon: FileText, color: "blue" },
@@ -32,7 +50,8 @@ export default function ResourcesPage() {
     { title: "JEE Advanced 2025 Strategy", category: "Strategy", type: "PDF", icon: Sparkles, color: "indigo" },
     { title: "BITS Pilani Iteration Guide", category: "Counseling", type: "PDF", icon: FileText, color: "rose" },
     { title: "State-wise Seat Matrix", category: "Data", type: "Sheet", icon: BookOpen, color: "amber" },
-    { title: "Counseling Documents Checklist", category: "Guidance", type: "PDF", icon: CheckCircle, color: "blue" },
+    { title: "Counseling Documents Checklist", category: "Guidance", type: "PDF", icon: CheckCircle2, color: "blue" },
+    ...generatedResources
   ].map(r => ({...r, color: r.color || "blue"}))
 
   // Mapping dynamic colors to Tailwind safe classes to avoid build issues
@@ -184,22 +203,4 @@ export default function ResourcesPage() {
   )
 }
 
-// Simple internal check component for Lucide consistency
-const CheckCircle = (props: any) => (
-  <svg
-    {...props}
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-    <polyline points="22 4 12 14.01 9 11.01" />
-  </svg>
-)
 
