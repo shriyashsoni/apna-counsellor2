@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
       message: 'New batch broadcast received. Please check your email for full details and links.',
       type: 'info',
       is_broadcast: true,
-      link: courseId ? \`/dashboard\` : null
+      link: courseId ? '/dashboard' : null
     }))
 
     for (let i = 0; i < notificationPayloads.length; i += 500) {
