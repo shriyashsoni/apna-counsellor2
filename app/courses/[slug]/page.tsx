@@ -45,9 +45,25 @@ export async function generateMetadata({ params }: CoursePageProps): Promise<Met
       || (course.description ? stripHtml(course.description).substring(0, 160) : null)
       || `Complete counselling guidance for ${course.category || 'students'} by Apna Counsellor.`
 
+    // Dynamic High-Value SEO Keywords based on course title
+    const keywords = [
+      course.title,
+      course.category,
+      "Counselling Batch 2026",
+      "JEE Mains Counselling",
+      "JoSAA Choice Filling",
+      "MHT CET Admission Process",
+      "COMEDK Guidance",
+      "Engineering Admissions",
+      "Top Engineering Colleges",
+      "Apna Counsellor Premium",
+      course.title.split(' ').map((w: string) => `#${w.replace(/[^a-zA-Z0-9]/g, '')}`).join(' ') // Dynamic Hashtags
+    ].filter(Boolean).join(", ");
+
     return {
-      title: `${course.title} | Apna Counsellor`,
+      title: `${course.title} | Apna Counsellor - Top Admissions Prep`,
       description: cleanDescription,
+      keywords: keywords,
       openGraph: {
         title: course.title,
         description: cleanDescription,
@@ -106,6 +122,33 @@ export default async function CoursePage({ params }: CoursePageProps) {
     notFound()
   }
 
-  return <CourseDetailClient slug={params.slug} initialCourse={course} />
+  // Generate highly optimized JSON-LD Structured Data for Google Indexing
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://apnacounsellor.in';
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": course.title,
+    "description": course.tagline || course.title,
+    "provider": {
+      "@type": "Organization",
+      "name": "Apna Counsellor",
+      "sameAs": baseUrl
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": course.price || 0,
+      "priceCurrency": "INR"
+    }
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <CourseDetailClient slug={params.slug} initialCourse={course} />
+    </>
+  )
 }
 
