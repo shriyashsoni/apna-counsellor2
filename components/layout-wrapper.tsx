@@ -1,11 +1,18 @@
 "use client"
 
 import { usePathname } from "next/navigation"
+import dynamic from "next/dynamic"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import BackgroundAnimation from "@/components/background-animation"
-import { AIChatbot } from "@/components/ai/chatbot"
 import { Toaster } from "sonner"
+
+// Load chatbot ONLY on client side, NEVER during SSR
+// This prevents @heyputer/puter.js from crashing on mobile browsers
+const AIChatbot = dynamic(
+  () => import("@/components/ai/chatbot").then(mod => ({ default: mod.AIChatbot })),
+  { ssr: false }
+)
 
 export default function LayoutWrapper({ 
   children, 

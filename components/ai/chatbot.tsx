@@ -21,35 +21,42 @@ export function AIChatbot() {
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [isSignedIn, setIsSignedIn] = useState(false)
+  const [isMobile, setIsMobile] = useState(true) // default true = hidden until we confirm desktop
   const [isMounted, setIsMounted] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
   const puterRef = useRef<any>(null)
 
   useEffect(() => {
     setIsMounted(true)
-    // Detect mobile — Puter.js is not compatible with mobile browsers
-    const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
-    )
-    setIsMobile(mobile)
-    if (mobile) return // Don't load Puter on mobile
 
-    // Check if user is signed into Puter (desktop only)
-    const initPuter = async () => {
-      try {
-        const mod = await import("@heyputer/puter.js")
-        if (mod && mod.puter) {
-          puterRef.current = mod.puter
-          setIsSignedIn(mod.puter.auth.isSignedIn())
-        }
-      } catch (err) {
-        // Puter failed to load — chatbot works in degraded mode
-        console.warn("[AIChatbot] Puter unavailable:", err)
+    // Detect mobile — Puter.js is desktop-only
+    try {
+      const mobile = typeof window !== 'undefined' && 
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+      setIsMobile(mobile)
+      
+      // Only load Puter on desktop
+      if (!mobile) {
+        loadPuter()
       }
+    } catch (e) {
+      // If anything fails during detection, stay hidden
+      console.warn("[AIChatbot] Init error:", e)
     }
-    initPuter()
   }, [])
+
+  const loadPuter = async () => {
+    try {
+      const mod = await import("@heyputer/puter.js")
+      const puter = mod?.puter || mod?.default
+      if (puter && puter.auth) {
+        puterRef.current = puter
+        setIsSignedIn(puter.auth.isSignedIn())
+      }
+    } catch (err) {
+      console.warn("[AIChatbot] Puter unavailable:", err)
+    }
+  }
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -73,7 +80,7 @@ export function AIChatbot() {
 
     if (!isSignedIn) {
       await handleSignIn()
-      if (!puterRef.current.auth.isSignedIn()) return
+      if (!puterRef.current?.auth?.isSignedIn()) return
     }
 
     const userMessage: Message = { role: "user", content: textToSend }
@@ -82,7 +89,6 @@ export function AIChatbot() {
     setIsLoading(true)
 
     try {
-      // Use a high-end model and provide context
       const systemPrompt = `You are "Apna Counsellor AI", a high-end admissions expert for Indian students. 
       You help with JOSAA (IITs/NITs), NEET (Medical), MHT-CET (Maharashtra), COMEDK, and other state entrance exams.
       Your goal is to provide data-driven, reliable advice.
@@ -91,7 +97,7 @@ export function AIChatbot() {
       Keep your tone professional, encouraging, and premium.`
 
       const response = await puterRef.current.ai.chat(`${systemPrompt}\n\nUser: ${textToSend}`, {
-        model: "claude-3-5-sonnet", // High-end model
+        model: "claude-3-5-sonnet",
         stream: false
       })
 
@@ -111,7 +117,7 @@ export function AIChatbot() {
     { label: "JoSAA Cutoffs 2025", icon: Sparkles, query: "What are the expected JoSAA 2025 cutoffs for CSE in top NITs?" }
   ]
 
-  // Don't render on mobile (Puter.js is desktop-only) or before mount
+  // CRITICAL: Don't render on mobile or before mount — prevents Puter crash
   if (!isMounted || isMobile) return null
 
   return (
@@ -246,7 +252,7 @@ export function AIChatbot() {
                   <Send className="h-4 w-4" />
                 </Button>
               </div>
-              <p className="text-[10px] text-center text-slate-400 mt-4 font-medium">Powered by Puter.js & Anthropic Claude</p>
+              <p className="text-[10px] text-center text-slate-400 mt-4 font-medium">Powered by Puter.js &amp; Anthropic Claude</p>
             </div>
           </motion.div>
         )}
