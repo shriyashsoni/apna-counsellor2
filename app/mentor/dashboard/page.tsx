@@ -326,11 +326,18 @@ export default function MentorDashboard() {
               <p className="text-xs text-purple-100 font-medium mb-4 leading-relaxed">
                 Keep your availability, pricing, and bio updated to attract more students.
               </p>
-              <Link href="/mentor/settings">
-                <Button className="w-full h-10 bg-white text-purple-700 font-black rounded-xl text-xs hover:bg-purple-50 flex items-center justify-center gap-2">
-                  <Settings className="h-4 w-4" /> Edit Profile
-                </Button>
-              </Link>
+              <div className="space-y-3">
+                <Link href="/mentor/settings" className="block">
+                  <Button className="w-full h-10 bg-white text-purple-700 font-black rounded-xl text-xs hover:bg-purple-50 flex items-center justify-center gap-2">
+                    <Settings className="h-4 w-4" /> Edit Profile
+                  </Button>
+                </Link>
+                <Link href="/mentor/services" className="block">
+                  <Button className="w-full h-10 bg-purple-500 text-white border border-purple-400 font-black rounded-xl text-xs hover:bg-purple-400 flex items-center justify-center gap-2">
+                    <LayoutGrid className="h-4 w-4" /> Manage Custom Services
+                  </Button>
+                </Link>
+              </div>
             </Card>
           </aside>
         </div>

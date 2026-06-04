@@ -192,9 +192,10 @@ export default function MentorshipPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: i * 0.05 }}
                         layout
+                        className="h-full"
                       >
-                        <Card className="group relative border-none rounded-[2.5rem] bg-white dark:bg-slate-900 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden">
-                           <CardContent className="p-8">
+                        <Card className="group relative h-full flex flex-col border-none rounded-[2.5rem] bg-white dark:bg-slate-900 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden">
+                           <CardContent className="p-8 flex flex-col flex-1">
                               <div className="flex justify-between items-start mb-6">
                                  <div className="relative h-20 w-20 rounded-3xl overflow-hidden shadow-xl ring-4 ring-slate-50 dark:ring-slate-800">
                                     <Image 
@@ -218,18 +219,18 @@ export default function MentorshipPage() {
                                  </div>
                               </div>
 
-                              <div className="space-y-4">
+                              <div className="space-y-4 flex flex-col flex-1">
                                  <div>
                                     <div className="flex items-center gap-2">
-                                       <h3 className="text-xl font-black text-slate-900 dark:text-white group-hover:text-primary transition-colors">{mentor.name}</h3>
-                                       {mentor.verified !== false && <CheckCircle2 className="h-5 w-5 text-primary" />}
+                                       <h3 className="text-xl font-black text-slate-900 dark:text-white group-hover:text-primary transition-colors line-clamp-1">{mentor.name}</h3>
+                                       {mentor.verified !== false && <CheckCircle2 className="h-5 w-5 text-primary shrink-0" />}
                                     </div>
-                                    <p className="text-slate-500 font-bold text-sm mt-1">{mentor.headline || 'Senior Career Mentor'}</p>
+                                    <p className="text-slate-500 font-bold text-sm mt-1 line-clamp-2 min-h-[40px]">{mentor.headline || 'Senior Career Mentor'}</p>
                                  </div>
 
-                                 <div className="flex items-center gap-2 text-slate-400 font-medium text-xs">
-                                    <GraduationCap className="h-4 w-4" />
-                                    <span>{mentor.college} · {mentor.branch}</span>
+                                 <div className="flex items-start gap-2 text-slate-400 font-medium text-xs">
+                                    <GraduationCap className="h-4 w-4 shrink-0 mt-0.5" />
+                                    <span className="line-clamp-2">{mentor.college} · {mentor.branch}</span>
                                  </div>
 
                                  <div className="flex flex-wrap gap-2">
@@ -245,13 +246,15 @@ export default function MentorshipPage() {
                                     ))}
                                  </div>
 
-                                 <div className="pt-4 border-t border-slate-50 dark:border-slate-800 flex items-center justify-between">
+                                 <div className="flex-1" />
+
+                                 <div className="pt-4 border-t border-slate-50 dark:border-slate-800 flex items-center justify-between mt-auto">
                                     <div>
                                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Pricing</p>
                                        <p className="text-lg font-black text-slate-900 dark:text-white">₹{mentor.pricing || 499}<span className="text-sm font-bold text-slate-400">/session</span></p>
                                     </div>
                                     <Link href={`/mentor/${mentor.slug || mentor.id}`}>
-                                       <Button className="rounded-2xl font-black gap-2 shadow-lg shadow-primary/20">
+                                       <Button className="rounded-2xl font-black gap-2 shadow-lg shadow-primary/20 shrink-0">
                                           View Profile <ArrowRight className="h-4 w-4" />
                                        </Button>
                                     </Link>
