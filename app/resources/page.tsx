@@ -43,14 +43,14 @@ export default function ResourcesPage() {
   }))
 
   const resources = [
-    { title: "JoSAA 2024 Cutoff PDF", category: "Cutoffs", type: "PDF", icon: FileText, color: "blue" },
-    { title: "MHT-CET Preference List", category: "Counseling", type: "Sheet", icon: BookOpen, color: "purple" },
-    { title: "Top NITs Placement Report", category: "Placements", type: "PDF", icon: Trophy, color: "orange" },
-    { title: "How to choose a branch?", category: "Guidance", type: "Video", icon: Video, color: "emerald" },
-    { title: "JEE Advanced 2025 Strategy", category: "Strategy", type: "PDF", icon: Sparkles, color: "indigo" },
-    { title: "BITS Pilani Iteration Guide", category: "Counseling", type: "PDF", icon: FileText, color: "rose" },
-    { title: "State-wise Seat Matrix", category: "Data", type: "Sheet", icon: BookOpen, color: "amber" },
-    { title: "Counseling Documents Checklist", category: "Guidance", type: "PDF", icon: CheckCircle2, color: "blue" },
+    { title: "JoSAA 2024 Cutoff PDF", category: "Cutoffs", type: "PDF", icon: FileText, color: "blue", link: "https://josaa.nic.in" },
+    { title: "MHT-CET Preference List", category: "Counseling", type: "Sheet", icon: BookOpen, color: "purple", link: "https://cetcell.mahacet.org" },
+    { title: "Top NITs Placement Report", category: "Placements", type: "PDF", icon: Trophy, color: "orange", link: "https://www.google.com/search?q=Top+NITs+Placement+Report+PDF" },
+    { title: "How to choose a branch?", category: "Guidance", type: "Video", icon: Video, color: "emerald", link: "https://www.youtube.com/results?search_query=how+to+choose+engineering+branch" },
+    { title: "JEE Advanced 2025 Strategy", category: "Strategy", type: "PDF", icon: Sparkles, color: "indigo", link: "https://www.google.com/search?q=JEE+Advanced+2025+Strategy+PDF" },
+    { title: "BITS Pilani Iteration Guide", category: "Counseling", type: "PDF", icon: FileText, color: "rose", link: "https://www.bitsadmission.com" },
+    { title: "State-wise Seat Matrix", category: "Data", type: "Sheet", icon: BookOpen, color: "amber", link: "https://www.google.com/search?q=engineering+state-wise+seat+matrix" },
+    { title: "Counseling Documents Checklist", category: "Guidance", type: "PDF", icon: CheckCircle2, color: "blue", link: "https://www.google.com/search?q=engineering+counseling+documents+checklist+pdf" },
     ...generatedResources
   ].map(r => ({...r, color: r.color || "blue"}))
 
@@ -167,9 +167,17 @@ export default function ResourcesPage() {
                         <span className="text-xs font-bold text-slate-400 flex items-center gap-1">
                           <Download className="h-3 w-3" /> {res.type}
                         </span>
-                        <Button variant="ghost" size="sm" className="rounded-xl font-black text-xs text-primary gap-1 group-hover:bg-primary/5">
-                          Download <ArrowRight className="h-3 w-3" />
-                        </Button>
+                        {res.link ? (
+                          <a href={res.link} target="_blank" rel="noopener noreferrer">
+                            <Button variant="ghost" size="sm" className="rounded-xl font-black text-xs text-primary gap-1 group-hover:bg-primary/5">
+                              {res.type === "Link" ? "Visit Site" : "Download"} <ArrowRight className="h-3 w-3" />
+                            </Button>
+                          </a>
+                        ) : (
+                          <Button variant="ghost" size="sm" className="rounded-xl font-black text-xs text-primary gap-1 group-hover:bg-primary/5">
+                            Download <ArrowRight className="h-3 w-3" />
+                          </Button>
+                        )}
                       </div>
                     </CardContent>
                   </Card>
