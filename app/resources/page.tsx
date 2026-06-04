@@ -43,14 +43,14 @@ export default function ResourcesPage() {
   }))
 
   const resources = [
-    { title: "JoSAA 2024 Cutoff PDF", category: "Cutoffs", type: "PDF", icon: FileText, color: "blue", link: "https://josaa.nic.in" },
+    { title: "JoSAA 2024 Cutoff PDF", category: "Cutoffs", type: "PDF", icon: FileText, color: "blue", link: "https://josaa.admissions.nic.in/applicant/seatmatrix/cutoff.aspx" },
     { title: "MHT-CET Preference List", category: "Counseling", type: "Sheet", icon: BookOpen, color: "purple", link: "https://cetcell.mahacet.org" },
-    { title: "Top NITs Placement Report", category: "Placements", type: "PDF", icon: Trophy, color: "orange", link: "https://www.google.com/search?q=Top+NITs+Placement+Report+PDF" },
-    { title: "How to choose a branch?", category: "Guidance", type: "Video", icon: Video, color: "emerald", link: "https://www.youtube.com/results?search_query=how+to+choose+engineering+branch" },
-    { title: "JEE Advanced 2025 Strategy", category: "Strategy", type: "PDF", icon: Sparkles, color: "indigo", link: "https://www.google.com/search?q=JEE+Advanced+2025+Strategy+PDF" },
-    { title: "BITS Pilani Iteration Guide", category: "Counseling", type: "PDF", icon: FileText, color: "rose", link: "https://www.bitsadmission.com" },
-    { title: "State-wise Seat Matrix", category: "Data", type: "Sheet", icon: BookOpen, color: "amber", link: "https://www.google.com/search?q=engineering+state-wise+seat+matrix" },
-    { title: "Counseling Documents Checklist", category: "Guidance", type: "PDF", icon: CheckCircle2, color: "blue", link: "https://www.google.com/search?q=engineering+counseling+documents+checklist+pdf" },
+    { title: "Top NITs Placement Report", category: "Placements", type: "PDF", icon: Trophy, color: "orange", link: "https://www.shiksha.com/b-tech/articles/nits-placements-highest-average-salary-packages-top-recruiters-blogId-25159" },
+    { title: "How to choose a branch?", category: "Guidance", type: "Video", icon: Video, color: "emerald", link: "https://www.youtube.com/watch?v=M9p7H2pBfWk" },
+    { title: "JEE Advanced 2025 Strategy", category: "Strategy", type: "PDF", icon: Sparkles, color: "indigo", link: "https://jeeadv.ac.in/" },
+    { title: "BITS Pilani Iteration Guide", category: "Counseling", type: "PDF", icon: FileText, color: "rose", link: "https://www.bitsadmission.com/bitsat/2023/BITSAT-2023-Iteration-1.pdf" },
+    { title: "State-wise Seat Matrix", category: "Data", type: "Sheet", icon: BookOpen, color: "amber", link: "https://www.collegepravesh.com/seat-matrix/" },
+    { title: "Counseling Documents Checklist", category: "Guidance", type: "PDF", icon: CheckCircle2, color: "blue", link: "https://josaa.nic.in/document-requirement/" },
     ...generatedResources
   ].map(r => ({...r, color: r.color || "blue"}))
 
