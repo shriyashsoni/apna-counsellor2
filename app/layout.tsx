@@ -93,11 +93,7 @@ export default async function RootLayout({
         />
         <Script
           src="https://checkout.razorpay.com/v1/checkout.js"
-          strategy="beforeInteractive"
-        />
-        <Script
-          src="https://www.itsbeyondregular.com/embed.js"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
       </head>
       <body className={inter.className}>
