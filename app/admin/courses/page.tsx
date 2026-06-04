@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { 
   Rocket, Plus, Search, BookOpen, Trash2, Edit, 
-  ExternalLink, Video, FileText, Loader2, AlertCircle, PlusCircle, Check, Users, Send, BellMinus
+  ExternalLink, Video, FileText, Loader2, AlertCircle, PlusCircle, Check, Users, Send, BellMinus, CalendarCheck, BookCheck
 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -417,6 +417,10 @@ export default function AdminCoursesPage() {
                        <SelectItem value="video">Video Lecture Embed Link</SelectItem>
                        <SelectItem value="pdf">Admissions PDF / Cutoff Matrix</SelectItem>
                        <SelectItem value="link">Interactive Tool / Site Link</SelectItem>
+                       <SelectItem value="assignment">Assignment / Practice</SelectItem>
+                       <SelectItem value="schedule">Live Class Schedule Link</SelectItem>
+                       <SelectItem value="paid_material">Premium Paid Material</SelectItem>
+                       <SelectItem value="class">Recorded Class Session</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -447,11 +451,15 @@ export default function AdminCoursesPage() {
                     <div key={r.id} className="p-3 bg-white/5 rounded-xl border border-white/5 flex items-center justify-between gap-4">
                       <div className="flex items-center gap-3">
                         <div className={`h-8 w-8 rounded-lg flex items-center justify-center ${
-                          r.type === 'video' ? 'bg-red-500/10 text-red-500' :
-                          r.type === 'pdf' ? 'bg-blue-500/10 text-blue-500' : 'bg-purple-500/10 text-purple-500'
+                          r.type === 'video' || r.type === 'class' ? 'bg-red-500/10 text-red-500' :
+                          r.type === 'pdf' || r.type === 'assignment' ? 'bg-blue-500/10 text-blue-500' : 
+                          r.type === 'paid_material' ? 'bg-amber-500/10 text-amber-500' : 'bg-purple-500/10 text-purple-500'
                         }`}>
-                          {r.type === 'video' ? <Video className="h-4 w-4" /> :
-                           r.type === 'pdf' ? <FileText className="h-4 w-4" /> : <ExternalLink className="h-4 w-4" />}
+                          {r.type === 'video' || r.type === 'class' ? <Video className="h-4 w-4" /> :
+                           r.type === 'pdf' ? <FileText className="h-4 w-4" /> : 
+                           r.type === 'assignment' ? <BookOpen className="h-4 w-4" /> : 
+                           r.type === 'paid_material' ? <BookCheck className="h-4 w-4" /> : 
+                           r.type === 'schedule' ? <CalendarCheck className="h-4 w-4" /> : <ExternalLink className="h-4 w-4" />}
                         </div>
                         <div>
                           <p className="text-xs font-black text-white line-clamp-1">{r.title}</p>

@@ -1121,11 +1121,15 @@ function StudentDashboard({ profile, user }: { profile: any, user: any }) {
                               <div className="flex items-center justify-between gap-3">
                                 <div className="flex items-center gap-2 min-w-0">
                                   <div className={`h-7 w-7 rounded-lg flex items-center justify-center shrink-0 ${
-                                    r.type === 'video' ? 'bg-red-50 text-red-500' :
-                                    r.type === 'pdf' ? 'bg-blue-50 text-blue-500' : 'bg-purple-50 text-purple-500'
+                                    r.type === 'video' || r.type === 'class' ? 'bg-red-50 text-red-500' :
+                                    r.type === 'pdf' || r.type === 'assignment' ? 'bg-blue-50 text-blue-500' : 
+                                    r.type === 'paid_material' ? 'bg-amber-50 text-amber-500' : 'bg-purple-50 text-purple-500'
                                   }`}>
-                                    {r.type === 'video' ? <Video className="h-3.5 w-3.5" /> :
-                                     r.type === 'pdf' ? <FileText className="h-3.5 w-3.5" /> : <ExternalLink className="h-3.5 w-3.5" />}
+                                    {r.type === 'video' || r.type === 'class' ? <Video className="h-3.5 w-3.5" /> :
+                                     r.type === 'pdf' ? <FileText className="h-3.5 w-3.5" /> : 
+                                     r.type === 'assignment' ? <BookOpen className="h-3.5 w-3.5" /> : 
+                                     r.type === 'paid_material' ? <BookCheck className="h-3.5 w-3.5" /> : 
+                                     r.type === 'schedule' ? <CalendarCheck className="h-3.5 w-3.5" /> : <ExternalLink className="h-3.5 w-3.5" />}
                                   </div>
                                   <div className="min-w-0 text-left">
                                     <p className="text-[11px] font-bold text-slate-800 dark:text-slate-200 truncate group-hover:text-purple-650 transition-colors">{r.title}</p>
