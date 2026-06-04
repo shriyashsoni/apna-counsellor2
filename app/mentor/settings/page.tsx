@@ -41,14 +41,10 @@ export default function MentorSettingsPage() {
     pricing: 499,
     image: "",
     cal_link: "",
-    razorpay_account_id: ""
+    bank_account_number: "",
+    bank_ifsc_code: ""
   })
   
-  const [bankDetails, setBankDetails] = useState({
-    account_number: "",
-    ifsc_code: ""
-  })
-  const [connectingBank, setConnectingBank] = useState(false)
   const [uploadingImage, setUploadingImage] = useState(false)
 
   useEffect(() => {
@@ -91,7 +87,8 @@ export default function MentorSettingsPage() {
         pricing: parseInt(profile.pricing),
         image: profile.image,
         cal_link: cleanedCalLink,
-        razorpay_account_id: profile.razorpay_account_id,
+        bank_account_number: profile.bank_account_number,
+        bank_ifsc_code: profile.bank_ifsc_code,
       })
       .eq('id', user.id)
 
@@ -170,41 +167,6 @@ export default function MentorSettingsPage() {
     }
   }
 
-  const handleConnectBank = async () => {
-    if (!bankDetails.account_number || !bankDetails.ifsc_code) {
-      toast.error("Please enter both Account Number and IFSC Code.")
-      return
-    }
-    
-    setConnectingBank(true)
-    try {
-      const response = await fetch('/api/razorpay/onboard-mentor', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          mentor_id: firebaseUser?.id,
-          name: profile.name,
-          email: firebaseUser?.email,
-          account_number: bankDetails.account_number,
-          ifsc_code: bankDetails.ifsc_code
-        })
-      })
-
-      const data = await response.json()
-
-      if (!response.ok) {
-        throw new Error(data.error || "Failed to connect bank account")
-      }
-
-      setProfile({ ...profile, razorpay_account_id: data.account_id })
-      toast.success("Bank account successfully linked!")
-    } catch (err: any) {
-      console.error(err)
-      toast.error(err.message)
-    } finally {
-      setConnectingBank(false)
-    }
-  }
 
   if (loading) {
     return (
@@ -319,59 +281,33 @@ export default function MentorSettingsPage() {
                   <div className="space-y-4 pt-4 border-t border-slate-100">
                      <div className="flex items-center justify-between">
                         <Label className="font-black text-xs uppercase tracking-widest text-slate-400 flex items-center gap-2">
-                           Bank Account Details (For 70% Payouts)
+                           Bank Account Details (For Payouts)
                         </Label>
-                        <span className="text-[10px] font-bold text-emerald-500 bg-emerald-50 px-2 py-1 rounded-md">Powered by Razorpay Route</span>
                      </div>
 
-                     {/* Razorpay Route info banner */}
-                     <div className="flex items-start gap-3 p-3 bg-amber-50 border border-amber-100 rounded-xl">
-                       <Info className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
-                       <p className="text-[11px] text-amber-700 font-medium leading-relaxed">
-                         Bank linking uses <strong>Razorpay Route</strong> (marketplace feature). This requires Route to be enabled on your Razorpay account. If you get an error, contact Razorpay support to activate Route for your account. <strong>Your profile saves fine without this step.</strong>
-                       </p>
-                     </div>
-
-                     {profile.razorpay_account_id ? (
-                       <div className="p-4 bg-emerald-50 border border-emerald-100 rounded-xl flex items-center justify-between">
-                         <div>
-                            <p className="font-bold text-emerald-800 text-sm">Bank Account Linked Successfully</p>
-                            <p className="text-[10px] text-emerald-600 font-medium mt-1">ID: {profile.razorpay_account_id}</p>
-                         </div>
-                         <CheckCircle2 className="h-6 w-6 text-emerald-500" />
-                       </div>
-                     ) : (
-                       <div className="space-y-3 p-5 bg-slate-50 border border-slate-100 rounded-2xl">
-                          <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                               <Label className="text-[10px] font-bold text-slate-500">Account Number</Label>
-                               <Input 
-                                 value={bankDetails.account_number} 
-                                 onChange={(e) => setBankDetails({...bankDetails, account_number: e.target.value})}
-                                 placeholder="e.g. 50100..."
-                                 className="bg-white border-slate-200"
-                               />
-                            </div>
-                            <div className="space-y-2">
-                               <Label className="text-[10px] font-bold text-slate-500">IFSC Code</Label>
-                               <Input 
-                                 value={bankDetails.ifsc_code} 
-                                 onChange={(e) => setBankDetails({...bankDetails, ifsc_code: e.target.value})}
-                                 placeholder="e.g. HDFC0000123"
-                                 className="bg-white border-slate-200 uppercase"
-                               />
-                            </div>
+                     <div className="space-y-3 p-5 bg-slate-50 border border-slate-100 rounded-2xl">
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                             <Label className="text-[10px] font-bold text-slate-500">Account Number</Label>
+                             <Input 
+                               value={profile.bank_account_number || ''} 
+                               onChange={(e) => setProfile({...profile, bank_account_number: e.target.value})}
+                               placeholder="e.g. 50100..."
+                               className="bg-white border-slate-200"
+                             />
                           </div>
-                          <Button 
-                            onClick={handleConnectBank} 
-                            disabled={connectingBank || !bankDetails.account_number || !bankDetails.ifsc_code}
-                            className="w-full mt-2 bg-slate-900 hover:bg-slate-800 text-white font-bold"
-                          >
-                            {connectingBank ? "Connecting securely..." : "Connect Bank Account securely"}
-                          </Button>
-                          <p className="text-[10px] text-slate-400 font-medium text-center">Your details are directly sent to Razorpay and encrypted. We automatically split 70% of every booking direct to this account.</p>
-                       </div>
-                     )}
+                          <div className="space-y-2">
+                             <Label className="text-[10px] font-bold text-slate-500">IFSC Code</Label>
+                             <Input 
+                               value={profile.bank_ifsc_code || ''} 
+                               onChange={(e) => setProfile({...profile, bank_ifsc_code: e.target.value})}
+                               placeholder="e.g. HDFC0000123"
+                               className="bg-white border-slate-200 uppercase"
+                             />
+                          </div>
+                        </div>
+                        <p className="text-[10px] text-slate-400 font-medium mt-2">These details will be securely saved. We will manually process your settlements to this account after your sessions.</p>
+                     </div>
                    </div>
 
                   <div className="space-y-2 max-w-xs">
