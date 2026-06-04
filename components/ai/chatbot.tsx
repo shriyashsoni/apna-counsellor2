@@ -192,7 +192,7 @@ export function AIChatbot() {
                         ? 'bg-primary text-white border-primary rounded-tr-none' 
                         : 'bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-700 rounded-tl-none text-slate-800 dark:text-slate-200'
                     }`}>
-                      <div className="prose prose-sm dark:prose-invert max-w-none">
+                      <div className={`prose prose-sm max-w-none ${msg.role === 'user' ? 'text-white prose-p:text-white prose-strong:text-white prose-a:text-white' : 'dark:prose-invert'}`}>
                         <ReactMarkdown remarkPlugins={[remarkGfm]}>
                           {msg.content}
                         </ReactMarkdown>
