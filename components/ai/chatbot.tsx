@@ -96,13 +96,29 @@ export function AIChatbot() {
       If you can provide a "graph" style representation using text-based bars or structured lists, do so.
       Keep your tone professional, encouraging, and premium.`
 
-      const response = await puterRef.current.ai.chat(`${systemPrompt}\n\nUser: ${textToSend}`, {
-        model: "claude-3-5-sonnet",
-        stream: false
-      })
+      const response = await puterRef.current.ai.chat(`${systemPrompt}\n\nUser: ${textToSend}`);
 
-      const content = response?.toString() || "I'm sorry, I couldn't process that request."
-      setMessages(prev => [...prev, { role: "bot", content }])
+      let content = "I'm sorry, I couldn't process that request.";
+      if (typeof response === 'string') {
+        content = response;
+      } else if (response?.message?.content) {
+        if (Array.isArray(response.message.content)) {
+          content = response.message.content[0]?.text || response.message.content[0] || String(response);
+        } else {
+          content = response.message.content;
+        }
+      } else if (response?.text) {
+        content = response.text;
+      } else if (response) {
+        content = response.toString();
+      }
+      
+      // If it still says [object Object], we stringify it to debug, but hopefully the above catches it
+      if (content === "[object Object]") {
+         content = JSON.stringify(response);
+      }
+      
+      setMessages(prev => [...prev, { role: "bot", content }]);
     } catch (error) {
       console.error("AI Error:", error)
       setMessages(prev => [...prev, { role: "bot", content: "Sorry, I'm having trouble connecting to the AI models. Please try again later." }])
