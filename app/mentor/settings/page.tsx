@@ -40,6 +40,7 @@ export default function MentorSettingsPage() {
     cal_link: "",
     razorpay_account_id: ""
   })
+  const [uploadingImage, setUploadingImage] = useState(false)
 
   useEffect(() => {
     async function loadProfile() {
@@ -94,6 +95,72 @@ export default function MentorSettingsPage() {
     setSaving(false)
   }
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please upload an image file (PNG, JPG, etc).")
+      return
+    }
+
+    setUploadingImage(true)
+    
+    try {
+      // Convert to PNG format
+      const pngBlob = await new Promise<Blob>((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onload = (e) => {
+          const img = new window.Image()
+          img.onload = () => {
+            const canvas = document.createElement("canvas")
+            canvas.width = img.width
+            canvas.height = img.height
+            const ctx = canvas.getContext("2d")
+            ctx?.drawImage(img, 0, 0)
+            canvas.toBlob((blob) => {
+              if (blob) resolve(blob)
+              else reject(new Error("Failed to convert image"))
+            }, "image/png", 1.0)
+          }
+          img.onerror = () => reject(new Error("Invalid image file"))
+          img.src = e.target?.result as string
+        }
+        reader.onerror = () => reject(new Error("Failed to read file"))
+        reader.readAsDataURL(file)
+      })
+
+      const filePath = `avatars/${Date.now()}_profile.png`
+
+      const { data, error } = await supabase.storage
+        .from('profiles')
+        .upload(filePath, pngBlob, {
+          contentType: 'image/png',
+          cacheControl: '3600',
+          upsert: true
+        })
+
+      if (error) {
+        console.error("Storage upload error:", error)
+        toast.error(`Upload failed: ${error.message}. Please create 'profiles' bucket.`)
+        return
+      }
+
+      const { data: urlData } = supabase.storage
+        .from('profiles')
+        .getPublicUrl(filePath)
+
+      setProfile({ ...profile, image: urlData.publicUrl })
+      toast.success("Image uploaded successfully! Remember to save profile.")
+    } catch (err: any) {
+      console.error(err)
+      toast.error(err.message || "An unexpected error occurred during upload.")
+    } finally {
+      setUploadingImage(false)
+      e.target.value = ""
+    }
+  }
+
   if (loading) {
     return (
       <div className="h-screen flex items-center justify-center">
@@ -128,20 +195,19 @@ export default function MentorSettingsPage() {
                              <User className="h-full w-full p-8 text-slate-300" />
                            )}
                         </div>
-                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-[2rem] flex items-center justify-center cursor-pointer">
-                           <Camera className="h-8 w-8 text-white" />
-                        </div>
+                        <label htmlFor="photo-upload" className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-[2rem] flex items-center justify-center cursor-pointer">
+                           {uploadingImage ? <Loader2 className="h-8 w-8 text-white animate-spin" /> : <Camera className="h-8 w-8 text-white" />}
+                        </label>
+                        <input
+                           type="file"
+                           id="photo-upload"
+                           accept="image/*"
+                           className="hidden"
+                           onChange={handleImageUpload}
+                           disabled={uploadingImage}
+                        />
                      </div>
                      <div className="flex-1 space-y-4 w-full">
-                        <div className="space-y-2">
-                           <Label className="font-black text-xs uppercase tracking-widest text-slate-400">Profile Image URL</Label>
-                           <Input 
-                             value={profile.image || ''} 
-                             onChange={(e) => setProfile({...profile, image: e.target.value})}
-                             placeholder="https://example.com/photo.jpg"
-                             className="rounded-xl h-12 border-slate-100 font-bold"
-                           />
-                        </div>
                         <div className="space-y-2">
                            <Label className="font-black text-xs uppercase tracking-widest text-slate-400">Full Name</Label>
                            <Input 

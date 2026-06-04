@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
+import { useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -32,6 +33,35 @@ export default function OnboardingPage() {
   
   const supabase = createClient()
   const router = useRouter()
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    async function fetchProfile() {
+      const { data: authData } = await supabase.auth.getUser()
+      if (authData?.user) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', authData.user.id)
+          .single()
+        
+        if (profile) {
+          setFormData({
+            fullName: profile.name || "",
+            phone: profile.phone || "",
+            city: profile.city || "",
+            examType: profile.exam || "JEE",
+            targetYear: profile.target_year || 2026,
+            rank: profile.rank || "",
+            category: profile.category || "General",
+            interestedStates: profile.interested_states || [],
+          })
+        }
+      }
+      setIsLoading(false)
+    }
+    fetchProfile()
+  }, [])
 
   const handleNext = () => setStep(s => s + 1)
   const handlePrev = () => setStep(s => s - 1)
@@ -92,6 +122,14 @@ export default function OnboardingPage() {
         ? prev.interestedStates.filter(s => s !== state)
         : [...prev.interestedStates, state]
     }))
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-[80vh] flex items-center justify-center">
+        <Loader2 className="h-10 w-10 animate-spin text-primary" />
+      </div>
+    )
   }
 
   return (

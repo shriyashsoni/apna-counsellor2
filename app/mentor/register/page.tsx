@@ -16,7 +16,8 @@ import {
   ShieldCheck,
   Briefcase,
   Banknote,
-  Globe
+  Globe,
+  Camera
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -56,6 +57,7 @@ export default function MentorRegisterPage() {
 
   const [step, setStep] = useState(1)
   const [loading, setLoading] = useState(false)
+  const [uploadingImage, setUploadingImage] = useState(false)
   
   const [form, setForm] = useState({
     college: "",
@@ -68,7 +70,74 @@ export default function MentorRegisterPage() {
     linkedin: "",
     cal_link: "",
     counseling_type: [] as string[],
+    image: "",
   })
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please upload an image file (PNG, JPG, etc).")
+      return
+    }
+
+    setUploadingImage(true)
+    
+    try {
+      // Convert to PNG format
+      const pngBlob = await new Promise<Blob>((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onload = (e) => {
+          const img = new window.Image()
+          img.onload = () => {
+            const canvas = document.createElement("canvas")
+            canvas.width = img.width
+            canvas.height = img.height
+            const ctx = canvas.getContext("2d")
+            ctx?.drawImage(img, 0, 0)
+            canvas.toBlob((blob) => {
+              if (blob) resolve(blob)
+              else reject(new Error("Failed to convert image"))
+            }, "image/png", 1.0)
+          }
+          img.onerror = () => reject(new Error("Invalid image file"))
+          img.src = e.target?.result as string
+        }
+        reader.onerror = () => reject(new Error("Failed to read file"))
+        reader.readAsDataURL(file)
+      })
+
+      const filePath = `avatars/${Date.now()}_profile.png`
+
+      const { data, error } = await supabase.storage
+        .from('profiles')
+        .upload(filePath, pngBlob, {
+          contentType: 'image/png',
+          cacheControl: '3600',
+          upsert: true
+        })
+
+      if (error) {
+        console.error("Storage upload error:", error)
+        toast.error(`Upload failed: ${error.message}. Please create 'profiles' bucket.`)
+        return
+      }
+
+      const { data: urlData } = supabase.storage
+        .from('profiles')
+        .getPublicUrl(filePath)
+
+      setForm({ ...form, image: urlData.publicUrl })
+      toast.success("Image uploaded successfully!")
+    } catch (err: any) {
+      console.error(err)
+      toast.error(err.message || "An unexpected error occurred during upload.")
+    } finally {
+      setUploadingImage(false)
+      e.target.value = ""
+    }
+  }
 
   const handleNext = () => setStep(step + 1)
   const handleBack = () => setStep(step - 1)
@@ -132,6 +201,7 @@ export default function MentorRegisterPage() {
           linkedin: form.linkedin,
           cal_link: form.cal_link?.replace("https://cal.com/", "").replace("http://cal.com/", "").replace(/\/$/, ""),
           counseling_type: form.counseling_type,
+          image: form.image,
           onboarding_complete: true,
           slug: (dbUser.name || dbUser.user_metadata?.full_name || "mentor").toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + Math.random().toString(36).substring(2, 5),
         })
@@ -293,6 +363,33 @@ export default function MentorRegisterPage() {
                     <div>
                        <h2 className="text-3xl font-black mb-2">Mentor Profile</h2>
                        <p className="text-slate-500 font-medium">Tell students why they should book you.</p>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row items-center gap-6 p-6 rounded-[2rem] bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800">
+                       <div className="relative group shrink-0">
+                          <div className="h-24 w-24 rounded-full bg-white dark:bg-slate-900 overflow-hidden border-4 border-white dark:border-slate-800 shadow-sm flex items-center justify-center">
+                             {form.image ? (
+                               <img src={form.image} alt="Profile" className="h-full w-full object-cover" />
+                             ) : (
+                               <User className="h-8 w-8 text-slate-300" />
+                             )}
+                          </div>
+                          <label htmlFor="register-photo-upload" className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-full flex items-center justify-center cursor-pointer">
+                             {uploadingImage ? <div className="h-6 w-6 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <Camera className="h-6 w-6 text-white" />}
+                          </label>
+                          <input
+                             type="file"
+                             id="register-photo-upload"
+                             accept="image/*"
+                             className="hidden"
+                             onChange={handleImageUpload}
+                             disabled={uploadingImage}
+                          />
+                       </div>
+                       <div className="space-y-1 text-center sm:text-left">
+                          <h4 className="font-black">Profile Photo</h4>
+                          <p className="text-xs text-slate-500 font-medium">Upload a professional, friendly headshot. (Max 2MB)</p>
+                       </div>
                     </div>
 
                     <div className="space-y-6">

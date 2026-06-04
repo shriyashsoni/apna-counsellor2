@@ -588,6 +588,16 @@ function StudentDashboard({ profile, user }: { profile: any, user: any }) {
                               <Button size="sm" className="bg-purple-600 text-white text-[10px] font-bold rounded-lg h-8 px-3">Join Meet</Button>
                             </a>
                           )}
+                          {(s.status === 'confirmed' || s.status === 'completed') && (
+                            <Button 
+                              size="sm" 
+                              variant="outline"
+                              onClick={() => setSelectedSession(s)} 
+                              className="text-[10px] font-bold rounded-lg h-8 px-3"
+                            >
+                              Write Review
+                            </Button>
+                          )}
                           <Badge className={`text-[8px] font-black uppercase tracking-wider ${
                             s.status === 'confirmed' ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-500'
                           }`}>

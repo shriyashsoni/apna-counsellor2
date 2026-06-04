@@ -132,9 +132,9 @@ export default function MentorDashboard() {
               </p>
             </div>
           </div>
-          <Link href="/" className="mt-3 block">
+          <Link href={profile ? `/mentor/${profile.slug || profile.id}` : "/"} className="mt-3 block" target="_blank">
             <Button variant="outline" className="w-full h-8 rounded-lg font-bold text-xs border-slate-200 text-slate-500 hover:text-slate-900">
-              View Public Site ↗
+              View Public Profile ↗
             </Button>
           </Link>
         </div>
