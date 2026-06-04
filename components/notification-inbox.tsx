@@ -135,7 +135,17 @@ export default function NotificationInbox() {
                   </p>
                   <div className="flex items-center justify-between mt-2">
                     <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">
-                      {formatDistanceToNow(new Date(n.created_at), { addSuffix: true })}
+                      {(() => {
+                        try {
+                          // Try replacing space with T for Safari compatibility if it's not ISO format
+                          const dateString = n.created_at?.replace(' ', 'T') || new Date().toISOString();
+                          const date = new Date(dateString);
+                          if (isNaN(date.getTime())) return 'Recently';
+                          return formatDistanceToNow(date, { addSuffix: true });
+                        } catch (e) {
+                          return 'Recently';
+                        }
+                      })()}
                     </span>
                     {n.link && (
                       <Link href={n.link} onClick={() => setIsOpen(false)} className="text-[10px] font-black text-purple-600 dark:text-purple-400 flex items-center gap-1 hover:underline">
