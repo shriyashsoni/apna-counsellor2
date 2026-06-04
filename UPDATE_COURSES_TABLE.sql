@@ -28,5 +28,6 @@ ALTER TABLE courses ADD COLUMN IF NOT EXISTS meta_title TEXT;
 ALTER TABLE courses ADD COLUMN IF NOT EXISTS meta_description TEXT;
 ALTER TABLE courses ADD COLUMN IF NOT EXISTS keywords TEXT[];
 
--- 2. Notify the PostgREST server to reload the schema and refresh its cache
-NOTIFY pgrst, 'reload schema';
+-- 2. Schema Cache Notes
+-- Note: Supabase automatically detects schema changes. 
+-- If you need to manually refresh the API cache, do it via Settings -> API -> Reload API Cache.

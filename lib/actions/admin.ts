@@ -179,3 +179,18 @@ export async function updateCourseAction(courseId: string, courseData: any) {
   }
 }
 
+export async function deleteBroadcastNotificationAction(id: string) {
+  try {
+    const { error } = await supabaseAdmin
+      .from('notifications')
+      .delete()
+      .eq('id', id)
+
+    if (error) throw error
+    return { success: true }
+  } catch (error: any) {
+    console.error("Delete Notification Error:", error)
+    return { success: false, error: error.message }
+  }
+}
+
