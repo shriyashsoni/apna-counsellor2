@@ -1279,7 +1279,6 @@ function StudentDashboard({ profile, user }: { profile: any, user: any }) {
             <div className="grid grid-cols-1 gap-1.5">
               {[
                 { icon: BookOpen, label: "Resource Library", path: "/resources", color: "text-blue-500" },
-                { icon: CreditCard, label: "Subscription Plans", path: "/pricing", color: "text-emerald-500" },
                 { icon: Settings, label: "Account Settings", path: "/settings", color: "text-slate-500" },
                 { icon: MessageSquare, label: "Help & Support", path: "/support", color: "text-purple-500" },
               ].map((item, i) => (
