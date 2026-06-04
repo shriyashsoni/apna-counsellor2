@@ -34,7 +34,7 @@ interface SidebarItem {
 const sidebarItems: SidebarItem[] = [
   { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
   { name: "College Finder", href: "/colleges", icon: Search },
-  { name: "AI Counselor", href: "/chat", icon: MessageSquare },
+  { name: "AI Counselor", href: "/dashboard/chat", icon: MessageSquare },
   { name: "My Shortlist", href: "/dashboard/shortlist", icon: Sparkles },
   { name: "Admissions", href: "/counselling", icon: GraduationCap },
   { name: "Resources", href: "/resources", icon: BookOpen },
