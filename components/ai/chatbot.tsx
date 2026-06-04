@@ -140,7 +140,7 @@ export function AIChatbot() {
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="fixed bottom-28 right-8 w-[95vw] max-w-[450px] h-[700px] bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-2xl border border-slate-100 dark:border-slate-800 flex flex-col z-50 overflow-hidden"
+            className="fixed bottom-24 right-4 sm:right-8 w-[calc(100vw-2rem)] sm:w-[400px] h-[600px] max-h-[75vh] bg-white dark:bg-slate-900 rounded-[2rem] shadow-2xl border border-slate-100 dark:border-slate-800 flex flex-col z-50 overflow-hidden"
           >
             {/* Header */}
             <div className="p-6 bg-gradient-to-r from-primary to-purple-600 text-white flex justify-between items-center">
@@ -223,15 +223,7 @@ export function AIChatbot() {
               )}
             </div>
 
-            {/* Puter Auth Banner if not signed in */}
-            {!isSignedIn && (
-              <div className="px-6 py-3 bg-amber-50 dark:bg-amber-900/20 border-t border-amber-100 dark:border-amber-900/30 flex items-center justify-between">
-                <span className="text-[10px] font-bold text-amber-700 dark:text-amber-400">Sign in to unlock Pro AI models</span>
-                <Button size="sm" variant="outline" onClick={handleSignIn} className="h-7 text-[10px] gap-1.5 border-amber-200 bg-white dark:bg-slate-900 hover:bg-amber-100 font-bold">
-                  <LogIn className="h-3 w-3" /> Login with Puter
-                </Button>
-              </div>
-            )}
+
 
             {/* Input */}
             <div className="p-6 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800">
