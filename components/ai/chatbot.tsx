@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "framer-motion"
 import { MessageSquare, X, Send, Sparkles, Bot, User, LogIn, BarChart3, ListChecks, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-// import { puter } from "@heyputer/puter.js"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 
@@ -22,18 +21,31 @@ export function AIChatbot() {
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [isSignedIn, setIsSignedIn] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
   const puterRef = useRef<any>(null)
 
   useEffect(() => {
-    // Check if user is signed into Puter
+    setIsMounted(true)
+    // Detect mobile — Puter.js is not compatible with mobile browsers
+    const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    )
+    setIsMobile(mobile)
+    if (mobile) return // Don't load Puter on mobile
+
+    // Check if user is signed into Puter (desktop only)
     const initPuter = async () => {
       try {
-        const { puter } = await import("@heyputer/puter.js")
-        puterRef.current = puter
-        setIsSignedIn(puter.auth.isSignedIn())
+        const mod = await import("@heyputer/puter.js")
+        if (mod && mod.puter) {
+          puterRef.current = mod.puter
+          setIsSignedIn(mod.puter.auth.isSignedIn())
+        }
       } catch (err) {
-        console.error("Puter load error:", err)
+        // Puter failed to load — chatbot works in degraded mode
+        console.warn("[AIChatbot] Puter unavailable:", err)
       }
     }
     initPuter()
@@ -98,6 +110,9 @@ export function AIChatbot() {
     { label: "Top Engineering Colleges", icon: ListChecks, query: "Show me the top 10 engineering colleges in India with their average packages." },
     { label: "JoSAA Cutoffs 2025", icon: Sparkles, query: "What are the expected JoSAA 2025 cutoffs for CSE in top NITs?" }
   ]
+
+  // Don't render on mobile (Puter.js is desktop-only) or before mount
+  if (!isMounted || isMobile) return null
 
   return (
     <>
@@ -220,7 +235,7 @@ export function AIChatbot() {
                   className="rounded-2xl h-14 pr-14 pl-5 focus-visible:ring-primary border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:bg-white dark:focus:bg-slate-900 transition-all text-sm"
                   value={input}
                   onChange={e => setInput(e.target.value)}
-                  onKeyPress={e => e.key === 'Enter' && handleSend()}
+                  onKeyDown={e => e.key === 'Enter' && handleSend()}
                 />
                 <Button 
                   size="icon" 
