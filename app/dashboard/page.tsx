@@ -62,6 +62,7 @@ import { ReviewModal } from "@/components/review-modal"
 
 import { predictAI } from "@/lib/ai"
 import { predictColleges } from "@/lib/actions/predict"
+import { DashboardChat } from "@/components/ai/dashboard-chat"
 
 export default function DashboardPage() {
   const router = useRouter()
@@ -243,7 +244,7 @@ const SKILLS = ['JEE Advanced', 'JEE Mains', 'MHT-CET', 'COMEDK', 'Programming',
 const COUNSELING_TYPES = ['JoSAA', 'MHT-CET', 'CSAB', 'JAC Delhi', 'COMEDK'];
 
 function StudentDashboard({ profile, user }: { profile: any, user: any }) {
-  const [activeTab, setActiveTab] = useState<"overview" | "predictor" | "mentors" | "subscriptions" | "batches">("overview")
+  const [activeTab, setActiveTab] = useState<"overview" | "predictor" | "mentors" | "subscriptions" | "batches" | "ai_counselor">("overview")
   const [sessions, setSessions] = useState<any[]>([])
   const [enrolledCourses, setEnrolledCourses] = useState<any[]>([])
   const [notifications, setNotifications] = useState<any[]>([])
@@ -469,6 +470,7 @@ function StudentDashboard({ profile, user }: { profile: any, user: any }) {
           { id: "mentors", label: "Mentors", icon: Users },
           { id: "subscriptions", label: "Courses", icon: CreditCard },
           { id: "batches", label: "Batches", icon: Rocket },
+          { id: "ai_counselor", label: "AI Counselor", icon: Bot },
         ].map((tab) => {
           const Icon = tab.icon
           const isSelected = activeTab === tab.id
@@ -1185,6 +1187,11 @@ function StudentDashboard({ profile, user }: { profile: any, user: any }) {
             </div>
           )}
 
+          {/* TAB 6: AI COUNSELOR */}
+          {activeTab === "ai_counselor" && (
+            <DashboardChat />
+          )}
+
         </div>
 
         {/* Right Sidebar: Switcher and details (Adapts columns) */}
@@ -1197,6 +1204,7 @@ function StudentDashboard({ profile, user }: { profile: any, user: any }) {
               {[
                 { id: "overview", label: "Dashboard Overview", icon: LayoutDashboard },
                 { id: "predictor", label: "College Predictor", icon: TrendingUp },
+                { id: "ai_counselor", label: "AI Counselor", icon: Bot },
                 { id: "mentors", label: "Course Mentors", icon: Users },
                 { id: "subscriptions", label: "Explore Programs", icon: CreditCard },
                 { id: "batches", label: "Batches Classroom", icon: Rocket },
