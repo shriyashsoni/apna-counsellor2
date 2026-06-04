@@ -171,29 +171,37 @@ export default function ResourcesPage() {
                       <h2 className="text-2xl font-black text-slate-900 dark:text-white underline decoration-primary decoration-4 underline-offset-8 uppercase tracking-tight">
                         {category} Official Materials
                       </h2>
-                      <div className="bg-white dark:bg-slate-900 rounded-[2rem] p-6 sm:p-8 border border-slate-100 dark:border-slate-800 shadow-sm">
-                        <ul className="space-y-4">
-                          {items.map((res, i) => (
-                            <li key={i} className="flex items-center border-b border-slate-50 dark:border-slate-800/50 last:border-0 pb-4 last:pb-0">
-                              <a 
-                                href={res.link || "#"} 
-                                target="_blank" 
-                                rel="noopener noreferrer" 
-                                className="flex items-center gap-4 w-full group"
-                              >
-                                <div className="text-slate-400 group-hover:text-primary transition-colors shrink-0">
-                                  {res.icon ? <res.icon className="h-5 w-5" /> : <FileText className="h-5 w-5" />}
+                      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+                        {items.map((res, i) => (
+                          <Card key={i} className="border border-slate-100 dark:border-slate-800 rounded-2xl bg-white dark:bg-slate-900 hover:shadow-xl hover:shadow-primary/5 hover:border-primary/20 transition-all group overflow-hidden">
+                            <CardContent className="p-4 sm:p-6 flex items-center justify-between gap-4">
+                              <div className="flex items-center gap-4 min-w-0">
+                                <div className={`h-12 w-12 shrink-0 rounded-xl flex items-center justify-center ${colorMap[res.color] || colorMap.blue} group-hover:scale-110 transition-transform`}>
+                                  {res.icon ? <res.icon className="h-6 w-6" /> : <FileText className="h-6 w-6" />}
                                 </div>
-                                <span className="text-slate-700 dark:text-slate-200 font-semibold group-hover:text-primary group-hover:underline transition-all">
-                                  {res.title}
-                                </span>
-                                <span className="text-slate-400 text-xs ml-auto font-medium shrink-0 flex items-center gap-1">
-                                  <Download className="h-3 w-3" /> {res.type}
-                                </span>
-                              </a>
-                            </li>
-                          ))}
-                        </ul>
+                                <div className="min-w-0">
+                                  <h3 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white group-hover:text-primary transition-colors truncate">
+                                    {res.title}
+                                  </h3>
+                                  <span className="text-[10px] sm:text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-1 mt-1">
+                                    <Download className="h-3 w-3" /> {res.type}
+                                  </span>
+                                </div>
+                              </div>
+                              {res.link ? (
+                                <a href={res.link} target="_blank" rel="noopener noreferrer" className="shrink-0">
+                                  <Button variant="ghost" size="icon" className="rounded-xl text-primary hover:bg-primary/10 h-10 w-10">
+                                    <ArrowRight className="h-5 w-5" />
+                                  </Button>
+                                </a>
+                              ) : (
+                                <Button variant="ghost" size="icon" className="shrink-0 rounded-xl text-primary hover:bg-primary/10 h-10 w-10">
+                                  <ArrowRight className="h-5 w-5" />
+                                </Button>
+                              )}
+                            </CardContent>
+                          </Card>
+                        ))}
                       </div>
                     </motion.div>
                   ))}
