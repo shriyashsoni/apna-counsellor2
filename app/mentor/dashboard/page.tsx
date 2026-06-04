@@ -24,6 +24,7 @@ export default function MentorDashboard() {
   const [unscheduledSessions, setUnscheduledSessions] = useState<any[]>([])
   const [earnings, setEarnings] = useState(0)
   const [paymentCount, setPaymentCount] = useState(0)
+  const [paymentsList, setPaymentsList] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [isUpdating, setIsUpdating] = useState<string | null>(null)
 
@@ -52,10 +53,14 @@ export default function MentorDashboard() {
       setSessions(all.filter(s => s.status === 'confirmed' || s.status === 'completed'))
       setUnscheduledSessions(all.filter(s => s.status === 'paid_unscheduled'))
 
-      // Earnings
-      const { data: payments } = await supabase.from('payments').select('amount').eq('mentor_id', user.id).eq('status', 'captured')
-      setEarnings(payments?.reduce((acc, p) => acc + (Number(p.amount) * 0.7 || 0), 0) || 0)
-      setPaymentCount(payments?.length || 0)
+      // Earnings and Transactions
+      const { data: payments } = await supabase.from('payments').select('*').eq('mentor_id', user.id).order('created_at', { ascending: false })
+      
+      const successfulPayments = payments?.filter(p => p.status === 'captured') || []
+      
+      setEarnings(successfulPayments.reduce((acc, p) => acc + (Number(p.amount) * 0.7 || 0), 0))
+      setPaymentCount(successfulPayments.length)
+      setPaymentsList(payments || [])
 
       setIsLoading(false)
     }
@@ -298,6 +303,71 @@ export default function MentorDashboard() {
                     </div>
                   </Card>
                 ))
+              )}
+            </section>
+
+            {/* Transaction History */}
+            <section className="space-y-3 pt-4">
+              <div className="flex justify-between items-center">
+                <h2 className="text-lg font-black text-slate-900">Transaction & Settlement History</h2>
+              </div>
+
+              {paymentsList.length === 0 ? (
+                <Card className="bg-white border-none rounded-2xl shadow-sm p-12 text-center">
+                  <DollarSign className="h-10 w-10 text-slate-200 mx-auto mb-3" />
+                  <p className="text-slate-400 font-bold text-sm">No transactions yet.</p>
+                  <p className="text-slate-400 text-xs mt-1">Earnings from your sessions will appear here.</p>
+                </Card>
+              ) : (
+                <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse">
+                      <thead>
+                        <tr className="bg-slate-50 border-b border-slate-100">
+                          <th className="p-4 text-[10px] font-black uppercase tracking-widest text-slate-400">Date</th>
+                          <th className="p-4 text-[10px] font-black uppercase tracking-widest text-slate-400">Student / Details</th>
+                          <th className="p-4 text-[10px] font-black uppercase tracking-widest text-slate-400">Total Paid</th>
+                          <th className="p-4 text-[10px] font-black uppercase tracking-widest text-slate-400">Your Share (70%)</th>
+                          <th className="p-4 text-[10px] font-black uppercase tracking-widest text-slate-400">Settlement Status</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100">
+                        {paymentsList.map(p => (
+                          <tr key={p.id} className="hover:bg-slate-50 transition-colors">
+                            <td className="p-4">
+                               <p className="font-bold text-slate-900 text-sm">
+                                 {new Date(p.created_at).toLocaleDateString()}
+                               </p>
+                               <p className="text-[10px] text-slate-400 font-medium">
+                                 {new Date(p.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                               </p>
+                            </td>
+                            <td className="p-4">
+                               <p className="font-bold text-slate-900 text-sm">{p.metadata?.full_name || 'Student'}</p>
+                               <p className="text-[10px] text-slate-400 truncate max-w-[150px]">Order: {p.order_id}</p>
+                            </td>
+                            <td className="p-4 font-black text-slate-900">
+                               ₹{p.amount || 0}
+                            </td>
+                            <td className="p-4 font-black text-emerald-600 bg-emerald-50/50">
+                               ₹{Math.round((p.amount || 0) * 0.7)}
+                            </td>
+                            <td className="p-4">
+                               {p.status === 'captured' ? (
+                                  <div>
+                                     <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-200 border-none">Approved</Badge>
+                                     <p className="text-[9px] text-emerald-600 font-bold mt-1">Settled to Bank in T+2 Days</p>
+                                  </div>
+                               ) : (
+                                  <Badge variant="outline" className="text-amber-500 border-amber-200 bg-amber-50">Pending</Badge>
+                               )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               )}
             </section>
           </div>
