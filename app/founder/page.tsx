@@ -35,7 +35,7 @@ export default function FounderPage() {
                 className="relative h-64 w-64 rounded-full overflow-hidden bg-white border-4 border-primary/20"
               >
                 <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/SHRIYASH%20SONI%20PICTURE.jpg-c5GaVmj4OmQTGnwqngVnEfMFzWodvl.jpeg"
+                  src="/images/founder.jpg"
                   alt="Shriyash Soni"
                   fill
                   className="object-cover"

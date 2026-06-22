@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
+import Image from "next/image"
 import { ArrowRight, BookOpen, CheckCircle, MessageCircle, Phone, Calendar, Sparkles, Globe, Shield, GraduationCap, User } from "lucide-react"
 import HeroSection from "@/components/hero-section"
 import CounsellingPlatforms from "@/components/counselling-platforms"
@@ -98,8 +99,8 @@ export default function HomeClientPage() {
             <div className="absolute -inset-4 bg-gradient-to-r from-primary to-purple-600 rounded-[3rem] blur-2xl opacity-20" />
             <div className="relative bg-white dark:bg-slate-900 p-8 sm:p-12 rounded-[2.5rem] border border-slate-200 dark:border-slate-800 shadow-2xl">
               <div className="flex items-center gap-4 mb-8">
-                <div className="h-16 w-16 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-                  <User className="h-8 w-8 text-primary" />
+                <div className="h-16 w-16 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center overflow-hidden border-2 border-primary/20">
+                  <Image src="/images/founder.jpg" alt="Shriyash Soni" width={64} height={64} className="h-full w-full object-cover" />
                 </div>
                 <div>
                   <h3 className="text-2xl font-black">Shriyash Soni</h3>
@@ -227,20 +228,16 @@ export default function HomeClientPage() {
         </div>
       </section>
 
-      {/* AI Ecosystem Interactive Hub - Production Version */}
-      <section className="py-16 bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 relative overflow-hidden w-full">
-        <div className="w-full px-0 max-w-none">
-          <div className="relative overflow-hidden bg-slate-50/50 dark:bg-slate-900/30 border-y border-slate-200 dark:border-slate-800 py-12 px-4 sm:px-8 md:px-16 shadow-2xl">
-            <div className="absolute -inset-4 bg-gradient-to-r from-primary/10 to-purple-600/10 blur-2xl opacity-40 pointer-events-none" />
-            <div 
-              className="relative z-10 w-full min-h-[500px]"
-              dangerouslySetInnerHTML={{
-                __html: `<div data-bn-preset="ukrdl6co0u5wp4a8txeqwsij" style="width: 100%; height: 100%;"></div><script src="https://www.itsbeyondregular.com/embed.js" defer></script>`
-              }}
-            />
-          </div>
-        </div>
-      </section>
+      {/* AI Ecosystem Interactive Hub */}
+      <section 
+        className="w-full"
+        dangerouslySetInnerHTML={{
+          __html: `
+            <script src="https://www.itsbeyondregular.com/embed.js" defer></script>
+            <div data-bn-preset="ukrdl6co0u5wp4a8txeqwsij"></div>
+          `
+        }}
+      />
     </div>
   )
 }
