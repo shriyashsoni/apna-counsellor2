@@ -112,21 +112,15 @@ export default function FounderPage() {
           </motion.div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.35 }}
-          className="mb-12 rounded-2xl overflow-hidden shadow-2xl border border-primary/20 bg-slate-50 dark:bg-slate-900"
-        >
-          <iframe 
-            src="https://www.itsbeyondregular.com/embed/tywm06emlir8m3k76dl7gez5"
-            width="100%" 
-            height="600"
-            frameBorder="0"
-            allow="autoplay; fullscreen"
-            className="w-full"
-          ></iframe>
-        </motion.div>
+        <div 
+          className="mb-12 w-full"
+          dangerouslySetInnerHTML={{
+            __html: `
+              <script src="https://www.itsbeyondregular.com/embed.js" defer></script>
+              <div data-bn-preset="tywm06emlir8m3k76dl7gez5"></div>
+            `
+          }}
+        />
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
