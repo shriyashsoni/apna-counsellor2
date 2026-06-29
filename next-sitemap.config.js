@@ -118,6 +118,10 @@ module.exports = {
       { loc: '/blog', priority: 0.9, changefreq: "daily" },
       { loc: '/about', priority: 0.8, changefreq: "monthly" },
       { loc: '/contact', priority: 0.8, changefreq: "monthly" },
+      // ── Featured products – pinned at highest priority ─────────────────────
+      { loc: '/courses/josaa-choice-filling-list-2026', priority: 1.0, changefreq: "daily", lastmod: dateNow },
+      { loc: '/courses/comedk-2026-choice-filling-list', priority: 1.0, changefreq: "daily", lastmod: dateNow },
+      { loc: '/courses/mpdte-2026-choice-filling-list', priority: 1.0, changefreq: "daily", lastmod: dateNow },
     ];
 
     return [...corePaths, ...allPaths];
